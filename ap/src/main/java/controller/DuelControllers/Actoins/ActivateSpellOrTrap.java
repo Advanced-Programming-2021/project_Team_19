@@ -5,6 +5,7 @@ import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
 import model.Board.Zones;
 import model.Card.SpellAndTraps;
+import model.Card.Trap;
 import model.Enums.CardFamily;
 import model.Enums.ZonesEnum;
 import model.Phase;
@@ -51,6 +52,11 @@ public class ActivateSpellOrTrap extends Action {
     private boolean activateFromHand(){
 
         SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
+
+        if(card instanceof Trap){
+            Printer.print("you should set trap card first");
+            return false;
+        }
 
         if(gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()){
             Printer.print("spell card zone is full");
