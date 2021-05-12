@@ -54,7 +54,10 @@ public class NormalSummon extends Summon {
 
         if(determineSummonType(summoningMonster)){
             gameData.addActionToCurrentActions(this);
-            handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+
+            if(canOtherPlayerActivateAnyTrapOrSpeedSpell())
+                handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+
             gameData.removeActionFromCurrentActions(this);
         }
 
