@@ -2,7 +2,6 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import model.Board.MonsterCardZone;
 import model.Enums.CardFamily;
@@ -115,7 +114,6 @@ public class Monster extends Card {
     public void handleAttack(GameData gameData, int enemyId) {
         Monster defendingMonster = (Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId);
 
-        defendingMonster.handleDefend();
         lastTurnAttacked = gameData.getTurn();
         switch (defendingMonster.getCardMod()) {
             case OFFENSIVE_OCCUPIED:
@@ -131,12 +129,12 @@ public class Monster extends Card {
 
     }
 
-    private void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
+    protected void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
         attackDefensiveMonster(defendingMonster, gameData);
     }
 
-    private void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+    protected void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (attack > defendingMonster.getDefence()) {
             defendingMonster.handleDestroy(gameData);
@@ -151,7 +149,7 @@ public class Monster extends Card {
         }
     }
 
-    private void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (attack > defendingMonster.getAttack()) {
             defendingMonster.handleDestroy(gameData);
@@ -180,8 +178,6 @@ public class Monster extends Card {
         setLastTurnHasChangedPosition(gameData.getTurn());
     }
 
-    public void handleDefend() {
-    }
 
     public void handleDirectAttack(GameData gameData) {
         lastTurnAttacked = gameData.getTurn();
@@ -268,5 +264,9 @@ public class Monster extends Card {
         gameData.moveCardFromOneZoneToAnother(this,
                 gamer.getGameBoard().getMonsterCardZone(),
                 gamer.getGameBoard().getGraveYard());
+    }
+
+    public boolean attackIsNormal(GameData gameData) {
+        return true;
     }
 }

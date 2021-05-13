@@ -7,14 +7,14 @@ import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
-public class AttackMonster extends Attack{
+public class AttackMonster extends Attack {
 
-    public AttackMonster(GameData gameData){
+    public AttackMonster(GameData gameData) {
         super(gameData, "attackMonster");
     }
 
 
-    public void run(Matcher matcher){
+    public void run(Matcher matcher) {
         attackMonster(matcher);
     }
 
@@ -29,7 +29,9 @@ public class AttackMonster extends Attack{
                 Printer.print("there is no card to attack here");
             else {
                 Monster attackingMonster = (Monster) selectedCard;
-                attackingMonster.handleAttack(gameData, enemyId);
+                if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId)).attackIsNormal(gameData)) {
+                    attackingMonster.handleAttack(gameData, enemyId);
+                }
             }
         }
     }
