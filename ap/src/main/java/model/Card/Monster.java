@@ -2,6 +2,7 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import model.Board.MonsterCardZone;
 import model.Enums.CardFamily;
@@ -138,7 +139,7 @@ public class Monster extends Card {
     private void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (attack > defendingMonster.getDefence()) {
-            defendingMonster.handleDestroy(gameData);
+            new Destroy(gameData).run(defendingMonster);
             Printer.print("the defense position monster is destroyed");
         } else if (attack < defendingMonster.getDefence()) {
             handleDestroy(gameData);

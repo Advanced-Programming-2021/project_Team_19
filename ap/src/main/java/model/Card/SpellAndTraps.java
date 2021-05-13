@@ -14,7 +14,7 @@ public abstract class SpellAndTraps extends Card {
     @Expose
     public boolean wasActivated = false;
 
-    public abstract void activate();
+    public abstract void activate(GameData gameData);
 
     public SpellCardMods getSpellCardMod() {
         return spellCardMod;

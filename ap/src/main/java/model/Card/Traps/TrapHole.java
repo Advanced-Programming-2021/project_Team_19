@@ -1,16 +1,19 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.FlipSummon;
-import controller.DuelControllers.Actoins.NormalSummon;
-import controller.DuelControllers.Actoins.Summon;
+import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Trap;
 
 public class TrapHole extends Trap {
-    @Override
-    public void activate() {
+
+    public void activate(GameData gameData) {
+
+        Action action = gameData.getCurrentActions().get(
+                (gameData.getCurrentActions().size() - 1));
+
+        new Destroy(gameData).run(
+                ((Summon)action).getSummoningMonster());
 
     }
 

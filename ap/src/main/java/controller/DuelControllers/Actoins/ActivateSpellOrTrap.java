@@ -45,7 +45,7 @@ public class ActivateSpellOrTrap extends Action {
 
     private boolean activateFromSpellZone() {
         SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
-        card.activate();
+        card.activate(gameData);
         return true;
     }
 
@@ -67,7 +67,7 @@ public class ActivateSpellOrTrap extends Action {
             return false;
         }
 
-        card.activate();
+        card.activate(gameData);
 
         gameData.moveCardFromOneZoneToAnother(card,
                 gameData.getCurrentGamer().getGameBoard().getHand(),

@@ -1,5 +1,6 @@
 package model.Card.Spells;
 
+import controller.DuelControllers.GameData;
 import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Card.TrapAndSpellTypes.Undo;
@@ -13,7 +14,7 @@ public class IncreaserType1 extends Spell implements Undo {
     public int amountToIncreaseDefence;
 
     @Override
-    public void activate() {
+    public void activate(GameData gameData) {
 
     }
 

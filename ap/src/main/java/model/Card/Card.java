@@ -69,6 +69,7 @@ public class Card {
         }
     }
     public void handleDestroy(GameData gameData){
+
         if (gameData.getCurrentGamer().getGameBoard().getZone(this) != null)
             gameData.moveCardFromOneZoneToAnother(this,
                     gameData.getCurrentGamer().getGameBoard().getZone(this),

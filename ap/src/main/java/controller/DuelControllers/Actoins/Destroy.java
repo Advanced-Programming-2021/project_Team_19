@@ -10,7 +10,15 @@ public class Destroy extends Action {
     }
 
     public void run(Card card){
-        card.handleDestroy(gameData);
+        if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getCurrentGamer().getGameBoard().getZone(card),
+                    gameData.getCurrentGamer().getGameBoard().getGraveYard());
+        else
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getSecondGamer().getGameBoard().getZone(card),
+                    gameData.getSecondGamer().getGameBoard().getGraveYard());
+//        card.handleDestroy(gameData);
     }
 
 }

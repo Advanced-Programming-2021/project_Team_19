@@ -1,5 +1,6 @@
 package model.Card.Spells;
 
+import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Card.Spell;
 import model.Card.SpellAndTraps;
@@ -15,7 +16,7 @@ public class ChangeOfHeart extends Spell implements ContinuousEffect, Undo {
     }
 
     @Override
-    public void activate() {
+    public void activate(GameData gameData) {
 
     }
 

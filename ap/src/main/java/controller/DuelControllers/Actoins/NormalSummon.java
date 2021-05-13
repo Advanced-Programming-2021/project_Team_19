@@ -10,8 +10,6 @@ import view.Printer.Printer;
 
 public class NormalSummon extends Summon {
 
-
-
     public NormalSummon(GameData gameData) {
         super(gameData, "normal summon");
     }

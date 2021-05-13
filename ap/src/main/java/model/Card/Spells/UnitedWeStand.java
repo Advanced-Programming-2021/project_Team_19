@@ -1,11 +1,12 @@
 package model.Card.Spells;
 
+import controller.DuelControllers.GameData;
 import model.Card.Spell;
 import model.Card.TrapAndSpellTypes.Undo;
 
 public class UnitedWeStand extends Spell implements Undo {
     @Override
-    public void activate() {
+    public void activate(GameData gameData) {
 
     }
 
