@@ -4,6 +4,8 @@ import controller.DuelControllers.GameData;
 import controller.DuelControllers.GameHelp;
 import controller.Utils;
 import model.Card.Card;
+import model.Card.Monster;
+import model.Enums.CardMod;
 import view.Printer.Printer;
 
 import java.util.regex.Matcher;
@@ -41,7 +43,8 @@ public class Select extends Action{
             Card selectedCard = gameData.getSelectedCard();
             if (selectedCard == null)
                 Printer.print("no card is selected yet");
-            else if (gameData.getSecondGamer().getGameBoard().getZone(selectedCard).equals(gameData.getSecondGamer().getGameBoard().getMonsterCardZone()))
+            else if (gameData.getSecondGamer().getGameBoard().getZone(selectedCard) != null &&
+                    gameData.getSecondGamer().getGameBoard().getZone(selectedCard).equals(gameData.getSecondGamer().getGameBoard().getMonsterCardZone()))
                 Printer.print("card is not visible");
             else
                 Printer.print(selectedCard.toString());

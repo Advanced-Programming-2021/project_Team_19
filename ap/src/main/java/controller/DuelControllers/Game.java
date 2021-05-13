@@ -33,6 +33,7 @@ public class Game {
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.END)) {
+                gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
                 continue;
