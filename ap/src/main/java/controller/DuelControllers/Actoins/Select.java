@@ -14,6 +14,18 @@ public class Select extends Action{
 
     private boolean commandIsDone;
 
+    public static void help(){
+        System.out.println("""
+                card show --selected
+                select --monster <id>
+                select --spell <id>
+                select --hand <id>
+                select --field
+                select --monster --opponent <id>
+                select --spell --opponent <id>
+                select --field --opponent
+                select -d""");
+    }
 
     public Select(GameData gameData){
         super(gameData, "select");
@@ -49,19 +61,6 @@ public class Select extends Action{
             else
                 Printer.print(selectedCard.toString());
         }
-    }
-
-    public static void help(){
-        System.out.println("""
-                card show --selected
-                select --monster <id>
-                select --spell <id>
-                select --hand <id>
-                select --field
-                select --monster --opponent <id>
-                select --spell --opponent <id>
-                select --field --opponent
-                select -d""");
     }
 
     private void selectMonster(Matcher matcher) {
