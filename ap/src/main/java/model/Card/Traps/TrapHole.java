@@ -12,9 +12,7 @@ public class TrapHole extends Trap {
         Action action = gameData.getCurrentActions().get(
                 (gameData.getCurrentActions().size() - 1));
 
-        new Destroy(gameData).run(
-                ((Summon)action).getSummoningMonster());
-
+        ((Summon)action).getSummoningMonster().handleDestroy(gameData);
     }
 
     public boolean canActivate(GameData gameData){

@@ -139,7 +139,7 @@ public class Monster extends Card {
     private void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (attack > defendingMonster.getDefence()) {
-            new Destroy(gameData).run(defendingMonster);
+            defendingMonster.handleDestroy(gameData);
             Printer.print("the defense position monster is destroyed");
         } else if (attack < defendingMonster.getDefence()) {
             handleDestroy(gameData);
