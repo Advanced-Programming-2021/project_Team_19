@@ -51,6 +51,7 @@ public class FlipSummon extends Summon {
         Printer.print("flip summoned successfully");
 
         gameData.addActionToCurrentActions(this);
+
         if(canOtherPlayerActivateAnyTrapOrSpeedSpell()){
             handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
         }

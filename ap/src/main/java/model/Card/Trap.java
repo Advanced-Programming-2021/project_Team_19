@@ -15,10 +15,10 @@ public abstract class Trap extends SpellAndTraps {
     @Expose
     LabelsForActivatingTraps activationLabel;
 
-
     {
         setCardFamily(CardFamily.TRAP);
     }
+
     public TrapTypes getTrapType() {
         return trapType;
     }
@@ -44,6 +44,6 @@ public abstract class Trap extends SpellAndTraps {
     }
 
 
-    public boolean canActivate(GameData gameData){return true;}
+    public boolean canActivate(GameData gameData){return false;}
 
 }

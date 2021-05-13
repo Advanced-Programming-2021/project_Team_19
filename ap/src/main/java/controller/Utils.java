@@ -1,6 +1,8 @@
 package controller;
 
 import controller.DataBaseControllers.CardDataBaseController;
+import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardNames;
@@ -107,6 +109,10 @@ public class Utils {
     public static Card getCardByName(String cardName) {
 
         return CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
+    }
+
+    public static boolean isCurrentGamerActionDoer(GameData gameData, Action action){
+        return gameData.getCurrentGamer().equals(action.getActionDoer());
     }
 
 }

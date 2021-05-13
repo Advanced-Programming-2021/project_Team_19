@@ -2,6 +2,7 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import model.Card.SpellAndTraps;
+import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -9,11 +10,13 @@ public abstract class Action {
 
     protected GameData gameData;
     protected String actionName;
+    protected Gamer actionDoer;
 
     protected Action(GameData gameData, String actionName){
 
         setGameData(gameData);
         setActionName(actionName);
+        setActionDoer();
     }
 
     protected void setGameData(GameData gameData){
@@ -32,11 +35,14 @@ public abstract class Action {
         return actionName;
     }
 
+    private void setActionDoer(){actionDoer = gameData.getCurrentGamer();}
+
+    public Gamer getActionDoer(){return actionDoer;}
+
     protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpell(){
 
         for(SpellAndTraps spellOrTrap :
-                gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())
-        {
+                gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
             if(spellOrTrap.canActivate(gameData)){
                 return true;
             }

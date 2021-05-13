@@ -13,10 +13,10 @@ import java.util.Collections;
 
 public class GameData {
 
+
     private int gameStarterId = 0;
     private ArrayList<Gamer> gamers = new ArrayList<>();
     private ArrayList<Action> currentActions = new ArrayList<>();
-
     private Card selectedCard;
     private int turn = 1;
     private Phase currentPhase = Phase.DRAW;
@@ -138,10 +138,12 @@ public class GameData {
         return gamers.get(1 - gameStarterId);
     }
 
+    public ArrayList<Action> getCurrentActions(){
+        return currentActions;
+    }
 
 
     public static GameData getTestGameData(){
-
 
 
         User user1 = new User("mohammad_1", "mohammad_1", "123");
@@ -155,4 +157,6 @@ public class GameData {
         gameData.turn = 5;
         return gameData;
     }
+
+
 }
