@@ -1,5 +1,6 @@
 package model.Card.Monsters;
 
+import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Enums.CardMod;
@@ -24,7 +25,7 @@ public class ManEaterBug extends Monster {
                         Printer.print("there is no monster here\n" +
                                 "enter an id that contains a monster");
                     }else{
-                        destroyHere((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)));
+                        new Destroy(gameData).run((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)));
                         return true;
                     }
                 } else if (command.matches("//d+")) {
@@ -37,7 +38,4 @@ public class ManEaterBug extends Monster {
         return true;
     }
 
-    private void destroyHere(Monster cardById) {
-        
-    }
 }
