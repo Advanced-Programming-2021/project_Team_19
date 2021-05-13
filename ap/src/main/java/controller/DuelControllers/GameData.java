@@ -5,6 +5,7 @@ import model.Board.Zones;
 import model.Card.Card;
 import model.Gamer;
 import model.Phase;
+import model.User;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -135,5 +136,23 @@ public class GameData {
 
     public Gamer getInvitedGamer() {
         return gamers.get(1 - gameStarterId);
+    }
+
+
+
+    public static GameData getTestGameData(){
+
+
+
+        User user1 = new User("mohammad_1", "mohammad_1", "123");
+        user1.setActiveDeckName("testDeck");
+
+        User user2 = new User("mohammad_2", "mohammad_2", "123");
+        user2.setActiveDeckName("testDeck");
+
+        GameData gameData = new GameData(Gamer.getTestGamer(user1), Gamer.getTestGamer(user2));
+
+        gameData.turn = 5;
+        return gameData;
     }
 }

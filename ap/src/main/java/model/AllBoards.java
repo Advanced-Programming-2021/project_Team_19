@@ -12,6 +12,12 @@ public class AllBoards {
     private MonsterCardZone monsterCardZone = new MonsterCardZone();
     private SpellAndTrapCardZone spellAndTrapCardZone = new SpellAndTrapCardZone();
 
+
+    public AllBoards(User user) {
+        Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
+        deckZone = new DeckZone(deck);
+    }
+
     public DeckZone getDeckZone() {
         return deckZone;
     }
@@ -62,10 +68,6 @@ public class AllBoards {
 
     private Hand hand = new Hand();
 
-    public AllBoards(User user) {
-        Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
-        deckZone = new DeckZone(deck);
-    }
 
     public void sendFromOneZoneToOther(Zones firstZone, Zones secondZone, int id) {
         secondZone.addCard(firstZone.removeCard(id));
@@ -105,5 +107,13 @@ public class AllBoards {
                 spellAndTrapCardZone.getStringForRival() + "\n" +
                 monsterCardZone.getStringForRival() + "\n" +
                 graveYard.getSize() + "\t".repeat(6) + fieldZone.toString() + "\n";
+    }
+
+
+
+    public static AllBoards getTestBoard(User user){
+        AllBoards board = new AllBoards(user);
+        board.setMonsterCardZone(MonsterCardZone.getTestZone());
+        return board;
     }
 }

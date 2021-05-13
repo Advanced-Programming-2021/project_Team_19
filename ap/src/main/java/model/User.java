@@ -20,6 +20,7 @@ public class User {
     private String activeDeckName;
     private int score;
     private int credit;
+
     private ArrayList<CardNames> cards = new ArrayList<>();
 
     public User(String username, String nickName, String password) {

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.DataBaseControllers.CardDataBaseController;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardNames;
@@ -100,6 +101,12 @@ public class Utils {
 
     public static void shuffle(ArrayList<Card> arrayList) {
         Collections.shuffle(arrayList);
+    }
+
+
+    public static Card getCardByName(String cardName) {
+
+        return CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
     }
 
 }

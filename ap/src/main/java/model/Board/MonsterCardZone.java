@@ -1,5 +1,7 @@
 package model.Board;
 
+import controller.DataBaseControllers.CardDataBaseController;
+import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
@@ -119,6 +121,34 @@ public class MonsterCardZone extends Zones {
         }
 
         return returnedArrayList;
+    }
+
+
+    public static MonsterCardZone getTestZone(){
+
+        MonsterCardZone monsterCardZone = new MonsterCardZone();
+
+        Monster tempMonster = (Monster) Utils.getCardByName("Battle OX");
+        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+        monsterCardZone.addCard(tempMonster);
+
+        tempMonster = (Monster) Utils.getCardByName("Baby dragon");
+        tempMonster.setCardMod(CardMod.DEFENSIVE_HIDDEN);
+        monsterCardZone.addCard(tempMonster);
+
+        tempMonster = (Monster) Utils.getCardByName("Fireyarou");
+        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+        monsterCardZone.addCard(tempMonster);
+
+        tempMonster = (Monster) Utils.getCardByName("Silver Fang");
+        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+        monsterCardZone.addCard(tempMonster);
+
+        tempMonster = (Monster) Utils.getCardByName("Battle OX");
+        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+        monsterCardZone.addCard(tempMonster);
+
+        return monsterCardZone;
     }
 
 

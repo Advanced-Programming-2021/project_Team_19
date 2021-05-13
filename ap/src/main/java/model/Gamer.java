@@ -6,14 +6,14 @@ public class Gamer {
     AllBoards gameBoard ;
     private int lifePoint = 4000;
     private User user;
-    private Deck deck;
+
     private int lastTurnHasSummonedOrSet = 0;
     private int maxLifePointsInDuel = 0;
     private int currentScoreInDuel = 0;
 
     public Gamer(User user) {
         this.user = user;
-        gameBoard=new AllBoards(user);
+        gameBoard = new AllBoards(user);
     }
 
     public int getLifePoint() {
@@ -75,5 +75,13 @@ public class Gamer {
 
     public int getCurrentScoreInDuel() {
         return currentScoreInDuel;
+    }
+
+
+    public static Gamer getTestGamer(User user){
+
+        Gamer gamer = new Gamer(user);
+        gamer.gameBoard = AllBoards.getTestBoard(user);
+        return gamer;
     }
 }

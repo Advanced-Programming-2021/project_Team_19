@@ -2,6 +2,8 @@ package view;
 
 import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
+import controller.DuelControllers.Game;
+import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
@@ -15,9 +17,11 @@ public class Main {
 
     public static void main(String[] arg){
 
-        DataBaseController.makeResourceDirectory();
+        new Game().run(GameData.getTestGameData());
 
-        LoginMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }
