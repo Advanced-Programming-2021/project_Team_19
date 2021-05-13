@@ -147,13 +147,13 @@ public class GameData {
     public static GameData getTestGameData(){
 
 
-//        User user1 = new User("mohammad_1", "mohammad_1", "123");
-//        user1.setActiveDeckName("testDeck");
-//
-//        User user2 = new User("mohammad_2", "mohammad_2", "123");
-//        user2.setActiveDeckName("testDeck");
+        User user1 = new User("mohammad_1", "mohammad_1", "123");
+        user1.setActiveDeckName("testDeck");
 
-        GameData gameData = new GameData(Gamer.getTestGamer(UserDataBaseController.getUserByUsername("Taha")), Gamer.getTestGamer(UserDataBaseController.getUserByUsername("Maha")));
+        User user2 = new User("mohammad_2", "mohammad_2", "123");
+        user2.setActiveDeckName("testDeck");
+
+        GameData gameData = new GameData(Gamer.getTestGamer(user1), Gamer.getTestGamer(user2));
 
         gameData.turn = 5;
         return gameData;
