@@ -11,11 +11,20 @@ public class AllBoards {
     private GraveYard graveYard = new GraveYard();
     private MonsterCardZone monsterCardZone = new MonsterCardZone();
     private SpellAndTrapCardZone spellAndTrapCardZone = new SpellAndTrapCardZone();
+    private Hand hand = new Hand();
+
 
 
     public AllBoards(User user) {
         Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
         deckZone = new DeckZone(deck);
+        initializeHand();
+    }
+
+    private void initializeHand() {
+        for (int i = 0; i < 5; i++) {
+            hand.addCard(deckZone.removeCard(0));
+        }
     }
 
     public DeckZone getDeckZone() {
@@ -65,8 +74,6 @@ public class AllBoards {
     public void setHand(Hand hand) {
         this.hand = hand;
     }
-
-    private Hand hand = new Hand();
 
 
     public void sendFromOneZoneToOther(Zones firstZone, Zones secondZone, int id) {

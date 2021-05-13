@@ -1,6 +1,7 @@
 package model.Board;
 
 import controller.DataBaseControllers.CardDataBaseController;
+import controller.Utils;
 import model.Card.Card;
 import model.Deck;
 import model.Enums.CardNames;
@@ -19,6 +20,11 @@ public class DeckZone extends Zones {
         for(CardNames cardName:deck.getSideDeckCards()){
             sideDeckCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
         }
+        shuffleDeck();
+    }
+
+    public void shuffleDeck(){
+        Utils.shuffle(this.mainDeckCards);
     }
 
 
