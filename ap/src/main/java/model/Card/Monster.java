@@ -152,6 +152,7 @@ public class Monster extends Card {
     }
 
     private void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+
         int damage;
         if (attack > defendingMonster.getAttack()) {
             defendingMonster.handleDestroy(gameData);
