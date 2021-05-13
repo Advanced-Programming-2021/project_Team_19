@@ -106,7 +106,7 @@ public class Monster extends Card {
         this.turnWasPutInMonsterZone = turnWasPutInMonsterZone;
     }
 
-    public boolean handleFlip() {
+    public boolean handleFlip(GameData gameData) {
         setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         return true;
     }

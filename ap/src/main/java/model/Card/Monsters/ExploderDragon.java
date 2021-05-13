@@ -1,11 +1,11 @@
 package model.Card.Monsters;
 
-import model.Card.EffectTypes.Destroy;
+import controller.DuelControllers.GameData;
 import model.Card.Monster;
 
-public class ExploderDragon extends Monster implements Destroy {
-    @Override
-    public void handleDestroy() {
+public class ExploderDragon extends Monster {
+
+    public void handleDestroy(GameData gameData) {
 
     }
 }

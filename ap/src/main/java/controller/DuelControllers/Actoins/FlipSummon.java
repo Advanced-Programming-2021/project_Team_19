@@ -44,7 +44,7 @@ public class FlipSummon extends Summon {
 
     private void manageFlip() {
 
-        if (!summoningMonster.handleFlip()){
+        if (!summoningMonster.handleFlip(gameData)){
             return;
         }
 
