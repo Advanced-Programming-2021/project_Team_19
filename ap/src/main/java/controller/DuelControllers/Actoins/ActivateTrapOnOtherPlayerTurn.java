@@ -36,13 +36,13 @@ public class ActivateTrapOnOtherPlayerTurn extends Action {
             } else if (command.matches("card show --selected")) {
                 new Select(gameData).select(command);
             } else if (command.matches("activate effect")) {
-                activateTrapOrSpell();
+                if(activateTrapOrSpell()){
+                    return;
+                }
             } else if (command.matches("help")) {
                 help();
             } else if (command.equals("show board")) {
                 gameData.showBoard();
-            } else if (command.equals("finish turn")){
-                break;
             } else if(command.equals("cancel")){
                 break;
             }
@@ -53,37 +53,40 @@ public class ActivateTrapOnOtherPlayerTurn extends Action {
         }
     }
 
-    private void activateTrapOrSpell() {
+    private boolean activateTrapOrSpell() {
 
         Card card = gameData.getSelectedCard();
 
         if (gameData.getSelectedCard() == null) {
             Printer.print("no card is selected yet");
-            return;
+            return false;
         }
 
         if(gameData.getSelectedCard().getCardFamily().equals(CardFamily.TRAP) ||
                 gameData.getSelectedCard().getCardFamily().equals(CardFamily.SPELL)){
             Printer.print("activate effect is only for spell and trap cards");
-            return;
+            return false;
         }
 
         if(((SpellAndTraps)card).wasActivated){
             Printer.print("you have already activated this card");
-            return;
+            return false;
         }
 
         if(!(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone)){
             Printer.print("you can't activate this card");
-            return;
+            return false;
         }
 
         if(!((SpellAndTraps)card).canActivate(gameData)){
             Printer.print("you can't activate this card");
-            return;
+            return false;
         }
 
         ((SpellAndTraps)card).activate(gameData);
+
+        return true;
+
     }
 
     private void help() {
