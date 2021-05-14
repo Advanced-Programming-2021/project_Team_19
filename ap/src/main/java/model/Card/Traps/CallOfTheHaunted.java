@@ -17,7 +17,8 @@ public class CallOfTheHaunted extends Trap {
 
     @Override
     public void activate(GameData gameData) {
-        //show ..
+        gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
+
         Printer.print("enter monster id to special summon it");
         String input;
 
@@ -26,8 +27,8 @@ public class CallOfTheHaunted extends Trap {
             input = GetInput.getString();
             int id = 0;
 
-            ArrayList<Card> graveYard = gameData.getCurrentGamer().getGameBoard().
-                    getGraveYard().getCardsInGraveYard();
+            GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().
+                    getGraveYard();
 
             if (input.equals("cancel")) {
                 break;
@@ -45,7 +46,7 @@ public class CallOfTheHaunted extends Trap {
                 continue;
             }
 
-            if (graveYard.size() < id || id < 1) {
+            if (graveYard.getCardsInGraveYard().size() < id || id < 1) {
                 Printer.print("please enter valid number");
                 continue;
             }
@@ -61,8 +62,8 @@ public class CallOfTheHaunted extends Trap {
         new SpecialSummon(gameData).run(card);
     }
 
-    private Card getSelectedCard(ArrayList<Card> graveYard, int id) {
-        return graveYard.get(id);
+    private Card getSelectedCard(GraveYard graveYard, int id) {
+        return graveYard.getCard(id);
     }
 
     public boolean canActivate(GameData gameData) {
