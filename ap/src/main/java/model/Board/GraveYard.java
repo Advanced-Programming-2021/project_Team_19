@@ -43,9 +43,11 @@ public class GraveYard extends Zones {
             return "graveyard empty";
         }
         else{
+            int cnt=1;
             StringBuilder stringBuilder=new StringBuilder();
             for(Card card:cardsInGraveYard){
-                stringBuilder.append(card.toString()).append("\n");
+                stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
+                cnt++;
             }
             return stringBuilder.toString().trim();
         }
