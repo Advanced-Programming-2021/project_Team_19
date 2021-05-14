@@ -1,7 +1,6 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Phase;
@@ -14,11 +13,11 @@ public class NormalSummon extends Summon {
     }
 
     public void run() {
-        if(checkSummonErrors())
+        if (checkSummonErrors())
             summonMonster();
     }
 
-    private boolean checkSummonErrors(){
+    private boolean checkSummonErrors() {
 
         if (summoningMonster == null) {
             Printer.print("no card is selected yet");
@@ -49,37 +48,15 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
-        if(determineSummonType(summoningMonster)){
+        int numberOfSacrifices = determineNumberOfSacrifices(summoningMonster);
 
+        if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
+
+            summoningMonster.handleSummon(gameData, numberOfSacrifices);
+            Printer.print("summoned successfully");
             handleTrap();
         }
 
-    }
-
-    private boolean determineSummonType(Monster monster) {
-
-        boolean hasSummoned = false;
-        int level = monster.getLevel();
-        if (level <= 4) {
-            if (monster.handleSummonType1(gameData))
-                hasSummoned = true;
-        }
-        else if (level <= 6) {
-            if (monster.handleSummonType2(gameData))
-
-                hasSummoned = true;
-        }
-        else{
-            if (monster.handleSummonType3(gameData)){
-
-                hasSummoned = true;
-            }
-        }
-        if(hasSummoned){
-            Printer.print("summoned successfully");
-            return true;
-        }
-        return false;
     }
 
 }

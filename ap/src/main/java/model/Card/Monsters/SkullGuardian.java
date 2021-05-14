@@ -1,11 +1,11 @@
 package model.Card.Monsters;
 
-import model.Card.EffectTypes.Summon;
+import controller.DuelControllers.GameData;
 import model.Card.Monster;
 
-public class SkullGuardian extends Monster implements Summon {
+public class SkullGuardian extends Monster {
     @Override
-    public void handleSummon() {
-
+    public void handleSummon(GameData gameData, int numberOfSacrifices) {
+        super.handleSummon(gameData, numberOfSacrifices);
     }
 }
