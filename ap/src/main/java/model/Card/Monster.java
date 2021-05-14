@@ -134,6 +134,7 @@ public class Monster extends Card {
 
     protected void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
+        defendingMonster.setCardMod(CardMod.DEFENSIVE_OCCUPIED);
         attackDefensiveMonster(defendingMonster, gameData);
     }
 
