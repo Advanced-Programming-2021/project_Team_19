@@ -20,7 +20,7 @@ public class TrapHole extends Trap {
         for(Action action : gameData.getCurrentActions()){
             if(!Utils.isCurrentGamerActionDoer(gameData, action)){
                 if(action instanceof FlipSummon || action instanceof NormalSummon){
-                    if(((Summon) action).getSummoningMonster().getAttack() >= 1000){
+                    if(((Summon) action).getSummoningMonster().getAttack(gameData) >= 1000){
                         return true;
                     }
                 }

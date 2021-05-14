@@ -11,7 +11,7 @@ public class ExploderDragon extends Monster {
     @Override
     public boolean attackIsNormal(GameData gameData) {
         Monster attackingMonster = (Monster) gameData.getSelectedCard();
-        if (getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack() < getAttack()) {
+        if (getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getAttack(gameData)) {
             return true;
         }
         attackingMonster.handleDestroy(gameData);
@@ -22,7 +22,7 @@ public class ExploderDragon extends Monster {
 
     @Override
     protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
-        if (getAttack() < defendingMonster.getAttack()) {
+        if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             defendingMonster.handleDestroy(gameData);
             this.handleDestroy(gameData);
             Printer.print("both cards were destroyed and no one received any damage");

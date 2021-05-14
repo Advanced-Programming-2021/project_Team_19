@@ -42,7 +42,7 @@ public class Monster extends Card {
     }
 
 
-    public int getAttack() {
+    public int getAttack(GameData gameData) {
         return attack;
     }
 
@@ -136,12 +136,12 @@ public class Monster extends Card {
 
     protected void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
-        if (attack > defendingMonster.getDefence()) {
+        if (getAttack(gameData) > defendingMonster.getDefence()) {
             defendingMonster.handleDestroy(gameData);
             Printer.print("the defense position monster is destroyed");
-        } else if (attack < defendingMonster.getDefence()) {
+        } else if (getAttack(gameData) < defendingMonster.getDefence()) {
             handleDestroy(gameData);
-            damage = defendingMonster.getDefence() - attack;
+            damage = defendingMonster.getDefence() - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
             Printer.print("no card is destroyed and you received " + damage + " battle damage");
         } else {
@@ -151,14 +151,14 @@ public class Monster extends Card {
 
     protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
-        if (attack > defendingMonster.getAttack()) {
+        if (getAttack(gameData) > defendingMonster.getAttack(gameData)) {
             defendingMonster.handleDestroy(gameData);
-            damage = attack - defendingMonster.getAttack();
+            damage = getAttack(gameData) - defendingMonster.getAttack(gameData);
             gameData.getSecondGamer().decreaseLifePoint(damage);
             Printer.print("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
-        } else if (attack < defendingMonster.getAttack()) {
+        } else if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             handleDestroy(gameData);
-            damage = defendingMonster.getAttack() - attack;
+            damage = defendingMonster.getAttack(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
             Printer.print("Your monster card is destroyed and you received " + damage + " battle damage");
         } else {
@@ -181,8 +181,8 @@ public class Monster extends Card {
 
     public void handleDirectAttack(GameData gameData) {
         lastTurnAttacked = gameData.getTurn();
-        gameData.getSecondGamer().decreaseLifePoint(attack);
-        Printer.print("your opponent receives " + attack + " battle damage");
+        gameData.getSecondGamer().decreaseLifePoint(getAttack(gameData));
+        Printer.print("your opponent receives " + getAttack(gameData) + " battle damage");
     }
 
     public boolean handleSummonType1(GameData gameData) {

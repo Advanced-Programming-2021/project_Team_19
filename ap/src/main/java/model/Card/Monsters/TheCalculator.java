@@ -8,15 +8,8 @@ import model.Enums.CardMod;
 public class TheCalculator extends Monster {
 
     @Override
-    public void handleAttack(GameData gameData, int enemyId) {
-        this.setAttack(getCurrentAttack(gameData));
-        super.handleAttack(gameData, enemyId);
-    }
-
-    @Override
-    public boolean attackIsNormal(GameData gameData) {
-        this.setAttack(getCurrentAttack(gameData));
-        return true;
+    public int getAttack(GameData gameData) {
+        return getCurrentAttack(gameData);
     }
 
     private int getCurrentAttack(GameData gameData){
