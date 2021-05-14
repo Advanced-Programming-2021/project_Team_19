@@ -9,11 +9,11 @@ public class GraveYard extends Zones {
     private ArrayList<Card> cardsInGraveYard = new ArrayList<>();
 
     public Card getCard(int id) {
-        return cardsInGraveYard.get(id);
+        return cardsInGraveYard.get(id-1);
     }
 
     public Card removeCard(int id) {
-        return cardsInGraveYard.remove(id);
+        return cardsInGraveYard.remove(id-1);
     }
 
     public int getId(Card card){
