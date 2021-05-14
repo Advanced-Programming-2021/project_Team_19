@@ -218,4 +218,14 @@ public class Monster extends Card {
         super.handleDestroy(gameData);
     }
 
+    public int numberOfSacrifices(){
+        if (level <= 4) {
+            return  0;
+        } else if (level <= 6) {
+            return 1;
+        }
+        return 2;
+    }
+
+
 }

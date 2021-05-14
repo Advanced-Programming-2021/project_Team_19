@@ -50,15 +50,6 @@ public class SummonAndSet extends Action{
         }
     }
 
-    protected int determineNumberOfSacrifices(Monster monster){
-        int level = monster.getLevel();
-        if (level <= 4) {
-            return  0;
-        } else if (level <= 6) {
-            return 1;
-        }
-        return 2;
-    }
 
     private boolean hasNIds(int numberOfSacrifices, String command){
         return  (command.matches("[0-9] ".repeat(Math.max(0, numberOfSacrifices)).trim()));
