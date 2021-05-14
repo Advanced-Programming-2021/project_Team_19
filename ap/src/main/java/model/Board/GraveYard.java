@@ -8,14 +8,12 @@ import java.util.ArrayList;
 public class GraveYard extends Zones {
     private ArrayList<Card> cardsInGraveYard = new ArrayList<>();
 
-    public Card getCard() {
-
-        return null;
+    public Card getCard(int id) {
+        return cardsInGraveYard.get(id);
     }
 
     public Card removeCard(int id) {
-
-        return null;
+        return cardsInGraveYard.remove(id);
     }
 
     public int getId(Card card){
@@ -39,4 +37,19 @@ public class GraveYard extends Zones {
         return cardsInGraveYard;
     }
 
+
+    public String printGraveYard(){
+        if(cardsInGraveYard.isEmpty()){
+            return "graveyard empty";
+        }
+        else{
+            int cnt=1;
+            StringBuilder stringBuilder=new StringBuilder();
+            for(Card card:cardsInGraveYard){
+                stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
+                cnt++;
+            }
+            return stringBuilder.toString().trim();
+        }
+    }
 }
