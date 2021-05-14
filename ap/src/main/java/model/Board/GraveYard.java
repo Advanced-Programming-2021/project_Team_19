@@ -1,6 +1,7 @@
 package model.Board;
 
 import model.Card.Card;
+import model.Card.Monster;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,10 @@ public class GraveYard extends Zones {
 
     public int getSize() {
         return cardsInGraveYard.size();
+    }
+
+    public ArrayList<Card> getCardsInGraveYard(){
+        return cardsInGraveYard;
     }
 
 }

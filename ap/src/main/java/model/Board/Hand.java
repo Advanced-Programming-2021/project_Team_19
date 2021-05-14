@@ -1,6 +1,7 @@
 package model.Board;
 
 import model.Card.Card;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,12 @@ public class Hand extends Zones {
 
     public String rivalToString(){
         return "\tc".repeat(cardsInHand.size());
+    }
+
+    public void showHand(){
+        for (Card card : cardsInHand) {
+            Printer.print(getId(card) + "- " + card.toString());
+        }
     }
 
 }
