@@ -48,7 +48,7 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
-        int numberOfSacrifices = summoningMonster.numberOfSacrifices();
+        int numberOfSacrifices = summoningMonster.numberOfSacrifices(false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
 
         if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
 

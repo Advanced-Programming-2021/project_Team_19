@@ -24,6 +24,9 @@ public class SummonAndSet extends Action{
         if (numberOfSacrifices == 0) {
             return true;
         }
+        if (numberOfSacrifices == -1) {
+            return false;
+        }
 
         if (monsterCardZone.getNumberOfCards() < numberOfSacrifices) {
             Printer.print("there are not enough cards for tribute");
