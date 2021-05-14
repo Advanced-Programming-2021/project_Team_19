@@ -1,6 +1,7 @@
 package model.Card;
 
 import com.google.gson.annotations.Expose;
+import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Enums.CardFamily;
 import model.Enums.LabelsForActivatingTraps;

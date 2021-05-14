@@ -1,7 +1,6 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
@@ -51,10 +50,15 @@ public class NormalSummon extends Summon {
     private void summonMonster() {
 
         if(determineSummonType(summoningMonster)){
+
             gameData.addActionToCurrentActions(this);
 
-//            if(canOtherPlayerActivateAnyTrapOrSpeedSpell())
-//                handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+            if(canTurnOwnerActivateTrapBecauseOfAnAction()){
+                if(!handleActivateTrapOnGamerTurnBecauseOfAnAction()){
+                    if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction())
+                        handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+                }
+            }
 
             gameData.removeActionFromCurrentActions(this);
         }

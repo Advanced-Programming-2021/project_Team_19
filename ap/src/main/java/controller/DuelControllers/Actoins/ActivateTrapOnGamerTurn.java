@@ -1,22 +1,19 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import controller.Utils;
-import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
-import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Enums.CardFamily;
-import model.Phase;
 import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class ActivateTrapOnOtherPlayerTurn extends ActivateTrapBecauseOfAnAction {
+public class ActivateTrapOnGamerTurn extends ActivateTrapBecauseOfAnAction{
 
-    public ActivateTrapOnOtherPlayerTurn(Action action){
+
+    public ActivateTrapOnGamerTurn(Action action){
         super(action);
     }
 
@@ -24,7 +21,7 @@ public class ActivateTrapOnOtherPlayerTurn extends ActivateTrapBecauseOfAnAction
 
         for(String str : getInvalidMoves()){
             if(command.matches(str)){
-                Printer.print("it’s not your turn to play this kind of moves");
+                Printer.print("please activate one trap or spell");
                 return true;
             }
         }

@@ -7,6 +7,7 @@ import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardNames;
 import model.Enums.MessageType;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,6 +114,18 @@ public class Utils {
 
     public static boolean isCurrentGamerActionDoer(GameData gameData, Action action){
         return gameData.getCurrentGamer().equals(action.getActionDoer());
+    }
+
+    public static void deselectCard(GameData gameData){
+        gameData.setSelectedCard(null);
+    }
+
+    public static boolean IsSelectedCardIsNull(GameData gameData){
+
+        if (gameData.getSelectedCard() == null) {
+            return false;
+        }
+        return true;
     }
 
 }

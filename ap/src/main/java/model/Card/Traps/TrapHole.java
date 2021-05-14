@@ -15,14 +15,12 @@ public class TrapHole extends Trap {
         ((Summon)action).getSummoningMonster().handleDestroy(gameData);
     }
 
-    public boolean canActivate(GameData gameData){
+    public boolean canActivateBecauseOfAnAction(Action action){
 
-        for(Action action : gameData.getCurrentActions()){
-            if(!Utils.isCurrentGamerActionDoer(gameData, action)){
-                if(action instanceof FlipSummon || action instanceof NormalSummon){
-                    if(((Summon) action).getSummoningMonster().getAttack(gameData) >= 1000){
-                        return true;
-                    }
+        if(!Utils.isCurrentGamerActionDoer(action.getGameData(), action)){
+            if(action instanceof FlipSummon || action instanceof NormalSummon){
+                if(((Summon) action).getSummoningMonster().getAttack(action.getGameData()) >= 1000){
+                    return true;
                 }
             }
         }

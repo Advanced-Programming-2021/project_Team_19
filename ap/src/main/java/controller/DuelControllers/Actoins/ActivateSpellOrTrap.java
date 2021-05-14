@@ -3,11 +3,9 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
-import model.Board.Zones;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
 import model.Enums.CardFamily;
-import model.Enums.ZonesEnum;
 import model.Phase;
 import view.Printer.Printer;
 

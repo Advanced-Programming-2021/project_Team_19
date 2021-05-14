@@ -39,11 +39,23 @@ public abstract class Action {
 
     public Gamer getActionDoer(){return actionDoer;}
 
-    protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpell(){
+    protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction(){
 
         for(SpellAndTraps spellOrTrap :
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
-            if(spellOrTrap.canActivate(gameData)){
+            if(spellOrTrap.canActivateBecauseOfAnAction(this)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean canTurnOwnerActivateTrapBecauseOfAnAction(){
+
+        for(SpellAndTraps spellOrTrap :
+                gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
+            if(spellOrTrap.canActivateBecauseOfAnAction(this)){
                 return true;
             }
         }
@@ -57,12 +69,24 @@ public abstract class Action {
         gameData.showBoard();
         Printer.print("do you want to activate your trap and spell?");
         if(GetInput.getString().equals("yes")){
-            new ActivateTrapOnOtherPlayerTurn(gameData).run();
+            new ActivateTrapOnOtherPlayerTurn(this).run();
         }
         changeTurn();
     }
 
+    protected boolean handleActivateTrapOnGamerTurnBecauseOfAnAction(){
+
+        Printer.print("do you want to activate your trap and spell?");
+
+        if(GetInput.getString().equals("yes")){
+            return (new ActivateTrapOnGamerTurn(this).run());
+        }
+
+        return false;
+    }
+
     private void changeTurn(){
+
         gameData.changeTurn();
         Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
     }

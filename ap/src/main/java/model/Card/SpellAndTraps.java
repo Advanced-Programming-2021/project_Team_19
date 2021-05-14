@@ -1,6 +1,7 @@
 package model.Card;
 
 import com.google.gson.annotations.Expose;
+import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Enums.SpellCardMods;
 import model.Enums.SpellsAndTraps.SpellTypes;
@@ -39,4 +40,9 @@ public abstract class SpellAndTraps extends Card {
         }
         return true;
     }
+
+    public boolean canActivateBecauseOfAnAction(Action action){
+        return false;
+    }
+
 }

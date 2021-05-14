@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MonsterCardZone extends Zones {
-    private final ArrayList<Monster> cardsInMonsterZone = new ArrayList<>();
+
+    private ArrayList<Monster> cardsInMonsterZone = new ArrayList<>();
 
     {
         for (int i = 0; i < 5; i++) {
@@ -27,6 +28,12 @@ public class MonsterCardZone extends Zones {
         Card temp=cardsInMonsterZone.get(hashNumber(id));
         cardsInMonsterZone.set(hashNumber(id),null);
         return temp;
+    }
+
+    public void removeAllCards(){
+        for(int i = 0; i < 5; i++){
+            removeCard(i);
+        }
     }
 
     public void addCard(Card card) {
