@@ -41,10 +41,12 @@ public class HeraldOfCreation extends Monster {
                             showChooseFromHand(hand);
                         }
                     } else {
-                        if (Integer.parseInt(command) <= monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()).size()) {
+                        if (Integer.parseInt(command) <= monstersInGraveyardWithLevelAtLeast7
+                                (graveYard.getCardsInGraveYard()).size()) {
                             discardAndRevive(gameData,
                                     hand.getCardsInHand().get(cardIdFromHand),
-                                    monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()).get(Integer.parseInt(command)));
+                                    monstersInGraveyardWithLevelAtLeast7
+                                            (graveYard.getCardsInGraveYard()).get(Integer.parseInt(command)));
                             effectNotDone = false;
                         } else {
                             Printer.print("invalid id");
@@ -76,8 +78,10 @@ public class HeraldOfCreation extends Monster {
 
     private void showChooseFromGraveyard(GraveYard graveYard) {
         Printer.print("select a card id to revive from graveyard:");
-        for (int i = 1; i <= monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()).size(); i++) {
-            Printer.print(i + "- " + monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()).get(i - 1).toString());
+        for (int i = 1; i <= monstersInGraveyardWithLevelAtLeast7
+                (graveYard.getCardsInGraveYard()).size(); i++) {
+            Printer.print(i + "- " + monstersInGraveyardWithLevelAtLeast7
+                    (graveYard.getCardsInGraveYard()).get(i - 1).toString());
         }
     }
 

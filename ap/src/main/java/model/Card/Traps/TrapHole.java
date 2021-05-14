@@ -12,19 +12,28 @@ public class TrapHole extends Trap {
         Action action = gameData.getCurrentActions().get(
                 (gameData.getCurrentActions().size() - 1));
 
-        ((Summon)action).getSummoningMonster().handleDestroy(gameData);
+        ((Summon) action).getSummoningMonster().handleDestroy(gameData);
     }
 
-    public boolean canActivateBecauseOfAnAction(Action action){
+    public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if(!Utils.isCurrentGamerActionDoer(action.getGameData(), action)){
-            if(action instanceof FlipSummon || action instanceof NormalSummon){
-                if(((Summon) action).getSummoningMonster().getAttack(action.getGameData()) >= 1000){
-                    return true;
-                }
-            }
+        if (!canActivateThisTurn(action.getGameData())) {
+            return false;
         }
-        return false;
+
+        if (Utils.isCurrentGamerActionDoer(action.getGameData(), action)) {
+            return false;
+        }
+
+        if (!(action instanceof FlipSummon || action instanceof NormalSummon)) {
+           return false;
+        }
+
+        if (((Summon) action).getSummoningMonster().getAttack(action.getGameData()) >= 1000) {
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -50,11 +50,7 @@ public class FlipSummon extends Summon {
 
         Printer.print("flip summoned successfully");
 
-        gameData.addActionToCurrentActions(this);
-
         handleTrap();
-
-        gameData.removeActionFromCurrentActions(this);
     }
 
 }

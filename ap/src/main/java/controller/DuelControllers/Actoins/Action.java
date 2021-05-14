@@ -94,12 +94,16 @@ public abstract class Action {
 
     protected void handleTrap(){
 
+        gameData.addActionToCurrentActions(this);
+
         if(canTurnOwnerActivateTrapBecauseOfAnAction()){
             if(!handleActivateTrapOnGamerTurnBecauseOfAnAction()){
                 if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction())
                     handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
             }
         }
+
+        gameData.removeActionFromCurrentActions(this);
 
     }
 

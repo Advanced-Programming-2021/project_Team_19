@@ -51,11 +51,7 @@ public class NormalSummon extends Summon {
 
         if(determineSummonType(summoningMonster)){
 
-            gameData.addActionToCurrentActions(this);
-
             handleTrap();
-
-            gameData.removeActionFromCurrentActions(this);
         }
 
     }

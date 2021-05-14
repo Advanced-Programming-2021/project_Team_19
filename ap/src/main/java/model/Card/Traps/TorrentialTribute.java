@@ -16,13 +16,16 @@ public class TorrentialTribute extends Trap {
         gameData.getSecondGamer().getGameBoard().getMonsterCardZone().removeAllCards();
     }
 
-    public boolean canActivate(GameData gameData) {
+    public boolean canActivateBecauseOfAnAction(Action action){
 
-        for (Action action : gameData.getCurrentActions()) {
-            if (action instanceof Summon) {
-                return true;
-            }
+        if(!canActivateThisTurn(action.getGameData())){
+            return false;
         }
-        return false;
+
+        if (!(action instanceof Summon)) {
+            return false;
+        }
+
+        return true;
     }
 }

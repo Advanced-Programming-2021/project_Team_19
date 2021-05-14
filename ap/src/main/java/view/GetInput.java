@@ -25,6 +25,9 @@ public class GetInput {
         }
     }
 
+    public static int getInt(){
+        return scanner.nextInt();
+    }
 
 
 

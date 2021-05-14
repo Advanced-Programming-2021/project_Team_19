@@ -1,11 +1,86 @@
 package model.Card.Traps;
 
+import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
+import model.Board.GraveYard;
+import model.Card.Card;
+import model.Card.Monster;
 import model.Card.Trap;
+import model.Enums.CardMod;
+import view.GetInput;
+import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public class CallOfTheHaunted extends Trap {
+
     @Override
     public void activate(GameData gameData) {
+        //show ..
+        Printer.print("enter monster id to special summon it");
+        String input;
 
+        while (true) {
+
+            input = GetInput.getString();
+            int id = 0;
+
+            ArrayList<Card> graveYard = gameData.getCurrentGamer().getGameBoard().
+                    getGraveYard().getCardsInGraveYard();
+
+            if (input.equals("cancel")) {
+                break;
+            }
+
+            if (!input.matches("\\d+")) {
+                Printer.print("invalid input");
+                continue;
+            } else {
+                id = Integer.parseInt(input);
+            }
+
+            if (!(getSelectedCard(graveYard, id) instanceof Monster)) {
+                Printer.print("enter monster id please");
+                continue;
+            }
+
+            if (graveYard.size() < id || id < 1) {
+                Printer.print("please enter valid number");
+                continue;
+            }
+
+            putMonsterToMonsterZone(gameData, getSelectedCard(graveYard,id));
+            break;
+
+        }
+    }
+
+    private void putMonsterToMonsterZone(GameData gameData, Card card){
+
+        new SpecialSummon(gameData).run(card);
+    }
+
+    private Card getSelectedCard(ArrayList<Card> graveYard, int id) {
+        return graveYard.get(id);
+    }
+
+    public boolean canActivate(GameData gameData) {
+
+        if (!canActivateThisTurn(gameData)) {
+            return false;
+        }
+
+        if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
+            return false;
+        }
+
+        for (Card card : gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard()) {
+            if (card instanceof Monster) {
+                return true;
+            }
+        }
+
+        return true;
     }
 }
