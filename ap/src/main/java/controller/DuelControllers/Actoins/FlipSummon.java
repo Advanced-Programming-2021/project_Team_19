@@ -52,9 +52,7 @@ public class FlipSummon extends Summon {
 
         gameData.addActionToCurrentActions(this);
 
-        if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()){
-            handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
-        }
+        handleTrap();
 
         gameData.removeActionFromCurrentActions(this);
     }

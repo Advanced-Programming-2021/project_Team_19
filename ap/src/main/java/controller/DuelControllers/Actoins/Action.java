@@ -91,4 +91,15 @@ public abstract class Action {
         Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
     }
 
+    protected void handleTrap(){
+
+        if(canTurnOwnerActivateTrapBecauseOfAnAction()){
+            if(!handleActivateTrapOnGamerTurnBecauseOfAnAction()){
+                if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction())
+                    handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+            }
+        }
+
+    }
+
 }

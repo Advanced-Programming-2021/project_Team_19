@@ -53,12 +53,7 @@ public class NormalSummon extends Summon {
 
             gameData.addActionToCurrentActions(this);
 
-            if(canTurnOwnerActivateTrapBecauseOfAnAction()){
-                if(!handleActivateTrapOnGamerTurnBecauseOfAnAction()){
-                    if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction())
-                        handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
-                }
-            }
+            handleTrap();
 
             gameData.removeActionFromCurrentActions(this);
         }
