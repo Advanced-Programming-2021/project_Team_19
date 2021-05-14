@@ -76,6 +76,7 @@ public abstract class Action {
 
     protected boolean handleActivateTrapOnGamerTurnBecauseOfAnAction(){
 
+        Printer.print(actionName + " has occurred just now");
         Printer.print("do you want to activate your trap and spell?");
 
         if(GetInput.getString().equals("yes")){
