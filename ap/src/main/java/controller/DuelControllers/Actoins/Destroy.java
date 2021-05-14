@@ -10,6 +10,7 @@ public class Destroy extends Action {
     }
 
     public void run(Card card){
+
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
             gameData.moveCardFromOneZoneToAnother(card,
                     gameData.getCurrentGamer().getGameBoard().getZone(card),

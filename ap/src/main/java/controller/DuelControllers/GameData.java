@@ -159,5 +159,14 @@ public class GameData {
         return gameData;
     }
 
+    public Gamer getCardController(Card card){
+
+        if (getCurrentGamer().getGameBoard().getZone(card) != null)
+            return getCurrentGamer();
+        else
+            return getSecondGamer();
+
+    }
+
 
 }

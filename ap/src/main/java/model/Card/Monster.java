@@ -2,6 +2,7 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import model.Board.MonsterCardZone;
 import model.Enums.CardFamily;
@@ -36,6 +37,8 @@ public class Monster extends Card {
     private int lastTurnHasChangedPosition = 0;
     @Expose
     private int turnWasPutInMonsterZone = 0;
+    @Expose
+    private Trap callOfTheHauntedTrap = null;
 
     {
         setCardFamily(CardFamily.MONSTER);
@@ -268,5 +271,14 @@ public class Monster extends Card {
 
     public boolean attackIsNormal(GameData gameData) {
         return true;
+    }
+
+
+    public void handleDestroy(GameData gameData) {
+
+        if(callOfTheHauntedTrap != null){
+            new Destroy(gameData).run(callOfTheHauntedTrap);
+        }
+        super.handleDestroy(gameData);
     }
 }

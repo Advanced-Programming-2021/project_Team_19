@@ -47,4 +47,5 @@ public abstract class Trap extends SpellAndTraps {
 
     public boolean canActivate(GameData gameData){return false;}
 
+
 }

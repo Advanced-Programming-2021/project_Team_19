@@ -15,8 +15,11 @@ import java.util.ArrayList;
 
 public class CallOfTheHaunted extends Trap {
 
+    Monster summonedMonster;
+
     @Override
     public void activate(GameData gameData) {
+
         gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
 
         Printer.print("enter monster id to special summon it");
@@ -84,4 +87,15 @@ public class CallOfTheHaunted extends Trap {
 
         return true;
     }
+
+    public void handleDestroy(GameData gameData){
+
+        if(!gameData.getCardController(summonedMonster).getGameBoard().getGraveYard().
+                getCardsInGraveYard().contains(summonedMonster)){
+            summonedMonster.handleDestroy(gameData);
+        }
+
+        super.handleDestroy(gameData);
+    }
+
 }

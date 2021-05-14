@@ -42,9 +42,11 @@ public class ActivateSpellOrTrap extends Action {
     }
 
     private boolean activateFromSpellZone() {
+
         SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
         card.activate(gameData);
         return true;
+
     }
 
     private boolean activateFromHand(){

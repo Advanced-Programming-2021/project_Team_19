@@ -1,9 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.FlipSummon;
-import controller.DuelControllers.Actoins.NormalSummon;
-import controller.DuelControllers.Actoins.Summon;
+import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Card.Trap;
@@ -14,6 +11,8 @@ public class TorrentialTribute extends Trap {
 
         gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().removeAllCards();
         gameData.getSecondGamer().getGameBoard().getMonsterCardZone().removeAllCards();
+
+        handleDestroy(gameData);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){
