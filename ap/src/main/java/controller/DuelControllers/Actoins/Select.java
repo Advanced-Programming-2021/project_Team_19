@@ -68,7 +68,14 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex));
+                Card selectedCard=gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
+                if(selectedCard==null){
+                    Printer.print("no card found in the given position");
+                }
+                else{
+                    gameData.setSelectedCard(selectedCard);
+                    Printer.print("card selected");
+                }
             }
         }
     }
@@ -78,7 +85,14 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                gameData.setSelectedCard(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex));
+                Card selectedCard=gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
+                if(selectedCard==null){
+                    Printer.print("no card found in the given position");
+                }
+                else{
+                    gameData.setSelectedCard(selectedCard);
+                    Printer.print("card selected");
+                }
             }
         }
     }
@@ -88,8 +102,15 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().
-                        getSpellAndTrapCardZone().getCard(selectIndex));
+                Card selectedCard=gameData.getCurrentGamer().getGameBoard().
+                        getSpellAndTrapCardZone().getCard(selectIndex);
+                if(selectedCard==null){
+                    Printer.print("no card found in the given position");
+                }
+                else{
+                    gameData.setSelectedCard(selectedCard);
+                    Printer.print("card selected");
+                }
             }
         }
     }
@@ -99,8 +120,15 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                gameData.setSelectedCard(gameData.getSecondGamer().getGameBoard().
-                        getSpellAndTrapCardZone().getCard(selectIndex));
+                Card selectedCard=gameData.getSecondGamer().getGameBoard().
+                        getSpellAndTrapCardZone().getCard(selectIndex);
+                if(selectedCard==null){
+                    Printer.print("no card found in the given position");
+                }
+                else{
+                    gameData.setSelectedCard(selectedCard);
+                    Printer.print("card selected");
+                }
             }
         }
     }
@@ -108,7 +136,14 @@ public class Select extends Action{
     private void selectField(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0));
+            Card selectedCard=gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0);
+            if(selectedCard==null){
+                Printer.print("no card found in the given position");
+            }
+            else{
+                gameData.setSelectedCard(selectedCard);
+                Printer.print("Card selected");
+            }
         }
     }
 
@@ -121,16 +156,24 @@ public class Select extends Action{
 
     private void selectHand(Matcher matcher) {
         if (matcher.matches()) {
-            commandIsDone = true;
             int selectIndex = Integer.parseInt(matcher.group(1));
-            gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getHand().getCard(0));
+            if(gameData.getCurrentGamer().getGameBoard().getHand().getSize()<selectIndex){
+                commandIsDone = true;
+                gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getHand().getCard(selectIndex));
+            }
         }
     }
 
     private void removeSelect(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            gameData.setSelectedCard(null);
+            if(gameData.getSelectedCard()==null){
+                Printer.print("no card is selected yet");
+            }
+            else {
+                gameData.setSelectedCard(null);
+                Printer.print("card deselected");
+            }
         }
     }
 

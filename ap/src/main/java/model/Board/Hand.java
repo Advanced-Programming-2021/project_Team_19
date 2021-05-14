@@ -43,6 +43,10 @@ public class Hand extends Zones {
         return "\tc".repeat(cardsInHand.size());
     }
 
+    public int getSize(){
+        return cardsInHand.size();
+    }
+
     public void showHand(){
         for (Card card : cardsInHand) {
             Printer.print(getId(card) + "- " + card.toString());
