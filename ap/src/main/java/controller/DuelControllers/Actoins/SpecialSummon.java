@@ -22,7 +22,7 @@ public class SpecialSummon extends Summon{
                 gameData.getCurrentGamer().getGameBoard().getGraveYard(),
                 gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
 
-        handleTrap();
+        handleTriggerEffects();
 
     }
 

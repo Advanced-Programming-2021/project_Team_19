@@ -2,6 +2,7 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import model.Card.SpellAndTraps;
+import model.Data.TriggerActivationData;
 import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
@@ -63,18 +64,24 @@ public abstract class Action {
         return false;
     }
 
-    protected void handleActivateTrapOrSpeedSpellOnOtherPlayerTurn(){
+    protected TriggerActivationData handleActivateTrapOrSpeedSpellOnOtherPlayerTurn(){
+
+        TriggerActivationData data =  new TriggerActivationData
+                (false, "", null);
 
         changeTurn();
         gameData.showBoard();
         Printer.print("do you want to activate your trap and spell?");
         if(GetInput.getString().equals("yes")){
-            new ActivateTrapOnOtherPlayerTurn(this).run();
+            data = new ActivateTrapOnOtherPlayerTurn(this).run();
         }
         changeTurn();
+
+        return data;
+
     }
 
-    protected boolean handleActivateTrapOnGamerTurnBecauseOfAnAction(){
+    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction(){
 
         Printer.print(actionName + " has occurred just now");
         Printer.print("do you want to activate your trap and spell?");
@@ -83,7 +90,7 @@ public abstract class Action {
             return (new ActivateTrapOnGamerTurn(this).run());
         }
 
-        return false;
+        return new TriggerActivationData(false, "", null);
     }
 
     private void changeTurn(){
@@ -92,18 +99,31 @@ public abstract class Action {
         Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
     }
 
-    protected void handleTrap(){
+    protected TriggerActivationData handleTriggerEffects(){
+
+        TriggerActivationData data = new TriggerActivationData
+                (false, "", null);
 
         gameData.addActionToCurrentActions(this);
 
         if(canTurnOwnerActivateTrapBecauseOfAnAction()){
-            if(!handleActivateTrapOnGamerTurnBecauseOfAnAction()){
-                if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction())
-                    handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+
+            data = handleActivateTrapOnGamerTurnBecauseOfAnAction();
+
+            if(data.activatedCard == null){
+
+                if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()){
+
+                    data = handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+
+                }
+
             }
         }
 
         gameData.removeActionFromCurrentActions(this);
+
+        return data;
 
     }
 

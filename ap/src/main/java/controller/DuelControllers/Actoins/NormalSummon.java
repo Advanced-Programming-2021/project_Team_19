@@ -15,7 +15,7 @@ public class NormalSummon extends Summon {
 
     public void run() {
         if(checkSummonErrors())
-            summonMonster();
+            manageSummoningMonster();
     }
 
     private boolean checkSummonErrors(){
@@ -31,8 +31,8 @@ public class NormalSummon extends Summon {
             Printer.print("you can’t summon this card");
             return false;
         }
-        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.
-                getCurrentPhase().equals(Phase.MAIN2)) {
+        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData
+                .getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
             return false;
         }
@@ -47,11 +47,11 @@ public class NormalSummon extends Summon {
         return true;
     }
 
-    private void summonMonster() {
+    private void manageSummoningMonster() {
 
         if(determineSummonType(summoningMonster)){
-
-            handleTrap();
+            Printer.print("summoned successfully");
+            handleTriggerEffects();
         }
 
     }
@@ -75,11 +75,7 @@ public class NormalSummon extends Summon {
                 hasSummoned = true;
             }
         }
-        if(hasSummoned){
-            Printer.print("summoned successfully");
-            return true;
-        }
-        return false;
+        return hasSummoned;
     }
 
 }

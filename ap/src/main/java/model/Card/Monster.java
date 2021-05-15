@@ -44,6 +44,10 @@ public class Monster extends Card {
         setCardFamily(CardFamily.MONSTER);
     }
 
+    public void setCallOfTheHauntedTrap(Trap trap){
+        callOfTheHauntedTrap = trap;
+    }
+
 
     public int getAttack(GameData gameData) {
         return attack;

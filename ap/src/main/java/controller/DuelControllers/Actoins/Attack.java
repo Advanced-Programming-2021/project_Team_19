@@ -12,7 +12,7 @@ public abstract class Attack extends Action{
         super(gameData, actionName);
     }
 
-    public static boolean doesNotHaveMutualAttackErrors(Card selectedCard, GameData gameData) {
+    public static boolean checkMutualAttackErrors(Card selectedCard, GameData gameData) {
 
         if (selectedCard == null) {
             Printer.print("no card is selected yet");

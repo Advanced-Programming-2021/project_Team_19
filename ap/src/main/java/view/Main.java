@@ -21,7 +21,7 @@ public class Main {
 //
 //        DataBaseController.makeResourceDirectory();
 //
-//        LoginMenu.getInstance().run();
+//        LoginMenu.getInstance().flipByCommand();
     }
 
 }

@@ -2,13 +2,13 @@ package model.Card.Spells;
 
 import controller.DuelControllers.GameData;
 import model.Card.Spell;
-import model.Card.SpellAndTraps;
 import model.Card.TrapAndSpellTypes.Field;
+import model.Data.ActivationData;
 
 public class ClosedFoorest extends Spell implements Field {
     @Override
-    public void activate(GameData gameData) {
-
+    public ActivationData activate(GameData gameData) {
+        return null;
     }
 
     @Override

@@ -24,12 +24,14 @@ public class AttackMonster extends Attack {
         matcher.find();
         int enemyId = Integer.parseInt(matcher.group(1));
 
-        if (doesNotHaveMutualAttackErrors(selectedCard, gameData)) {
+        if (checkMutualAttackErrors(selectedCard, gameData)) {
             if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId) == null)
                 Printer.print("there is no card to attack here");
             else {
                 Monster attackingMonster = (Monster) selectedCard;
-                if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId)).attackIsNormal(gameData)) {
+                if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
+                        .getCardById(enemyId)).attackIsNormal(gameData)) {
+
                     attackingMonster.handleAttack(gameData, enemyId);
                 }
             }

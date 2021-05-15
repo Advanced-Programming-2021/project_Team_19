@@ -11,9 +11,9 @@ public class FlipSummon extends Summon {
         super(gameData, "flip summon");
     }
 
-    public void run(){
+    public void flipByCommand(){
         if(checkFlipSummonErrors())
-            manageFlip();
+            flip();
     }
 
     private boolean checkFlipSummonErrors() {
@@ -27,7 +27,8 @@ public class FlipSummon extends Summon {
             Printer.print("you can’t change this card position");
             return false;
         }
-        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
+        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) &&
+                !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
             return false;
         }
@@ -42,7 +43,7 @@ public class FlipSummon extends Summon {
         return true;
     }
 
-    private void manageFlip() {
+    public void flip() {
 
         if (!summoningMonster.handleFlip(gameData)){
             return;
@@ -50,7 +51,7 @@ public class FlipSummon extends Summon {
 
         Printer.print("flip summoned successfully");
 
-        handleTrap();
+        handleTriggerEffects();
     }
 
 }

@@ -5,8 +5,6 @@ import model.Card.Card;
 import model.Card.Monster;
 import view.Printer.Printer;
 
-import javax.xml.crypto.Data;
-
 public class DirectAttack extends Attack{
 
     public DirectAttack(GameData gameData){
@@ -21,7 +19,7 @@ public class DirectAttack extends Attack{
     private void directAttack() {
         Card selectedCard = gameData.getSelectedCard();
 
-        if (doesNotHaveMutualAttackErrors(selectedCard, gameData)) {
+        if (checkMutualAttackErrors(selectedCard, gameData)) {
             if (currentPlayerCannotDirectAttack(gameData)) {
                 Printer.print("you can’t attack the opponent directly");
             } else {

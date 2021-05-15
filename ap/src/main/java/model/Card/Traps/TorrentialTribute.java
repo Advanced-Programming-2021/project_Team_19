@@ -1,18 +1,21 @@
 package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.*;
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Card.Trap;
+import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 
 public class TorrentialTribute extends Trap {
     @Override
-    public void activate(GameData gameData) {
+    public ActivationData activate(GameData gameData) {
 
         gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().removeAllCards();
         gameData.getSecondGamer().getGameBoard().getMonsterCardZone().removeAllCards();
 
         handleDestroy(gameData);
+        wasActivated = true;
+        return new TriggerActivationData(false, "", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){

@@ -4,10 +4,12 @@ import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Trap;
+import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 
 public class TrapHole extends Trap {
 
-    public void activate(GameData gameData) {
+    public ActivationData activate(GameData gameData) {
 
         Action action = gameData.getCurrentActions().get(
                 (gameData.getCurrentActions().size() - 1));
@@ -15,6 +17,9 @@ public class TrapHole extends Trap {
         ((Summon) action).getSummoningMonster().handleDestroy(gameData);
 
         handleDestroy(gameData);
+        wasActivated = true;
+
+        return new TriggerActivationData(false, "", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {

@@ -67,11 +67,11 @@ public class Game {
             } else if (command.matches("set --position (attack|defence)")) {
                 new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
             } else if (command.matches("flip-summon")) {
-                new FlipSummon(gameData).run();
+                new FlipSummon(gameData).flipByCommand();
             } else if (command.matches("next phase")) {
                 goToNextPhase(gameData);
             } else if (command.matches("activate effect")){
-                new ActivateSpellOrTrap(gameData).run();
+                new ActivateSpellOrTrapNormally(gameData).run();
             } else if (command.matches("help")) {
                 help(gameData);
             } else if (command.equals("show board")){

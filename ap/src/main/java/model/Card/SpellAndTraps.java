@@ -3,8 +3,8 @@ package model.Card;
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
+import model.Data.ActivationData;
 import model.Enums.SpellCardMods;
-import model.Enums.SpellsAndTraps.SpellTypes;
 
 public abstract class SpellAndTraps extends Card {
 
@@ -14,11 +14,17 @@ public abstract class SpellAndTraps extends Card {
     private SpellCardMods spellCardMod;
     @Expose
     public boolean wasActivated = false;
+    @Expose
+    public Card cardThatStoppedActivating;
 
-    public abstract void activate(GameData gameData);
+    public abstract ActivationData activate(GameData gameData);
 
     public SpellCardMods getSpellCardMod() {
         return spellCardMod;
+    }
+
+    public void stopActivate(Card card){
+        cardThatStoppedActivating = card;
     }
 
     protected void setSpellCardMod(SpellCardMods spellCardMod) {

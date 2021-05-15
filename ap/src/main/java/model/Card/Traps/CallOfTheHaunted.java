@@ -1,24 +1,20 @@
 package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.SpecialSummon;
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Board.GraveYard;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Trap;
-import model.Enums.CardMod;
+import model.Data.ActivationData;
 import view.GetInput;
 import view.Printer.Printer;
-
-import java.util.ArrayList;
 
 public class CallOfTheHaunted extends Trap {
 
     Monster summonedMonster;
 
-    @Override
-    public void activate(GameData gameData) {
+    public ActivationData activate(GameData gameData) {
 
         gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
 
@@ -34,7 +30,7 @@ public class CallOfTheHaunted extends Trap {
                     getGraveYard();
 
             if (input.equals("cancel")) {
-                break;
+                return new ActivationData(true);
             }
 
             if (!input.matches("\\d+")) {
@@ -54,9 +50,11 @@ public class CallOfTheHaunted extends Trap {
                 continue;
             }
 
-            putMonsterToMonsterZone(gameData, getSelectedCard(graveYard,id));
-            break;
-
+            Monster selectedCard = (Monster) getSelectedCard(graveYard,id);
+            putMonsterToMonsterZone(gameData, selectedCard);
+            selectedCard.setCallOfTheHauntedTrap(this);
+            wasActivated = true;
+            return new ActivationData(true);
         }
     }
 

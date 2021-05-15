@@ -3,16 +3,18 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
+import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
 import model.Enums.CardFamily;
 import model.Phase;
 import view.Printer.Printer;
 
-public class ActivateSpellOrTrap extends Action {
+public class ActivateSpellOrTrapNormally extends Activate {
 
-    public ActivateSpellOrTrap(GameData gameData){
-        super(gameData, "activate");
+
+    public ActivateSpellOrTrapNormally(GameData gameData){
+        super(gameData);
     }
 
     public void run(){
@@ -24,12 +26,11 @@ public class ActivateSpellOrTrap extends Action {
         SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
 
         if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
-            if(activateFromHand()) return;
+            if(!activateFromHand(card)) return;
         }
 
-        else if(gameData.getCurrentGamer().getGameBoard().getZone(card)
-                instanceof SpellAndTrapCardZone){
-            if(!activateFromSpellZone()) return;
+        else if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone){
+            if(!activateFromSpellZone(card)) return;
         }
 
         else{
@@ -41,17 +42,14 @@ public class ActivateSpellOrTrap extends Action {
 
     }
 
-    private boolean activateFromSpellZone() {
+    private boolean activateFromSpellZone(SpellAndTraps card) {
 
-        SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
         card.activate(gameData);
         return true;
 
     }
 
-    private boolean activateFromHand(){
-
-        SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
+    private boolean activateFromHand(SpellAndTraps card){
 
         if(card instanceof Trap){
             Printer.print("you should set trap card first");
@@ -67,11 +65,11 @@ public class ActivateSpellOrTrap extends Action {
             return false;
         }
 
-        card.activate(gameData);
-
         gameData.moveCardFromOneZoneToAnother(card,
                 gameData.getCurrentGamer().getGameBoard().getHand(),
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
+
+        card.activate(gameData);
 
         return true;
 

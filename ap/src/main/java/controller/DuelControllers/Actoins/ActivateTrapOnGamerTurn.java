@@ -1,16 +1,8 @@
 package controller.DuelControllers.Actoins;
 
-import controller.DuelControllers.GameData;
-import model.Board.SpellAndTrapCardZone;
-import model.Card.Card;
-import model.Card.SpellAndTraps;
-import model.Enums.CardFamily;
-import view.GetInput;
 import view.Printer.Printer;
 
-import java.util.ArrayList;
-
-public class ActivateTrapOnGamerTurn extends ActivateTrapBecauseOfAnAction{
+public class ActivateTrapOnGamerTurn extends ActivateTriggerTrapEffect {
 
 
     public ActivateTrapOnGamerTurn(Action action){
