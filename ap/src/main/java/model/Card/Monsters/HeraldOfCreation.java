@@ -47,6 +47,7 @@ public class HeraldOfCreation extends Monster {
                                     hand.getCardsInHand().get(cardIdFromHand),
                                     monstersInGraveyardWithLevelAtLeast7
                                             (graveYard.getCardsInGraveYard()).get(Integer.parseInt(command)));
+                            lastTurnEffectUsed = gameData.getTurn();
                             effectNotDone = false;
                         } else {
                             Printer.print("invalid id");
