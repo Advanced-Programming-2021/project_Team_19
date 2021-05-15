@@ -3,7 +3,6 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Data.ActionData;
 import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 

@@ -116,10 +116,6 @@ public class Utils {
         return gameData.getCurrentGamer().equals(action.getActionDoer());
     }
 
-    public static void deselectCard(GameData gameData){
-        gameData.setSelectedCard(null);
-    }
-
     public static boolean IsSelectedCardIsNull(GameData gameData){
 
         if (gameData.getSelectedCard() == null) {

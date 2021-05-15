@@ -14,6 +14,11 @@ public class MagicJammer extends Trap{
 
     public boolean canActivateBecauseOfAnAction(Action action){
 
+        if(!action.getGameData().getCurrentGamer().equals
+                (action.getGameData().getCardController(this))){
+            return false;
+        }
+
         if(action.getActionName().equals("activate spell")){
             return true;
         }

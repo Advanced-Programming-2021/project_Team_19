@@ -2,30 +2,31 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Actoins.Attack;
+import controller.DuelControllers.DuelMenuController;
+import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.Utils;
-import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Enums.CardMod;
-import model.Enums.EffectLabels;
-
-import java.util.ArrayList;
+import model.EffectLabel;
+import model.Gamer;
+import model.Phase;
 
 public class NegateAttack extends Trap {
 
     public ActivationData activate(GameData gameData) {
 
         handleDestroy(gameData);
-        wasActivated = true;
 
-        TriggerActivationData data =  new TriggerActivationData
+        turnActivated = gameData.getTurn();
+
+        gameData.getCurrentGamer().addEffectLabel
+                (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
+
+        return new TriggerActivationData
                 (true, "spell activated successfully", this);
 
-
-
-        return data;
     }
 
 
@@ -44,5 +45,23 @@ public class NegateAttack extends Trap {
         }
 
         return true;
+    }
+
+    public static boolean shouldEffectRun(EffectLabel label){
+
+        if(label.gameData.getCurrentPhase().equals(Phase.BATTLE)){
+            if(label.gameData.getCurrentActions().size() == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static TriggerActivationData runEffect(EffectLabel label){
+
+        Game.goToNextPhase(label.gameData);
+        label.gamer.removeLabel(label);
+
+        return new TriggerActivationData(true, "", label.card);
     }
 }

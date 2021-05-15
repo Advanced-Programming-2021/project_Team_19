@@ -21,7 +21,7 @@ public class MirrorForce extends Trap {
         handleEffect(gameData);
 
         handleDestroy(gameData);
-        wasActivated = true;
+        turnActivated = gameData.getTurn();
 
         return new TriggerActivationData
                 (true, "spell activated successfully", this);

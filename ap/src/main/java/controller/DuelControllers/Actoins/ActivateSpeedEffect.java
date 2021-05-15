@@ -1,12 +1,22 @@
 package controller.DuelControllers.Actoins;
 
+import controller.DuelControllers.GameData;
+import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
-public class ActivateTrapOnGamerTurn extends ActivateTriggerTrapEffect {
+public class ActivateSpeedEffect extends ActivateTrapWithNotification {
+
+    public ActivateSpeedEffect(GameData gameData){
+        super(gameData);
+    }
+
+    public ActivationData handleActivate() {
 
 
-    public ActivateTrapOnGamerTurn(Action action){
-        super(action);
+
+
+        return null;
     }
 
     protected boolean checkInvalidMoves(String command){
@@ -19,4 +29,6 @@ public class ActivateTrapOnGamerTurn extends ActivateTriggerTrapEffect {
         }
         return false;
     }
+
+
 }

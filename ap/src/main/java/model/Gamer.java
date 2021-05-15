@@ -1,7 +1,8 @@
 package model;
 
-public class Gamer {
+import java.util.ArrayList;
 
+public class Gamer {
 
     AllBoards gameBoard ;
     private int lifePoint = 4000;
@@ -11,10 +12,15 @@ public class Gamer {
     private int lastTurnHasSummonedOrSet = 0;
     private int maxLifePointsInDuel = 0;
     private int currentScoreInDuel = 0;
+    private ArrayList<EffectLabel> effectLabels = new ArrayList<>();
 
     public Gamer(User user) {
         this.user = user;
         gameBoard = new AllBoards(user);
+    }
+
+    public ArrayList<EffectLabel> getEffectLabels(){
+        return effectLabels;
     }
 
     public int getLifePoint() {
@@ -37,6 +43,14 @@ public class Gamer {
     public String getBoardForRival() {
         return user.getNickname() + ":" + lifePoint + "\n" +
                 gameBoard.rivalToString();
+    }
+
+    public void addEffectLabel(EffectLabel effectLabel){
+        effectLabels.add(effectLabel);
+    }
+
+    public void removeLabel(EffectLabel effectLabel){
+        effectLabels.remove(effectLabel);
     }
 
     public void increaseLifePoint(int amount) {

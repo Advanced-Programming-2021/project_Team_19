@@ -25,7 +25,8 @@ public class MagicCylinder extends Trap {
         attack.getAttackingMonster().handleDestroy(gameData);
 
         handleDestroy(gameData);
-        wasActivated = true;
+
+        turnActivated = gameData.getTurn();
 
         return new TriggerActivationData
                 (true, "spell activated successfully", this);

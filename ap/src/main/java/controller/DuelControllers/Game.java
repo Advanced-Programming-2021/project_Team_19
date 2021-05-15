@@ -4,8 +4,8 @@ import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
-import model.Data.ActionData;
-import model.Enums.EffectLabels;
+import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import model.Gamer;
 import model.Phase;
 import view.GetInput;
@@ -20,6 +20,8 @@ public class Game {
         String command;
 
         while (true) {
+
+            checkLabels(gameData);
 
             if (gameData.isGameOver()) {
                 return finishGame(gameData);
@@ -86,10 +88,6 @@ public class Game {
         }
     }
 
-    private void checkLabels(GameData gameData, ActionData data){
-
-    }
-
     private void help(GameData gameData) {
         GameHelp.run(gameData.getCurrentPhase());
     }
@@ -123,10 +121,37 @@ public class Game {
         return winner;
     }
 
-    private void goToNextPhase(GameData gameData) {
+    public static void goToNextPhase(GameData gameData) {
 
         gameData.goToNextPhase();
         Printer.print(gameData.getCurrentPhase().getPhaseName());
+    }
+
+    private void checkLabels(GameData gameData){
+        checkLabelsOfGamer(gameData.getCurrentGamer());
+        checkLabelsOfGamer(gameData.getSecondGamer());
+    }
+
+    private void checkLabelsOfGamer(Gamer gamer){
+
+        for(EffectLabel label : gamer.getEffectLabels()){
+            if(label.checkLabel()){
+                String message = (label.runEffect()).message;
+                if (!message.equals("")) {
+                    Printer.print(message);
+                }
+            }
+        }
+    }
+
+    private void f(GameData gameData){
+
+        Printer.print("" + " has occurred just now");
+        Printer.print("do you want to activate your trap and spell?");
+
+        if(GetInput.getString().equals("yes")){
+
+        }
     }
 
 }
