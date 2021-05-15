@@ -3,6 +3,7 @@ package model.Card.Traps;
 import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
+import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -19,7 +20,7 @@ public class TrapHole extends Trap {
         handleDestroy(gameData);
         wasActivated = true;
 
-        return new TriggerActivationData(false, "", this);
+        return new TriggerActivationData(false, "trap activate successfully", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {
@@ -36,7 +37,7 @@ public class TrapHole extends Trap {
            return false;
         }
 
-        if (((Summon) action).getSummoningMonster().getAttack(action.getGameData()) >= 1000) {
+        if (((Monster)((Summon) action).getSummoningMonster()).getAttack(action.getGameData()) >= 1000) {
             return false;
         }
 

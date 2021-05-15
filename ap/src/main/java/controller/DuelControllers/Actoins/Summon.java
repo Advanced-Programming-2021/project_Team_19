@@ -1,12 +1,13 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import model.Card.Card;
 import model.Card.Monster;
 
 public abstract class Summon extends SummonAndSet{
 
 
-    protected Monster summoningMonster;
+    protected Card summoningMonster;
 
 
     protected Summon(GameData gameData, String actionName){
@@ -14,12 +15,12 @@ public abstract class Summon extends SummonAndSet{
         setSummoningMonster();
     }
 
-    public Monster getSummoningMonster(){
+    public Card getSummoningMonster(){
         return summoningMonster;
     }
 
-    private void setSummoningMonster(){
-        summoningMonster = (Monster) gameData.getSelectedCard();
+    protected void setSummoningMonster(){
+        summoningMonster = gameData.getSelectedCard();
     }
 
 }

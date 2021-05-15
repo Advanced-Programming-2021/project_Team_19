@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 public class AttackMonster extends Attack {
 
     public AttackMonster(GameData gameData) {
-        super(gameData, "attackMonster");
+        super(gameData, "attack monster");
     }
 
 
@@ -25,14 +25,19 @@ public class AttackMonster extends Attack {
         int enemyId = Integer.parseInt(matcher.group(1));
 
         if (checkMutualAttackErrors(selectedCard, gameData)) {
+
             if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId) == null)
                 Printer.print("there is no card to attack here");
             else {
-                Monster attackingMonster = (Monster) selectedCard;
+
                 if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
                         .getCardById(enemyId)).attackIsNormal(gameData)) {
 
-                    attackingMonster.handleAttack(gameData, enemyId);
+                    if(handleTriggerEffects().hasActionStopped){
+                        return;
+                    }
+
+                    ((Monster)attackingMonster).handleAttack(gameData, enemyId);
                 }
             }
         }

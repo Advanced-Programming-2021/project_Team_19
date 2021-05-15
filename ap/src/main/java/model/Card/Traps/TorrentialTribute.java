@@ -15,7 +15,8 @@ public class TorrentialTribute extends Trap {
 
         handleDestroy(gameData);
         wasActivated = true;
-        return new TriggerActivationData(false, "", this);
+        return new TriggerActivationData
+                (false, "trap activated successfully", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){

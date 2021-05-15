@@ -9,4 +9,7 @@ public class TimeSeal extends Trap {
     public ActivationData activate(GameData gameData)  {
         return null;
     }
+
+
+
 }

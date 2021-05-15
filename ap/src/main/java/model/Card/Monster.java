@@ -117,9 +117,12 @@ public class Monster extends Card {
     }
 
     public void handleAttack(GameData gameData, int enemyId) {
-        Monster defendingMonster = (Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId);
+
+        Monster defendingMonster = (Monster) gameData.getSecondGamer()
+                .getGameBoard().getMonsterCardZone().getCardById(enemyId);
 
         lastTurnAttacked = gameData.getTurn();
+
         switch (defendingMonster.getCardMod()) {
             case OFFENSIVE_OCCUPIED:
                 attackOffensiveMonster(defendingMonster, gameData);
@@ -156,7 +159,9 @@ public class Monster extends Card {
     }
 
     protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+
         int damage;
+
         if (getAttack(gameData) > defendingMonster.getAttack(gameData)) {
             defendingMonster.handleDestroy(gameData);
             damage = getAttack(gameData) - defendingMonster.getAttack(gameData);

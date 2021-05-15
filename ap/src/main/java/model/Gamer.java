@@ -5,6 +5,7 @@ public class Gamer {
 
     AllBoards gameBoard ;
     private int lifePoint = 4000;
+
     private User user;
 
     private int lastTurnHasSummonedOrSet = 0;

@@ -43,11 +43,13 @@ public abstract class ActivateTriggerTrapEffect extends Activate {
             } else if (command.matches("card show --selected")) {
                 new Select(gameData).select(command);
             } else if (command.matches("activate effect")) {
+
                 TriggerActivationData data1 = activateTrapOrSpell(activatorAction);
+
+                Printer.print(data1.message);
+
                 if (data.activatedCard != null) {
                     return data1;
-                } else{
-                    Printer.print(data1.message);
                 }
 
             } else if (command.matches("help")) {

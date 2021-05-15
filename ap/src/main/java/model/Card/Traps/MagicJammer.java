@@ -13,6 +13,7 @@ public class MagicJammer extends Trap{
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){
+
         if(action.getActionName().equals("activate spell")){
             return true;
         }

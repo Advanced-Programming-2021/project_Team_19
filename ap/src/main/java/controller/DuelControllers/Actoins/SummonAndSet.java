@@ -8,6 +8,7 @@ import view.GetInput;
 import view.Printer.Printer;
 
 public class SummonAndSet extends Action{
+
     protected SummonAndSet(GameData gameData, String actionName) {
         super(gameData, actionName);
     }

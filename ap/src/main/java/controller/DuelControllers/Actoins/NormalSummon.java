@@ -1,6 +1,7 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Phase;
@@ -23,13 +24,15 @@ public class NormalSummon extends Summon {
             Printer.print("no card is selected yet");
             return false;
         }
+
         if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
                 .contains(summoningMonster) ||
                 !summoningMonster.getCardFamily().equals(CardFamily.MONSTER) ||
-                (summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
+                ((Monster)(summoningMonster)).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
             Printer.print("you can’t summon this card");
             return false;
         }
+
         if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.
                 getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
@@ -48,12 +51,13 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
-        int numberOfSacrifices = summoningMonster.numberOfSacrifices(false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
+        int numberOfSacrifices = ((Monster)summoningMonster).numberOfSacrifices
+                (false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
 
         if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
 
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
-            summoningMonster.handleSummon(gameData, numberOfSacrifices);
+            ((Monster)summoningMonster).handleSummon(gameData, numberOfSacrifices);
             Printer.print("summoned successfully");
             handleTriggerEffects();
         }

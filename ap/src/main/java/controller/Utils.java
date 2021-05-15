@@ -128,4 +128,20 @@ public class Utils {
         return true;
     }
 
+    public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass){
+
+        for(int i = actions.size() - 1; i >= 0; i--){
+
+            if(isInstance(actions.get(i), myClass)){
+                return actions.get(i);
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean isInstance(Object object, Class<?> type) {
+        return type.isInstance(object);
+    }
+
 }
