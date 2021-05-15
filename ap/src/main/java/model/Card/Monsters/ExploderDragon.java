@@ -14,6 +14,9 @@ public class ExploderDragon extends Monster {
         if (getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getAttack(gameData)) {
             return true;
         }
+        if (!getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getDefence()) {
+            return true;
+        }
         attackingMonster.handleDestroy(gameData);
         this.handleDestroy(gameData);
         Printer.print("you attacked exploder dragon and both cards were destroyed");
