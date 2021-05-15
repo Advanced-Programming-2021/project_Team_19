@@ -36,6 +36,7 @@ public class TerratigerTheEmpoweredWarrior extends Monster {
                     Monster monsterToSpecialSummon = level4OrLessMonstersInHand.get(Integer.parseInt(command));
                     new SpecialSummon(gameData).run(monsterToSpecialSummon);
                     monsterToSpecialSummon.setCardMod(CardMod.DEFENSIVE_OCCUPIED);
+                    effectNotDone = false;
                 }
             } else if (command.matches("cancel")) {
                 effectNotDone = false;
