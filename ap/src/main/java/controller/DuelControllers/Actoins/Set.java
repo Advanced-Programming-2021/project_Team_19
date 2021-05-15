@@ -1,16 +1,14 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Enums.CardFamily;
-import model.Enums.SpellCardMods;
 import model.Phase;
 import view.Printer.Printer;
 
-public class Set extends Action {
+public class Set extends SummonAndSet {
 
     public Set(GameData gameData) {
         super(gameData, "set");
@@ -36,21 +34,21 @@ public class Set extends Action {
         if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
             setMonster(selectedCard);
         }
-        if(selectedCard.getCardFamily().equals(CardFamily.TRAP)||
-                selectedCard.getCardFamily().equals(CardFamily.SPELL)){
+        if (selectedCard.getCardFamily().equals(CardFamily.TRAP) ||
+                selectedCard.getCardFamily().equals(CardFamily.SPELL)) {
             setSpellOrTrap(selectedCard);
         }
 
     }
 
-    private void setSpellOrTrap(Card card){
+    private void setSpellOrTrap(Card card) {
 
         if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
             Printer.print("spell card zone is full");
             return;
         }
 
-        if(((SpellAndTraps)card).handleSet(gameData)){
+        if (((SpellAndTraps) card).handleSet(gameData)) {
 
             gameData.moveCardFromOneZoneToAnother(card,
                     gameData.getCurrentGamer().getGameBoard().getHand(),
@@ -72,12 +70,13 @@ public class Set extends Action {
             return;
         }
 
-        ((Monster) card).handleSet(gameData);
+        Monster monster = (Monster) card;
 
-        gameData.moveCardFromOneZoneToAnother(card,
-                gameData.getCurrentGamer().getGameBoard().getHand(),
-                gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
+        if (sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards()))) {
+            monster.handleSet(gameData);
+            Printer.print("set successfully");
+            handleTrap();
+        }
 
-        Printer.print("set successfully");
     }
 }

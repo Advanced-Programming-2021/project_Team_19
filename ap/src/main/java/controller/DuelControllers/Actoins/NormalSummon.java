@@ -1,7 +1,6 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Phase;
@@ -14,11 +13,11 @@ public class NormalSummon extends Summon {
     }
 
     public void run() {
-        if(checkSummonErrors())
-            manageSummoningMonster();
+        if (checkSummonErrors())
+            summonMonster();
     }
 
-    private boolean checkSummonErrors(){
+    private boolean checkSummonErrors() {
 
         if (summoningMonster == null) {
             Printer.print("no card is selected yet");
@@ -31,8 +30,8 @@ public class NormalSummon extends Summon {
             Printer.print("you can’t summon this card");
             return false;
         }
-        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData
-                .getCurrentPhase().equals(Phase.MAIN2)) {
+        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.
+                getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
             return false;
         }
@@ -47,35 +46,18 @@ public class NormalSummon extends Summon {
         return true;
     }
 
-    private void manageSummoningMonster() {
+    private void summonMonster() {
 
-        if(determineSummonType(summoningMonster)){
+        int numberOfSacrifices = summoningMonster.numberOfSacrifices(false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
+
+        if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
+
+            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+            summoningMonster.handleSummon(gameData, numberOfSacrifices);
             Printer.print("summoned successfully");
-            handleTriggerEffects();
+            handleTrap();
         }
 
-    }
-
-    private boolean determineSummonType(Monster monster) {
-
-        boolean hasSummoned = false;
-        int level = monster.getLevel();
-        if (level <= 4) {
-            if (monster.handleSummonType1(gameData))
-                hasSummoned = true;
-        }
-        else if (level <= 6) {
-            if (monster.handleSummonType2(gameData))
-
-                hasSummoned = true;
-        }
-        else{
-            if (monster.handleSummonType3(gameData)){
-
-                hasSummoned = true;
-            }
-        }
-        return hasSummoned;
     }
 
 }

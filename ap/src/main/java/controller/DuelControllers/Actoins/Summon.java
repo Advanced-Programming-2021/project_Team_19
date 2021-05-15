@@ -2,9 +2,8 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
-import model.Gamer;
 
-public abstract class Summon extends Action{
+public abstract class Summon extends SummonAndSet{
 
 
     protected Monster summoningMonster;

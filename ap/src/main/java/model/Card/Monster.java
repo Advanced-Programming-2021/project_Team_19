@@ -4,14 +4,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
-import model.Board.MonsterCardZone;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
-import view.GetInput;
 import view.Printer.Printer;
 
 public class Monster extends Card {
@@ -97,7 +95,7 @@ public class Monster extends Card {
         return lastTurnAttacked;
     }
 
-    public int getTurnWasPutInMonsterZone(){
+    public int getTurnWasPutInMonsterZone() {
         return turnWasPutInMonsterZone;
     }
 
@@ -109,7 +107,7 @@ public class Monster extends Card {
         this.lastTurnHasChangedPosition = lastTurnHasChangedPosition;
     }
 
-    public void setTurnWasPutInMonsterZone(int turnWasPutInMonsterZone){
+    public void setTurnWasPutInMonsterZone(int turnWasPutInMonsterZone) {
         this.turnWasPutInMonsterZone = turnWasPutInMonsterZone;
     }
 
@@ -138,6 +136,7 @@ public class Monster extends Card {
 
     protected void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
+        defendingMonster.setCardMod(CardMod.DEFENSIVE_OCCUPIED);
         attackDefensiveMonster(defendingMonster, gameData);
     }
 
@@ -175,12 +174,15 @@ public class Monster extends Card {
         }
     }
 
-    public void handleSet(GameData gameData){
+    public void handleSet(GameData gameData) {
         setCardMod(CardMod.DEFENSIVE_HIDDEN);
+        gameData.moveCardFromOneZoneToAnother(this,
+                gameData.getCurrentGamer().getGameBoard().getHand(),
+                gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
         setTurnWasPutInMonsterZone(gameData.getTurn());
     }
 
-    public void handleChangePosition(GameData gameData, CardMod newCardMod){
+    public void handleChangePosition(GameData gameData, CardMod newCardMod) {
         setCardMod(newCardMod);
         setLastTurnHasChangedPosition(gameData.getTurn());
     }
@@ -192,86 +194,20 @@ public class Monster extends Card {
         Printer.print("your opponent receives " + getAttack(gameData) + " battle damage");
     }
 
-    public boolean handleSummonType1(GameData gameData) {
-        Gamer gamer = gameData.getCurrentGamer();
-
+    public void handleSummon(GameData gameData, int numberOfSacrifices) {
         gameData.moveCardFromOneZoneToAnother(this,
-                gamer.getGameBoard().getHand(),
-                gamer.getGameBoard().getMonsterCardZone());
+                gameData.getCurrentGamer().getGameBoard().getHand(),
+                gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
         this.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
-        return true;
+        setTurnWasPutInMonsterZone(gameData.getTurn());
     }
 
-    public boolean handleSummonType2(GameData gameData) {
-        Gamer gamer = gameData.getCurrentGamer();
-        MonsterCardZone monsterCardZone = gamer.getGameBoard().getMonsterCardZone();
-        if (monsterCardZone.getNumberOfCards() < 1) {
-            Printer.print("there are not enough cards for tribute");
-            return false;
-        } else {
-            String command;
-            while (true) {
-                Printer.print("enter the Id of the monster you want to sacrifice:");
-                command = GetInput.getString();
-                if (command.matches("([1-5])")) {
-                    if (monsterCardZone.getCardById(Integer.parseInt(command)) == null) {
-                        Printer.print("there are no monsters on this address");
-                    } else {
-                        ((Monster) monsterCardZone.getCardById(Integer.parseInt(command))).sacrifice(gameData, gamer);
-                        gameData.moveCardFromOneZoneToAnother(this,
-                                gamer.getGameBoard().getHand(),
-                                gamer.getGameBoard().getMonsterCardZone());
-                        this.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
-                        return true;
-                    }
-                } else if (command.matches("cancel")) {
-                    return false;
-                } else {
-                    Printer.printInvalidCommand();
-                }
-            }
-        }
-    }
-
-    public boolean handleSummonType3(GameData gameData) {
-        Gamer gamer = gameData.getCurrentGamer();
-        MonsterCardZone monsterCardZone = gamer.getGameBoard().getMonsterCardZone();
-        if (monsterCardZone.getNumberOfCards() < 2) {
-            Printer.print("there are not enough cards for tribute");
-            return false;
-        } else {
-            String command;
-            while (true) {
-                Printer.print("enter the Ids of the monsters you want to sacrifice:");
-                command = GetInput.getString();
-                if (command.matches("([1-5]) ([1-5])")) {
-                    String[] ids = command.split(" ");
-                    if (monsterCardZone.getCardById(Integer.parseInt(ids[0])) == null ||
-                        monsterCardZone.getCardById(Integer.parseInt(ids[1])) == null) {
-                        Printer.print("there is no monster on one of these addresses");
-                    } else {
-                        ((Monster) monsterCardZone.getCardById(Integer.parseInt(ids[0]))).sacrifice(gameData, gamer);
-                        ((Monster) monsterCardZone.getCardById(Integer.parseInt(ids[1]))).sacrifice(gameData, gamer);
-                        gameData.moveCardFromOneZoneToAnother(this,
-                                gamer.getGameBoard().getHand(),
-                                gamer.getGameBoard().getMonsterCardZone());
-                        this.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
-                        return true;
-                    }
-                } else if (command.matches("cancel")) {
-                    return false;
-                } else {
-                    Printer.printInvalidCommand();
-                }
-            }
-        }
-    }
-
-    public void sacrifice(GameData gameData, Gamer gamer){
+    public void sacrifice(GameData gameData, Gamer gamer) {
         gameData.moveCardFromOneZoneToAnother(this,
                 gamer.getGameBoard().getMonsterCardZone(),
                 gamer.getGameBoard().getGraveYard());
     }
+
 
     public boolean attackIsNormal(GameData gameData) {
         return true;
@@ -280,9 +216,20 @@ public class Monster extends Card {
 
     public void handleDestroy(GameData gameData) {
 
-        if(callOfTheHauntedTrap != null){
+        if (callOfTheHauntedTrap != null) {
             new Destroy(gameData).run(callOfTheHauntedTrap);
         }
         super.handleDestroy(gameData);
     }
+
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed){
+        if (level <= 4) {
+            return  0;
+        } else if (level <= 6) {
+            return 1;
+        }
+        return 2;
+    }
+
+
 }
