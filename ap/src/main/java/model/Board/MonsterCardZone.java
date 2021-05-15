@@ -13,12 +13,15 @@ public class MonsterCardZone extends Zones {
 
     private ArrayList<Monster> cardsInMonsterZone = new ArrayList<>();
 
-    {
+    public MonsterCardZone(){
         for (int i = 0; i < 5; i++) {
             cardsInMonsterZone.add(null);
         }
     }
 
+    public ArrayList<Monster> getCards(){
+        return cardsInMonsterZone;
+    }
 
     public Card getCardById(int id) {
         return cardsInMonsterZone.get(hashNumber(id));
