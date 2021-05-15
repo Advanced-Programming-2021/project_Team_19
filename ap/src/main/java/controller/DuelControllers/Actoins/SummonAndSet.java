@@ -38,7 +38,10 @@ public class SummonAndSet extends Action{
                 command = GetInput.getString();
                 if (hasNIds(numberOfSacrifices, command)) {
                     String[] ids = command.split(" ");
-                    if (!allIdsContainMonsters(ids, monsterCardZone)) {
+                    if (containsRecurringId(ids)){
+                        Printer.print("please enter " + numberOfSacrifices + " distinct ids");
+                    }
+                    else if (!allIdsContainMonsters(ids, monsterCardZone)) {
                         Printer.print(doesNotContainMonster);
                     } else {
                         sacrificeMonsters(ids, monsterCardZone, gamer, gameData);
@@ -55,7 +58,7 @@ public class SummonAndSet extends Action{
 
 
     private boolean hasNIds(int numberOfSacrifices, String command){
-        return  (command.matches("[0-9] ".repeat(Math.max(0, numberOfSacrifices)).trim()));
+        return  (command.matches("[1-5] ".repeat(Math.max(0, numberOfSacrifices)).trim()));
     }
 
     private boolean allIdsContainMonsters(String[] ids, MonsterCardZone monsterCardZone){
@@ -70,5 +73,15 @@ public class SummonAndSet extends Action{
         for (String id : ids) {
             ((Monster) monsterCardZone.getCardById(Integer.parseInt(id))).sacrifice(gameData, gamer);
         }
+    }
+
+    private boolean containsRecurringId(String[] ids){
+        for (int i = 0; i < ids.length; i++) {
+            for (int j = i + 1; j < ids.length; j++) {
+                if (ids[i].equals(ids[j]))
+                    return true;
+            }
+        }
+        return false;
     }
 }
