@@ -55,7 +55,7 @@ public class NormalSummon extends Summon {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             summoningMonster.handleSummon(gameData, numberOfSacrifices);
             Printer.print("summoned successfully");
-            handleTrap();
+            handleTriggerEffects();
         }
 
     }

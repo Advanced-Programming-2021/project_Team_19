@@ -30,7 +30,7 @@ public class CallOfTheHaunted extends Trap {
                     getGraveYard();
 
             if (input.equals("cancel")) {
-                return new ActivationData(true);
+                return new ActivationData(this);
             }
 
             if (!input.matches("\\d+")) {
@@ -54,7 +54,7 @@ public class CallOfTheHaunted extends Trap {
             putMonsterToMonsterZone(gameData, selectedCard);
             selectedCard.setCallOfTheHauntedTrap(this);
             wasActivated = true;
-            return new ActivationData(true);
+            return new ActivationData(this);
         }
     }
 
