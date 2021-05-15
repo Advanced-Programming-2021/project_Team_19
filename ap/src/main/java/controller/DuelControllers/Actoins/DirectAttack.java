@@ -23,8 +23,12 @@ public class DirectAttack extends Attack{
             if (currentPlayerCannotDirectAttack(gameData)) {
                 Printer.print("you can’t attack the opponent directly");
             } else {
-                Monster attackingMonster = (Monster) selectedCard;
-                attackingMonster.handleDirectAttack(gameData);
+
+                if(handleTriggerEffects().hasActionStopped){
+                    return;
+                }
+
+                ((Monster)attackingMonster).handleDirectAttack(gameData);
             }
         }
     }

@@ -27,7 +27,8 @@ public class MagicCylinder extends Trap {
         handleDestroy(gameData);
         wasActivated = true;
 
-        return new TriggerActivationData(true, "spell activated successfully", this);
+        return new TriggerActivationData
+                (true, "spell activated successfully", this);
     }
 
 
