@@ -16,7 +16,7 @@ public class TerratigerTheEmpoweredWarrior extends Monster {
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
         super.handleSummon(gameData, numberOfSacrifices);
         Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
-        if (getLevel4OrLessMonstersInHand(hand).size() != 0) {
+        if (getLevel4OrLessMonstersInHand(hand).size() != 0 && !gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
             specialSummonLevel4OrLessCard(gameData, getLevel4OrLessMonstersInHand(hand));
         }
     }
