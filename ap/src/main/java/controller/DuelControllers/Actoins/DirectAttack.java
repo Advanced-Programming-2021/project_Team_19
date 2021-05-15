@@ -3,6 +3,8 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.ActionData;
+import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 public class DirectAttack extends Attack{
@@ -11,12 +13,15 @@ public class DirectAttack extends Attack{
         super(gameData, "direct attack");
     }
 
-    public void run(){
-        directAttack();
+    public ActionData run(){
+        return directAttack();
     }
 
 
-    private void directAttack() {
+    private ActionData directAttack() {
+
+        ActionData returnData = new ActionData();
+
         Card selectedCard = gameData.getSelectedCard();
 
         if (checkMutualAttackErrors(selectedCard, gameData)) {
@@ -24,13 +29,18 @@ public class DirectAttack extends Attack{
                 Printer.print("you can’t attack the opponent directly");
             } else {
 
-                if(handleTriggerEffects().hasActionStopped){
-                    return;
+                TriggerActivationData activationData = handleTriggerEffects();
+
+                returnData.effectLabels.addAll(activationData.labels);
+
+                if(activationData.hasActionStopped){
+                    return returnData;
                 }
 
                 ((Monster)attackingMonster).handleDirectAttack(gameData);
             }
         }
+        return returnData;
     }
 
 

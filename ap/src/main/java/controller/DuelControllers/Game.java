@@ -4,6 +4,8 @@ import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
+import model.Data.ActionData;
+import model.Enums.EffectLabels;
 import model.Gamer;
 import model.Phase;
 import view.GetInput;
@@ -53,9 +55,10 @@ public class Game {
                 if (askForSurrender())
                     return handleSurrender(gameData);
             } else if (command.matches("attack ([1-5])")) {
-                new AttackMonster(gameData).run(Utils.getMatcher(command, "attack ([1-5])"));
+                checkLabels(gameData, new AttackMonster(gameData).run
+                        (Utils.getMatcher(command, "attack ([1-5])")));
             } else if (command.matches("attack direct")) {
-                new DirectAttack(gameData).run();
+                checkLabels(gameData, new DirectAttack(gameData).run());
             } else if (command.startsWith("select")) {
                 new Select(gameData).select(command);
             } else if (command.matches("card show --selected")) {
@@ -80,6 +83,13 @@ public class Game {
                 Printer.printInvalidCommand();
             }
 
+        }
+    }
+
+    private void checkLabels(GameData gameData, ActionData data){
+
+        if(data.effectLabels.contains(EffectLabels.EXIT_BATTLE_PHASE)){
+            goToNextPhase(gameData);
         }
     }
 

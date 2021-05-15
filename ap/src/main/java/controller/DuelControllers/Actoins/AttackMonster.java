@@ -3,6 +3,8 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.ActionData;
+import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 import java.util.regex.Matcher;
@@ -14,11 +16,13 @@ public class AttackMonster extends Attack {
     }
 
 
-    public void run(Matcher matcher) {
-        attackMonster(matcher);
+    public ActionData run(Matcher matcher) {
+        return attackMonster(matcher);
     }
 
-    public void attackMonster(Matcher matcher) {
+    public ActionData attackMonster(Matcher matcher) {
+
+        ActionData returnData = new ActionData();
 
         Card selectedCard = gameData.getSelectedCard();
         matcher.find();
@@ -33,14 +37,23 @@ public class AttackMonster extends Attack {
                 if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
                         .getCardById(enemyId)).attackIsNormal(gameData)) {
 
-                    if(handleTriggerEffects().hasActionStopped){
-                        return;
+                    TriggerActivationData activationData = handleTriggerEffects();
+
+                    returnData.effectLabels.addAll(activationData.labels);
+
+                    if(activationData.hasActionStopped){
+                        return returnData;
                     }
 
                     ((Monster)attackingMonster).handleAttack(gameData, enemyId);
+
+
                 }
             }
         }
+
+        return returnData;
+
     }
 
 }
