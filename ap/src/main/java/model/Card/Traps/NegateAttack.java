@@ -23,7 +23,7 @@ public class NegateAttack extends Trap {
         TriggerActivationData data =  new TriggerActivationData
                 (true, "spell activated successfully", this);
 
-        data.labels.add(EffectLabels.EXIT_BATTLE_PHASE);
+
 
         return data;
     }

@@ -16,13 +16,11 @@ public class AttackMonster extends Attack {
     }
 
 
-    public ActionData run(Matcher matcher) {
-        return attackMonster(matcher);
+    public void run(Matcher matcher) {
+         attackMonster(matcher);
     }
 
-    public ActionData attackMonster(Matcher matcher) {
-
-        ActionData returnData = new ActionData();
+    public void attackMonster(Matcher matcher) {
 
         Card selectedCard = gameData.getSelectedCard();
         matcher.find();
@@ -39,10 +37,8 @@ public class AttackMonster extends Attack {
 
                     TriggerActivationData activationData = handleTriggerEffects();
 
-                    returnData.effectLabels.addAll(activationData.labels);
-
                     if(activationData.hasActionStopped){
-                        return returnData;
+                        return;
                     }
 
                     ((Monster)attackingMonster).handleAttack(gameData, enemyId);
@@ -51,8 +47,6 @@ public class AttackMonster extends Attack {
                 }
             }
         }
-
-        return returnData;
 
     }
 

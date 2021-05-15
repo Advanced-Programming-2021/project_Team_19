@@ -13,14 +13,14 @@ public class DirectAttack extends Attack{
         super(gameData, "direct attack");
     }
 
-    public ActionData run(){
-        return directAttack();
+    public void run(){
+        directAttack();
     }
 
 
-    private ActionData directAttack() {
+    private void directAttack() {
 
-        ActionData returnData = new ActionData();
+
 
         Card selectedCard = gameData.getSelectedCard();
 
@@ -31,16 +31,13 @@ public class DirectAttack extends Attack{
 
                 TriggerActivationData activationData = handleTriggerEffects();
 
-                returnData.effectLabels.addAll(activationData.labels);
-
                 if(activationData.hasActionStopped){
-                    return returnData;
+                    return;
                 }
 
                 ((Monster)attackingMonster).handleDirectAttack(gameData);
             }
         }
-        return returnData;
     }
 
 
