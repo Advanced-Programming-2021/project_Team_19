@@ -107,6 +107,10 @@ public class Monster extends Card {
         this.lastTurnHasChangedPosition = lastTurnHasChangedPosition;
     }
 
+    public MonsterType getMonsterType() {
+        return monsterType;
+    }
+
     public void setTurnWasPutInMonsterZone(int turnWasPutInMonsterZone) {
         this.turnWasPutInMonsterZone = turnWasPutInMonsterZone;
     }
