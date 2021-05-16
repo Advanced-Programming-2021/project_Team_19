@@ -116,7 +116,7 @@ public class Game {
 
     private Gamer finishGame(GameData gameData) {
         Gamer winner = determineWinner(gameData);
-
+// i can
         gameData.finishGame();
         winner.wonGame();
         Printer.print(winner.getUsername() + " won the game and the score is: " +
