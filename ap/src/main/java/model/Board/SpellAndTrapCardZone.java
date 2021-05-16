@@ -43,11 +43,14 @@ public class SpellAndTrapCardZone extends Zones {
 
     public int getId(Card card){
         if(allCards.contains(card)){
-            return allCards.indexOf(card);
+            int index = allCards.indexOf(card);
+            for(int i=1;i<=5;i++){
+                if(hashNumber(i) == index){
+                    return i;
+                }
+            }
         }
-        else{
-            return -1;
-        }
+        return -1;
     }
 
     public String getStringForSelf(){
