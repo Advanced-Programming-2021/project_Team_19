@@ -17,7 +17,7 @@ public class Hand extends Zones {
     }
 
     public Card removeCard(int id) {
-        Card temp=getCard(id-1);
+        Card temp=getCard(id);
         cardsInHand.remove(id-1);
         return temp;
     }

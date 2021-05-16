@@ -72,6 +72,12 @@ public class GameData {
         gameStarterId = 1 - gameStarterId;
     }
 
+    public void surrender(){
+        changeTurn();
+        getCurrentGamer().decreaseLifePoint(getCurrentGamer().getLifePoint());
+        getSecondGamer().decreaseLifePoint(getSecondGamer().getLifePoint() + 1);
+    }
+
     public void addActionToCurrentActions(Action action) {
         currentActions.add(action);
     }

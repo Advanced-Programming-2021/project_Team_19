@@ -24,6 +24,7 @@ public class GameHelp {
                 break;
         }
         System.out.println("""
+                show hand
                 surrender
                 help
                 next phase

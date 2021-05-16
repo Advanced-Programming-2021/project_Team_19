@@ -45,8 +45,8 @@ public class Game {
 
             command = GetInput.getString();
 
-            if(gameData.getTurn() == 1){
-                if(command.equals("next phase")){
+            if (gameData.getTurn() == 1) {
+                if (command.equals("next phase")) {
                     gameData.goToEndPhase();
                     Printer.print(gameData.getCurrentPhase().getPhaseName());
                     continue;
@@ -69,6 +69,8 @@ public class Game {
                 new NormalSummon(gameData).run();
             } else if (command.matches("set")) {
                 new Set(gameData).run();
+            } else if (command.matches("show hand")) {
+                gameData.getCurrentGamer().getGameBoard().getHand().showHand();
             } else if (command.matches("set --position (attack|defence)")) {
                 new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
             } else if (command.matches("flip-summon")) {
@@ -77,11 +79,11 @@ public class Game {
                 goToNextPhase(gameData);
             } else if (command.matches("show graveyard")) {
                 gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
-            } else if (command.matches("activate effect")){
+            } else if (command.matches("activate effect")) {
                 new ActivateSpellOrTrapNormally(gameData).run();
             } else if (command.matches("help")) {
                 help(gameData);
-            } else if (command.equals("show board")){
+            } else if (command.equals("show board")) {
                 gameData.showBoard();
             } else {
                 Printer.printInvalidCommand();
@@ -108,13 +110,13 @@ public class Game {
     }
 
     private Gamer handleSurrender(GameData gameData) {
-        return gameData.getSecondGamer();
+        gameData.surrender();
+        return finishGame(gameData);
     }
 
     private Gamer finishGame(GameData gameData) {
-        Gamer winner = gameData.getCurrentGamer();
-        if (winner.getLifePoint() == 0)
-            winner = gameData.getSecondGamer();
+        Gamer winner = determineWinner(gameData);
+
         gameData.finishGame();
         winner.wonGame();
         Printer.print(winner.getUsername() + " won the game and the score is: " +
@@ -123,21 +125,37 @@ public class Game {
         return winner;
     }
 
+    private Gamer determineWinner(GameData gameData) {
+        if (gameData.getCurrentGamer().getLifePoint() == -1)
+            return gameData.getSecondGamer();
+        else if (gameData.getSecondGamer().getLifePoint() == -1)
+            return gameData.getCurrentGamer();
+        else {
+            Gamer winner = gameData.getCurrentGamer();
+
+            if (winner.getLifePoint() == 0)
+                winner = gameData.getSecondGamer();
+
+            return winner;
+
+        }
+    }
+
     public static void goToNextPhase(GameData gameData) {
 
         gameData.goToNextPhase();
         Printer.print(gameData.getCurrentPhase().getPhaseName());
     }
 
-    private void checkLabels(GameData gameData){
+    private void checkLabels(GameData gameData) {
         checkLabelsOfGamer(gameData.getCurrentGamer());
         checkLabelsOfGamer(gameData.getSecondGamer());
     }
 
-    private void checkLabelsOfGamer(Gamer gamer){
+    private void checkLabelsOfGamer(Gamer gamer) {
 
-        for(EffectLabel label : gamer.getEffectLabels()){
-            if(label.checkLabel()){
+        for (EffectLabel label : gamer.getEffectLabels()) {
+            if (label.checkLabel()) {
                 String message = (label.runEffect()).message;
                 if (!message.equals("")) {
                     Printer.print(message);
@@ -146,12 +164,12 @@ public class Game {
         }
     }
 
-    private void f(GameData gameData){
+    private void f(GameData gameData) {
 
         Printer.print("" + " has occurred just now");
         Printer.print("do you want to activate your trap and spell?");
 
-        if(GetInput.getString().equals("yes")){
+        if (GetInput.getString().equals("yes")) {
 
         }
     }
