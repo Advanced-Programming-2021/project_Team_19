@@ -2,7 +2,6 @@ package model.Board;
 
 import controller.Utils;
 import model.Card.Card;
-import model.Card.Monster;
 import view.Printer.Printer;
 
 import java.util.ArrayList;

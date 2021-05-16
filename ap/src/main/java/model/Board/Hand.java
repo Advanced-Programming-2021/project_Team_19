@@ -13,12 +13,12 @@ public class Hand extends Zones {
     }
 
     public Card getCard(int id) {
-        return cardsInHand.get(id);
+        return cardsInHand.get(id+1);
     }
 
     public Card removeCard(int id) {
-        Card temp=getCard(id);
-        cardsInHand.remove(id);
+        Card temp=getCard(id+1);
+        cardsInHand.remove(id+1);
         return temp;
     }
 
@@ -28,7 +28,7 @@ public class Hand extends Zones {
 
     public int getId(Card card){
         if(cardsInHand.contains(card)){
-            return cardsInHand.indexOf(card);
+            return cardsInHand.indexOf(card)+1;
         }
         else{
             return -1;
