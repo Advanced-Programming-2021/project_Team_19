@@ -82,7 +82,7 @@ public class Select extends Action{
                     if(selectedCard.getClass() == ScannerMonster.class){
                         ((ScannerMonster)selectedCard).setValidity(gameData);
                         if(!((ScannerMonster)selectedCard).isMonsterSet()){
-                            Printer.print(gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard());
+                            gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
                             Printer.print("Please choose a monster to change to");
                             int selectIndexToConvertTo = GetInput.getInt();
                             String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndex).getName();
