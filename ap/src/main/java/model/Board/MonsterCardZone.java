@@ -75,11 +75,14 @@ public class MonsterCardZone extends Zones {
 
     public int getId(Card card){
         if(cardsInMonsterZone.contains(card)){
-            return cardsInMonsterZone.indexOf(card);
+            int index = cardsInMonsterZone.indexOf(card);
+            for(int i=1;i<=5;i++){
+                if(hashNumber(i) == index){
+                    return i;
+                }
+            }
         }
-        else{
-            return -1;
-        }
+        return -1;
     }
 
 

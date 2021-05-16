@@ -84,7 +84,7 @@ public class Select extends Action {
                             gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
                             Printer.print("Please choose a monster to change to");
                             int selectIndexToConvertTo = GetInput.getInt();
-                            String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndex).getName();
+                            String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndexToConvertTo).getName();
                             Monster convertToCard = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
                             ((ScannerMonster) selectedCard).setMonster(convertToCard, gameData);
                             ((ScannerMonster) selectedCard).setCardMod(CardMod.OFFENSIVE_OCCUPIED);
