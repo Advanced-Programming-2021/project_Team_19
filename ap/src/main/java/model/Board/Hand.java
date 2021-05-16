@@ -13,12 +13,12 @@ public class Hand extends Zones {
     }
 
     public Card getCard(int id) {
-        return cardsInHand.get(id+1);
+        return cardsInHand.get(id-1);
     }
 
     public Card removeCard(int id) {
-        Card temp=getCard(id+1);
-        cardsInHand.remove(id+1);
+        Card temp=getCard(id-1);
+        cardsInHand.remove(id-1);
         return temp;
     }
 
