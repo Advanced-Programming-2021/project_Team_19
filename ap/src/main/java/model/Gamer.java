@@ -58,9 +58,14 @@ public class Gamer {
     }
 
     public void decreaseLifePoint(int amount) {
-        this.lifePoint -= amount;
-        if (this.lifePoint < 0)
-            this.lifePoint = 0;
+        if (amount == this.lifePoint + 1){
+            this.lifePoint = -1;
+        }
+        else {
+            this.lifePoint -= amount;
+            if (this.lifePoint < 0)
+                this.lifePoint = 0;
+        }
     }
 
     public AllBoards getGameBoard(){
