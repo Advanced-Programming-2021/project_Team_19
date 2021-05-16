@@ -57,7 +57,7 @@ public abstract class Action {
 
         for(SpellAndTraps spellOrTrap :
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
-            if(spellOrTrap.canActivateBecauseOfAnAction(this)){
+            if(spellOrTrap != null && spellOrTrap.canActivateBecauseOfAnAction(this)){
                 return true;
             }
         }
