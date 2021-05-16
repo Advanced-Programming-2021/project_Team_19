@@ -111,6 +111,7 @@ public class GameData {
 
         int nextPhaseIndex = (phases.indexOf(currentPhase) + 1) % 6;
         currentPhase = phases.get(nextPhaseIndex);
+        setSelectedCard(null);
     }
 
     public void goToEndPhase(){
