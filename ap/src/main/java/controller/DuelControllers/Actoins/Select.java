@@ -60,7 +60,8 @@ public class Select extends Action {
             if (selectedCard == null)
                 Printer.print("no card is selected yet");
             else if (gameData.getSecondGamer().getGameBoard().getZone(selectedCard) != null &&
-                    gameData.getSecondGamer().getGameBoard().getZone(selectedCard).equals(gameData.getSecondGamer().getGameBoard().getMonsterCardZone()))
+                    gameData.getSecondGamer().getGameBoard().getZone(selectedCard).equals(gameData.getSecondGamer().getGameBoard().getMonsterCardZone()) &&
+                    ((Monster) selectedCard).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN))
                 Printer.print("card is not visible");
             else
                 Printer.print(selectedCard.toString());
@@ -77,7 +78,7 @@ public class Select extends Action {
                     Printer.print("no card found in the given position");
                 } else {
                     gameData.setSelectedCard(selectedCard);
-                    Printer.print("card selected");
+                    printSelectedCard();
                     if (selectedCard.getClass() == ScannerMonster.class) {
                         ((ScannerMonster) selectedCard).setValidity(gameData);
                         if (!((ScannerMonster) selectedCard).isMonsterSet()) {
@@ -105,7 +106,7 @@ public class Select extends Action {
                     Printer.print("no card found in the given position");
                 } else {
                     gameData.setSelectedCard(selectedCard);
-                    Printer.print("card selected");
+                    printSelectedCard();
                 }
             }
         }
@@ -122,7 +123,7 @@ public class Select extends Action {
                     Printer.print("no card found in the given position");
                 } else {
                     gameData.setSelectedCard(selectedCard);
-                    Printer.print("card selected");
+                    printSelectedCard();
                 }
             }
         }
@@ -139,7 +140,7 @@ public class Select extends Action {
                     Printer.print("no card found in the given position");
                 } else {
                     gameData.setSelectedCard(selectedCard);
-                    Printer.print("card selected");
+                    printSelectedCard();
                 }
             }
         }
@@ -153,7 +154,7 @@ public class Select extends Action {
                 Printer.print("no card found in the given position");
             } else {
                 gameData.setSelectedCard(selectedCard);
-                Printer.print("Card selected");
+                printSelectedCard();
             }
         }
     }
@@ -171,6 +172,7 @@ public class Select extends Action {
             if (gameData.getCurrentGamer().getGameBoard().getHand().getSize() > selectIndex) {
                 commandIsDone = true;
                 gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getHand().getCard(selectIndex));
+                printSelectedCard();
             }
         }
     }
@@ -187,5 +189,7 @@ public class Select extends Action {
         }
     }
 
-
+    private void printSelectedCard() {
+        Printer.print("card " + gameData.getSelectedCard().getName() + " selected");
+    }
 }
