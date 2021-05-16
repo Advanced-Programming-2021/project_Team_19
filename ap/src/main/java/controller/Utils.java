@@ -112,11 +112,11 @@ public class Utils {
         return CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
     }
 
-    public static boolean isCurrentGamerActionDoer(GameData gameData, Action action){
+    public static boolean isCurrentGamerActionDoer(GameData gameData, Action action) {
         return gameData.getCurrentGamer().equals(action.getActionDoer());
     }
 
-    public static boolean IsSelectedCardIsNull(GameData gameData){
+    public static boolean IsSelectedCardIsNull(GameData gameData) {
 
         if (gameData.getSelectedCard() == null) {
             return false;
@@ -124,11 +124,11 @@ public class Utils {
         return true;
     }
 
-    public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass){
+    public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass) {
 
-        for(int i = actions.size() - 1; i >= 0; i--){
+        for (int i = actions.size() - 1; i >= 0; i--) {
 
-            if(isInstance(actions.get(i), myClass)){
+            if (isInstance(actions.get(i), myClass)) {
                 return actions.get(i);
             }
         }
@@ -138,6 +138,16 @@ public class Utils {
 
     public static boolean isInstance(Object object, Class<?> type) {
         return type.isInstance(object);
+    }
+
+    public static void printArrayListOfCards(ArrayList<Card> cards) {
+        int cnt = 1;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Card card : cards) {
+            stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
+            cnt++;
+        }
+        Printer.print(stringBuilder.toString().trim());
     }
 
 }

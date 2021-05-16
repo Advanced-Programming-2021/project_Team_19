@@ -3,6 +3,7 @@ package model.Card.Monsters;
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Board.GraveYard;
 import model.Board.Hand;
 import model.Card.Card;
@@ -79,11 +80,7 @@ public class HeraldOfCreation extends Monster {
 
     private void showChooseFromGraveyard(GraveYard graveYard) {
         Printer.print("select a card id to revive from graveyard:");
-        for (int i = 1; i <= monstersInGraveyardWithLevelAtLeast7
-                (graveYard.getCardsInGraveYard()).size(); i++) {
-            Printer.print(i + "- " + monstersInGraveyardWithLevelAtLeast7
-                    (graveYard.getCardsInGraveYard()).get(i - 1).toString());
-        }
+        Utils.printArrayListOfCards(monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()));
     }
 
 

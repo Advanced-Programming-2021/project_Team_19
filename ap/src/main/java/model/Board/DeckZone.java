@@ -55,4 +55,8 @@ public class DeckZone extends Zones {
     public int getSize() {
         return mainDeckCards.size();
     }
+
+    public ArrayList<Card> getMainDeckCards(){
+        return mainDeckCards;
+    }
 }
