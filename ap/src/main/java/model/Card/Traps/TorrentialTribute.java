@@ -14,12 +14,17 @@ public class TorrentialTribute extends Trap {
         gameData.getSecondGamer().getGameBoard().getMonsterCardZone().removeAllCards();
 
         handleDestroy(gameData);
-        wasActivated = true;
+        turnActivated = gameData.getTurn();
         return new TriggerActivationData
                 (false, "trap activated successfully", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){
+
+        if(!action.getGameData().getCurrentGamer().equals
+                (action.getGameData().getCardController(this))){
+            return false;
+        }
 
         if(!canActivateThisTurn(action.getGameData())){
             return false;

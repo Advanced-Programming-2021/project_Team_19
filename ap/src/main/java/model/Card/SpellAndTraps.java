@@ -2,9 +2,13 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import model.Enums.SpellCardMods;
+import model.Phase;
 
 public abstract class SpellAndTraps extends Card {
 
@@ -13,9 +17,17 @@ public abstract class SpellAndTraps extends Card {
     @Expose
     private SpellCardMods spellCardMod;
     @Expose
-    public boolean wasActivated = false;
+    protected int turnActivated = 0;
     @Expose
     public Card cardThatStoppedActivating;
+
+    public int getTurnActivated() {
+        return turnActivated;
+    }
+
+    public void setTurnActivated(int turnActivated) {
+        this.turnActivated = turnActivated;
+    }
 
     public abstract ActivationData activate(GameData gameData);
 
@@ -49,6 +61,14 @@ public abstract class SpellAndTraps extends Card {
 
     public boolean canActivateBecauseOfAnAction(Action action){
         return false;
+    }
+
+    public static boolean shouldEffectRun(EffectLabel label){
+        return false;
+    }
+
+    public static TriggerActivationData runEffect(EffectLabel label){
+        return null;
     }
 
 }

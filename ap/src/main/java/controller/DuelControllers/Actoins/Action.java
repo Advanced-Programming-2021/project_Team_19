@@ -2,6 +2,7 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import model.Card.SpellAndTraps;
+import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Gamer;
 import view.GetInput;
@@ -69,12 +70,23 @@ public abstract class Action {
         TriggerActivationData data =  new TriggerActivationData
                 (false, "", null);
 
+        ActivationData tempData;
+
         changeTurn();
+
         gameData.showBoard();
+
         Printer.print("do you want to activate your trap and spell?");
+
         if(GetInput.getString().equals("yes")){
-            data = new ActivateTrapOnOtherPlayerTurn(this).run();
+
+            tempData = new ActivateTriggerEffectOnOtherPlayerTurn(this).run();
+            if(tempData.activatedCard == null){
+                data = new TriggerActivationData
+                        (false, tempData.message, null);
+            }
         }
+
         changeTurn();
 
         return data;
@@ -87,7 +99,15 @@ public abstract class Action {
         Printer.print("do you want to activate your trap and spell?");
 
         if(GetInput.getString().equals("yes")){
-            return (new ActivateTrapOnGamerTurn(this).run());
+
+            ActivationData tempData = new ActivateTriggerEffectOnGamerTurn(this).run();
+
+            if(tempData.activatedCard == null){
+                return new TriggerActivationData
+                        (false, tempData.message, null);
+            }
+
+            return (TriggerActivationData) tempData;
         }
 
         return new TriggerActivationData(false, "", null);

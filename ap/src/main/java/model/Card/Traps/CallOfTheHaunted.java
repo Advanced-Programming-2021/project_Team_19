@@ -53,7 +53,8 @@ public class CallOfTheHaunted extends Trap {
             Monster selectedCard = (Monster) getSelectedCard(graveYard,id);
             putMonsterToMonsterZone(gameData, selectedCard);
             selectedCard.setCallOfTheHauntedTrap(this);
-            wasActivated = true;
+
+            turnActivated = gameData.getTurn();
             return new ActivationData(this);
         }
     }
@@ -68,6 +69,10 @@ public class CallOfTheHaunted extends Trap {
     }
 
     public boolean canActivate(GameData gameData) {
+
+        if(!gameData.getCurrentGamer().equals(gameData.getCardController(this))){
+            return false;
+        }
 
         if (!canActivateThisTurn(gameData)) {
             return false;

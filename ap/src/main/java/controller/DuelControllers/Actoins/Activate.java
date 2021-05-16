@@ -20,7 +20,7 @@ public class Activate extends Action {
         activatedCard = card;
     }
 
-    public void handleActivate() {
+    public void handleActivatee() {
 
         if(activatedCard.cardThatStoppedActivating == null){
             activatedCard.activate(gameData);

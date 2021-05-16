@@ -18,12 +18,17 @@ public class TrapHole extends Trap {
         ((Summon) action).getSummoningMonster().handleDestroy(gameData);
 
         handleDestroy(gameData);
-        wasActivated = true;
+        turnActivated = gameData.getTurn();
 
         return new TriggerActivationData(false, "trap activate successfully", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {
+
+        if(!action.getGameData().getCurrentGamer().equals
+                (action.getGameData().getCardController(this))){
+            return false;
+        }
 
         if (!canActivateThisTurn(action.getGameData())) {
             return false;

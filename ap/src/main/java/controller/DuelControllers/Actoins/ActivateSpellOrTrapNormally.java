@@ -96,7 +96,7 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
         SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
 
-        if(card.wasActivated){
+        if(card.getTurnActivated() != 0){
             Printer.print("you have already activated this card");
             return false;
         }
