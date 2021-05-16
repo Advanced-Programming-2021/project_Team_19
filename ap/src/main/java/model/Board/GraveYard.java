@@ -20,14 +20,14 @@ public class GraveYard extends Zones {
 
     public int getId(Card card) {
         if (cardsInGraveYard.contains(card)) {
-            return cardsInGraveYard.indexOf(card);
+            return cardsInGraveYard.indexOf(card)+1;
         } else {
             return -1;
         }
     }
 
     public void addCard(Card card) {
-
+        cardsInGraveYard.add(card);
     }
 
     public int getSize() {
