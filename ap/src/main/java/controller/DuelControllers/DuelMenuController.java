@@ -136,7 +136,7 @@ public class DuelMenuController extends Menu {
         if (loser.equals(winner))
             loser = gameData.getSecondGamer();
 
-        Printer.print(winner.getUsername() + "won the whole match with score: " +
+        Printer.print(winner.getUsername() + " won the whole match with score: " +
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
         increaseCreditAndScoreAfterGame(winner, loser, rounds);
@@ -146,6 +146,8 @@ public class DuelMenuController extends Menu {
         winner.increaseCredit(1000 * rounds + winner.getMaxLifePointsInDuel());
         loser.increaseCredit(1000 * rounds);
         winner.increaseUserScore(1000 * rounds);
+        UserDataBaseController.saveChanges(winner.getUser());
+        UserDataBaseController.saveChanges(loser.getUser());
     }
 
 }

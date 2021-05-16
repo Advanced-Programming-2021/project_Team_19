@@ -29,12 +29,9 @@ public class Set extends SummonAndSet {
             Printer.print("you can’t set this card");
         } else if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
-        }
-
-        if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
+        } else if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
             setMonster(selectedCard);
-        }
-        if (selectedCard.getCardFamily().equals(CardFamily.TRAP) ||
+        } else if (selectedCard.getCardFamily().equals(CardFamily.TRAP) ||
                 selectedCard.getCardFamily().equals(CardFamily.SPELL)) {
             setSpellOrTrap(selectedCard);
         }

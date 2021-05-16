@@ -117,7 +117,7 @@ public class Game {
             winner = gameData.getSecondGamer();
         gameData.finishGame();
         winner.wonGame();
-        Printer.print(winner.getUsername() + "won the game and the score is: " +
+        Printer.print(winner.getUsername() + " won the game and the score is: " +
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
         return winner;

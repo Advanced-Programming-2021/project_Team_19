@@ -71,6 +71,10 @@ public class Gamer {
         return this.user.getUsername();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void gameFinished(){
         maxLifePointsInDuel = Integer.max(lifePoint, maxLifePointsInDuel);
         lifePoint = 4000;
