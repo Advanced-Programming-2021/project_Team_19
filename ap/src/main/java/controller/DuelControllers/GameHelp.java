@@ -27,7 +27,8 @@ public class GameHelp {
                 surrender
                 help
                 next phase
-                show board""");
+                show board
+                show graveyard""");
     }
 
 }
