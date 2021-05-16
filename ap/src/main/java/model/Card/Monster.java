@@ -133,26 +133,20 @@ public class Monster extends Card {
         lastTurnAttacked = gameData.getTurn();
 
         switch (defendingMonster.getCardMod()) {
-            case OFFENSIVE_OCCUPIED:
-                attackOffensiveMonster(defendingMonster, gameData);
-                break;
-            case DEFENSIVE_OCCUPIED:
-                attackDefensiveMonster(defendingMonster, gameData);
-                break;
-            case DEFENSIVE_HIDDEN:
-                attackDefensiveHiddenMonster(defendingMonster, gameData);
-                break;
+            case OFFENSIVE_OCCUPIED -> attackOffensiveMonster(defendingMonster, gameData);
+            case DEFENSIVE_OCCUPIED -> attackDefensiveMonster(defendingMonster, gameData);
+            case DEFENSIVE_HIDDEN -> attackDefensiveHiddenMonster(defendingMonster, gameData);
         }
 
     }
 
-    protected void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
+    public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
         defendingMonster.setCardMod(CardMod.DEFENSIVE_OCCUPIED);
         attackDefensiveMonster(defendingMonster, gameData);
     }
 
-    protected void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+    public  void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (getAttack(gameData) > defendingMonster.getDefence()) {
             defendingMonster.handleDestroy(gameData);
@@ -167,7 +161,7 @@ public class Monster extends Card {
         }
     }
 
-    protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public  void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
 
         int damage;
 

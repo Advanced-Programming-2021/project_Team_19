@@ -1,11 +1,14 @@
 package controller.DuelControllers.Actoins;
 
+import controller.DataBaseControllers.CardDataBaseController;
 import controller.DuelControllers.GameData;
 import controller.DuelControllers.GameHelp;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Card.Monsters.ScannerMonster;
 import model.Enums.CardMod;
+import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.regex.Matcher;
@@ -47,6 +50,7 @@ public class Select extends Action{
             Printer.print("invalid selection");
         }
 
+
     }
 
     private void showSelected(Matcher matcher) {
@@ -75,6 +79,18 @@ public class Select extends Action{
                 else{
                     gameData.setSelectedCard(selectedCard);
                     Printer.print("card selected");
+                    if(selectedCard.getClass() == ScannerMonster.class){
+                        ((ScannerMonster)selectedCard).setValidity(gameData);
+                        if(!((ScannerMonster)selectedCard).isMonsterSet()){
+                            Printer.print(gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard());
+                            Printer.print("Please choose a monster to change to");
+                            int selectIndexToConvertTo = GetInput.getInt();
+                            String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndex).getName();
+                            Monster convertToCard = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
+                            ((ScannerMonster)selectedCard).setMonster(convertToCard, gameData);
+                            ((ScannerMonster) selectedCard).setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+                        }
+                    }
                 }
             }
         }

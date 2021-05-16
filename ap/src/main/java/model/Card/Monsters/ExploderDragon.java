@@ -24,7 +24,7 @@ public class ExploderDragon extends Monster {
     }
 
     @Override
-    protected void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
         if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             defendingMonster.handleDestroy(gameData);
             this.handleDestroy(gameData);

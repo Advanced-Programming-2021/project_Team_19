@@ -1,9 +1,8 @@
 package Test;
 
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import view.GetInput;
 import view.Menu.LoginMenu;
 import view.Printer.Printer;
@@ -11,7 +10,7 @@ import view.Printer.Printer;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class ProjectTest extends TestCase {
+public class ProjectTest {
     private static final Queue<String> commands=new LinkedList<>();
     private static final Queue<String> responses=new LinkedList<>();
 
@@ -36,7 +35,7 @@ public class ProjectTest extends TestCase {
     public void testRegister(){
         commands.add("user create --username hello --password ho --nickname badGuy");
         LoginMenu.getInstance().run();
-        assertTrue(checkLastResponse("user cra"));
+        Assert.assertTrue(checkLastResponse("user cra"));
     }
 
 
