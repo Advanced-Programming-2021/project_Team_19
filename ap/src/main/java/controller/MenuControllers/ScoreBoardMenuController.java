@@ -66,7 +66,7 @@ class UserComp implements Comparator<User> {
 
     public int compare(User firstUser, User secondUser) {
         int scoreComp = Integer.compare(firstUser.getScore(), secondUser.getScore());
-        int nickNameComp = firstUser.getUsername().compareTo(secondUser.getUsername());
+        int nickNameComp = firstUser.getNickname().compareTo(secondUser.getNickname());
         if (scoreComp == 0) {
             return nickNameComp;
         } else {
