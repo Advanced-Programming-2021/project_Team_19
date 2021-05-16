@@ -1,6 +1,7 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
 import view.Printer.Printer;
@@ -32,11 +33,11 @@ public class FlipSummon extends Summon {
             Printer.print("action not allowed in this phase");
             return false;
         }
-        if (!summoningMonster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
+        if (!((Monster) summoningMonster).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
             Printer.print("you can’t flip summon this card");
             return false;
         }
-        if (summoningMonster.getTurnWasPutInMonsterZone() == gameData.getTurn()) {
+        if (((Monster) summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn()) {
             Printer.print("you can’t flip summon this card");
             return false;
         }
@@ -45,7 +46,7 @@ public class FlipSummon extends Summon {
 
     public void flip() {
 
-        if (!summoningMonster.handleFlip(gameData)){
+        if (!((Monster) summoningMonster).handleFlip(gameData)){
             return;
         }
 

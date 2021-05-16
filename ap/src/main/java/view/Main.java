@@ -11,11 +11,12 @@ import model.Enums.MessageType;
 import org.junit.jupiter.api.Test;
 import view.Menu.LoginMenu;
 
+import java.io.FileNotFoundException;
 
 
 public class Main {
 
-    public static void main(String[] arg){
+    public static void main(String[] arg) throws FileNotFoundException {
 
         new Game().run(GameData.getTestGameData());
 //
