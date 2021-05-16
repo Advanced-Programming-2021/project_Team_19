@@ -13,11 +13,11 @@ import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
-public class Select extends Action{
+public class Select extends Action {
 
     private boolean commandIsDone;
 
-    public static void help(){
+    public static void help() {
         System.out.println("""
                 card show --selected
                 select --monster <id>
@@ -30,7 +30,7 @@ public class Select extends Action{
                 select -d""");
     }
 
-    public Select(GameData gameData){
+    public Select(GameData gameData) {
         super(gameData, "select");
     }
 
@@ -72,22 +72,21 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                Card selectedCard=gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
-                if(selectedCard==null){
+                Card selectedCard = gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
+                if (selectedCard == null) {
                     Printer.print("no card found in the given position");
-                }
-                else{
+                } else {
                     gameData.setSelectedCard(selectedCard);
                     Printer.print("card selected");
-                    if(selectedCard.getClass() == ScannerMonster.class){
-                        ((ScannerMonster)selectedCard).setValidity(gameData);
-                        if(!((ScannerMonster)selectedCard).isMonsterSet()){
+                    if (selectedCard.getClass() == ScannerMonster.class) {
+                        ((ScannerMonster) selectedCard).setValidity(gameData);
+                        if (!((ScannerMonster) selectedCard).isMonsterSet()) {
                             gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
                             Printer.print("Please choose a monster to change to");
                             int selectIndexToConvertTo = GetInput.getInt();
                             String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndex).getName();
                             Monster convertToCard = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
-                            ((ScannerMonster)selectedCard).setMonster(convertToCard, gameData);
+                            ((ScannerMonster) selectedCard).setMonster(convertToCard, gameData);
                             ((ScannerMonster) selectedCard).setCardMod(CardMod.OFFENSIVE_OCCUPIED);
                         }
                     }
@@ -101,11 +100,10 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                Card selectedCard=gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
-                if(selectedCard==null){
+                Card selectedCard = gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(selectIndex);
+                if (selectedCard == null) {
                     Printer.print("no card found in the given position");
-                }
-                else{
+                } else {
                     gameData.setSelectedCard(selectedCard);
                     Printer.print("card selected");
                 }
@@ -118,12 +116,11 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                Card selectedCard=gameData.getCurrentGamer().getGameBoard().
+                Card selectedCard = gameData.getCurrentGamer().getGameBoard().
                         getSpellAndTrapCardZone().getCard(selectIndex);
-                if(selectedCard==null){
+                if (selectedCard == null) {
                     Printer.print("no card found in the given position");
-                }
-                else{
+                } else {
                     gameData.setSelectedCard(selectedCard);
                     Printer.print("card selected");
                 }
@@ -136,12 +133,11 @@ public class Select extends Action{
             int selectIndex = Integer.parseInt(matcher.group(1));
             if (selectIndex <= 5) {
                 commandIsDone = true;
-                Card selectedCard=gameData.getSecondGamer().getGameBoard().
+                Card selectedCard = gameData.getSecondGamer().getGameBoard().
                         getSpellAndTrapCardZone().getCard(selectIndex);
-                if(selectedCard==null){
+                if (selectedCard == null) {
                     Printer.print("no card found in the given position");
-                }
-                else{
+                } else {
                     gameData.setSelectedCard(selectedCard);
                     Printer.print("card selected");
                 }
@@ -152,11 +148,10 @@ public class Select extends Action{
     private void selectField(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            Card selectedCard=gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0);
-            if(selectedCard==null){
+            Card selectedCard = gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0);
+            if (selectedCard == null) {
                 Printer.print("no card found in the given position");
-            }
-            else{
+            } else {
                 gameData.setSelectedCard(selectedCard);
                 Printer.print("Card selected");
             }
@@ -173,7 +168,7 @@ public class Select extends Action{
     private void selectHand(Matcher matcher) {
         if (matcher.matches()) {
             int selectIndex = Integer.parseInt(matcher.group(1));
-            if(gameData.getCurrentGamer().getGameBoard().getHand().getSize()<selectIndex){
+            if (gameData.getCurrentGamer().getGameBoard().getHand().getSize() > selectIndex) {
                 commandIsDone = true;
                 gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getHand().getCard(selectIndex));
             }
@@ -183,16 +178,14 @@ public class Select extends Action{
     private void removeSelect(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            if(gameData.getSelectedCard()==null){
+            if (gameData.getSelectedCard() == null) {
                 Printer.print("no card is selected yet");
-            }
-            else {
+            } else {
                 gameData.setSelectedCard(null);
                 Printer.print("card deselected");
             }
         }
     }
-
 
 
 }
