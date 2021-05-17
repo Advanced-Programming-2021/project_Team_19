@@ -64,7 +64,7 @@ public enum CardNames {
     BITRON("model.Card.Monsters.NormalMonster"),
     MARSHMALLON("model.Card.Monsters.Marshmallon"),
     BEAST_KING_BARBAROS("model.Card.Monsters.BeastKingBarbaros"),
-    TEXTCHANGER("model.Card.Monsters.Textchanger"),
+    TEXCHANGER("model.Card.Monsters.Texchanger"),
     LEOTRON("model.Card.Monsters.NormalMonster"),
     THE_CALCULATOR("model.Card.Monsters.TheCalculator"),
     ALEXANDRITE_DRAGON("model.Card.Monsters.NormalMonster"),
