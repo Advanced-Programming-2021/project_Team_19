@@ -178,6 +178,8 @@ public class Utils {
                 else {
                     return listOfCards.get(id - 1);
                 }
+            } else {
+                Printer.printInvalidCommand();
             }
         }
     }
