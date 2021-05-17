@@ -1,7 +1,10 @@
 package controller.DuelControllers;
 
+import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.Actoins.Action;
+import controller.Utils;
+import model.Board.GraveYard;
 import model.Board.Zones;
 import model.Card.Card;
 import model.Gamer;
@@ -88,7 +91,13 @@ public class GameData {
 
 
     public void moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
-        destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));
+        if(sourceZone instanceof GraveYard){
+            String removedCardName = sourceZone.removeCard(sourceZone.getId(card)).getName();
+            destinationZone.addCard(CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(removedCardName)));
+        }
+        else {
+            destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));
+        }
     }
 
     public int getRole(Card card) {
