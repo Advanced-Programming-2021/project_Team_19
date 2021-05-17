@@ -225,7 +225,7 @@ public class Monster extends Card {
     public void handleDestroy(GameData gameData) {
 
         if (callOfTheHauntedTrap != null) {
-            new Destroy(gameData).run(callOfTheHauntedTrap);
+            new Destroy(gameData).run(callOfTheHauntedTrap, false);
         }
         super.handleDestroy(gameData);
     }

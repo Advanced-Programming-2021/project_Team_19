@@ -43,7 +43,7 @@ public class TheTricky extends Monster {
     }
 
     private void discardAndSummon(GameData gameData, Card toDiscard) {
-        new Destroy(gameData).run(toDiscard);
+        new Destroy(gameData).run(toDiscard, true);
         gameData.moveCardFromOneZoneToAnother(this,
                 gameData.getCurrentGamer().getGameBoard().getHand(),
                 gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());

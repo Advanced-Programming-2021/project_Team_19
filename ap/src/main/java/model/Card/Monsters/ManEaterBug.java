@@ -25,7 +25,7 @@ public class ManEaterBug extends Monster {
                         Printer.print("there is no monster here\n" +
                                 "enter an id that contains a monster");
                     }else{
-                        new Destroy(gameData).run(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)));
+                        new Destroy(gameData).run(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)), false);
                         return true;
                     }
                 } else if (command.matches("//d+")) {

@@ -4,6 +4,7 @@ import controller.DataBaseControllers.CardDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
+import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardNames;
 import model.Enums.MessageType;
@@ -145,6 +146,16 @@ public class Utils {
         StringBuilder stringBuilder = new StringBuilder();
         for (Card card : cards) {
             stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
+            cnt++;
+        }
+        Printer.print(stringBuilder.toString().trim());
+    }
+
+    public static void printArrayListOfMonsters(ArrayList<Monster> monsters) {
+        int cnt = 1;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Monster monster : monsters) {
+            stringBuilder.append(cnt).append(".").append(" ").append(monster.toString()).append("\n");
             cnt++;
         }
         Printer.print(stringBuilder.toString().trim());

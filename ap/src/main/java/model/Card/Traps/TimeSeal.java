@@ -22,9 +22,6 @@ public class TimeSeal extends Trap {
         gameData.getCurrentGamer().addEffectLabel
                 (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
 
-        gameData.getCurrentGamer().addEffectLabel
-                (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
-
         return new ActivationData(this, "");
 //        todo give a meaningful message
     }

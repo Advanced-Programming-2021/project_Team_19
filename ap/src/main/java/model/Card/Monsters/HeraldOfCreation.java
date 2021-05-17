@@ -67,7 +67,7 @@ public class HeraldOfCreation extends Monster {
     }
 
     private void discardAndRevive(GameData gameData, Card toDiscard, Card toRevive) {
-        new Destroy(gameData).run(toDiscard);
+        new Destroy(gameData).run(toDiscard, true);
         gameData.moveCardFromOneZoneToAnother(toRevive,
                 gameData.getCurrentGamer().getGameBoard().getGraveYard(),
                 gameData.getCurrentGamer().getGameBoard().getHand());

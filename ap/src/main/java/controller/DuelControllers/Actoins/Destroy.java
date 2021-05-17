@@ -9,17 +9,27 @@ public class Destroy extends Action {
         super(gameData, "destroy");
     }
 
-    public void run(Card card){
+    public void run(Card card, boolean discardWithoutEffect){
 
-        if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
-            gameData.moveCardFromOneZoneToAnother(card,
-                    gameData.getCurrentGamer().getGameBoard().getZone(card),
-                    gameData.getCurrentGamer().getGameBoard().getGraveYard());
-        else
-            gameData.moveCardFromOneZoneToAnother(card,
-                    gameData.getSecondGamer().getGameBoard().getZone(card),
-                    gameData.getSecondGamer().getGameBoard().getGraveYard());
-//        card.handleDestroy(gameData);
+        if (!discardWithoutEffect) {
+            if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
+                gameData.moveCardFromOneZoneToAnother(card,
+                        gameData.getCurrentGamer().getGameBoard().getZone(card),
+                        gameData.getCurrentGamer().getGameBoard().getGraveYard());
+            else
+                gameData.moveCardFromOneZoneToAnother(card,
+                        gameData.getSecondGamer().getGameBoard().getZone(card),
+                        gameData.getSecondGamer().getGameBoard().getGraveYard());
+        } else{
+            if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
+                gameData.moveCardFromOneZoneToAnother(card,
+                        gameData.getCurrentGamer().getGameBoard().getZone(card),
+                        gameData.getCurrentGamer().getGameBoard().getGraveYard());
+            else
+                gameData.moveCardFromOneZoneToAnother(card,
+                        gameData.getSecondGamer().getGameBoard().getZone(card),
+                        gameData.getSecondGamer().getGameBoard().getGraveYard());
+        }
     }
 
 }
