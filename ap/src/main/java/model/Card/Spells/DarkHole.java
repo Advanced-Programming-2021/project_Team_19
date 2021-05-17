@@ -6,14 +6,14 @@ import model.Card.Spell;
 import model.Card.TrapAndSpellTypes.Destroyer;
 import model.Data.ActivationData;
 
-public class DarkHole extends Spell implements Destroyer {
+public class DarkHole extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
-        return null;
+        gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+        gameData.getCurrentGamer().destroyAllMonstersOnBoard(gameData);
+
+        handleDestroy(gameData);
+        return new ActivationData(this, "all monsters were destroyed");
     }
 
-    @Override
-    public void destroy(Card card) {
-
-    }
 }

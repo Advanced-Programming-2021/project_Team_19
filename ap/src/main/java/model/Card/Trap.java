@@ -10,9 +10,9 @@ import model.Enums.SpellsAndTraps.TrapTypes;
 public abstract class Trap extends SpellAndTraps {
 
     @Expose
-    TrapTypes trapType;
+    private TrapTypes trapType;
 
-    {
+    public Trap(){
         setCardFamily(CardFamily.TRAP);
     }
 

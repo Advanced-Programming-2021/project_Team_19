@@ -5,10 +5,11 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Monster;
 import model.Card.Trap;
+import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 
-public class TrapHole extends Trap {
+public class TrapHole extends Normal {
 
     public ActivationData activate(GameData gameData) {
 

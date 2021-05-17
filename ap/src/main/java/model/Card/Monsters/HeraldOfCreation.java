@@ -20,50 +20,28 @@ public class HeraldOfCreation extends Monster {
     private int lastTurnEffectUsed;
 
     public void useEffect(GameData gameData) {
-        if (canUseEffect(gameData)) {
-            String command = "";
-            boolean effectNotDone = true;
-            Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
-            showChooseFromHand(hand);
-            GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().getGraveYard();
+        if (!canUseEffect(gameData))
+            return;
 
-            int cardIdFromHand = 0;
-            boolean cardIsSelected = false;
-            while (effectNotDone) {
-                command = GetInput.getString();
-                if (command.matches("\\d+")) {
-                    if (!cardIsSelected) {
-                        if (Integer.parseInt(command) <= hand.getCardsInHand().size()) {
-                            cardIdFromHand = Integer.parseInt(command);
-                            cardIsSelected = true;
-                            showChooseFromGraveyard(graveYard);
-                        } else {
-                            Printer.print("invalid id");
-                            showChooseFromHand(hand);
-                        }
-                    } else {
-                        if (Integer.parseInt(command) <= monstersInGraveyardWithLevelAtLeast7
-                                (graveYard.getCardsInGraveYard()).size()) {
-                            discardAndRevive(gameData,
-                                    hand.getCardsInHand().get(cardIdFromHand),
-                                    monstersInGraveyardWithLevelAtLeast7
-                                            (graveYard.getCardsInGraveYard()).get(Integer.parseInt(command)));
-                            lastTurnEffectUsed = gameData.getTurn();
-                            effectNotDone = false;
-                        } else {
-                            Printer.print("invalid id");
-                            showChooseFromGraveyard(graveYard);
-                        }
+        Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
+        GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().getGraveYard();
 
-                    }
-                } else if (command.matches("cancel")) {
-                    effectNotDone = false;
-                } else {
-                    Printer.printInvalidCommand();
-                }
+        Card selectedCardFromHand = Utils.askUserToSelectCard(hand.getCardsInHand(), "select a card id to discard:");
 
-            }
-        }
+        if (selectedCardFromHand == null)
+            return;
+
+        Card selectedCardFromGraveyard = Utils.askUserToSelectCard(monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()),
+                "select a card id to revive from graveyard:");
+
+        if (selectedCardFromGraveyard == null)
+            return;
+
+        discardAndRevive(gameData,
+                selectedCardFromHand,
+                selectedCardFromGraveyard);
+        lastTurnEffectUsed = gameData.getTurn();
+
     }
 
     private void discardAndRevive(GameData gameData, Card toDiscard, Card toRevive) {
@@ -72,17 +50,6 @@ public class HeraldOfCreation extends Monster {
                 gameData.getCurrentGamer().getGameBoard().getGraveYard(),
                 gameData.getCurrentGamer().getGameBoard().getHand());
     }
-
-    private void showChooseFromHand(Hand hand) {
-        Printer.print("select a card id to discard:");
-        hand.showHand();
-    }
-
-    private void showChooseFromGraveyard(GraveYard graveYard) {
-        Printer.print("select a card id to revive from graveyard:");
-        Utils.printArrayListOfCards(monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()));
-    }
-
 
     private boolean canUseEffect(GameData gameData) {
         Gamer gamer = gameData.getCurrentGamer();
