@@ -28,7 +28,7 @@ public class NormalSummon extends Summon {
         if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
                 .contains(summoningMonster) ||
                 !summoningMonster.getCardFamily().equals(CardFamily.MONSTER) ||
-                ((Monster)(summoningMonster)).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
+                ((Monster) (summoningMonster)).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
             Printer.print("you can’t summon this card");
             return false;
         }
@@ -42,7 +42,8 @@ public class NormalSummon extends Summon {
             Printer.print("monster card zone is full");
             return false;
         }
-        if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn()) {
+        if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
+                !gameData.getSelectedCard().getName().equals("Gate Guardian")) {
             Printer.print("you already summoned/set on this turn");
             return false;
         }
@@ -51,13 +52,15 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
-        int numberOfSacrifices = ((Monster)summoningMonster).numberOfSacrifices
+        int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
                 (false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
 
         if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
 
-            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
-            ((Monster)summoningMonster).handleSummon(gameData, numberOfSacrifices);
+            if (!gameData.getSelectedCard().getName().equals("Gate Guardian"))
+                gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+
+            ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
             Printer.print("summoned successfully");
 
             handleTriggerEffects();

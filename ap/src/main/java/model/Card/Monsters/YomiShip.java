@@ -11,6 +11,7 @@ public class YomiShip extends Monster {
         super.handleDestroy(gameData);
         if (gameData.getCurrentPhase().equals(Phase.BATTLE)) {
             gameData.getSelectedCard().handleDestroy(gameData);
+            Printer.print("you destroyed Yomi ship and your card was destroyed");
         }
     }
 }

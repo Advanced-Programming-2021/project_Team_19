@@ -16,10 +16,7 @@ public class BeastKingBarbaros extends Monster {
     @Override
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
         if (numberOfSacrifices == 3) {
-            for (int i = 1; i < 6; i++) {
-                if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(i) != null)
-                    gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(i).handleDestroy(gameData);
-            }
+            gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
         }
         super.handleSummon(gameData, numberOfSacrifices);
     }

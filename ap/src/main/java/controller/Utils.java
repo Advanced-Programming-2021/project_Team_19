@@ -164,18 +164,18 @@ public class Utils {
 
     public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
         String command;
-        while (true){
-            Printer.print(message);
+        Printer.print(message);
+        listOfCards.removeAll(Collections.singleton(null));
+        while (true) {
             printArrayListOfCards(listOfCards);
             command = GetInput.getString();
             if (command.matches("cancel")) {
                 return null;
-            }else if (command.matches("\\d+")){
+            } else if (command.matches("\\d+")) {
                 int id = Integer.parseInt(command);
-                if (id >= listOfCards.size()){
+                if (id >= listOfCards.size() || id <= 0) {
                     Printer.print("please enter a valid id:");
-                }
-                else {
+                } else {
                     return listOfCards.get(id - 1);
                 }
             } else {
