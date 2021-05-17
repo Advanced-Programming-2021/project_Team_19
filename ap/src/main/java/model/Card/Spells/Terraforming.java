@@ -22,37 +22,27 @@ public class Terraforming extends Spell {
             return new ActivationData(this, "you have no field cards in your deck");
         }
 
-        if (selectCardAndMoveToHand(fieldSpellsInDeck))
+        if (selectCardAndMoveToHand(fieldSpellsInDeck, gameData))
             return new ActivationData(this, "spell activated successfully");
         return new ActivationData(this, "you cancelled the activation");
     }
 
-    private boolean selectCardAndMoveToHand(ArrayList<Card> fieldSpellsInDeck) {
-        String command;
-        while (true){
-            showSelectCard(fieldSpellsInDeck);
-            command = GetInput.getString();
-            if (command.matches("cancel")) {
-                return false;
-            }else if (command.matches("\\d+")){
-                int id = Integer.parseInt(command);
-                if (id >= fieldSpellsInDeck.size()){
-                    Printer.print("please enter a valid id");
-                }
-                else {
-                    moveToHandAndFinishSpell(fieldSpellsInDeck.get(id - 1));
-                }
-            }
-        }
+    private boolean selectCardAndMoveToHand(ArrayList<Card> fieldSpellsInDeck, GameData gameData) {
+        Card selectedCard = Utils.askUserToSelectCard(fieldSpellsInDeck, "enter an id to move a field spell to your hand");
+
+        if (selectedCard == null)
+            return false;
+        moveToHandAndFinishSpell(selectedCard, gameData);
+        return true;
     }
 
-    private void moveToHandAndFinishSpell(Card card) {
-
-    }
-
-    private void showSelectCard(ArrayList<Card> fieldSpellsInDeck) {
-        Printer.print("enter an id to move a field spell to your hand");
-        Utils.printArrayListOfCards(fieldSpellsInDeck);
+    private void moveToHandAndFinishSpell(Card card, GameData gameData) {
+        gameData.moveCardFromOneZoneToAnother(card,
+                gameData.getCurrentGamer().getGameBoard().getDeckZone(),
+                gameData.getCurrentGamer().getGameBoard().getHand());
+        gameData.moveCardFromOneZoneToAnother(this,
+                gameData.getCurrentGamer().getGameBoard().getZone(this),
+                gameData.getCurrentGamer().getGameBoard().getGraveYard());
     }
 
     private ArrayList<Card> getFieldSpells(ArrayList<Card> deckCards) {

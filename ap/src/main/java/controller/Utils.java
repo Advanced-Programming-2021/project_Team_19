@@ -162,7 +162,7 @@ public class Utils {
         Printer.print(stringBuilder.toString().trim());
     }
 
-    public Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
+    public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
         String command;
         while (true){
             Printer.print(message);
@@ -173,7 +173,7 @@ public class Utils {
             }else if (command.matches("\\d+")){
                 int id = Integer.parseInt(command);
                 if (id >= listOfCards.size()){
-                    Printer.print("please enter a valid id");
+                    Printer.print("please enter a valid id:");
                 }
                 else {
                     return listOfCards.get(id - 1);
