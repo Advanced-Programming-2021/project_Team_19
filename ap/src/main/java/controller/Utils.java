@@ -162,7 +162,7 @@ public class Utils {
         Printer.print(stringBuilder.toString().trim());
     }
 
-    private Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
+    public Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
         String command;
         while (true){
             Printer.print(message);
