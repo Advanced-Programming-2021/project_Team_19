@@ -8,6 +8,7 @@ import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardNames;
 import model.Enums.MessageType;
+import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -159,6 +160,26 @@ public class Utils {
             cnt++;
         }
         Printer.print(stringBuilder.toString().trim());
+    }
+
+    private Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
+        String command;
+        while (true){
+            Printer.print(message);
+            printArrayListOfCards(listOfCards);
+            command = GetInput.getString();
+            if (command.matches("cancel")) {
+                return null;
+            }else if (command.matches("\\d+")){
+                int id = Integer.parseInt(command);
+                if (id >= listOfCards.size()){
+                    Printer.print("please enter a valid id");
+                }
+                else {
+                    return listOfCards.get(id - 1);
+                }
+            }
+        }
     }
 
 }

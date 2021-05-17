@@ -5,5 +5,6 @@ public enum SpellTypes {
     SPARKY,
     FAST,
     TRIGGER,
-    FLIP
+    FLIP,
+    FIELD
 }
