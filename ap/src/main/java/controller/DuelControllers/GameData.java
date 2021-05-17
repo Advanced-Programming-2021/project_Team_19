@@ -163,8 +163,6 @@ public class GameData {
 
 
     public static GameData getTestGameData(){
-        String test = "test git";
-
 
         User user1 = new User("mohammad", "mohammad", "123");
 
