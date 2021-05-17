@@ -164,7 +164,6 @@ public class GameData {
 
     public static GameData getTestGameData(){
 
-
         User user1 = new User("mohammad", "mohammad", "123");
 
         User user2 = new User("taha", "taha", "123");
