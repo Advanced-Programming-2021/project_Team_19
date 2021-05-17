@@ -132,7 +132,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("battle warrior");
+        Card card = Utils.getCardByName("beast king barbaros");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
