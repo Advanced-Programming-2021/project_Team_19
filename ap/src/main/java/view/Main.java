@@ -18,6 +18,8 @@ public class Main {
 
     public static void main(String[] arg) {
 
+        String test;
+
         new Game().run(GameData.getTestGameData());
 
 //        DataBaseController.makeResourceDirectory();
