@@ -1,6 +1,7 @@
 package model.Card.Monsters;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
+import model.Phase;
 import view.Printer.Printer;
 
 public class YomiShip extends Monster {
@@ -8,6 +9,8 @@ public class YomiShip extends Monster {
     @Override
     public void handleDestroy(GameData gameData) {
         super.handleDestroy(gameData);
-        gameData.getSelectedCard().handleDestroy(gameData);
+        if (gameData.getCurrentPhase().equals(Phase.BATTLE)) {
+            gameData.getSelectedCard().handleDestroy(gameData);
+        }
     }
 }

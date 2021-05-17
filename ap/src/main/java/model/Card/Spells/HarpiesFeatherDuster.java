@@ -14,7 +14,7 @@ public class HarpiesFeatherDuster extends Spell {
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getCard(i).handleDestroy(gameData);
         }
         handleDestroy(gameData);
-        return new ActivationData(this, "all your enemy spell and traps were destroyed");
+        return new ActivationData(this, "all enemy spell and traps were destroyed");
     }
 
 }

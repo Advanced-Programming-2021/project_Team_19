@@ -9,12 +9,10 @@ import model.Data.ActivationData;
 public class Raigeki extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
-        for (int i = 1; i < 6; i++) {
-            if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(i) != null)
-                gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(i).handleDestroy(gameData);
-        }
+       gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+
         handleDestroy(gameData);
-        return new ActivationData(this, "all your enemy cards were destroyed");
+        return new ActivationData(this, "all enemy monsters were destroyed");
     }
 
 }

@@ -1,5 +1,9 @@
 package model;
 
+import controller.DuelControllers.GameData;
+import model.Card.Monster;
+
+import javax.management.MalformedObjectNameException;
 import java.util.ArrayList;
 
 public class Gamer {
@@ -99,6 +103,13 @@ public class Gamer {
 
     public int getCurrentScoreInDuel() {
         return currentScoreInDuel;
+    }
+
+    public void destroyAllMonstersOnBoard(GameData gameData){
+        for (Monster monster : getGameBoard().getMonsterCardZone().getCards()) {
+            if (monster != null)
+                monster.handleDestroy(gameData);
+        }
     }
 
 
