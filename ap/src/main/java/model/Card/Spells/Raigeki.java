@@ -6,14 +6,13 @@ import model.Card.Spell;
 import model.Card.TrapAndSpellTypes.Destroyer;
 import model.Data.ActivationData;
 
-public class Raigeki extends Spell implements Destroyer {
+public class Raigeki extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
-        return null;
+       gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+
+        handleDestroy(gameData);
+        return new ActivationData(this, "all enemy monsters were destroyed");
     }
 
-    @Override
-    public void destroy(Card card) {
-
-    }
 }

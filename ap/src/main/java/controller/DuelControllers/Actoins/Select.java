@@ -169,7 +169,7 @@ public class Select extends Action {
     private void selectHand(Matcher matcher) {
         if (matcher.matches()) {
             int selectIndex = Integer.parseInt(matcher.group(1));
-            if (gameData.getCurrentGamer().getGameBoard().getHand().getSize() > selectIndex) {
+            if (gameData.getCurrentGamer().getGameBoard().getHand().getSize() >= selectIndex) {
                 commandIsDone = true;
                 gameData.setSelectedCard(gameData.getCurrentGamer().getGameBoard().getHand().getCard(selectIndex));
                 printSelectedCard();

@@ -40,9 +40,7 @@ public class Terraforming extends Spell {
         gameData.moveCardFromOneZoneToAnother(card,
                 gameData.getCurrentGamer().getGameBoard().getDeckZone(),
                 gameData.getCurrentGamer().getGameBoard().getHand());
-        gameData.moveCardFromOneZoneToAnother(this,
-                gameData.getCurrentGamer().getGameBoard().getZone(this),
-                gameData.getCurrentGamer().getGameBoard().getGraveYard());
+        handleDestroy(gameData);
     }
 
     private ArrayList<Card> getFieldSpells(ArrayList<Card> deckCards) {
