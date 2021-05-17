@@ -22,7 +22,10 @@ public class MonsterReborn extends Spell {
         Printer.print("Please select a card of format: (index in the graveYard) --<opponent>(optional)");
         Pair<Integer, Boolean> cardPosition = chooseCard(gameData);
         Card cardToSummon;
-        if(cardPosition.getSecond()){
+        if(cardPosition == null){
+            return new ActivationData(this,"The procces was canceled by user");
+        }
+        else if(cardPosition.getSecond()){
             cardToSummon = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst());
             gameData.moveCardFromOneZoneToAnother(gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst()),
                     gameData.getSecondGamer().getGameBoard().getGraveYard(),gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
@@ -39,7 +42,10 @@ public class MonsterReborn extends Spell {
 
     private Pair<Integer, Boolean> chooseCard(GameData gameData){
         String userCommand = GetInput.getString();
-        if(!userCommand.matches("(\\d+)(| --opponent)")){
+        if(userCommand.equals("cancel")){
+            return null;
+        }
+        else if(!userCommand.matches("(\\d+)(| --opponent)")){
             Printer.print("Invalid input! please try again");
             Printer.print("User format: (index in the graveYard) --<opponent>(optional)");
             return chooseCard(gameData);
