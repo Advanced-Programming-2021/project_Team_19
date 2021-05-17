@@ -38,7 +38,7 @@ public class FlipSummon extends Summon {
             return false;
         }
         if (!(((Monster)summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn())) {
-            Printer.print("you can’t flip summon this card");
+            Printer.print("you can’t flip summon this card this turn");
             return false;
         }
         return true;

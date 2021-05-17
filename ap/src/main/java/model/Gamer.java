@@ -102,9 +102,13 @@ public class Gamer {
     }
 
 
+    private Gamer(){
+    }
+
     public static Gamer getTestGamer(User user){
 
-        Gamer gamer = new Gamer(user);
+        Gamer gamer = new Gamer();
+        gamer.user = user;
         gamer.gameBoard = AllBoards.getTestBoard(user);
         return gamer;
     }
