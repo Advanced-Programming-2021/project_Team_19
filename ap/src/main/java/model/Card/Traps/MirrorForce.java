@@ -4,7 +4,6 @@ import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Actoins.Attack;
 import controller.DuelControllers.GameData;
 import controller.Utils;
-import model.Board.MonsterCardZone;
 import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
@@ -49,7 +48,7 @@ public class MirrorForce extends Trap {
             return false;
         }
 
-        if (Utils.isCurrentGamerActionDoer(action.getGameData(), action)) {
+        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
             return false;
         }
 

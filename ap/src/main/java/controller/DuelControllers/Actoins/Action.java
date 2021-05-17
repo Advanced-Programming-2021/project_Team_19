@@ -45,6 +45,10 @@ public abstract class Action {
 
         for(SpellAndTraps spellOrTrap :
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
+
+            if(spellOrTrap == null){
+                continue;
+            }
             if(spellOrTrap.canActivateBecauseOfAnAction(this)){
                 return true;
             }
@@ -73,18 +77,17 @@ public abstract class Action {
         ActivationData tempData;
 
         changeTurn();
-
         gameData.showBoard();
 
-        Printer.print("do you want to activate your trap and spell?");
-
-        if(GetInput.getString().equals("yes")){
+        if(askForActivate()){
 
             tempData = new ActivateTriggerEffectOnOtherPlayerTurn(this).run();
+
             if(tempData.activatedCard == null){
                 data = new TriggerActivationData
                         (false, tempData.message, null);
             }
+
         }
 
         changeTurn();
@@ -93,16 +96,39 @@ public abstract class Action {
 
     }
 
-    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction(){
+
+
+    protected boolean askForActivate(){
 
         Printer.print(actionName + " has occurred just now");
         Printer.print("do you want to activate your trap and spell?");
 
-        if(GetInput.getString().equals("yes")){
+        String userAnswer;
+
+        while (true){
+            userAnswer = GetInput.getString();
+
+            if(userAnswer.equals("yes")){
+                return true;
+            }
+            else if (userAnswer.equals("no")){
+                return false;
+            }
+            else{
+                Printer.printInvalidCommand();
+            }
+        }
+    }
+
+    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction(){
+
+
+        if(askForActivate()){
 
             ActivationData tempData = new ActivateTriggerEffectOnGamerTurn(this).run();
 
             if(tempData.activatedCard == null){
+
                 return new TriggerActivationData
                         (false, tempData.message, null);
             }
@@ -126,18 +152,23 @@ public abstract class Action {
 
         gameData.addActionToCurrentActions(this);
 
+        boolean hasTurnOwnerActivatedEffect = false;
+
         if(canTurnOwnerActivateTrapBecauseOfAnAction()){
 
             data = handleActivateTrapOnGamerTurnBecauseOfAnAction();
 
-            if(data.activatedCard == null){
+            if(data.activatedCard != null){
 
-                if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()){
+                hasTurnOwnerActivatedEffect = true;
+            }
+        }
 
-                    data = handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+        if(!hasTurnOwnerActivatedEffect){
 
-                }
+            if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()){
 
+                data = handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
             }
         }
 

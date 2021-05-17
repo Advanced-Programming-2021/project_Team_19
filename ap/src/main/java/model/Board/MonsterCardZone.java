@@ -157,9 +157,9 @@ public class MonsterCardZone extends Zones {
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 
-        tempMonster = (Monster) Utils.getCardByName("Battle OX");
-        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
-        monsterCardZone.addCard(tempMonster);
+//        tempMonster = (Monster) Utils.getCardByName("Battle OX");
+//        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+//        monsterCardZone.addCard(tempMonster);
 
         return monsterCardZone;
     }

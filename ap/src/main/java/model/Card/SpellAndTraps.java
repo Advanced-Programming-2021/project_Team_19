@@ -18,13 +18,11 @@ public abstract class SpellAndTraps extends Card {
     public Icon icon;
 
     @Expose
-    int setTurn = 0;
+    protected int setTurn = 0;
     @Expose
-    private SpellCardMods spellCardMod;
+    protected SpellCardMods spellCardMod;
     @Expose
     protected int turnActivated = 0;
-    @Expose
-    public Card cardThatStoppedActivating;
 
     public int getTurnActivated() {
         return turnActivated;
@@ -34,14 +32,14 @@ public abstract class SpellAndTraps extends Card {
         this.turnActivated = turnActivated;
     }
 
+    public void setSetTurn(int turn){
+        setTurn = turn;
+    }
+
     public abstract ActivationData activate(GameData gameData);
 
     public SpellCardMods getSpellCardMod() {
         return spellCardMod;
-    }
-
-    public void stopActivate(Card card){
-        cardThatStoppedActivating = card;
     }
 
     protected void setSpellCardMod(SpellCardMods spellCardMod) {
@@ -74,6 +72,19 @@ public abstract class SpellAndTraps extends Card {
 
     public static TriggerActivationData runEffect(EffectLabel label){
         return null;
+    }
+
+    public void handleCommonsForActivate(GameData gameData){
+        setTurnActivated(gameData.getTurn());
+        setSpellCardMod(SpellCardMods.OFFENSIVE);
+    }
+
+
+
+    //test
+
+    public static void changeMode(SpellAndTraps card ,SpellCardMods spellCardMod) {
+        card.spellCardMod = spellCardMod;
     }
 
 }

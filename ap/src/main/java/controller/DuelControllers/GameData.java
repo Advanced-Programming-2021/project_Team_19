@@ -26,11 +26,13 @@ public class GameData {
     private Card selectedCard;
     private int turn = 1;
     private Phase currentPhase = Phase.DRAW;
+    private Gamer turnOwner;
 
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
         gamers.add(secondGamer);
+        turnOwner = firstGamer;
     }
 
     public boolean isGameOver() {
@@ -129,6 +131,10 @@ public class GameData {
         int nextPhaseIndex = (phases.indexOf(currentPhase) + 1) % 6;
         currentPhase = phases.get(nextPhaseIndex);
         setSelectedCard(null);
+
+        if(currentPhase.equals(Phase.DRAW)){
+            turnOwner = getCurrentGamer();
+        }
     }
 
     public void goToEndPhase(){
@@ -147,6 +153,15 @@ public class GameData {
         for (Gamer gamer : gamers) {
             gamer.gameFinished();
         }
+    }
+
+    public Gamer getTurnOwner(){
+        return turnOwner;
+    }
+
+    public Gamer getNextTurnOwner(){
+        int index = gamers.indexOf(getTurnOwner());
+        return gamers.get(1 - index);
     }
 
     public Gamer getGameStarter() {

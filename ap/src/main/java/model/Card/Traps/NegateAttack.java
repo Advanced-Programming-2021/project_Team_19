@@ -2,7 +2,6 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Actoins.Attack;
-import controller.DuelControllers.DuelMenuController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.Utils;
@@ -10,7 +9,6 @@ import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
-import model.Gamer;
 import model.Phase;
 
 public class NegateAttack extends Trap {
@@ -36,7 +34,7 @@ public class NegateAttack extends Trap {
             return false;
         }
 
-        if (Utils.isCurrentGamerActionDoer(action.getGameData(), action)) {
+        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
             return false;
         }
 

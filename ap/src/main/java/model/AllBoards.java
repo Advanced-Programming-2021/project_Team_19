@@ -1,6 +1,8 @@
 package model;
 
+import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.DeckDataBaseController;
+import controller.Utils;
 import model.Board.*;
 import model.Card.Card;
 
@@ -127,7 +129,13 @@ public class AllBoards {
 
         Deck deck = DeckDataBaseController.getDeckByName(user.getActiveDeckName());
         board.deckZone = new DeckZone(deck);
+
         board.initializeHand();
+
+        Card card = Utils.getCardByName("battle warrior");
+        board.getHand().getCardsInHand().set(0, card);
+
+        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());
         return board;
     }

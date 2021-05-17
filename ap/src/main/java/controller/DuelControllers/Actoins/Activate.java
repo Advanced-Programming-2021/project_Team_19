@@ -22,9 +22,6 @@ public class Activate extends Action {
 
     public void handleActivatee() {
 
-        if(activatedCard.cardThatStoppedActivating == null){
-            activatedCard.activate(gameData);
-        }
 
     }
 }

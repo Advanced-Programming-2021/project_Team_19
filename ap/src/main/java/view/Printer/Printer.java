@@ -10,12 +10,12 @@ public class Printer {
         isInTestingMod=true;
     }
 
-    public static void print(String string){
+    public static void print(Object object){
         if(isInTestingMod){
-            ProjectTest.getInput(string);
+            ProjectTest.getInput((String) object);
         }
         else {
-            System.out.println(string);
+            System.out.println(object);
         }
     }
 

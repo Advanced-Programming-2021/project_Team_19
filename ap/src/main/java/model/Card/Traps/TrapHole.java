@@ -4,7 +4,6 @@ import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Monster;
-import model.Card.Trap;
 import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -19,15 +18,18 @@ public class TrapHole extends Normal {
         ((Summon) action).getSummoningMonster().handleDestroy(gameData);
 
         handleDestroy(gameData);
-        turnActivated = gameData.getTurn();
 
-        return new TriggerActivationData(false, "trap activate successfully", this);
+        handleCommonsForActivate(gameData);
+
+        return new TriggerActivationData
+                (false, "trap activate successfully", this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if(!action.getGameData().getCurrentGamer().equals
+        if(action.getGameData().getTurnOwner().equals
                 (action.getGameData().getCardController(this))){
+
             return false;
         }
 
@@ -35,7 +37,7 @@ public class TrapHole extends Normal {
             return false;
         }
 
-        if (Utils.isCurrentGamerActionDoer(action.getGameData(), action)) {
+        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
             return false;
         }
 

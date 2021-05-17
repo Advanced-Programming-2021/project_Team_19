@@ -1,5 +1,6 @@
 package model.Board;
 
+import controller.Utils;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Enums.CardMod;
@@ -12,7 +13,7 @@ public class SpellAndTrapCardZone extends Zones {
 
     private ArrayList<SpellAndTraps> allCards=new ArrayList<>();
 
-    {
+    public SpellAndTrapCardZone(){
         for(int i=0;i<5;i++){
             allCards.add(null);
         }
@@ -34,7 +35,7 @@ public class SpellAndTrapCardZone extends Zones {
 
     public void addCard(Card card) {
         for(int i=1;i<=5;i++){
-            if(allCards.get(hashNumber(i))!=null){
+            if(allCards.get(hashNumber(i))==null){
                 allCards.set(hashNumber(i),(SpellAndTraps)card);
                 break;
             }
@@ -108,5 +109,19 @@ public class SpellAndTrapCardZone extends Zones {
             }
         }
         return true;
+    }
+
+
+
+    public static SpellAndTrapCardZone getTestZone(){
+
+        SpellAndTrapCardZone test = new SpellAndTrapCardZone();
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("trap hole"));
+
+        card.setSetTurn(0);
+        card.changeMode(card, SpellCardMods.HIDDEN);
+
+        test.addCard(card);
+        return test;
     }
 }

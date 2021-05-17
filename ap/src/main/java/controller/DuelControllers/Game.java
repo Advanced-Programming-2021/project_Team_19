@@ -4,6 +4,8 @@ import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
+import model.Card.Card;
+import model.Card.Monster;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Gamer;
@@ -85,7 +87,10 @@ public class Game {
                 help(gameData);
             } else if (command.equals("show board")) {
                 gameData.showBoard();
-            } else {
+            } else if (command.equals("show AD")){//attack and defense
+                showAtkDef(gameData);
+            }
+            else {
                 Printer.printInvalidCommand();
             }
 
@@ -172,6 +177,21 @@ public class Game {
         if (GetInput.getString().equals("yes")) {
 
         }
+    }
+
+
+    //test
+
+    public static void showAtkDef(GameData gameData){
+
+        Card card = gameData.getSelectedCard();
+        try{
+            System.out.println(((Monster)card).getAttack(gameData));
+            System.out.println(((Monster)card).getDefence());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }

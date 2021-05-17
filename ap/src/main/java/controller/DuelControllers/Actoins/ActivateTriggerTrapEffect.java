@@ -7,10 +7,7 @@ import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Enums.CardFamily;
-import view.GetInput;
 import view.Printer.Printer;
-
-import java.util.ArrayList;
 
 public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotification {
 
@@ -38,13 +35,12 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
 
         Card card = gameData.getSelectedCard();
 
-        if (Utils.IsSelectedCardIsNull(gameData)) {
+        if (Utils.IsSelectedCardNull(gameData)) {
             data.message = "no card is selected yet";
             return data;
         }
 
-        if (gameData.getSelectedCard().getCardFamily().equals(CardFamily.TRAP) ||
-                gameData.getSelectedCard().getCardFamily().equals(CardFamily.SPELL)) {
+        if (gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
 
             data.message = "activate effect is only for spell and trap cards";
             return data;
@@ -59,6 +55,8 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
         activatedCard = (SpellAndTraps) card;
 
         if (activatedCard.getTurnActivated() != 0) {
+
+            Printer.print(activatedCard.getTurnActivated());
 
             data.message = "you have already activated this card";
             return data;

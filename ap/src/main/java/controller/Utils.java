@@ -114,16 +114,16 @@ public class Utils {
         return CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
     }
 
-    public static boolean isCurrentGamerActionDoer(GameData gameData, Action action) {
-        return gameData.getCurrentGamer().equals(action.getActionDoer());
+    public static boolean isCareOwnerActionDoer(GameData gameData, Action action, Card card) {
+        return gameData.getCardController(card).equals(action.getActionDoer());
     }
 
-    public static boolean IsSelectedCardIsNull(GameData gameData) {
+    public static boolean IsSelectedCardNull(GameData gameData) {
 
         if (gameData.getSelectedCard() == null) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass) {

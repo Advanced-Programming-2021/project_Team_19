@@ -7,10 +7,6 @@ import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Gamer;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MagicCylinder extends Trap {
     @Override
@@ -39,7 +35,7 @@ public class MagicCylinder extends Trap {
             return false;
         }
 
-        if (Utils.isCurrentGamerActionDoer(action.getGameData(), action)) {
+        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
             return false;
         }
 
