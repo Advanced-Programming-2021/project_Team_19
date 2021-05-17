@@ -2,17 +2,12 @@ package model.Card.Spells;
 
 import controller.DuelControllers.GameData;
 import model.Card.Spell;
-import model.Card.TrapAndSpellTypes.Tribute;
 import model.Data.ActivationData;
 
-public class AdvancedRitualArt extends Spell implements Tribute {
+public class AdvancedRitualArt extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
-        return null;
+        return new ActivationData(this, "");
     }
 
-    @Override
-    public void Tribute() {
-
-    }
 }
