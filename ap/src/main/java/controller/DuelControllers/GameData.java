@@ -1,12 +1,14 @@
 package controller.DuelControllers;
 
 import controller.DataBaseControllers.CardDataBaseController;
+import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.Utils;
 import model.Board.GraveYard;
 import model.Board.Zones;
 import model.Card.Card;
+import model.Deck;
 import model.Gamer;
 import model.Phase;
 import model.User;
@@ -163,11 +165,12 @@ public class GameData {
     public static GameData getTestGameData(){
 
 
-        User user1 = new User("mohammad_1", "mohammad_1", "123");
-        user1.setActiveDeckName("testDeck");
+        User user1 = new User("mohammad", "mohammad", "123");
 
-        User user2 = new User("mohammad_2", "mohammad_2", "123");
-        user2.setActiveDeckName("testDeck");
+        User user2 = new User("taha", "taha", "123");
+
+        user1.setActiveDeckName("deck");
+        user2.setActiveDeckName("deck");
 
         GameData gameData = new GameData(Gamer.getTestGamer(user1), Gamer.getTestGamer(user2));
 
@@ -183,6 +186,4 @@ public class GameData {
             return getSecondGamer();
 
     }
-
-
 }

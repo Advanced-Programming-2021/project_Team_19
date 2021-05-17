@@ -18,11 +18,11 @@ public class Main {
 
     public static void main(String[] arg) {
 
-//        new Game().run(GameData.getTestGameData());
+        new Game().run(GameData.getTestGameData());
 
-        DataBaseController.makeResourceDirectory();
-
-        LoginMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }

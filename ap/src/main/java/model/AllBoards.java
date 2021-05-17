@@ -118,8 +118,16 @@ public class AllBoards {
 
 
 
+
+    private AllBoards(){}
+
     public static AllBoards getTestBoard(User user){
-        AllBoards board = new AllBoards(user);
+
+        AllBoards board = new AllBoards();
+
+        Deck deck = DeckDataBaseController.getDeckByName(user.getActiveDeckName());
+        board.deckZone = new DeckZone(deck);
+        board.initializeHand();
         board.setMonsterCardZone(MonsterCardZone.getTestZone());
         return board;
     }

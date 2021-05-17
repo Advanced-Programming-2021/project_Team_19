@@ -19,7 +19,7 @@ public class GameHelp {
                         summon
                         set
                         set position attack|defence
-                        flip summon""");
+                        flip-summon""");
                 Select.help();
                 break;
         }
