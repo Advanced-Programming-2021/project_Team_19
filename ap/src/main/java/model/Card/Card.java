@@ -17,6 +17,7 @@ public class Card {
     private String description;
 
 
+
     @Expose
     private CardFamily cardFamily;
 

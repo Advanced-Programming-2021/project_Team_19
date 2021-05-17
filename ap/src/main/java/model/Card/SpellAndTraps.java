@@ -1,16 +1,21 @@
 package model.Card;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
+import model.Enums.Icon;
 import model.Enums.SpellCardMods;
 import model.Phase;
 
 public abstract class SpellAndTraps extends Card {
+
+    @SerializedName("Icon")
+    public Icon icon;
 
     @Expose
     int setTurn = 0;

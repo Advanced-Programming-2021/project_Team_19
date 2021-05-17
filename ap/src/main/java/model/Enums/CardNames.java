@@ -2,7 +2,7 @@ package model.Enums;
 
 public enum CardNames {
 
-    TRAP_HOLE("model.Card.Monster.NormalMonster"),
+    TRAP_HOLE("model.Card.Traps.TrapHole"),
     MIRROR_FORCE(""),
     MAGIC_CYLINDER(""),
     MIND_CRUSH(""),
