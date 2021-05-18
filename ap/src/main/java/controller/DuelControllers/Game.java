@@ -6,6 +6,8 @@ import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Card.SpellAndTraps;
+import model.Card.Trap;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Gamer;
@@ -42,6 +44,11 @@ public class Game {
                 gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
+
+                if(c(gameData)){
+                    f(gameData);
+                }
+
                 continue;
             }
 
@@ -171,12 +178,21 @@ public class Game {
 
     private void f(GameData gameData) {
 
-        Printer.print("" + " has occurred just now");
-        Printer.print("do you want to activate your trap and spell?");
-
-        if (GetInput.getString().equals("yes")) {
-
+        if(c(gameData)){
+            new ActivateSpeedEffect(gameData).run();
         }
+    }
+
+    private boolean c(GameData gameData){
+        for(SpellAndTraps card :
+                gameData.getNextTurnOwner().getGameBoard().getSpellAndTrapCardZone().getAllCards()){
+            if(card instanceof Trap){
+                if(card.canActivate(gameData)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

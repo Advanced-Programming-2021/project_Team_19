@@ -10,6 +10,7 @@ import model.Card.Monster;
 import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -33,8 +34,10 @@ public class TrapHole extends Normal {
     public boolean canActivateBecauseOfAnAction(Action action) {
 
         ArrayList<Checker> checkers = new ArrayList<>();
+
         checkers.add(new TurnChecker(action.getGameData(), this));
         checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
+
 
         if(!Checker.multipleCheck(checkers)){
             return false;

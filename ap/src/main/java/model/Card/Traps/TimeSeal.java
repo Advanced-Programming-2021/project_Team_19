@@ -2,6 +2,10 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
+import controller.TrapCheckers.CardControllerIsCurrentGamerChecker;
+import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
+import controller.TrapCheckers.Checker;
+import controller.TrapCheckers.TurnChecker;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
@@ -10,6 +14,8 @@ import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Phase;
+
+import java.util.ArrayList;
 
 public class TimeSeal extends Trap {
     @Override
@@ -27,11 +33,11 @@ public class TimeSeal extends Trap {
 
     public boolean canActivate(GameData gameData) {
 
-        if(!gameData.getCurrentGamer().equals(gameData.getCardController(this))){
-            return false;
-        }
+        ArrayList<Checker> checkers = new ArrayList<>();
 
-        if (!canActivateThisTurn(gameData)) {
+        checkers.add(new TurnChecker(gameData, this));
+
+        if(!Checker.multipleCheck(checkers)){
             return false;
         }
 

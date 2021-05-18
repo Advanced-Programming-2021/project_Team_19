@@ -75,15 +75,14 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
     }
 
-    private boolean checkSomeErrors(){
+    protected boolean checkSomeErrors(){
 
         if (gameData.getSelectedCard() == null) {
             Printer.print("no card is selected yet");
             return false;
         }
 
-        if(gameData.getSelectedCard().getCardFamily().equals(CardFamily.TRAP) ||
-                gameData.getSelectedCard().getCardFamily().equals(CardFamily.SPELL)){
+        if(gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)){
             Printer.print("activate effect is only for spell and trap cards");
             return false;
         }

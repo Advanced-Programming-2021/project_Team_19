@@ -20,7 +20,7 @@ public abstract class Checker {
 
     public static boolean multipleCheck(ArrayList<Checker> checkers){
         for(Checker checker : checkers){
-            if(checker.check() == false){
+            if(!checker.check()){
                 return false;
             }
         }
