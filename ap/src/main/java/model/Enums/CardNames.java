@@ -15,7 +15,7 @@ public enum CardNames {
     VANITYS_EMPTINESS(""),
     WALL_OF_REVEALING_LIGHT(""),
     MONSTER_REBORN(""),
-    TERRAFORMING("model.Card.Monsters.Terraforming"),
+    TERRAFORMING("model.Card.Spells.Terraforming"),
     POT_OF_GREED(""),
     RAIGEKI(""),
     CHANGE_OF_HEART(""),

@@ -52,6 +52,14 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
+        if (gameData.getSelectedCard().getName().equals("Gate Guardian")) {
+            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
+                new SpecialSummon(gameData).run(gameData.getSelectedCard());
+                Printer.print("summoned successfully");
+            }
+            return;
+        }
+
         int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
                 (false, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards());
 

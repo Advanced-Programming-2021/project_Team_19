@@ -62,8 +62,7 @@ public class Set extends SummonAndSet {
         if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
             Printer.print("monster card zone is full");
             return;
-        } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
-                !gameData.getSelectedCard().getName().equals("Gate Guardian")) {
+        } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn()) {
             Printer.print("you already summoned/set on this turn");
             return;
         }
