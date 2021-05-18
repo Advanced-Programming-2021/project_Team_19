@@ -233,7 +233,7 @@ public class Game {
         Card card = gameData.getSelectedCard();
         try {
             System.out.println(((Monster) card).getAttack(gameData));
-            System.out.println(((Monster) card).getDefence());
+            System.out.println(((Monster) card).getDefence(gameData));
         } catch (Exception e) {
             e.printStackTrace();
         }

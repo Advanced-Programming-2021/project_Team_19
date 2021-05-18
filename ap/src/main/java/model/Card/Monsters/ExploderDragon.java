@@ -14,7 +14,7 @@ public class ExploderDragon extends Monster {
         if (getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getAttack(gameData)) {
             return true;
         }
-        if (!getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getDefence()) {
+        if (!getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED) && attackingMonster.getAttack(gameData) < getDefence(gameData)) {
             return true;
         }
         attackingMonster.handleDestroy(gameData);

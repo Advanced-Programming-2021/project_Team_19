@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import model.Card.Spells.FieldSpell;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
@@ -49,7 +50,9 @@ public class Monster extends Card {
 
 
     public int getAttack(GameData gameData) {
-        return attack;
+        int attackChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+        int attackChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+        return attack + attackChangeFromRival + attackChangeFromSelf;
     }
 
     public MonsterTypesForEffects getEffectType() {
@@ -64,8 +67,10 @@ public class Monster extends Card {
         this.attack = attack;
     }
 
-    public int getDefence() {
-        return defence;
+    public int getDefence(GameData gameData) {
+        int defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        int defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        return defence + defenceChangeFromRival + defenceChangeFromSelf;
     }
 
     public void setDefence(int defence) {
@@ -148,12 +153,12 @@ public class Monster extends Card {
 
     public  void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
-        if (getAttack(gameData) > defendingMonster.getDefence()) {
+        if (getAttack(gameData) > defendingMonster.getDefence(gameData)) {
             defendingMonster.handleDestroy(gameData);
-            Printer.print("the defense position monster is destroyed");
-        } else if (getAttack(gameData) < defendingMonster.getDefence()) {
+            Printer.print("the defence position monster is destroyed");
+        } else if (getAttack(gameData) < defendingMonster.getDefence(gameData)) {
             handleDestroy(gameData);
-            damage = defendingMonster.getDefence() - getAttack(gameData);
+            damage = defendingMonster.getDefence(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
             Printer.print("no card is destroyed and you received " + damage + " battle damage");
         } else {

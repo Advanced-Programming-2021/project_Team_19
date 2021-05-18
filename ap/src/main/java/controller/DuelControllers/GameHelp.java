@@ -29,7 +29,8 @@ public class GameHelp {
                 help
                 next phase
                 show board
-                show graveyard""");
+                show graveyard
+                show AD""");
     }
 
 }
