@@ -3,10 +3,10 @@ package model.Card.Monsters;
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Board.DeckZone;
 import model.Board.GraveYard;
 import model.Card.Card;
-import model.Card.EffectTypes.Defend;
 import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
@@ -18,7 +18,7 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class Textchanger extends Monster {
+public class Texchanger extends Monster {
 
     @Expose
     int lastTurnEffectUsed;
@@ -33,14 +33,14 @@ public class Textchanger extends Monster {
         }
         Printer.print("the attack has been canceled because you attacked Tex Changer\n" +
                 "your opponent can special summon a Cyberse card from their deck or graveyard");
-//   todo     turn should be changed here
+        gameData.changeTurn();
         summonWhenAttacked(gameData);
-//   todo     turn should be changed here
+        gameData.changeTurn();
         return false;
     }
 
     public boolean summonWhenAttacked(GameData gameData) {
-        ArrayList<Monster> cyberseCards = getCyberseInGraveyardAndDeck(gameData.getCurrentGamer());
+        ArrayList<Card> cyberseCards = getCyberseInGraveyardAndDeck(gameData.getCurrentGamer());
         if (cyberseCards.isEmpty()) {
             Printer.print("there are no Cyberse cards in your deck or graveyard to revive");
             return false;
@@ -53,7 +53,11 @@ public class Textchanger extends Monster {
         while (true) {
             command = GetInput.getString();
             if (command.matches("yes")) {
-                return summonFromDeckOrGraveyard(gameData, cyberseCards);
+                Card selectedCard = Utils.askUserToSelectCard(cyberseCards, "select a card id to summon");
+                if (selectedCard == null)
+                    return false;
+                new SpecialSummon(gameData).run(selectedCard);
+                return true;
             } else if (command.matches("no") || command.matches("cancel")) {
                 return false;
             } else {
@@ -62,50 +66,24 @@ public class Textchanger extends Monster {
         }
     }
 
-    private boolean summonFromDeckOrGraveyard(GameData gameData, ArrayList<Monster> cyberseCards) {
-        String command;
-        while (true) {
-            showChooseCard(cyberseCards);
-            command = GetInput.getString();
-            if (command.matches("\\d+")) {
-                if (Integer.parseInt(command) > cyberseCards.size()) {
-                    Printer.print("invalid id");
-                    showChooseCard(cyberseCards);
-                } else {
-                    new SpecialSummon(gameData).run(cyberseCards.get(Integer.parseInt(command) - 1));
-                    return true;
-                }
-            } else if (command.matches("cancel")) {
-                return false;
-            } else {
-                Printer.printInvalidCommand();
-            }
-        }
-    }
-
-    private void showChooseCard(ArrayList<Monster> monsters) {
-        Printer.print("select a card id to summon:");
-        for (int i = 1; i <= monsters.size(); i++) {
-            Printer.print(i + "- " + monsters.get(i - 1).toString());
-        }
-    }
-
-    private ArrayList<Monster> getCyberseInGraveyardAndDeck(Gamer gamer) {
+    private ArrayList<Card> getCyberseInGraveyardAndDeck(Gamer gamer) {
         GraveYard graveYard = gamer.getGameBoard().getGraveYard();
         DeckZone deck = gamer.getGameBoard().getDeckZone();
-        ArrayList<Monster> cyberseCards = new ArrayList<>();
+        ArrayList<Card> cyberseCards = new ArrayList<>();
         for (Card card : graveYard.getCardsInGraveYard()) {
-            if (card.getCardFamily().equals(CardFamily.MONSTER) &&
+            if (card != null &&
+                    card.getCardFamily().equals(CardFamily.MONSTER) &&
                     ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
                     ((Monster) card).getEffectType().equals(MonsterTypesForEffects.Normal))
-                cyberseCards.add((Monster) card);
+                cyberseCards.add(card);
         }
         for (int i = 0; i < deck.getSize(); i++) {
             Card card = deck.getCard(i);
-            if (card.getCardFamily().equals(CardFamily.MONSTER) &&
+            if (card != null &&
+                    card.getCardFamily().equals(CardFamily.MONSTER) &&
                     ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
                     ((Monster) card).getEffectType().equals(MonsterTypesForEffects.Normal))
-                cyberseCards.add((Monster) card);
+                cyberseCards.add(card);
         }
         return cyberseCards;
     }

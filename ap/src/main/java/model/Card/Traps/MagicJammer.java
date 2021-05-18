@@ -4,11 +4,14 @@ import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Card.Trap;
 import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 
 public class MagicJammer extends Trap{
 
     @Override
-    public ActivationData activate(GameData gameData) {
+    public TriggerActivationData activate(GameData gameData) {
+
+
         return null;
     }
 

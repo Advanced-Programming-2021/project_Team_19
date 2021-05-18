@@ -2,10 +2,14 @@ package model.Card.Monsters;
 
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import controller.Utils;
+import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import view.GetInput;
 import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public class ManEaterBug extends Monster {
 
@@ -13,28 +17,18 @@ public class ManEaterBug extends Monster {
 
         setCardMod(CardMod.OFFENSIVE_OCCUPIED);
 
-        if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getNumberOfCards() != 0) {
-            String command;
-            Printer.print("you have activated Man-Eater Bug\n" +
-                    "select an enemy monster id to destroy: ");
-            while (true) {
-                command = GetInput.getString();
-
-                if (command.matches("[1-5]")) {
-                    if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)) == null){
-                        Printer.print("there is no monster here\n" +
-                                "enter an id that contains a monster");
-                    }else{
-                        new Destroy(gameData).run(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(Integer.parseInt(command)), false);
-                        return true;
-                    }
-                } else if (command.matches("//d+")) {
-                    Printer.print("please enter a valid id");
-                } else {
-                    Printer.printInvalidCommand();
-                }
-            }
+        if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getNumberOfCards() == 0) {
+            return false;
         }
+        ArrayList<Card> cards = new ArrayList<>(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards());
+
+        Card monsterToDestroy = Utils.askUserToSelectCard(cards, "select an enemy id to destroy:");
+
+        if (monsterToDestroy == null)
+            return false;
+
+        monsterToDestroy.handleDestroy(gameData);
+
         return true;
     }
 

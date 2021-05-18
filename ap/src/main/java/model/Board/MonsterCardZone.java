@@ -141,15 +141,15 @@ public class MonsterCardZone extends Zones {
 
         MonsterCardZone monsterCardZone = new MonsterCardZone();
 
-        Monster tempMonster = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName("battle ox"));
+        Monster tempMonster = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName("Texchanger"));
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 
-        tempMonster = (Monster) Utils.getCardByName("Baby dragon");
+        tempMonster = (Monster) Utils.getCardByName("Man Eater Bug");
         tempMonster.setCardMod(CardMod.DEFENSIVE_HIDDEN);
         monsterCardZone.addCard(tempMonster);
 
-        tempMonster = (Monster) Utils.getCardByName("Fireyarou");
+        tempMonster = (Monster) Utils.getCardByName("yomi ship");
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 
