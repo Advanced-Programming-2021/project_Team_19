@@ -23,14 +23,14 @@ public class Main {
 
     public static void main(String[] arg) {
 
-        new DeckModifierBetweenGames(UserDataBaseController.getUserByUsername("Taha")).run();
+//        new DeckModifierBetweenGames(UserDataBaseController.getUserByUsername("Taha")).run();
 
-        Printer.print(Utils.getCardByName("battle warrior").status);
+        Printer.print( Utils.getCardByName("Negate Attack").toString());
 
-//        new Game().run(GameData.getTestGameData());
+        new Game().run(GameData.getTestGameData());
 
 //        DataBaseController.makeResourceDirectory();
-//
+
 //        LoginMenu.getInstance().run();
     }
 

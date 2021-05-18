@@ -59,6 +59,4 @@ public class CardDataBaseController extends DataBaseController {
     }
 
 
-
-
 }
