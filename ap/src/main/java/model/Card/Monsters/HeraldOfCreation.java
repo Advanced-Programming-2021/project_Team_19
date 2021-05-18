@@ -26,13 +26,16 @@ public class HeraldOfCreation extends Monster {
         Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
         GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().getGraveYard();
 
-        Card selectedCardFromHand = Utils.askUserToSelectCard(hand.getCardsInHand(), "select a card id to discard:");
+        Card selectedCardFromHand = Utils.askUserToSelectCard(hand.getCardsInHand(),
+                "select a card id to discard:", null);
 
         if (selectedCardFromHand == null)
             return;
 
-        Card selectedCardFromGraveyard = Utils.askUserToSelectCard(monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()),
-                "select a card id to revive from graveyard:");
+        Card selectedCardFromGraveyard = Utils.askUserToSelectCard(
+                monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()),
+                "select a card id to revive from graveyard:",
+                null);
 
         if (selectedCardFromGraveyard == null)
             return;

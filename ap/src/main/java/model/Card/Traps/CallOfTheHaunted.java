@@ -2,13 +2,16 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Board.GraveYard;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 import view.GetInput;
 import view.Printer.Printer;
+import model.Enums.CardFamily;
 
 public class CallOfTheHaunted extends Trap {
 
@@ -16,52 +19,25 @@ public class CallOfTheHaunted extends Trap {
 
     public ActivationData activate(GameData gameData) {
 
-        gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
+        Card card = Utils.askUserToSelectCard(
+                gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard(),
+                "enter monster id to special summon it", CardFamily.MONSTER);
 
-        Printer.print("enter monster id to special summon it");
-        String input;
-
-        while (true) {
-
-            input = GetInput.getString();
-            int id = 0;
-
-            GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().
-                    getGraveYard();
-
-            if (input.equals("cancel")) {
-                return new ActivationData(this, "");
-//                todo give a meaningful message
-            }
-
-            if (!input.matches("\\d+")) {
-                Printer.print("invalid input");
-                continue;
-            } else {
-                id = Integer.parseInt(input);
-            }
-
-            if (!(getSelectedCard(graveYard, id) instanceof Monster)) {
-                Printer.print("enter monster id please");
-                continue;
-            }
-
-            if (graveYard.getCardsInGraveYard().size() < id || id < 1) {
-                Printer.print("please enter valid number");
-                continue;
-            }
-
-            Monster selectedCard = (Monster) getSelectedCard(graveYard,id);
-            putMonsterToMonsterZone(gameData, selectedCard);
-            selectedCard.setCallOfTheHauntedTrap(this);
-
-            turnActivated = gameData.getTurn();
-            return new ActivationData(this, "");
-//            todo give a meaningful message
+        if(card == null){
+            return new ActivationData
+                    (null, "activation canceled");
         }
+
+        Monster selectedCard = (Monster) card;
+        putMonsterToMonsterZone(gameData, selectedCard);
+        selectedCard.setCallOfTheHauntedTrap(this);
+
+        handleCommonsForActivate(gameData);
+
+        return new ActivationData(this, "trap has activated successfully");
     }
 
-    private void putMonsterToMonsterZone(GameData gameData, Card card){
+    private void putMonsterToMonsterZone(GameData gameData, Card card) {
 
         new SpecialSummon(gameData).run(card);
     }
@@ -72,7 +48,7 @@ public class CallOfTheHaunted extends Trap {
 
     public boolean canActivate(GameData gameData) {
 
-        if(!gameData.getCurrentGamer().equals(gameData.getCardController(this))){
+        if (!gameData.getCurrentGamer().equals(gameData.getCardController(this))) {
             return false;
         }
 
@@ -93,10 +69,10 @@ public class CallOfTheHaunted extends Trap {
         return true;
     }
 
-    public void handleDestroy(GameData gameData){
+    public void handleDestroy(GameData gameData) {
 
-        if(!gameData.getCardController(summonedMonster).getGameBoard().getGraveYard().
-                getCardsInGraveYard().contains(summonedMonster)){
+        if (!gameData.getCardController(summonedMonster).getGameBoard().getGraveYard().
+                getCardsInGraveYard().contains(summonedMonster)) {
             summonedMonster.handleDestroy(gameData);
         }
 

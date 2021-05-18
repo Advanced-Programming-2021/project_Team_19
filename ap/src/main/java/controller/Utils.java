@@ -6,6 +6,7 @@ import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Data.DataForClientFromServer;
+import model.Enums.CardFamily;
 import model.Enums.CardNames;
 import model.Enums.MessageType;
 import view.GetInput;
@@ -14,6 +15,7 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -162,21 +164,34 @@ public class Utils {
         Printer.print(stringBuilder.toString().trim());
     }
 
-    public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message) {
+    public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message, CardFamily cardFamily) {
         String command;
         while (true){
             Printer.print(message);
             printArrayListOfCards(listOfCards);
             command = GetInput.getString();
+
             if (command.matches("cancel")) {
                 return null;
             }else if (command.matches("\\d+")){
                 int id = Integer.parseInt(command);
-                if (id >= listOfCards.size()){
+                if (id >= listOfCards.size() || id < 1){
                     Printer.print("please enter a valid id:");
                 }
                 else {
-                    return listOfCards.get(id - 1);
+                    Card returnedCard = listOfCards.get(id - 1);
+
+                    if(cardFamily == null){
+                        return returnedCard;
+                    } else{
+                        if(returnedCard.getCardFamily().equals(cardFamily)){
+                            return returnedCard;
+                        }
+                        else{
+                            Printer.print("pleas enter " + cardFamily.toString().toLowerCase() + " id");
+                        }
+                    }
+
                 }
             } else {
                 Printer.printInvalidCommand();

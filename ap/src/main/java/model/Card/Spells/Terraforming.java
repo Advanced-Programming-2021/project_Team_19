@@ -28,7 +28,10 @@ public class Terraforming extends Spell {
     }
 
     private boolean selectCardAndMoveToHand(ArrayList<Card> fieldSpellsInDeck, GameData gameData) {
-        Card selectedCard = Utils.askUserToSelectCard(fieldSpellsInDeck, "enter an id to move a field spell to your hand");
+        Card selectedCard = Utils.askUserToSelectCard(
+                fieldSpellsInDeck,
+                        "enter an id to move a field spell to your hand",
+                        null);
 
         if (selectedCard == null)
             return false;

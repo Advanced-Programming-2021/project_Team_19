@@ -27,12 +27,6 @@ public class TrapHole extends Normal {
 
     public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if(action.getGameData().getTurnOwner().equals
-                (action.getGameData().getCardController(this))){
-
-            return false;
-        }
-
         if (!canActivateThisTurn(action.getGameData())) {
             return false;
         }

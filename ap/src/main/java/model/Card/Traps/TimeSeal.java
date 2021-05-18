@@ -15,15 +15,14 @@ public class TimeSeal extends Trap {
     @Override
     public ActivationData activate(GameData gameData)  {
 
-        handleDestroy(gameData);
+        handleCommonsForActivate(gameData);
 
-        turnActivated = gameData.getTurn();
+        handleDestroy(gameData);
 
         gameData.getCurrentGamer().addEffectLabel
                 (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
 
-        return new ActivationData(this, "");
-//        todo give a meaningful message
+        return new ActivationData(this, "trap activated successfully");
     }
 
     public boolean canActivate(GameData gameData) {
