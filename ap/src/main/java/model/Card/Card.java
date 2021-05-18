@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.GameData;
 import model.Enums.CardFamily;
+import model.Enums.Status;
 
 import java.util.Comparator;
 
@@ -15,8 +16,8 @@ public class Card {
     private String name;
     @SerializedName("Description")
     private String description;
-
-
+    @SerializedName("Status")
+    public Status status = Status.UNLIMITED;
 
     @Expose
     private CardFamily cardFamily;

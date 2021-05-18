@@ -21,11 +21,13 @@ public class Main {
 
     public static void main(String[] arg) {
 
+        Printer.print(Utils.getCardByName("battle warrior").status);
+
 //        new Game().run(GameData.getTestGameData());
 
-        DataBaseController.makeResourceDirectory();
-
-        LoginMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }
