@@ -39,10 +39,20 @@ public class TrapHole extends Normal {
         checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
 
 
-        return Checker.multipleCheck(checkers) &&
-                (action instanceof FlipSummon || action instanceof NormalSummon) &&
-                !(((Monster)((Summon) action).getSummoningMonster()).getAttack(action.getGameData()) >= 1000);
+        if(!Checker.multipleCheck(checkers)){
+            return false;
+        }
 
+
+        if (!(action instanceof FlipSummon || action instanceof NormalSummon)) {
+           return false;
+        }
+
+        if (((Monster)((Summon) action).getSummoningMonster()).getAttack(action.getGameData()) >= 1000) {
+            return false;
+        }
+
+        return true;
     }
 
 }
