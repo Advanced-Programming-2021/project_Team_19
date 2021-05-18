@@ -56,11 +56,11 @@ public class CallOfTheHaunted extends Trap {
             return false;
         }
 
-        if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
+        if (gameData.getCardController(this).getGameBoard().getMonsterCardZone().isZoneFull()) {
             return false;
         }
 
-        for (Card card : gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard()) {
+        for (Card card : gameData.getCardController(this).getGameBoard().getGraveYard().getCardsInGraveYard()) {
             if (card instanceof Monster) {
                 return true;
             }

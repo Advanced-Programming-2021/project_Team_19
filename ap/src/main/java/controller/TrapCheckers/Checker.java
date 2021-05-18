@@ -4,6 +4,8 @@ import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
 
+import java.util.ArrayList;
+
 public abstract class Checker {
 
     GameData gameData;
@@ -15,4 +17,13 @@ public abstract class Checker {
     }
 
     public abstract boolean check();
+
+    public static boolean multipleCheck(ArrayList<Checker> checkers){
+        for(Checker checker : checkers){
+            if(checker.check() == false){
+                return false;
+            }
+        }
+        return true;
+    }
 }

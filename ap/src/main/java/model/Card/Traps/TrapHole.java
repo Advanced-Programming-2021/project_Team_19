@@ -2,11 +2,16 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
+import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
+import controller.TrapCheckers.Checker;
+import controller.TrapCheckers.TurnChecker;
 import controller.Utils;
 import model.Card.Monster;
 import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+
+import java.util.ArrayList;
 
 public class TrapHole extends Normal {
 
@@ -27,13 +32,14 @@ public class TrapHole extends Normal {
 
     public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if (!canActivateThisTurn(action.getGameData())) {
+        ArrayList<Checker> checkers = new ArrayList<>();
+        checkers.add(new TurnChecker(action.getGameData(), this));
+        checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
+
+        if(!Checker.multipleCheck(checkers)){
             return false;
         }
 
-        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
-            return false;
-        }
 
         if (!(action instanceof FlipSummon || action instanceof NormalSummon)) {
            return false;

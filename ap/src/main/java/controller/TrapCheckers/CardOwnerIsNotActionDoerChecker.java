@@ -6,11 +6,11 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
 
-public class ActionDoerChecker extends Checker{
+public class CardOwnerIsNotActionDoerChecker extends Checker{
 
     Action action;
 
-    public ActionDoerChecker(Action action, SpellAndTraps card){
+    public CardOwnerIsNotActionDoerChecker(Action action, SpellAndTraps card){
         super(action.getGameData(), card);
         this.action = action;
     }
