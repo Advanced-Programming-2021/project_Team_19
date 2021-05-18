@@ -67,12 +67,12 @@ public class ScannerMonster extends Monster {
     }
 
     @Override
-    public int getDefence() {
+    public int getDefence(GameData gameData) {
         if(tempMonster == null){
-            return super.getDefence();
+            return super.getDefence(gameData);
         }
         else{
-            return tempMonster.getDefence();
+            return tempMonster.getDefence(gameData);
         }
     }
 

@@ -27,7 +27,7 @@ public class Texchanger extends Monster {
     public boolean attackIsNormal(GameData gameData) {
         if (lastTurnEffectUsed == gameData.getTurn())
             return true;
-        if ((((Monster) gameData.getSelectedCard()).getAttack(gameData) < getDefence() && !getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) ||
+        if ((((Monster) gameData.getSelectedCard()).getAttack(gameData) < getDefence(gameData) && !getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) ||
                 (((Monster) gameData.getSelectedCard()).getAttack(gameData) < getAttack(gameData) && getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED))) {
             return true;
         }
