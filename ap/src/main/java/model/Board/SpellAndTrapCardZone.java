@@ -116,7 +116,7 @@ public class SpellAndTrapCardZone extends Zones {
     public static SpellAndTrapCardZone getTestZone(){
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("trap hole"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("time seal"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);

@@ -27,7 +27,7 @@ public class GameData {
     private int turn = 1;
     private Phase currentPhase = Phase.DRAW;
     private Gamer turnOwner;
-
+    public boolean hasAskedForSpellsThisPhase = true;
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
@@ -176,6 +176,7 @@ public class GameData {
         return currentActions;
     }
 
+    //test
 
     public static GameData getTestGameData(){
 

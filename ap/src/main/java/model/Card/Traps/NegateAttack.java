@@ -10,6 +10,7 @@ import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Phase;
+import view.Printer.Printer;
 
 public class NegateAttack extends Trap {
 
@@ -45,7 +46,7 @@ public class NegateAttack extends Trap {
         return true;
     }
 
-    public static boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label){
 
         if(label.gameData.getCurrentPhase().equals(Phase.BATTLE)){
             if(label.gameData.getCurrentActions().size() == 0){
@@ -55,11 +56,16 @@ public class NegateAttack extends Trap {
         return false;
     }
 
-    public static TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label){
 
-        Game.goToNextPhase(label.gameData);
+        GameData gameData = label.gameData;
+
+        gameData.goToNextPhase();
+        gameData.hasAskedForSpellsThisPhase = false;
+
         label.gamer.removeLabel(label);
 
-        return new TriggerActivationData(true, "", label.card);
+        return new TriggerActivationData(true,gameData.getCurrentPhase().getPhaseName(),
+                label.card);
     }
 }

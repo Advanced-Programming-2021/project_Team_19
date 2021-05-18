@@ -8,13 +8,13 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
-import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Gamer;
 import model.Phase;
 import view.GetInput;
 import view.Printer.Printer;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Game {
@@ -25,7 +25,24 @@ public class Game {
 
         while (true) {
 
-            checkLabels(gameData);
+            if(checkLabels(gameData)){
+                continue;
+            }
+
+            if(!gameData.hasAskedForSpellsThisPhase){
+                if(c(gameData)){
+                    Utils.changeTurn(gameData);
+                    gameData.showBoard();
+
+                    if(Utils.askForActivate("It's " + gameData.getCurrentPhase())){
+                        f(gameData);
+                    }
+
+                    Utils.changeTurn(gameData);
+                }
+                gameData.hasAskedForSpellsThisPhase = true;
+            }
+
 
             if (gameData.isGameOver()) {
                 return finishGame(gameData);
@@ -44,11 +61,6 @@ public class Game {
                 gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
-
-                if(c(gameData)){
-                    f(gameData);
-                }
-
                 continue;
             }
 
@@ -161,37 +173,47 @@ public class Game {
         }
     }
 
-    public static void goToNextPhase(GameData gameData) {
+    public void goToNextPhase(GameData gameData) {
 
         gameData.goToNextPhase();
         Printer.print(gameData.getCurrentPhase().getPhaseName());
+        gameData.hasAskedForSpellsThisPhase = false;
     }
 
-    private void checkLabels(GameData gameData) {
-        checkLabelsOfGamer(gameData.getCurrentGamer());
-        checkLabelsOfGamer(gameData.getSecondGamer());
+    private boolean checkLabels(GameData gameData) {
+
+        boolean label1 = checkLabelsOfGamer(gameData.getCurrentGamer());
+        boolean label2 = checkLabelsOfGamer(gameData.getSecondGamer());
+
+        return label1 | label2;
+
     }
 
-    private void checkLabelsOfGamer(Gamer gamer) {
+    private boolean checkLabelsOfGamer(Gamer gamer) {
 
-        for (EffectLabel label : gamer.getEffectLabels()) {
+        ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>) gamer.getEffectLabels().clone();
+
+        for (EffectLabel label : tempArray) {
             if (label.checkLabel()) {
+
                 String message = (label.runEffect()).message;
                 if (!message.equals("")) {
                     Printer.print(message);
                 }
+                return true;
             }
         }
+        return false;
     }
 
-    private void f(GameData gameData) {
+    private static void f(GameData gameData) {
 
         if(c(gameData)){
             new ActivateSpeedEffect(gameData).run();
         }
     }
 
-    private boolean c(GameData gameData){
+    private static boolean c(GameData gameData){
         for(SpellAndTraps card :
                 gameData.getNextTurnOwner().getGameBoard().getSpellAndTrapCardZone().getAllCards()){
             if(card instanceof Trap){

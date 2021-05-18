@@ -135,7 +135,7 @@ public class AllBoards {
         Card card = Utils.getCardByName("gate guardian");
         board.getHand().getCardsInHand().set(0, card);
 
-//        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
+        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());
         return board;
     }

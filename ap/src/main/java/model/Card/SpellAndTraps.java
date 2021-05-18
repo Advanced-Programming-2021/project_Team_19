@@ -66,11 +66,11 @@ public abstract class SpellAndTraps extends Card {
         return false;
     }
 
-    public static boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label){
         return false;
     }
 
-    public static TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label){
         return null;
     }
 

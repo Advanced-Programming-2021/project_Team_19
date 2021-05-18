@@ -1,6 +1,7 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -76,10 +77,10 @@ public abstract class Action {
 
         ActivationData tempData;
 
-        changeTurn();
+        Utils.changeTurn(gameData);
         gameData.showBoard();
 
-        if(askForActivate()){
+        if(Utils.askForActivate(actionName + " has occurred just now")){
 
             tempData = new ActivateTriggerEffectOnOtherPlayerTurn(this).run();
 
@@ -90,40 +91,17 @@ public abstract class Action {
 
         }
 
-        changeTurn();
+        Utils.changeTurn(gameData);
 
         return data;
 
     }
 
 
-
-    protected boolean askForActivate(){
-
-        Printer.print(actionName + " has occurred just now");
-        Printer.print("do you want to activate your trap and spell?");
-
-        String userAnswer;
-
-        while (true){
-            userAnswer = GetInput.getString();
-
-            if(userAnswer.equals("yes")){
-                return true;
-            }
-            else if (userAnswer.equals("no")){
-                return false;
-            }
-            else{
-                Printer.printInvalidCommand();
-            }
-        }
-    }
-
     protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction(){
 
 
-        if(askForActivate()){
+        if(Utils.askForActivate(actionName + " has occurred just now")){
 
             ActivationData tempData = new ActivateTriggerEffectOnGamerTurn(this).run();
 
@@ -139,11 +117,6 @@ public abstract class Action {
         return new TriggerActivationData(false, "", null);
     }
 
-    private void changeTurn(){
-
-        gameData.changeTurn();
-        Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
-    }
 
     protected TriggerActivationData handleTriggerEffects(){
 
