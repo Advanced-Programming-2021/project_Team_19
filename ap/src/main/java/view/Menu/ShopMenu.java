@@ -38,7 +38,10 @@ public class ShopMenu extends Menu {
                 buyCards(Utils.getMatcher(command, "shop buy (.+)"));
             } else if (command.equals("shop show --all")) {
                 showAllCards(Utils.getMatcher(command, "shop show --all"));
-            } else if (command.equals("menu exit")) {
+            } else if(command.equals("shop show -a")){
+                showAllCards(Utils.getMatcher("shop show --all","shop show --all"));
+            }
+            else if (command.equals("menu exit")) {
                 break;
             } else if (command.startsWith("menu ")) {
                 handleMenuOrders(command);
@@ -63,6 +66,7 @@ public class ShopMenu extends Menu {
         System.out.println("""
                 shop buy <card name>
                 shop show --all
+                shop show -a
                 help
                 menu show-current
                 menu [menu name]
