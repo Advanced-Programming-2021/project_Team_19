@@ -1,9 +1,7 @@
 package model.Card.Spells;
 
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
-import model.Card.Spell;
 import model.Data.ActivationData;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterType;
