@@ -30,7 +30,8 @@ public class GameHelp {
                 next phase
                 show board
                 show graveyard
-                show AD""");
+                show AD
+                activate effect""");
     }
 
 }
