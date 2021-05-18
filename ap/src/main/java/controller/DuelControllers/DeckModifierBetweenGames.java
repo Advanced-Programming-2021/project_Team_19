@@ -3,11 +3,13 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
 import model.Deck;
+import model.Enums.CardNames;
 import model.Gamer;
 import model.User;
 import view.GetInput;
 import view.Printer.Printer;
 
+import java.util.Iterator;
 import java.util.regex.Matcher;
 
 public class DeckModifierBetweenGames {
@@ -73,20 +75,39 @@ public class DeckModifierBetweenGames {
     }
 
     private void moveFromSideDeckToMainDeckCommand(int id) {
-        if (id > deck.getMainDeckCards().size()) {
+        if (id > deck.getSideDeckCards().size() || id <= 0) {
             Printer.print("invalid id");
             return;
         }
+        Iterator<CardNames> it = deck.getSideDeckCards().iterator();
+        int i = 0;
+        CardNames current = null;
+        while (it.hasNext()) {
+            current = it.next();
+            i++;
+        }
+
+        deck.getSideDeckCards().remove(current);
+        deck.getMainDeckCards().add(current);
 
     }
 
     private void moveFromMainDeckToSideDeckCommand(int id) {
-        if (id > deck.getMainDeckCards().size()) {
+        if (id > deck.getMainDeckCards().size() || id <= 0) {
             Printer.print("invalid id");
             return;
         }
 
+        Iterator<CardNames> it = deck.getSideDeckCards().iterator();
+        int i = 0;
+        CardNames current = null;
+        while (it.hasNext()) {
+            current = it.next();
+            i++;
+        }
 
+        deck.getMainDeckCards().remove(current);
+        deck.getSideDeckCards().add(current);
     }
 
     private boolean canEndModification() {
