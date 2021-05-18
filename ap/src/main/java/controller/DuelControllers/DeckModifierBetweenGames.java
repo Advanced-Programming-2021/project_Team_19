@@ -3,6 +3,7 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
 import model.Deck;
+import model.Gamer;
 import model.User;
 import view.GetInput;
 import view.Printer.Printer;
@@ -13,10 +14,9 @@ public class DeckModifierBetweenGames {
 
     private Deck deck;
     private int initialMainDeckSize;
-    private String username;
+    private Gamer gamer;
 
     public DeckModifierBetweenGames(User user) {
-        this.username = user.getUsername();
         deck = DeckDataBaseController.getDeckByName(user.getActiveDeckName());
         initialMainDeckSize = deck.getMainDeckCards().size();
     }
@@ -40,23 +40,24 @@ public class DeckModifierBetweenGames {
             }
         }
 
-        if (wantsToSaveChanges()){
-            DeckDataBaseController.changeDeck(username, deck);
-        }
+        DeckDataBaseController.changeDeck(gamer.getUsername(), deck);
 
     }
 
     private boolean wantsToSaveChanges() {
-        while (true){
+        while (true) {
             Printer.print("""
                     do you want to save the changes you made to your deck:
                     1- yes
                     2- no""");
             String command = GetInput.getString();
-            switch (command){
-                case "1": return true;
-                case "2": return false;
-                default: Printer.printInvalidCommand();
+            switch (command) {
+                case "1":
+                    return true;
+                case "2":
+                    return false;
+                default:
+                    Printer.printInvalidCommand();
             }
         }
     }
@@ -72,7 +73,7 @@ public class DeckModifierBetweenGames {
     }
 
     private void moveFromSideDeckToMainDeckCommand(int id) {
-        if (id > deck.getMainDeckCards().size()){
+        if (id > deck.getMainDeckCards().size()) {
             Printer.print("invalid id");
             return;
         }
@@ -80,7 +81,7 @@ public class DeckModifierBetweenGames {
     }
 
     private void moveFromMainDeckToSideDeckCommand(int id) {
-        if (id > deck.getMainDeckCards().size()){
+        if (id > deck.getMainDeckCards().size()) {
             Printer.print("invalid id");
             return;
         }
