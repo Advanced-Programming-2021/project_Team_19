@@ -57,6 +57,7 @@ public class Texchanger extends Monster {
                         (cyberseCards, "select a card id to summon", null);
                 if (selectedCard == null)
                     return false;
+                lastTurnEffectUsed = gameData.getTurn();
                 new SpecialSummon(gameData).run(selectedCard);
                 return true;
             } else if (command.matches("no") || command.matches("cancel")) {
