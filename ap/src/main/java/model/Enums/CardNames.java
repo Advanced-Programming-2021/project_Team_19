@@ -58,7 +58,7 @@ public enum CardNames {
     SKULL_GUARDIAN("model.Card.Monsters.RitualMonster"),
     SLOT_MACHINE("model.Card.Monsters.NormalMonster"),
     HANIWA("model.Card.Monsters.NormalMonster"),
-    MAN_EATER_BUG("model.Card.Monsters.ManEaterBug"),
+    MAN__EATER_BUG("model.Card.Monsters.ManEaterBug"),
     GATE_GUARDIAN("model.Card.Monsters.GateGuardian"),
     SCANNERMonster("model.Card.Monsters.ScannerMonster"),
     BITRON("model.Card.Monsters.NormalMonster"),
