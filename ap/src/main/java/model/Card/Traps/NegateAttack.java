@@ -58,14 +58,11 @@ public class NegateAttack extends Trap {
 
     public TriggerActivationData runEffect(EffectLabel label){
 
-        GameData gameData = label.gameData;
-
-        gameData.goToNextPhase();
-        gameData.hasAskedForSpellsThisPhase = false;
-
         label.gamer.removeLabel(label);
 
-        return new TriggerActivationData(true,gameData.getCurrentPhase().getPhaseName(),
+        label.label = 1;
+
+        return new TriggerActivationData(true,"Spell Activated Successfully",
                 label.card);
     }
 }

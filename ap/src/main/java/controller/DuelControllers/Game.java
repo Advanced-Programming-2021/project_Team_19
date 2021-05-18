@@ -200,6 +200,11 @@ public class Game {
                 if (!message.equals("")) {
                     Printer.print(message);
                 }
+
+                if(label.label == 1){
+                    goToNextPhase(label.gameData);
+                }
+
                 return true;
             }
         }

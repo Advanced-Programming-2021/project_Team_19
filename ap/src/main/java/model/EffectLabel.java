@@ -9,6 +9,7 @@ import view.Printer.Printer;
 
 public class EffectLabel {
 
+    public int label = 0;
     public Card card;
     public Gamer gamer;
     public GameData gameData;

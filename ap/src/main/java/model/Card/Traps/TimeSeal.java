@@ -72,16 +72,12 @@ public class TimeSeal extends Trap {
 
     public TriggerActivationData runEffect(EffectLabel label){
 
-        GameData gameData = label.gameData;
-
-        gameData.goToNextPhase();
-        gameData.hasAskedForSpellsThisPhase = false;
-
         label.gamer.removeLabel(label);
 
+        label.label = 1;
+
         return new TriggerActivationData
-                (true, "you can't draw this turn\n" +
-                        gameData.getCurrentPhase().getPhaseName(), label.card);
+                (true, "you can't draw this turn", label.card);
     }
 
 }

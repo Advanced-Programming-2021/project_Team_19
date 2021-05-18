@@ -1,41 +1,55 @@
 package model.Enums;
 
+import model.Card.Spells.*;
+import model.Card.Traps.*;
+import org.testng.internal.Yaml;
+
+import java.util.HashMap;
+
 public enum CardNames {
 
-    TRAP_HOLE("model.Card.Traps.TrapHole"),
-    MIRROR_FORCE(""),
-    MAGIC_CYLINDER(""),
-    MIND_CRUSH(""),
-    TORRENTIAL_TRIBUTE(""),
+
+//    {
+//        HashMap <String , Class> hehe = new HashMap<>();
+//        hehe.put("Trap Hole", TrapHole.class);
+//        hehe.put("Mirror Force", MirrorForce.class);
+//        hehe.put("Magic Cylinder", MagicCylinder.class);
+//        hehe.put("Mind Crush", MindCrush.class);
+//        hehe.put("Torrential Tribute", TorrentialTribute.class);
+//        hehe.put("Time Seal", TimeSeal.class);
+//        hehe.put("Negate attack", NegateAttack.class);
+//        hehe.put("Solemn Warning", SolemnWarning.class);
+//        hehe.put("Magic Jammer", MagicJammer.class);
+//        hehe.put("Call Of The Haunted", CallOfTheHaunted.class);
+////        hehe.put("Vanitys Emptiness", )
+////        hehe.put("Wall Of Revealing Light", )
+//        hehe.put("Monster Reborn", MonsterReborn.class);
+//        hehe.put("Terraforming", Terraforming.class);
+//        hehe.put("Pof Of Greed", PotOfGreed.class);
+//        hehe.put("Raigeki", Raigeki.class);
+//        hehe.put("Change Of Heart", ChangeOfHeart.class);
+//        hehe.put("Swords Of Revealing Light", SwordsOfRevealingLight.class);
+//        hehe.put("Harpies Feather Duster", HarpiesFeatherDuster.class);
+//        hehe.put("Dark Hole", DarkHole.class);
+//        hehe.put("Supply Squad", SupplySquad.class);
+//        hehe.put("Spell Absorption", SpellAbsorption.class);
+//        hehe.put("Messenger Of Peace", MessangerOfPeace.class);
+//        hehe.put("Twin Twisters", TwinTwisters.class);
+//        hehe.put("Mystical Speace Typhoon", MysticalSpaceTyphoon.class);
+//        hehe.put("Ring Of Deffence", RingOfDefence.class);
+//        hehe.put("Yami", FieldSpell.class);
+//        hehe.put("Forest", FieldSpell.class);
+//        hehe.put("Closed Forest", ClosedForest.class);
+//        hehe.put("UmiiRuka", FieldSpell.class);
+//        hehe.put("Sword Of Dark Destruction", SwordOfDarkDestruction.class);
+//        hehe.put("Black Pendant", BlackPendant.class);
+//        hehe.put("United We Stand", UnitedWeStand.class);
+//        hehe.put("Magnum Shield", MagnumShield.class);
+//
+//    }
+
     TIME_SEAL("model.Card.Traps.TimeSeal"),
-    NEGATE_ATTACK(""),
-    SOLEMN_WARNING(""),
-    MAGIC_JAMMER(""),
-    CALL_OF_THE_HAUNTED(""),
-    VANITYS_EMPTINESS(""),
-    WALL_OF_REVEALING_LIGHT(""),
-    MONSTER_REBORN(""),
-    TERRAFORMING("model.Card.Spells.Terraforming"),
-    POT_OF_GREED(""),
-    RAIGEKI(""),
-    CHANGE_OF_HEART(""),
-    SWORDS_OF_REVEALING_LIGHT(""),
-    HARPIES_FEATHER_DUSTER(""),
-    DARK_HOLE(""),
-    SUPPLY_SQUAD(""),
-    SPELL_ABSORPTION(""),
-    MESSENGER_OF_PEACE(""),
-    TWIN_TWISTERS(""),
-    MYSTICAL_SPACE_TYPHOON(""),
-    RING_OF_DEFENCE(""),
-    YAMI(""),
-    FOREST(""),
-    CLOSED_FOREST(""),
-    UMIIRUKA(""),
-    SWORD_OF_DARK_DESTRUCTION(""),
-    BLACK_PENDANT(""),
-    UNITED_WE_STAND(""),
-    MAGNUM_SHIELD(""),
+
     ADVANCED_RITUAL_ART("model.Card.Monsters.AdvancedRitualArt"),
     BATTLE_OX("model.Card.Monsters.NormalMonster"),
     AXE_RAIDER("model.Card.Monsters.NormalMonster"),
