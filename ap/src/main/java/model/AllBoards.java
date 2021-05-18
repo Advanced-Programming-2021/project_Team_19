@@ -132,10 +132,10 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("spiral serpent");
+        Card card = Utils.getCardByName("battle warrior");
         board.getHand().getCardsInHand().set(0, card);
 
-//        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
+        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());
         return board;
     }
