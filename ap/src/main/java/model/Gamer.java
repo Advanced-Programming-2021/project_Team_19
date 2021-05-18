@@ -87,6 +87,7 @@ public class Gamer {
     public void gameFinished(){
         maxLifePointsInDuel = Integer.max(lifePoint, maxLifePointsInDuel);
         lifePoint = 4000;
+        gameBoard = new AllBoards(getUser());
     }
 
     public void increaseCredit(int amount){

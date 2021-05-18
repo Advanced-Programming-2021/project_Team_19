@@ -1,28 +1,30 @@
 package model;
 
 
+import com.sun.source.tree.Tree;
 import controller.DataBaseControllers.CardDataBaseController;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Enums.CardNames;
+import view.Printer.Printer;
 
+import javax.swing.tree.TreeCellRenderer;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Deck {
     private final String name;
-    private final  ArrayList<CardNames> mainDeckCards=new ArrayList<>();
-    private final ArrayList<CardNames> sideDeckCards=new ArrayList<>();
+    private final ArrayList<CardNames> mainDeckCards = new ArrayList<>();
+    private final ArrayList<CardNames> sideDeckCards = new ArrayList<>();
 
     public Deck(String name) {
-        this.name=name;
+        this.name = name;
     }
 
     public static Deck gsonToDeck(String gson) {
         return null;
     }
-
 
 
     private void setID() {
@@ -36,10 +38,11 @@ public class Deck {
         sideDeckCards.add(cardName);
     }
 
-    public ArrayList<CardNames> getMainDeckCards(){
+    public ArrayList<CardNames> getMainDeckCards() {
         return mainDeckCards;
     }
-    public ArrayList<CardNames> getSideDeckCards(){
+
+    public ArrayList<CardNames> getSideDeckCards() {
         return sideDeckCards;
     }
 
@@ -47,7 +50,7 @@ public class Deck {
         return true;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -60,42 +63,43 @@ public class Deck {
     }
 
 
-    public boolean isSideDeckFull(){
-        return sideDeckCards.size()>=15;
-    }
-    public boolean isMainDeckFull(){
-        return mainDeckCards.size()>=60;
+    public boolean isSideDeckFull() {
+        return sideDeckCards.size() >= 15;
     }
 
-    public ArrayList<CardNames> getAllCard(){
-        ArrayList<CardNames> allCardNames=new ArrayList<>();
+    public boolean isMainDeckFull() {
+        return mainDeckCards.size() >= 60;
+    }
+
+    public ArrayList<CardNames> getAllCard() {
+        ArrayList<CardNames> allCardNames = new ArrayList<>();
         allCardNames.addAll(mainDeckCards);
         allCardNames.addAll(sideDeckCards);
         return allCardNames;
     }
 
-    public TreeSet<Card> getAllCardsSorted(){
-        TreeSet<Card> allCards=new TreeSet<>(new Card.CardComp());
-        for(CardNames cardName:mainDeckCards){
+    public TreeSet<Card> getAllCardsSorted() {
+        TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
+        for (CardNames cardName : mainDeckCards) {
             allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
         }
-        for(CardNames cardName:sideDeckCards){
-            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
-        }
-        return allCards;
-    }
-
-    public TreeSet<Card> getAllMainCardsSorted(){
-        TreeSet<Card> allCards=new TreeSet<>(new Card.CardComp());
-        for(CardNames cardName:mainDeckCards){
+        for (CardNames cardName : sideDeckCards) {
             allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
         }
         return allCards;
     }
 
-    public TreeSet<Card> getAllSideCardsSorted(){
-        TreeSet<Card> allCards=new TreeSet<>(new Card.CardComp());
-        for(CardNames cardName:sideDeckCards){
+    public TreeSet<Card> getAllMainCardsSorted() {
+        TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
+        for (CardNames cardName : mainDeckCards) {
+            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        }
+        return allCards;
+    }
+
+    public TreeSet<Card> getAllSideCardsSorted() {
+        TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
+        for (CardNames cardName : sideDeckCards) {
             allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
         }
         return allCards;
@@ -105,63 +109,88 @@ public class Deck {
         return true;
     }
 
-    public boolean isThereThreeCardsInDeck(CardNames CardName){
-        int cnt=0;
-        for(CardNames cardName:getAllCard()){
-            if(cardName.equals(CardName)){
+    public boolean isThereThreeCardsInDeck(CardNames CardName) {
+        int cnt = 0;
+        for (CardNames cardName : getAllCard()) {
+            if (cardName.equals(CardName)) {
                 cnt++;
             }
         }
-        return cnt>=3;
+        return cnt >= 3;
     }
+
     @Override
-    public String toString(){
-        String temp= name+": main deck "+mainDeckCards.size()+", side deck " +
-                sideDeckCards.size()+", ";
-        if(isDeckValid()){
-            return temp+"valid\n";
-        }
-        else{
-            return temp+"invalid\n";
+    public String toString() {
+        String temp = name + ": main deck " + mainDeckCards.size() + ", side deck " +
+                sideDeckCards.size() + ", ";
+        if (isDeckValid()) {
+            return temp + "valid\n";
+        } else {
+            return temp + "invalid\n";
         }
     }
 
-    public String detailedToStringMain(){
-        StringBuilder detailedToString=new StringBuilder();
+    public String detailedToStringMain() {
+        StringBuilder detailedToString = new StringBuilder();
         detailedToString.append("Deck: ").append(name).append("\n");
         detailedToString.append("Main deck:\n");
         detailedToString.append("Monsters:\n");
-        for(Card card:getAllMainCardsSorted()){
-            if(card instanceof Monster){
+        for (Card card : getAllMainCardsSorted()) {
+            if (card instanceof Monster) {
                 detailedToString.append(card.toString()).append("\n");
             }
         }
         detailedToString.append("Spell And Traps:\n");
-        for(Card card:getAllMainCardsSorted()){
-            if(card instanceof SpellAndTraps){
+        for (Card card : getAllMainCardsSorted()) {
+            if (card instanceof SpellAndTraps) {
                 detailedToString.append(card.toString()).append("\n");
             }
         }
         return detailedToString.toString();
     }
 
-    public String detailedToStringSide(){
-        StringBuilder detailedToString=new StringBuilder();
+    public String detailedToStringSide() {
+        StringBuilder detailedToString = new StringBuilder();
         detailedToString.append("Deck: ").append(name).append("\n");
         detailedToString.append("Side deck:\n");
         detailedToString.append("Monsters:\n");
-        for(Card card:getAllSideCardsSorted()){
-            if(card instanceof Monster){
+        for (Card card : getAllSideCardsSorted()) {
+            if (card instanceof Monster) {
                 detailedToString.append(card.toString()).append("\n");
             }
         }
         detailedToString.append("Spell And Traps:\n");
-        for(Card card:getAllSideCardsSorted()){
-            if(card instanceof SpellAndTraps){
+        for (Card card : getAllSideCardsSorted()) {
+            if (card instanceof SpellAndTraps) {
                 detailedToString.append(card.toString()).append("\n");
             }
         }
         return detailedToString.toString();
     }
+
+    public void showDeckForModifying() {
+        TreeSet<Card> cards;
+        for (int j = 0; j < 2; j++) {
+            int i = 1;
+            if (j == 0) {
+                System.out.println("main deck:");
+                cards = getAllMainCardsSorted();
+            } else {
+                System.out.println("side deck:");
+                cards = getAllSideCardsSorted();
+            }
+
+            for (Card card : cards) {
+                System.out.print(i + "." + card.getCardFamily() + " " + card.getName());
+                if ((i++) % 3 == 0) {
+                    System.out.println();
+                } else {
+                    System.out.print(" ".repeat(Math.max(0, 50 - (i + "." + card.getCardFamily() + " " + card.getName()).length())));
+                }
+            }
+            System.out.println();
+        }
+    }
+
 
 }

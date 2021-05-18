@@ -48,24 +48,17 @@ public class Texchanger extends Monster {
             Printer.print("your monster card zone is full and you cannot summon a Cyberse monster");
             return false;
         }
-        String command;
-        Printer.print("do you want to summon a normal Cyberse monster from your graveyard or deck?");
-        while (true) {
-            command = GetInput.getString();
-            if (command.matches("yes")) {
-                Card selectedCard = Utils.askUserToSelectCard
-                        (cyberseCards, "select a card id to summon", null);
-                if (selectedCard == null)
-                    return false;
-                lastTurnEffectUsed = gameData.getTurn();
-                new SpecialSummon(gameData).run(selectedCard);
-                return true;
-            } else if (command.matches("no") || command.matches("cancel")) {
+
+        if (Utils.askForConfirmation("do you want to summon a normal Cyberse monster from your graveyard or deck?")){
+            Card selectedCard = Utils.askUserToSelectCard
+                    (cyberseCards, "select a card id to summon", null);
+            if (selectedCard == null)
                 return false;
-            } else {
-                Printer.printInvalidCommand();
-            }
+            lastTurnEffectUsed = gameData.getTurn();
+            new SpecialSummon(gameData).run(selectedCard);
+            return true;
         }
+        return false;
     }
 
     private ArrayList<Card> getCyberseInGraveyardAndDeck(Gamer gamer) {

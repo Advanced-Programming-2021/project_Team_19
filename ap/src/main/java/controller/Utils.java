@@ -199,28 +199,33 @@ public class Utils {
         }
     }
 
+    public static boolean askForConfirmation(String message){
+        Printer.print(message);
+        Printer.print("""
+                    1- yes
+                    2- no""");
+        while (true) {
+            String command = GetInput.getString();
+            switch (command) {
+                case "1":
+                    return true;
+                case "2":
+                    return false;
+                default:
+                    Printer.printInvalidCommand();
+            }
+        }
+    }
+
 
     public static boolean askForActivate(String event){
 
-        Printer.print(event);
-        Printer.print("do you want to activate your trap and spell?");
-
-        String userAnswer;
-
-        while (true){
-            userAnswer = GetInput.getString();
-
-            if(userAnswer.equals("yes")){
-                Printer.print("So please do that :)");
-                return true;
-            }
-            else if (userAnswer.equals("no")){
-                return false;
-            }
-            else{
-                Printer.printInvalidCommand();
-            }
+        if (askForConfirmation(event + "\ndo you want to activate your trap and spell?")){
+            Printer.print("So please do that :)");
+            return true;
         }
+        return false;
+
     }
 
     public static void changeTurn(GameData gameData){

@@ -122,6 +122,7 @@ public class DuelMenuController extends Menu {
                     userWins++;
                 else
                     rivalWins++;
+                changeDecks(gameStarter, rivalGamer);
             }
             if (userWins == 2) {
                 finishDuel(gameStarter, gameData, 3);
@@ -129,6 +130,16 @@ public class DuelMenuController extends Menu {
                 finishDuel(rivalGamer, gameData, 3);
             }
         }
+    }
+
+    private void changeDecks(Gamer gameStarter, Gamer rivalGamer) {
+
+        if (Utils.askForConfirmation(gameStarter.getUsername() +", do you want to swap cards between your main deck and side deck?"))
+            new DeckModifierBetweenGames(gameStarter.getUser()).run();
+
+        if (Utils.askForConfirmation(rivalGamer.getUsername() +", do you want to swap cards between your main deck and side deck?"))
+            new DeckModifierBetweenGames(rivalGamer.getUser()).run();
+
     }
 
     private void finishDuel(Gamer winner, GameData gameData, int rounds) {
