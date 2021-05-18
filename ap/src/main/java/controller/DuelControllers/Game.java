@@ -70,7 +70,7 @@ public class Game {
             } else if (command.matches("summon")) {
                 new NormalSummon(gameData).run();
             } else if (command.matches("set")) {
-                new Set(gameData).run();
+                normalSetCommand(gameData);
             } else if (command.matches("show hand")) {
                 gameData.getCurrentGamer().getGameBoard().getHand().showHand();
             } else if (command.matches("set --position (attack|defence)")) {
@@ -87,14 +87,22 @@ public class Game {
                 help(gameData);
             } else if (command.equals("show board")) {
                 gameData.showBoard();
-            } else if (command.equals("show AD")){//attack and defense
+            } else if (command.equals("show AD")) {//attack and defense
                 showAtkDef(gameData);
-            }
-            else {
+            } else {
                 Printer.printInvalidCommand();
             }
 
         }
+    }
+
+    private void normalSetCommand(GameData gameData) {
+        if (gameData.getSelectedCard().getName().equals("Gate Guardian")) {
+            Printer.print("you cannot set Gate Guardian");
+            return;
+        }
+
+        new Set(gameData).run();
     }
 
     private void help(GameData gameData) {
@@ -182,13 +190,13 @@ public class Game {
 
     //test
 
-    public static void showAtkDef(GameData gameData){
+    public static void showAtkDef(GameData gameData) {
 
         Card card = gameData.getSelectedCard();
-        try{
-            System.out.println(((Monster)card).getAttack(gameData));
-            System.out.println(((Monster)card).getDefence());
-        } catch (Exception e){
+        try {
+            System.out.println(((Monster) card).getAttack(gameData));
+            System.out.println(((Monster) card).getDefence());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
