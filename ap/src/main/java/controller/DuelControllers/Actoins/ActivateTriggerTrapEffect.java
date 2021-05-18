@@ -1,5 +1,6 @@
 package controller.DuelControllers.Actoins;
 
+import controller.ActivateCheckers.*;
 import controller.Utils;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
@@ -7,7 +8,8 @@ import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Enums.CardFamily;
-import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotification {
 
@@ -33,44 +35,30 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
 
-        Card card = gameData.getSelectedCard();
+        activatedCard = gameData.getSelectedCard();
 
-        if (Utils.IsSelectedCardNull(gameData)) {
-            data.message = "no card is selected yet";
+        ArrayList<ActivationChecker> checkers = new ArrayList<>();
+        checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
+        checkers.add(new CardIsNotOneMonsterChecker(gameData, activatedCard));
+        checkers.add(new CardIsInCorrectZoneChecker(gameData, activatedCard));
+        checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
+
+        String checkersResult = ActivationChecker.multipleCheck(checkers);
+
+        if(checkersResult != null){
+            data.message = checkersResult;
             return data;
         }
 
-        if (gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
-
-            data.message = "activate effect is only for spell and trap cards";
-            return data;
-        }
-
-        if (!(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone)) {
+        if (!((SpellAndTraps)activatedCard).canActivateBecauseOfAnAction(action)) {
 
             data.message = "you can't activate this card";
             return data;
         }
 
-        activatedCard = (SpellAndTraps) card;
+        if (((SpellAndTraps)activatedCard).canActivateBecauseOfAnAction(action)) {
 
-        if (activatedCard.getTurnActivated() != 0) {
-
-            Printer.print(activatedCard.getTurnActivated());
-
-            data.message = "you have already activated this card";
-            return data;
-        }
-
-        if (!activatedCard.canActivateBecauseOfAnAction(action)) {
-
-            data.message = "you can't activate this card";
-            return data;
-        }
-
-        if (activatedCard.canActivateBecauseOfAnAction(action)) {
-
-            return (TriggerActivationData) activatedCard.activate(gameData);
+            return (TriggerActivationData) ((SpellAndTraps)activatedCard).activate(gameData);
 
         }
 
