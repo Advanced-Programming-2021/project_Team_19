@@ -53,7 +53,8 @@ public class Texchanger extends Monster {
         while (true) {
             command = GetInput.getString();
             if (command.matches("yes")) {
-                Card selectedCard = Utils.askUserToSelectCard(cyberseCards, "select a card id to summon");
+                Card selectedCard = Utils.askUserToSelectCard
+                        (cyberseCards, "select a card id to summon", null);
                 if (selectedCard == null)
                     return false;
                 new SpecialSummon(gameData).run(selectedCard);

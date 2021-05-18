@@ -22,7 +22,8 @@ public class ManEaterBug extends Monster {
         }
         ArrayList<Card> cards = new ArrayList<>(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards());
 
-        Card monsterToDestroy = Utils.askUserToSelectCard(cards, "select an enemy id to destroy:");
+        Card monsterToDestroy = Utils.askUserToSelectCard
+                (cards, "select an enemy id to destroy:", null);
 
         if (monsterToDestroy == null)
             return false;
