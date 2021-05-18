@@ -5,6 +5,7 @@ import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import view.Printer.Printer;
 
 public class EffectLabel {
 
@@ -20,6 +21,7 @@ public class EffectLabel {
     }
 
     public boolean checkLabel(){
+
         return ((SpellAndTraps)card).shouldEffectRun(this);
     }
 

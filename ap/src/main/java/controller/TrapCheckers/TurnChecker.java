@@ -15,6 +15,9 @@ public class TurnChecker extends Checker{
         if (!card.canActivateThisTurn(gameData)) {
             return false;
         }
+        if(card.getTurnActivated() != 0){
+            return false;
+        }
         return true;
     }
 

@@ -199,4 +199,33 @@ public class Utils {
         }
     }
 
+
+    public static boolean askForActivate(String event){
+
+        Printer.print(event);
+        Printer.print("do you want to activate your trap and spell?");
+
+        String userAnswer;
+
+        while (true){
+            userAnswer = GetInput.getString();
+
+            if(userAnswer.equals("yes")){
+                Printer.print("So please do that :)");
+                return true;
+            }
+            else if (userAnswer.equals("no")){
+                return false;
+            }
+            else{
+                Printer.printInvalidCommand();
+            }
+        }
+    }
+
+    public static void changeTurn(GameData gameData){
+
+        gameData.changeTurn();
+        Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
+    }
 }

@@ -14,14 +14,20 @@ import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Phase;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 
 public class TimeSeal extends Trap {
+
+
+    private int effectTurn = 0;
     @Override
     public ActivationData activate(GameData gameData)  {
 
         handleCommonsForActivate(gameData);
+
+        setEffectTurn(gameData);
 
         handleDestroy(gameData);
 
@@ -29,6 +35,13 @@ public class TimeSeal extends Trap {
                 (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
 
         return new ActivationData(this, "trap activated successfully");
+    }
+
+    private void setEffectTurn(GameData gameData) {
+        if(gameData.getCurrentGamer().equals(gameData.getTurnOwner()))
+            effectTurn = turnActivated + 1;
+        else
+            effectTurn = turnActivated + 2;
     }
 
     public boolean canActivate(GameData gameData) {
@@ -45,10 +58,11 @@ public class TimeSeal extends Trap {
     }
 
 
-    public static boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label){
 
-        if(((SpellAndTraps)label.card).getTurnActivated() + 1 == label.gameData.getTurn()){
+        if(effectTurn == label.gameData.getTurn()){
             if(label.gameData.getCurrentPhase().equals(Phase.DRAW)){
+
                 return true;
             }
         }
@@ -56,16 +70,18 @@ public class TimeSeal extends Trap {
         return false;
     }
 
-    public static TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label){
 
-        Game.goToNextPhase(label.gameData);
+        GameData gameData = label.gameData;
+
+        gameData.goToNextPhase();
+        gameData.hasAskedForSpellsThisPhase = false;
 
         label.gamer.removeLabel(label);
 
         return new TriggerActivationData
-                (true, "you can't draw this turn", label.card);
+                (true, "you can't draw this turn\n" +
+                        gameData.getCurrentPhase().getPhaseName(), label.card);
     }
-
-
 
 }
