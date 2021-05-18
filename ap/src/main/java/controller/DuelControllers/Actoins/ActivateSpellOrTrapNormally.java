@@ -1,5 +1,6 @@
 package controller.DuelControllers.Actoins;
 
+import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
@@ -10,6 +11,8 @@ import model.Enums.CardFamily;
 import model.Phase;
 import view.Printer.Printer;
 
+import java.util.ArrayList;
+
 public class ActivateSpellOrTrapNormally extends Activate {
 
 
@@ -19,11 +22,21 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
     public void run(){
 
-        if(!checkSomeErrors()){
+        activatedCard = gameData.getSelectedCard();
+
+        ArrayList<ActivationChecker> checkers = new ArrayList<>();
+        checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
+        checkers.add(new CardIsNotOneMonsterChecker(gameData, activatedCard));
+        checkers.add(new CurrentPhaseIsMainPhaseChecker(gameData, activatedCard));
+        checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
+
+        String checkersResult = ActivationChecker.multipleCheck(checkers);
+        if(checkersResult != null){
+            Printer.print(checkersResult);
             return;
         }
 
-        SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
+        SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
             if(!activateFromHand(card)) return;
@@ -74,34 +87,5 @@ public class ActivateSpellOrTrapNormally extends Activate {
         return true;
 
     }
-
-    protected boolean checkSomeErrors(){
-
-        if (gameData.getSelectedCard() == null) {
-            Printer.print("no card is selected yet");
-            return false;
-        }
-
-        if(gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)){
-            Printer.print("activate effect is only for spell and trap cards");
-            return false;
-        }
-
-        if(gameData.getCurrentPhase().equals(Phase.MAIN1) ||
-                gameData.getCurrentPhase().equals(Phase.MAIN2)){
-            Printer.print("you can’t activate an effect on this phase");
-            return false;
-        }
-
-        SpellAndTraps card = (SpellAndTraps) gameData.getSelectedCard();
-
-        if(card.getTurnActivated() != 0){
-            Printer.print("you have already activated this card");
-            return false;
-        }
-
-        return true;
-    }
-
 
 }

@@ -6,7 +6,7 @@ import model.Card.SpellAndTraps;
 
 public class Activate extends Action {
 
-    protected SpellAndTraps activatedCard;
+    protected Card activatedCard;
 
     public Activate(GameData gameData) {
         super(gameData, "Activate");
