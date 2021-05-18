@@ -132,7 +132,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("gate guardian");
+        Card card = Utils.getCardByName("spiral serpent");
         board.getHand().getCardsInHand().set(0, card);
 
 //        board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());

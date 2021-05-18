@@ -6,10 +6,12 @@ import view.Printer.Printer;
 
 public class YomiShip extends Monster {
 
+
+
     @Override
     public void handleDestroy(GameData gameData) {
         super.handleDestroy(gameData);
-        if (gameData.getCurrentPhase().equals(Phase.BATTLE)) {
+        if (gameData.getCurrentPhase().equals(Phase.BATTLE) && !gameData.getSelectedCard().equals(this)) {
             gameData.getSelectedCard().handleDestroy(gameData);
             Printer.print("you destroyed Yomi ship and your card was destroyed");
         }

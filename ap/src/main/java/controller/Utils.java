@@ -175,7 +175,7 @@ public class Utils {
                 return null;
             }else if (command.matches("\\d+")){
                 int id = Integer.parseInt(command);
-                if (id >= listOfCards.size() || id < 1){
+                if (id > listOfCards.size() || id < 1){
                     Printer.print("please enter a valid id:");
                 }
                 else {

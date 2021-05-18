@@ -166,18 +166,18 @@ public class Monster extends Card {
         int damage;
 
         if (getAttack(gameData) > defendingMonster.getAttack(gameData)) {
-            defendingMonster.handleDestroy(gameData);
             damage = getAttack(gameData) - defendingMonster.getAttack(gameData);
             gameData.getSecondGamer().decreaseLifePoint(damage);
+            defendingMonster.handleDestroy(gameData);
             Printer.print("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
         } else if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
-            handleDestroy(gameData);
             damage = defendingMonster.getAttack(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
+            handleDestroy(gameData);
             Printer.print("Your monster card is destroyed and you received " + damage + " battle damage");
         } else {
-            handleDestroy(gameData);
             defendingMonster.handleDestroy(gameData);
+            handleDestroy(gameData);
             Printer.print("both you and your opponent monster cards are destroyed and no one receives damage");
         }
     }

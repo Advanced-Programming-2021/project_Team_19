@@ -3,6 +3,7 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Enums.CardMod;
 import model.Phase;
 import view.Printer.Printer;
 
@@ -26,6 +27,9 @@ public abstract class Attack extends Action{
             return false;
         } else if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(selectedCard)) {
             Printer.print("you can’t attack with this card");
+            return false;
+        } else if(!((Monster) selectedCard).getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+            Printer.print("you cannot attack with a defensive monster");
             return false;
         }
         else if (!gameData.getCurrentPhase().equals(Phase.BATTLE)) {
