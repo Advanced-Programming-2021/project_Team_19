@@ -39,37 +39,65 @@ public class DeckMenu extends Menu {
 
             setActiveDeck(Utils.getMatcher(command, "deck set-active (\\S+)"));
 
-            addCardToDeck(Utils.getMatcher(command,
+            addCardToDeck(false, Utils.getMatcher(command,
                     "deck add-card" +
                             "(?=.*?--side)(?=.*?--card .+?)(?=.*--deck \\S+)" +
                             "( --((card .+?)|(deck \\S+)|(side))){3}"), true);
 
-            addCardToDeck(Utils.getMatcher(command,
+            addCardToDeck(true,Utils.getMatcher( command,"deck add-card" +
+                            "(?=.*?-s)(?=.*?-c .+?)(?=.*-d \\S+)" +
+                            "( -((c .+?)|(d \\S+)|(s))){3}"),true);
+
+            addCardToDeck(false, Utils.getMatcher(command,
                     "deck add-card" +
                             "(?=.*?--card .+?)(?=.*--deck \\S+)" +
                             "( --((card .+?)|(deck \\S+))){2}"), false);
 
+            addCardToDeck(true,Utils.getMatcher(command,
+                    "deck add-card" +
+                            "(?=.*?-c .+?)(?=.*-d \\S+)" +
+                            "( -((c .+?)|(d \\S+))){2}"),false);
 
-            deleteCardFromDeck(Utils.getMatcher(command,
+
+            deleteCardFromDeck(false,Utils.getMatcher(command,
                     "deck rm-card"+
                     "(?=.*?--side)(?=.*?--card .+?)(?=.*--deck \\S+)" +
                     "( --((card .+?)|(deck \\S+)|(side))){3}"),true);
 
-            deleteCardFromDeck(Utils.getMatcher(command,"deck rm-card"+
+            deleteCardFromDeck(true, Utils.getMatcher(command,
+                    "deck rm-card"+
+                            "(?=.*?-s)(?=.*?-c .+?)(?=.*-d \\S+)" +
+                            "( -((c .+?)|(d \\S+)|(s))){3}"),true);
+
+            deleteCardFromDeck(false, Utils.getMatcher(command,"deck rm-card"+
                     "(?=.*?--card .+?)(?=.*--deck \\S+)" +
                     "( --((card .+?)|(deck \\S+))){2}"),false);
 
+            deleteCardFromDeck(true, Utils.getMatcher(command,"deck rm-card"+
+                    "(?=.*?-c .+?)(?=.*-d \\S+)" +
+                    "( -((c .+?)|(d \\S+))){2}"),false);
+
             showUserDecks(Utils.getMatcher(command, "deck show --all"));
 
-            showSingleDeck(Utils.getMatcher(command, "deck show(?=.*?--deck-name \\S+)(?=.*--side)" +
+            showUserDecks(Utils.getMatcher(command, "deck show -a"));
+
+            showSingleDeck(false,Utils.getMatcher(command, "deck show(?=.*?--deck-name \\S+)(?=.*--side)" +
                             "(( --deck-name (\\S+))|( --side)){2}"),
                     true);
 
-            showSingleDeck(Utils.getMatcher(command, "deck show --deck-name (\\S+)"),
+            showSingleDeck(true, Utils.getMatcher(command, "deck show(?=.*?-dn \\S+)(?=.*-s)" +
+                            "(( --dn (\\S+))|( -s)){2}"),
+                    true);
+
+            showSingleDeck(false, Utils.getMatcher(command, "deck show --deck-name (\\S+)"),
                     false);
+
+            showSingleDeck(true,Utils.getMatcher(command,"deck show -dn (\\S+)"),false);
 
 
             showAllCards(Utils.getMatcher(command, "deck show --cards"));
+
+            showAllCards(Utils.getMatcher(command, "deck show -c"));
 
             handleCommandsStartWithMenu(command);
 
@@ -117,11 +145,10 @@ public class DeckMenu extends Menu {
 
     }
 
-    private void addCardToDeck(Matcher matcher, boolean isSideDeck) {
+    private void addCardToDeck(boolean isAbbreviated,Matcher matcher, boolean isSideDeck) {
 
 
         if (matcher.matches()) {
-
 
             commandIsDone = true;
 
@@ -130,9 +157,16 @@ public class DeckMenu extends Menu {
             Matcher matcher1 = Utils.getMatcher(command, "deck add-card (.+)");
 
             matcher1.find();
-
-            String cardName = Utils.getDataInCommandByKey(matcher1.group(1), "--card");
-            String deckName = Utils.getDataInCommandByKey(matcher1.group(1), "--deck");
+            String cardName;
+            String deckName;
+            if(isAbbreviated){
+                cardName = Utils.getDataInCommandByKey(matcher1.group(1), "-c");
+                deckName = Utils.getDataInCommandByKey(matcher1.group(1), "-d");
+            }
+            else{
+                cardName = Utils.getDataInCommandByKey(matcher1.group(1), "--card");
+                deckName = Utils.getDataInCommandByKey(matcher1.group(1), "--deck");
+            }
 
             if (!Utils.checkFormatValidity(Utils.getHashMap(
                     "deckName", deckName))) {
@@ -151,7 +185,7 @@ public class DeckMenu extends Menu {
     }
 
 
-    private void deleteCardFromDeck(Matcher matcher,boolean isSideDeck) {
+    private void deleteCardFromDeck(boolean isAbbreviated,Matcher matcher,boolean isSideDeck) {
 
         if (matcher.matches()) {
 
@@ -164,8 +198,17 @@ public class DeckMenu extends Menu {
 
             matcher1.find();
 
-            String cardName = Utils.getDataInCommandByKey(matcher1.group(1), "--card");
-            String deckName = Utils.getDataInCommandByKey(matcher1.group(1), "--deck");
+            String cardName;
+            String deckName;
+            if(isAbbreviated){
+                cardName=Utils.getDataInCommandByKey(matcher1.group(1), "-c");
+                deckName=Utils.getDataInCommandByKey(matcher1.group(1), "-d");
+            }
+            else{
+                cardName=Utils.getDataInCommandByKey(matcher1.group(1), "--card");
+                deckName=Utils.getDataInCommandByKey(matcher1.group(1), "--deck");
+            }
+
 
 
             if (!Utils.checkFormatValidity(Utils.getHashMap(
@@ -192,13 +235,13 @@ public class DeckMenu extends Menu {
 
             commandIsDone = true;
 
-            sendCommandToServer1(matcher);
+            sendCommandToServer1(Utils.getMatcher("deck show -all", "deck show --all"));
         }
 
     }
 
 
-    private void showSingleDeck(Matcher matcher, boolean isDeckSideDeck) {
+    private void showSingleDeck(boolean isAbbreviated, Matcher matcher, boolean isDeckSideDeck) {
 
         if (matcher.matches()) {
 
@@ -209,8 +252,14 @@ public class DeckMenu extends Menu {
                     "deck show (.*)");
 
             matcher1.find();
+            String name;
+            if(isAbbreviated){
+                name = Utils.getDataInCommandByKey(matcher1.group(1), "-d-n");
+            }
+            else{
+                name = Utils.getDataInCommandByKey(matcher1.group(1), "--deck-name");
+            }
 
-            String name = Utils.getDataInCommandByKey(matcher1.group(1), "--deck-name");
 
             if (!Utils.isFormatValid(name)) {
                 Printer.print("name format is invalid");
@@ -239,7 +288,7 @@ public class DeckMenu extends Menu {
 
         commandIsDone = true;
 
-        sendCommandToServer1(matcher);
+        sendCommandToServer1(Utils.getMatcher("deck show --cards", "deck show --cards"));
 
     }
 
@@ -258,10 +307,15 @@ public class DeckMenu extends Menu {
                     deck delete <deck name>
                     deck set-active <deck name>
                     deck add-card --card <card name> --deck <deck name> --side(optional)
+                    deck add-card -c <card name> -d <deck name> -s(optional)
                     deck rm-card --card <card name> --deck <deck name> --side(optional)
+                    deck add-card -c <card name> -d <deck name> -s(optional)
                     deck show --all
-                    deck show --deck-name <deck name> --side(Opt)
+                    deck show -a
+                    deck show --deck-name <deck name> --side(optional)
+                    deck show -dn <deck name> -s(optional)
                     deck show --cards
+                    deck show -c
                     help
                     menu show-current
                     menu [menu name]

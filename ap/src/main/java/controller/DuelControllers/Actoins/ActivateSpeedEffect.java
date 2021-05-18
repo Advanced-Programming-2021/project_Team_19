@@ -15,7 +15,6 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
 
 
-
         return null;
     }
 

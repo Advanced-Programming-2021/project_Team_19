@@ -7,7 +7,7 @@ public enum CardNames {
     MAGIC_CYLINDER(""),
     MIND_CRUSH(""),
     TORRENTIAL_TRIBUTE(""),
-    TIME_SEAL(""),
+    TIME_SEAL("model.Card.Traps.TimeSeal"),
     NEGATE_ATTACK(""),
     SOLEMN_WARNING(""),
     MAGIC_JAMMER(""),

@@ -34,11 +34,19 @@ public class LoginMenu extends Menu {
             command = GetInput.getString();
             if (command.matches("user create" +
                     "(:?(:? --username \\S+)|(:? --nickname \\S+)|(:? --password \\S+)){3}")) {
-                manageCreatingAccount(command);
-            } else if (command.matches("user login" +
+                manageCreatingAccount(false, command);
+            } else if(command.matches("user create" +
+                    "(?=.*?-u \\S+)(?=.*?-n \\S+)(?=.*?-p \\S+)(:? -(:?p|u|n) \\S+){3}")){
+                manageCreatingAccount(true, command);
+            }
+            else if (command.matches("user login" +
                     "(:?(:? --username \\S+)|(:? --password \\S+)){2}")) {
-                manageLogin(command);
-            } else if (command.matches("menu exit")) {
+                manageLogin(false, command);
+            }else if(command.matches("user login"+
+                    "(?=.*?-u \\S+)(?=.*?-p \\S+)(:? -(:?p|u) \\S+){2}")){
+                manageLogin(true, command);
+            }
+            else if (command.matches("menu exit")) {
                 break;
             } else if (command.startsWith("menu ")) {
                 handleMenuOrders(command);
@@ -51,14 +59,21 @@ public class LoginMenu extends Menu {
 
     }
 
-    private void manageLogin(String command) {
+    private void manageLogin(boolean isAbbreviated,String command) {
 
         Matcher matcher = controller.Utils.getMatcher(command, "user login (.+)");
 
         matcher.find();
-        String username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
-        String password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
-
+        String username;
+        String password;
+        if(isAbbreviated){
+            username = Utils.getDataInCommandByKey(matcher.group(1), "-u");
+            password = Utils.getDataInCommandByKey(matcher.group(1), "-p");
+        }
+        else{
+            username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
+            password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
+        }
         if (username == null | password == null) {
             Printer.printInvalidCommand();
             return;
@@ -88,14 +103,24 @@ public class LoginMenu extends Menu {
         MainMenu.getInstance().run(username);
     }
 
-    private void manageCreatingAccount(String command) {
+    private void manageCreatingAccount(boolean isAbbreviated,String command) {
 
         Matcher matcher = Utils.getMatcher(command, "user create (.+)");
 
         matcher.find();
-        String username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
-        String password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
-        String nickname = Utils.getDataInCommandByKey(matcher.group(1), "--nickname");
+        String username;
+        String password;
+        String nickname;
+        if(isAbbreviated){
+            username = Utils.getDataInCommandByKey(matcher.group(1), "-u");
+            password = Utils.getDataInCommandByKey(matcher.group(1), "-p");
+            nickname = Utils.getDataInCommandByKey(matcher.group(1), "-n");
+        }
+        else {
+            username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
+            password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
+            nickname = Utils.getDataInCommandByKey(matcher.group(1), "--nickname");
+        }
 
         if (username == null | password == null | nickname == null) {
             Printer.printInvalidCommand();
@@ -124,11 +149,13 @@ public class LoginMenu extends Menu {
     private void help() {
         System.out.print("""
                 user create --username [username] --nickname [nickname] --password [password]
+                user create -u [username] -n [nickname] -p [password]
                 user login --username <username> --password <password>
-                 help
+                user login -u <username> -p <password>
+                help
                 menu show-current
                 menu enter [menu name]
-                menu exit               
+                menu exit
                 """);
     }
 
