@@ -141,7 +141,7 @@ public class MonsterCardZone extends Zones {
 
         MonsterCardZone monsterCardZone = new MonsterCardZone();
 
-        Monster tempMonster = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName("Texchanger"));
+        Monster tempMonster = (Monster) CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName("the calculator"));
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 

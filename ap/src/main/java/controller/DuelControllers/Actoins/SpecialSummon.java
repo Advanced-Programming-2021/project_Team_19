@@ -19,7 +19,7 @@ public class SpecialSummon extends Summon{
         monster.setCardMod (CardMod.OFFENSIVE_OCCUPIED);
 
         gameData.moveCardFromOneZoneToAnother(monster,
-                gameData.getCurrentGamer().getGameBoard().getGraveYard(),
+                gameData.getCurrentGamer().getGameBoard().getZone(monster),
                 gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
 
         handleTriggerEffects();
