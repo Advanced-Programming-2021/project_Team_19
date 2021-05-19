@@ -97,7 +97,7 @@ public class GameData {
     public void moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
         if(sourceZone instanceof GraveYard){
             String removedCardName = sourceZone.removeCard(sourceZone.getId(card)).getName();
-            destinationZone.addCard(CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(removedCardName)));
+            destinationZone.addCard(Utils.getCardByName(removedCardName));
         }
         else {
             destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));

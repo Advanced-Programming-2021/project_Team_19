@@ -235,7 +235,7 @@ public class DeckMenu extends Menu {
 
             commandIsDone = true;
 
-            sendCommandToServer1(Utils.getMatcher("deck show -all", "deck show --all"));
+            sendCommandToServer1(Utils.getMatcher("deck show --all", "deck show --all"));
         }
 
     }

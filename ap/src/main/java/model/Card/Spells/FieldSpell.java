@@ -3,7 +3,10 @@ package model.Card.Spells;
 import controller.DuelControllers.GameData;
 import model.Card.Spell;
 import model.Data.ActivationData;
+import model.Enums.Icon;
 import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.Status;
+import model.Enums.Type;
 
 import java.util.HashMap;
 
@@ -56,5 +59,9 @@ public class FieldSpell extends Spell {
         }
         return typesAndAmountToChangeAttackAndDefence.get(monsterType)[1];
 
+    }
+
+    public FieldSpell(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

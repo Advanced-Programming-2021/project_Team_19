@@ -14,11 +14,11 @@ public class DeckZone extends Zones {
     ArrayList<Card> sideDeckCards=new ArrayList<>();
 
     public DeckZone(Deck deck){
-        for(CardNames cardName:deck.getMainDeckCards()){
-            mainDeckCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for(String cardName:deck.getMainDeckCards()){
+            mainDeckCards.add(Utils.getCardByName(cardName));
         }
-        for(CardNames cardName:deck.getSideDeckCards()){
-            sideDeckCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for(String cardName:deck.getSideDeckCards()){
+            sideDeckCards.add(Utils.getCardByName(cardName));
         }
         shuffleDeck();
     }

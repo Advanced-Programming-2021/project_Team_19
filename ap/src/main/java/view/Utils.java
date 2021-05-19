@@ -69,14 +69,7 @@ public class Utils {
     }
 
 
-    public static CardNames getCardEnumByName(String cardNameStr){
 
-        String tempCardNameStr  = cardNameStr;
-        tempCardNameStr = tempCardNameStr.replaceAll("\\s|,", "_");
-        tempCardNameStr = tempCardNameStr.toUpperCase();
-
-        return CardNames.valueOf(tempCardNameStr);
-    }
 
 
 }

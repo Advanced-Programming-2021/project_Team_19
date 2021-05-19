@@ -79,9 +79,9 @@ public class DeckModifierBetweenGames {
             Printer.print("invalid id");
             return;
         }
-        Iterator<CardNames> it = deck.getSideDeckCards().iterator();
+        Iterator<String> it = deck.getSideDeckCards().iterator();
         int i = 0;
-        CardNames current = null;
+        String current = null;
         while (it.hasNext()) {
             current = it.next();
             i++;
@@ -98,9 +98,9 @@ public class DeckModifierBetweenGames {
             return;
         }
 
-        Iterator<CardNames> it = deck.getSideDeckCards().iterator();
+        Iterator<String> it = deck.getSideDeckCards().iterator();
         int i = 0;
-        CardNames current = null;
+        String current = null;
         while (it.hasNext()) {
             current = it.next();
             i++;

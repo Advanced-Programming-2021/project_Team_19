@@ -10,11 +10,11 @@ import java.io.File;
 
 public class CardDataBaseController extends DataBaseController {
 
-    public static String getCardFilePathByCardName(CardNames cardName) {
+    public static String getCardFilePathByCardName(String cardName) {
         return DataBaseController.getCardsPath() + "\\" + getCardNameStr(cardName) + ".json";
     }
 
-    public static String getCardNameStr(CardNames cardName){
+    public static String getCardNameStr(String cardName){
 
         String ans;
         ans = cardName.toString();
@@ -26,36 +26,18 @@ public class CardDataBaseController extends DataBaseController {
         return ans;
     }
 
-    public static Card getCardObjectByCardName(CardNames cardName){
+    public static Card getCardObjectByCardName(String cardName){
 
         if(cardName == null){
             return null;
         }
 
         return (Card) getObjectByGsonFile(getCardFilePathByCardName(cardName),
-                getClassByClassName(cardName.getClassName()));
+                getClassByClassName(cardName));
     }
 
     public static String getCardNamesAndPrices(){
-
-        StringBuilder returnedData = new StringBuilder();
-
-        File[] cardFiles = getFilesOfOneFolder(getCardsPath());
-        String tempData;
-
-        for(File file : cardFiles){
-
-            tempData = readDataFromFile(file);
-
-            JsonObject jsonObjectAlt = JsonParser.parseString(tempData).getAsJsonObject();
-            JsonElement nameJson = jsonObjectAlt.get("Name");
-            JsonElement priceJson = jsonObjectAlt.get("Price");
-            returnedData.append(nameJson.toString() + ":" + priceJson.toString() + "\n");
-
-        }
-
-        returnedData.deleteCharAt(returnedData.length() - 1);
-        return returnedData.toString();
+        return CSVDataBaseController.getAllCardPrices();
     }
 
 

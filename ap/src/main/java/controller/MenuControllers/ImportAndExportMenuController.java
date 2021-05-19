@@ -28,9 +28,8 @@ public class ImportAndExportMenuController{
 
         matcher.find();
 
-        CardNames cardName = Utils.getCardEnumByName(matcher.group(1));
 
-        Card card = CardDataBaseController.getCardObjectByCardName(cardName);
+        Card card = Utils.getCardByName(matcher.group(1));
 
         if(card == null){
              return new DataForClientFromServer
@@ -46,7 +45,7 @@ public class ImportAndExportMenuController{
 
         matcher.find();
 
-        CardNames cardName = Utils.getCardEnumByName(matcher.group(1));
+        String cardName = matcher.group(1);
 
         if (cardName == null) {
             return new DataForClientFromServer

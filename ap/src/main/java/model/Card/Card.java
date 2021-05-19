@@ -58,6 +58,12 @@ public class Card {
         return name+" : "+description;
     }
 
+    public Card(String name,String description, int price){
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     public static class CardComp implements Comparator<Card> {
 
         @Override

@@ -10,6 +10,7 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
+import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
@@ -48,17 +49,24 @@ public class Texchanger extends Monster {
             Printer.print("your monster card zone is full and you cannot summon a Cyberse monster");
             return false;
         }
-
-        if (Utils.askForConfirmation("do you want to summon a normal Cyberse monster from your graveyard or deck?")){
-            Card selectedCard = Utils.askUserToSelectCard
-                    (cyberseCards, "select a card id to summon", null);
-            if (selectedCard == null)
+        String command;
+        Printer.print("do you want to summon a normal Cyberse monster from your graveyard or deck?");
+        while (true) {
+            command = GetInput.getString();
+            if (command.matches("yes")) {
+                Card selectedCard = Utils.askUserToSelectCard
+                        (cyberseCards, "select a card id to summon", null);
+                if (selectedCard == null)
+                    return false;
+                lastTurnEffectUsed = gameData.getTurn();
+                new SpecialSummon(gameData).run(selectedCard);
+                return true;
+            } else if (command.matches("no") || command.matches("cancel")) {
                 return false;
-            lastTurnEffectUsed = gameData.getTurn();
-            new SpecialSummon(gameData).run(selectedCard);
-            return true;
+            } else {
+                Printer.printInvalidCommand();
+            }
         }
-        return false;
     }
 
     private ArrayList<Card> getCyberseInGraveyardAndDeck(Gamer gamer) {
@@ -69,7 +77,7 @@ public class Texchanger extends Monster {
             if (card != null &&
                     card.getCardFamily().equals(CardFamily.MONSTER) &&
                     ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
-                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.Normal))
+                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL))
                 cyberseCards.add(card);
         }
         for (int i = 0; i < deck.getSize(); i++) {
@@ -77,9 +85,13 @@ public class Texchanger extends Monster {
             if (card != null &&
                     card.getCardFamily().equals(CardFamily.MONSTER) &&
                     ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
-                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.Normal))
+                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL))
                 cyberseCards.add(card);
         }
         return cyberseCards;
+    }
+
+    public Texchanger(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 }

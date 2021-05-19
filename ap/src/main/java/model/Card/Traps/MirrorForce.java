@@ -9,6 +9,9 @@ import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Enums.CardMod;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 
 import java.util.ArrayList;
 
@@ -57,5 +60,8 @@ public class MirrorForce extends Trap {
         }
 
         return true;
+    }
+    public MirrorForce(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

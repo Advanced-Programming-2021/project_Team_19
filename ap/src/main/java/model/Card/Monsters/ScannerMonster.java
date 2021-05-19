@@ -7,6 +7,7 @@ import model.Card.Trap;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
+import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
 import view.Printer.Printer;
@@ -347,6 +348,10 @@ public class ScannerMonster extends Monster {
         else{
             return tempMonster.getName();
         }
+    }
+
+    public ScannerMonster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 
 }

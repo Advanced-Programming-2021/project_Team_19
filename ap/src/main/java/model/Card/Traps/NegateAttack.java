@@ -9,6 +9,9 @@ import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 import model.Phase;
 import view.Printer.Printer;
 
@@ -64,5 +67,9 @@ public class NegateAttack extends Trap {
 
         return new TriggerActivationData(true,"Spell Activated Successfully",
                 label.card);
+    }
+
+    public NegateAttack(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

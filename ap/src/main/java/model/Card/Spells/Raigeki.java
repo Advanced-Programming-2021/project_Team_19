@@ -5,6 +5,9 @@ import model.Card.Card;
 import model.Card.Spell;
 import model.Card.TrapAndSpellTypes.Destroyer;
 import model.Data.ActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 
 public class Raigeki extends Spell {
     @Override
@@ -13,6 +16,10 @@ public class Raigeki extends Spell {
 
         handleDestroy(gameData);
         return new ActivationData(this, "all enemy monsters were destroyed");
+    }
+
+    public Raigeki(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 
 }
