@@ -9,6 +9,9 @@ import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 import view.GetInput;
 import view.Printer.Printer;
 import model.Enums.CardFamily;
@@ -77,6 +80,10 @@ public class CallOfTheHaunted extends Trap {
         }
 
         super.handleDestroy(gameData);
+    }
+
+    public CallOfTheHaunted(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 
 }

@@ -5,6 +5,9 @@ import controller.DuelControllers.GameData;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 
 public class MagicJammer extends Trap{
 
@@ -26,5 +29,9 @@ public class MagicJammer extends Trap{
             return true;
         }
         return false;
+    }
+
+    public MagicJammer(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

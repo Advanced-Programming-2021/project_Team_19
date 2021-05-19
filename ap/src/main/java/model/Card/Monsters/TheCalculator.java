@@ -4,6 +4,9 @@ import controller.DuelControllers.GameData;
 import model.Board.MonsterCardZone;
 import model.Card.Monster;
 import model.Enums.CardMod;
+import model.Enums.MonsterEnums.Attribute;
+import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
 
 public class TheCalculator extends Monster {
@@ -29,5 +32,9 @@ public class TheCalculator extends Monster {
             return attack - 600;
         }
         return attack;
+    }
+
+    public TheCalculator(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.CardDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
@@ -73,17 +74,6 @@ public class Utils {
         return data.matches("\\w+");
     }
 
-    public static CardNames getCardEnumByName(String cardNameStr) {
-
-        try {
-            return CardNames.valueOf(getStringInSnaleUpperCase(cardNameStr));
-
-        } catch (IllegalArgumentException e) {
-
-//            e.printStackTrace();
-            return null;
-        }
-    }
 
     public static String getStringInSnaleUpperCase(String string) {
 
@@ -113,7 +103,7 @@ public class Utils {
 
     public static Card getCardByName(String cardName) {
 
-        return CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
+        return CSVDataBaseController.getCardByCardName(cardName);
     }
 
     public static boolean isCareOwnerActionDoer(GameData gameData, Action action, Card card) {

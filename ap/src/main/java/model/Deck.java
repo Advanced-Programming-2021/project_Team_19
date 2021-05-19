@@ -1,22 +1,18 @@
 package model;
 
 
-import com.sun.source.tree.Tree;
 import controller.DataBaseControllers.CardDataBaseController;
+import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
-import model.Enums.CardNames;
-import view.Printer.Printer;
-
-import javax.swing.tree.TreeCellRenderer;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Deck {
     private final String name;
-    private final ArrayList<CardNames> mainDeckCards = new ArrayList<>();
-    private final ArrayList<CardNames> sideDeckCards = new ArrayList<>();
+    private final ArrayList<String> mainDeckCards = new ArrayList<>();
+    private final ArrayList<String> sideDeckCards = new ArrayList<>();
 
     public Deck(String name) {
         this.name = name;
@@ -30,19 +26,19 @@ public class Deck {
     private void setID() {
     }
 
-    public void addCardToMainDeck(CardNames cardName) {
+    public void addCardToMainDeck(String cardName) {
         mainDeckCards.add(cardName);
     }
 
-    public void addCardToSideDeck(CardNames cardName) {
+    public void addCardToSideDeck(String cardName) {
         sideDeckCards.add(cardName);
     }
 
-    public ArrayList<CardNames> getMainDeckCards() {
+    public ArrayList<String> getMainDeckCards() {
         return mainDeckCards;
     }
 
-    public ArrayList<CardNames> getSideDeckCards() {
+    public ArrayList<String> getSideDeckCards() {
         return sideDeckCards;
     }
 
@@ -54,11 +50,11 @@ public class Deck {
         return name;
     }
 
-    public void removeCardFromSideDeck(CardNames cardName) {
+    public void removeCardFromSideDeck(String cardName) {
         sideDeckCards.remove(cardName);
     }
 
-    public void removeCardFromMainDeck(CardNames cardName) {
+    public void removeCardFromMainDeck(String cardName) {
         mainDeckCards.remove(cardName);
     }
 
@@ -71,8 +67,8 @@ public class Deck {
         return mainDeckCards.size() >= 60;
     }
 
-    public ArrayList<CardNames> getAllCard() {
-        ArrayList<CardNames> allCardNames = new ArrayList<>();
+    public ArrayList<String> getAllCard() {
+        ArrayList<String> allCardNames = new ArrayList<>();
         allCardNames.addAll(mainDeckCards);
         allCardNames.addAll(sideDeckCards);
         return allCardNames;
@@ -80,27 +76,27 @@ public class Deck {
 
     public TreeSet<Card> getAllCardsSorted() {
         TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
-        for (CardNames cardName : mainDeckCards) {
-            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for (String cardName : mainDeckCards) {
+            allCards.add(Utils.getCardByName(cardName));
         }
-        for (CardNames cardName : sideDeckCards) {
-            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for (String cardName : sideDeckCards) {
+            allCards.add(Utils.getCardByName(cardName));
         }
         return allCards;
     }
 
     public TreeSet<Card> getAllMainCardsSorted() {
         TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
-        for (CardNames cardName : mainDeckCards) {
-            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for (String cardName : mainDeckCards) {
+            allCards.add(Utils.getCardByName(cardName));
         }
         return allCards;
     }
 
     public TreeSet<Card> getAllSideCardsSorted() {
         TreeSet<Card> allCards = new TreeSet<>(new Card.CardComp());
-        for (CardNames cardName : sideDeckCards) {
-            allCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for (String cardName : sideDeckCards) {
+            allCards.add(Utils.getCardByName(cardName));
         }
         return allCards;
     }
@@ -109,9 +105,9 @@ public class Deck {
         return true;
     }
 
-    public boolean isThereThreeCardsInDeck(CardNames CardName) {
+    public boolean isThereThreeCardsInDeck(String CardName) {
         int cnt = 0;
-        for (CardNames cardName : getAllCard()) {
+        for (String cardName : getAllCard()) {
             if (cardName.equals(CardName)) {
                 cnt++;
             }

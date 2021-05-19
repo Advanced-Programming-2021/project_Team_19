@@ -10,12 +10,18 @@ import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.Icon;
 import model.Enums.SpellCardMods;
+import model.Enums.Status;
+import model.Enums.Type;
 import model.Phase;
 
 public abstract class SpellAndTraps extends Card {
 
     @SerializedName("Icon")
     public Icon icon;
+    @SerializedName("Status")
+    public Status status;
+    @SerializedName("Type")
+    public Type type;
 
     @Expose
     protected int setTurn = 0;
@@ -23,6 +29,13 @@ public abstract class SpellAndTraps extends Card {
     protected SpellCardMods spellCardMod;
     @Expose
     protected int turnActivated = 0;
+
+    public SpellAndTraps(String name,String description,int price,Type type,Icon icon,Status status){
+        super(name,description,price);
+        this.type = type;
+        this.icon = icon;
+        this.status = status;
+    }
 
     public int getTurnActivated() {
         return turnActivated;

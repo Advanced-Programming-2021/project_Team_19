@@ -44,7 +44,7 @@ public class ShopMenuController {
         matcher.find();
         String cardName = matcher.group(1);
 
-        Card card = CardDataBaseController.getCardObjectByCardName(Utils.getCardEnumByName(cardName));
+        Card card = Utils.getCardByName(cardName);
 
         if (card == null) {
             return new DataForClientFromServer("there is no card with this name",
@@ -55,7 +55,7 @@ public class ShopMenuController {
             return new DataForClientFromServer("not enough money", MessageType.ERROR);
         }
 
-        user.addCard(Utils.getCardEnumByName(cardName));
+        user.addCard(cardName);
         user.decreaseCredit(card.getPrice());
         DataBaseController.rewriteFileOfObjectGson(UserDataBaseController.
                 getUserFilePathByUsername(user.getUsername()), user);

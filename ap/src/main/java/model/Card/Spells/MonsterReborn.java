@@ -5,6 +5,9 @@ import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Spell;
 import model.Data.ActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 import model.Pair;
 import view.GetInput;
 import view.Printer.Printer;
@@ -72,5 +75,9 @@ public class MonsterReborn extends Spell {
                 return new Pair<>(selectIndex, isForRival);
             }
         }
+    }
+
+    public MonsterReborn(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

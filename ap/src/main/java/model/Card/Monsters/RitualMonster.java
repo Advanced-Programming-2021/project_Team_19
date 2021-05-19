@@ -9,6 +9,8 @@ import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Spells.AdvancedRitualArt;
 import model.Enums.CardFamily;
+import model.Enums.MonsterEnums.Attribute;
+import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import view.GetInput;
 import view.Printer.Printer;
@@ -91,5 +93,9 @@ public class RitualMonster extends Monster {
             toReturn += monster.getLevel();
         }
         return toReturn;
+    }
+
+    public RitualMonster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 }

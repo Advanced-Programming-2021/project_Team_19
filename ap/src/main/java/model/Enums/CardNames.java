@@ -49,7 +49,7 @@ public enum CardNames {
 //    }
 
     TIME_SEAL("model.Card.Traps.TimeSeal"),
-
+    NEGATE_ATTACK("model.Card.Traps.NegateAttack"),
     ADVANCED_RITUAL_ART("model.Card.Monsters.AdvancedRitualArt"),
     BATTLE_OX("model.Card.Monsters.NormalMonster"),
     AXE_RAIDER("model.Card.Monsters.NormalMonster"),

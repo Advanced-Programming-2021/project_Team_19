@@ -2,8 +2,6 @@ package view;
 
 import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
-import controller.DuelControllers.DeckModifierBetweenGames;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.Utils;
@@ -23,15 +21,13 @@ public class Main {
 
     public static void main(String[] arg) {
 
-        new DeckModifierBetweenGames(UserDataBaseController.getUserByUsername("Taha")).run();
-
-        Printer.print(Utils.getCardByName("battle warrior").status);
+//        Printer.print(Utils.getCardByName("battle warrior").status);
 
 //        new Game().run(GameData.getTestGameData());
 
-//        DataBaseController.makeResourceDirectory();
-//
-//        LoginMenu.getInstance().run();
+        DataBaseController.makeResourceDirectory();
+
+        LoginMenu.getInstance().run();
     }
 
 }

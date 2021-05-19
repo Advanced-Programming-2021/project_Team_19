@@ -8,6 +8,9 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
+import model.Enums.MonsterEnums.Attribute;
+import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -44,6 +47,10 @@ public class TerratigerTheEmpoweredWarrior extends Monster {
                 toReturn.add(card);
         }
         return toReturn;
+    }
+
+    public TerratigerTheEmpoweredWarrior(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 
 }

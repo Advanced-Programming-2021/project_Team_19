@@ -7,6 +7,9 @@ import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 
 public class MagicCylinder extends Trap {
     @Override
@@ -44,5 +47,9 @@ public class MagicCylinder extends Trap {
         }
 
         return true;
+    }
+
+    public MagicCylinder(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 }

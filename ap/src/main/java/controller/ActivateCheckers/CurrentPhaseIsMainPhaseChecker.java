@@ -11,8 +11,8 @@ public class CurrentPhaseIsMainPhaseChecker extends ActivationChecker {
     }
 
     public String check(){
-        if(gameData.getCurrentPhase().equals(Phase.MAIN1) ||
-                gameData.getCurrentPhase().equals(Phase.MAIN2)){
+        if(!gameData.getCurrentPhase().equals(Phase.MAIN1) &&
+                !gameData.getCurrentPhase().equals(Phase.MAIN2)){
             return "you can’t activate an effect on this phase";
         }
         return null;

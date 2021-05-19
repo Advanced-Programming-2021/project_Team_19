@@ -6,6 +6,9 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
+import model.Enums.MonsterEnums.Attribute;
+import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -31,6 +34,10 @@ public class ManEaterBug extends Monster {
         monsterToDestroy.handleDestroy(gameData);
 
         return true;
+    }
+
+    public ManEaterBug(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
     }
 
 }

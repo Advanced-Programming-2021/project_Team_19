@@ -1,8 +1,8 @@
 package model;
 
 import controller.DataBaseControllers.CardDataBaseController;
+import controller.Utils;
 import model.Card.Card;
-import model.Enums.CardNames;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -21,7 +21,7 @@ public class User {
     private int score;
     private int credit;
 
-    private ArrayList<CardNames> cards = new ArrayList<>();
+    private ArrayList<String> cards = new ArrayList<>();
 
     public User(String username, String nickName, String password) {
 
@@ -85,10 +85,10 @@ public class User {
         this.nickname = nickName;
     }
 
-    public void addCard(CardNames cardName){
+    public void addCard(String cardName){
         cards.add(cardName);
     }
-    public void removeCard(CardNames cardName){
+    public void removeCard(String cardName){
         cards.remove(cardName);
     }
 
@@ -108,7 +108,7 @@ public class User {
         this.activeDeckName=activeDeckName;
     }
 
-    public ArrayList<CardNames> getCards(){
+    public ArrayList<String> getCards(){
         return cards;
     }
 
@@ -125,8 +125,8 @@ public class User {
 
     public TreeSet<Card> getCardsSorted(){
         TreeSet<Card> sortedCards=new TreeSet<Card>(new Card.CardComp());
-        for(CardNames cardName:cards){
-            sortedCards.add(CardDataBaseController.getCardObjectByCardName(cardName));
+        for(String cardName:cards){
+            sortedCards.add(Utils.getCardByName(cardName));
         }
         return sortedCards;
     }

@@ -38,6 +38,11 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
+        if(!card.canActivate(gameData)){
+            Printer.print("you can't activate this card");
+            return;
+        }
+
         if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
             if(!activateFromHand(card)) return;
         }

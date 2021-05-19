@@ -41,7 +41,17 @@ public class Monster extends Card {
 
     {
         setCardFamily(CardFamily.MONSTER);
-        setEffectType(MonsterTypesForEffects.Effect);
+        setEffectType(MonsterTypesForEffects.EFFECT);
+    }
+
+    public Monster(String name,String description,int price,int attack, int defence,int level,Attribute attribute,MonsterType monsterType,MonsterTypesForEffects monsterTypesForEffects){
+        super(name,description,price);
+        this.attack=attack;
+        this.defence = defence;
+        this.level = level;
+        this.attribute = attribute;
+        this.monsterType = monsterType;
+        this.monsterTypesForEffects = monsterTypesForEffects;
     }
 
     public void setCallOfTheHauntedTrap(Trap trap){

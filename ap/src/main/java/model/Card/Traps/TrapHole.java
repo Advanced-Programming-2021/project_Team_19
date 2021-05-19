@@ -10,6 +10,9 @@ import model.Card.Monster;
 import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.Enums.Icon;
+import model.Enums.Status;
+import model.Enums.Type;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -53,6 +56,10 @@ public class TrapHole extends Normal {
         }
 
         return true;
+    }
+
+    public TrapHole(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
 
 }

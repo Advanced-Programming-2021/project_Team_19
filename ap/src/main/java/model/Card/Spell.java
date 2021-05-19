@@ -2,8 +2,7 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.GameData;
-import model.Enums.CardFamily;
-import model.Enums.SpellCardMods;
+import model.Enums.*;
 import model.Enums.SpellsAndTraps.SpellTypes;
 
 public abstract class Spell extends SpellAndTraps{
@@ -14,6 +13,9 @@ public abstract class Spell extends SpellAndTraps{
     private int activationTurn;
     {
         setCardFamily(CardFamily.SPELL);
+    }
+    public Spell(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
     }
     public SpellTypes getSpellType() {
         return spellType;
