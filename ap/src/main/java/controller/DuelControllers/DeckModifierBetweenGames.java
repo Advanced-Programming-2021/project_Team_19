@@ -83,8 +83,11 @@ public class DeckModifierBetweenGames {
         int i = 0;
         String current = null;
         while (it.hasNext()) {
-            current = it.next();
             i++;
+            current = it.next();
+            if(i==id){
+                break;
+            }
         }
 
         deck.getSideDeckCards().remove(current);
@@ -102,8 +105,11 @@ public class DeckModifierBetweenGames {
         int i = 0;
         String current = null;
         while (it.hasNext()) {
-            current = it.next();
             i++;
+            current = it.next();
+            if(id==i){
+                break;
+            }
         }
 
         deck.getMainDeckCards().remove(current);
