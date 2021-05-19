@@ -1,6 +1,5 @@
 package view;
 
-import Test.ProjectTest;
 
 import java.util.Scanner;
 
@@ -18,11 +17,12 @@ public class GetInput {
 
     public static String getString() {
         if(testMod) {
-            return ProjectTest.giveInput();
+//            return ProjectTest.giveInput();
         }
         else {
             return scanner.nextLine().replaceAll("\\s+", " ").trim();
         }
+        return null;
     }
 
     public static int getInt(){

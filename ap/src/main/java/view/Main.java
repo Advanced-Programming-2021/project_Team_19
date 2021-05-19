@@ -9,7 +9,6 @@ import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
-import org.junit.jupiter.api.Test;
 import view.Menu.LoginMenu;
 import view.Printer.Printer;
 

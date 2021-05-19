@@ -1,6 +1,6 @@
 package view.Printer;
 
-import Test.ProjectTest;
+
 
 public class Printer {
 
@@ -12,7 +12,7 @@ public class Printer {
 
     public static void print(Object object){
         if(isInTestingMod){
-            ProjectTest.getInput((String) object);
+//            ProjectTest.getInput((String) object);
         }
         else {
             System.out.println(object);
