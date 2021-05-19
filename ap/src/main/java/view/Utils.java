@@ -1,6 +1,5 @@
 package view;
 
-import model.Enums.CardNames;
 import view.Printer.RegisterProfilePrinter;
 
 import java.util.HashMap;

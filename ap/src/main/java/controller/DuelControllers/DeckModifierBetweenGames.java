@@ -3,7 +3,6 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
 import model.Deck;
-import model.Enums.CardNames;
 import model.Gamer;
 import model.User;
 import view.GetInput;

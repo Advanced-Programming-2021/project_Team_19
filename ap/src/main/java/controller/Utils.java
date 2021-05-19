@@ -8,7 +8,6 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardFamily;
-import model.Enums.CardNames;
 import model.Enums.MessageType;
 import view.GetInput;
 import view.Printer.Printer;
@@ -16,7 +15,6 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

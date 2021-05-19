@@ -6,7 +6,6 @@ import controller.Utils;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Deck;
-import model.Enums.CardNames;
 import model.Enums.MessageType;
 import model.User;
 import view.Printer.Printer;

@@ -4,7 +4,6 @@ import controller.DataBaseControllers.CardDataBaseController;
 import controller.Utils;
 import model.Card.Card;
 import model.Deck;
-import model.Enums.CardNames;
 
 import java.util.ArrayList;
 
