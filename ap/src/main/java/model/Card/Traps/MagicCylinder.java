@@ -2,6 +2,9 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
+import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
+import controller.TrapCheckers.Checker;
+import controller.TrapCheckers.TurnChecker;
 import controller.Utils;
 import model.Card.Monster;
 import model.Card.Trap;
@@ -11,7 +14,14 @@ import model.Enums.Icon;
 import model.Enums.Status;
 import model.Enums.Type;
 
+import java.util.ArrayList;
+
 public class MagicCylinder extends Trap {
+
+    public MagicCylinder(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
+
     @Override
     public ActivationData activate(GameData gameData) {
 
@@ -21,24 +31,22 @@ public class MagicCylinder extends Trap {
         gameData.getCardController(attack.getAttackingMonster()).decreaseLifePoint
                 (((Monster) attack.getAttackingMonster()).getAttack(gameData));
 
-        attack.getAttackingMonster().handleDestroy(gameData);
-
         handleDestroy(gameData);
 
-        turnActivated = gameData.getTurn();
+        handleCommonsForActivate(gameData);
 
         return new TriggerActivationData
-                (true, "spell activated successfully", this);
+                (true, "trap activated successfully\nrival LP decrease by ard attack", this);
     }
 
 
     public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if (!canActivateThisTurn(action.getGameData())) {
-            return false;
-        }
+        ArrayList<Checker>checkers = new ArrayList<>();
+        checkers.add(new TurnChecker(action.getGameData(), this));
+        checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
 
-        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
+        if(!Checker.multipleCheck(checkers)){
             return false;
         }
 
@@ -49,7 +57,5 @@ public class MagicCylinder extends Trap {
         return true;
     }
 
-    public MagicCylinder(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
-    }
+
 }

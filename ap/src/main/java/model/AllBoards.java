@@ -131,7 +131,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("Negate Attack");
+        Card card = Utils.getCardByName("magic cylinder");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());

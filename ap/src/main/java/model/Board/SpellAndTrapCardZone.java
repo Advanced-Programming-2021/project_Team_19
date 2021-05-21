@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("Negate Attack"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("magic cylinder"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);
