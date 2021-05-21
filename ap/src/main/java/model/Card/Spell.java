@@ -11,11 +11,10 @@ public abstract class Spell extends SpellAndTraps{
 
     @Expose
     private int activationTurn;
-    {
-        setCardFamily(CardFamily.SPELL);
-    }
+
     public Spell(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
+        setCardFamily(CardFamily.SPELL);
     }
     public SpellTypes getSpellType() {
         return spellType;

@@ -13,6 +13,8 @@ public abstract class Trap extends SpellAndTraps {
 
     public Trap(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
+
+        setCardFamily(CardFamily.TRAP);
     }
 
     public TrapTypes getTrapType() {
