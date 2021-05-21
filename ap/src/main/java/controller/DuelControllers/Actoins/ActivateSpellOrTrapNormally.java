@@ -56,13 +56,11 @@ public class ActivateSpellOrTrapNormally extends Activate {
             return;
         }
 
-        Printer.print("spell/trap activated");
-
     }
 
     private boolean activateFromSpellZone(SpellAndTraps card) {
 
-        card.activate(gameData);
+        Printer.print(card.activate(gameData).message);
         return true;
 
     }
@@ -87,7 +85,7 @@ public class ActivateSpellOrTrapNormally extends Activate {
                 gameData.getCurrentGamer().getGameBoard().getHand(),
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
 
-        card.activate(gameData);
+        Printer.print(card.activate(gameData).message);
 
         return true;
 
