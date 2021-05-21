@@ -20,13 +20,14 @@ public class Main {
 
     public static void main(String[] arg) {
 
-//        Printer.print(Utils.getCardByName("battle warrior").status);
+//        Printer.print(Utils.getCardByName("Battle OX"));
+//        Printer.print(Utils.getCardByName("Negate Attack"));
 
-//        new Game().run(GameData.getTestGameData());
+        new Game().run(GameData.getTestGameData());
 
-        DataBaseController.makeResourceDirectory();
+//        DataBaseController.makeResourceDirectory();
 
-        LoginMenu.getInstance().run();
+//        LoginMenu.getInstance().run();
     }
 
 }

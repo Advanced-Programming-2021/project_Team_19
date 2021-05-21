@@ -99,8 +99,9 @@ public class CSVDataBaseController {
         getClassByName.put("United We Stand", UnitedWeStand.class);
         getClassByName.put("Magnum Shield", MagnumShield.class);
     }
-    public static Card getMonsterCardByName(String searchingName) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        BufferedReader csvReader = new BufferedReader(new FileReader("ap\\CSVData\\Monster.csv"));
+    public static Card getMonsterCardByName(String searchingName) throws IOException
+            , NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        BufferedReader csvReader = new BufferedReader(new FileReader("Resource/Cards/Monster.csv"));
         String row;
         while((row = csvReader.readLine()) != null){
             if(row.startsWith("Name")){
@@ -155,8 +156,11 @@ public class CSVDataBaseController {
                 description = stringBuilder.toString().trim();
 
                 Class<?> clazz = getClassByName.get(name);
-                Constructor<?> ctor = clazz.getConstructor(String.class,String.class,int.class,int.class,int.class,int.class,Attribute.class,MonsterType.class,MonsterTypesForEffects.class);
-                return (Card)ctor.newInstance(name,description,price,attack,defense,level,attribute,monsterType,monsterTypesForEffects );
+                Constructor<?> ctor = clazz.getConstructor(String.class,String.class,int.class,
+                        int.class,int.class,int.class,Attribute.class,MonsterType.class, MonsterTypesForEffects.class);
+
+                return (Card)ctor.newInstance
+                        (name,description,price,attack,defense,level,attribute,monsterType, monsterTypesForEffects );
             }
 
 
@@ -164,8 +168,9 @@ public class CSVDataBaseController {
         return null;
     }
 
-    public static Card getSpellOrTrapCardByName(String searchingName) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        BufferedReader csvReader = new BufferedReader(new FileReader("ap\\CSVData\\SpellTrap.csv"));
+    public static Card getSpellOrTrapCardByName(String searchingName) throws IOException,
+            NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        BufferedReader csvReader = new BufferedReader(new FileReader("Resource/Cards/SpellTrap.csv"));
         String row;
         while((row = csvReader.readLine()) != null){
             if(row.startsWith("Name")){
@@ -235,8 +240,4 @@ public class CSVDataBaseController {
         return returnedData.substring(0,returnedData.length()-1);
     }
 
-
-    public static void main(String[] arg)  {
-        System.out.println(getAllCardPrices());
-    }
 }
