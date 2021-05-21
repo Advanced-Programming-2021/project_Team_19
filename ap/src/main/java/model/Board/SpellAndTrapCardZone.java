@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("mirror force"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("torrential tribute"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);
