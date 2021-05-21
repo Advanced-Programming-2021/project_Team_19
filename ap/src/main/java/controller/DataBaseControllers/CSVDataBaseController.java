@@ -130,7 +130,8 @@ public class CSVDataBaseController {
                 }
             }
             String name = stringBuilder.toString().trim().replaceAll("\\s+"," ");
-            if(searchingName.equals(name)) {
+            if(searchingName.equalsIgnoreCase(name)) {
+                //change
                 Attribute attribute = Attribute.valueOf(data[temp+1].trim().toUpperCase());
                 MonsterType monsterType = MonsterType.valueOf(data[temp+2].toUpperCase().replaceAll("-", "_").replaceAll(" ","_"));
                 MonsterTypesForEffects monsterTypesForEffects = MonsterTypesForEffects.valueOf(data[temp+3].toUpperCase().replaceAll("-", "_"));
@@ -183,7 +184,8 @@ public class CSVDataBaseController {
             row = row.replaceAll("\"","");
             String[] data = row.split(",");
             String name = data[0].trim().replaceAll("\\s+"," ");
-            if(searchingName.equals(name)) {
+            if(searchingName.equalsIgnoreCase(name)) {
+                //change
                 Type type = Type.valueOf(data[1].trim().toUpperCase());
                 Icon icon = Icon.valueOf(data[2].trim().toUpperCase().replaceAll("-","_"));
                 String description;
