@@ -16,7 +16,6 @@ public class AllBoards {
     private Hand hand = new Hand();
 
 
-
     public AllBoards(User user) {
         Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
         deckZone = new DeckZone(deck);
@@ -120,6 +119,7 @@ public class AllBoards {
 
 
 
+    //test
 
     private AllBoards(){}
 
