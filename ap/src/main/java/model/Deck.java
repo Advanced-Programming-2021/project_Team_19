@@ -1,7 +1,6 @@
 package model;
 
 
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
@@ -190,3 +189,6 @@ public class Deck {
 
 
 }
+
+
+

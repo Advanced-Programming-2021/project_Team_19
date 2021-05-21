@@ -1,7 +1,6 @@
 package controller;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
@@ -70,20 +69,6 @@ public class Utils {
 
     public static boolean isFormatValid(String data) {
         return data.matches("\\w+");
-    }
-
-
-    public static String getStringInSnaleUpperCase(String string) {
-
-        String tempString = string;
-
-        tempString = tempString.replaceAll(", ", "___");
-        tempString = tempString.replaceAll("-", "__");
-        tempString = tempString.replaceAll(" ", "_");
-
-        tempString = tempString.toUpperCase();
-
-        return tempString;
     }
 
     public static DataForClientFromServer getDataSendToClientForInvalidInput() {

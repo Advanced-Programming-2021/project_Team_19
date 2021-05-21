@@ -1,14 +1,10 @@
 package controller.DuelControllers;
 
-import controller.DataBaseControllers.CardDataBaseController;
-import controller.DataBaseControllers.DeckDataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.Utils;
 import model.Board.GraveYard;
 import model.Board.Zones;
 import model.Card.Card;
-import model.Deck;
 import model.Gamer;
 import model.Phase;
 import model.User;

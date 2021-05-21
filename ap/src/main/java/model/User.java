@@ -1,6 +1,5 @@
 package model;
 
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.Utils;
 import model.Card.Card;
 import com.google.gson.Gson;

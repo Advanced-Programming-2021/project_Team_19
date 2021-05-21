@@ -1,6 +1,6 @@
 package controller.MenuControllers;
 
-import controller.DataBaseControllers.CardDataBaseController;
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
@@ -66,7 +66,7 @@ public class ShopMenuController {
 
     private DataForClientFromServer showAllCards() {
 
-        return new DataForClientFromServer(CardDataBaseController.getCardNamesAndPrices(),
+        return new DataForClientFromServer(CSVDataBaseController.getAllCardPrices(),
                 MessageType.Card);
     }
 }

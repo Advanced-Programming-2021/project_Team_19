@@ -1,8 +1,6 @@
 package controller.DuelControllers.Actoins;
 
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.DuelControllers.GameData;
-import controller.DuelControllers.GameHelp;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;

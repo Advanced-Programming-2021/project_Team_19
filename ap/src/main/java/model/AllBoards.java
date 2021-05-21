@@ -1,6 +1,5 @@
 package model;
 
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
 import model.Board.*;

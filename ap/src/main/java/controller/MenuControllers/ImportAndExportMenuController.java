@@ -1,6 +1,5 @@
 package controller.MenuControllers;
 
-import controller.DataBaseControllers.CardDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.Utils;
 import model.Card.Card;
@@ -52,12 +51,8 @@ public class ImportAndExportMenuController{
 
         }
 
-        return new DataForClientFromServer(DataBaseController.readDataFromFile
-                (CardDataBaseController.getCardFilePathByCardName(cardName)), MessageType.SUCCESSFUL);
-
-
-//        System.out.println(DataBaseController.makeObjectJson
-//                (CardDataBaseController.getCardObjectByCardName(cardName)));
+        return new DataForClientFromServer(DataBaseController.makeObjectJson(Utils.getCardByName(cardName)),
+                MessageType.SUCCESSFUL);
 
     }
 
