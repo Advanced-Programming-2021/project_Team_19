@@ -15,7 +15,11 @@ import model.Enums.Type;
 
 import java.util.ArrayList;
 
-public class MirrorForce extends Trap {
+public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
+
+    public MirrorForce(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
 
     @Override
     public ActivationData activate(GameData gameData) {
@@ -23,10 +27,13 @@ public class MirrorForce extends Trap {
         handleEffect(gameData);
 
         handleDestroy(gameData);
-        turnActivated = gameData.getTurn();
 
-        return new TriggerActivationData
-                (true, "spell activated successfully", this);
+        handleCommonsForActivate(gameData);
+
+        return new TriggerActivationData(
+                true,
+                "all rival monsters that are in attack position destroyed",
+                this);
     }
 
     private void handleEffect(GameData gameData){
@@ -38,30 +45,10 @@ public class MirrorForce extends Trap {
                 .getGameBoard().getMonsterCardZone().getCards();
 
         for(Monster monster : monsters){
-            if(monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+            if(monster != null && monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
                 monster.handleDestroy(gameData);
             }
         }
     }
 
-
-    public boolean canActivateBecauseOfAnAction(Action action) {
-
-        if (!canActivateThisTurn(action.getGameData())) {
-            return false;
-        }
-
-        if (Utils.isCareOwnerActionDoer(action.getGameData(), action, this)) {
-            return false;
-        }
-
-        if (!(action instanceof Attack)) {
-            return false;
-        }
-
-        return true;
-    }
-    public MirrorForce(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
-    }
 }

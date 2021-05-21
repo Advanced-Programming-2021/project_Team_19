@@ -20,7 +20,7 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class NegateAttack extends Trap {
+public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
 
     public ActivationData activate(GameData gameData) {
 
@@ -36,25 +36,6 @@ public class NegateAttack extends Trap {
                         "trap activated successfully\nattack has stopped and battle phase has finished",
                         this);
 
-    }
-
-
-    public boolean canActivateBecauseOfAnAction(Action action) {
-
-        ArrayList<Checker> checkers = new ArrayList<>();
-
-        checkers.add(new TurnChecker(action.getGameData(), this));
-        checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
-
-        if(!Checker.multipleCheck(checkers)){
-            return false;
-        }
-
-        if (!(action instanceof Attack)) {
-            return false;
-        }
-
-        return true;
     }
 
     public boolean shouldEffectRun(EffectLabel label){

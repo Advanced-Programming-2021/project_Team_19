@@ -16,7 +16,7 @@ import model.Enums.Type;
 
 import java.util.ArrayList;
 
-public class MagicCylinder extends Trap {
+public class MagicCylinder extends TrapsActivateBecauseOfActionAttack {
 
     public MagicCylinder(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
@@ -38,24 +38,5 @@ public class MagicCylinder extends Trap {
         return new TriggerActivationData
                 (true, "trap activated successfully\nrival LP decrease by ard attack", this);
     }
-
-
-    public boolean canActivateBecauseOfAnAction(Action action) {
-
-        ArrayList<Checker>checkers = new ArrayList<>();
-        checkers.add(new TurnChecker(action.getGameData(), this));
-        checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
-
-        if(!Checker.multipleCheck(checkers)){
-            return false;
-        }
-
-        if (!(action instanceof Attack)) {
-            return false;
-        }
-
-        return true;
-    }
-
 
 }
