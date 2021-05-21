@@ -67,8 +67,4 @@ public class Utils {
         return data.matches("\\w+");
     }
 
-
-
-
-
 }

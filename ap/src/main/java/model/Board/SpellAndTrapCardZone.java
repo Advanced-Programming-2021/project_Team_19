@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("torrential tribute"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("mind crush"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);

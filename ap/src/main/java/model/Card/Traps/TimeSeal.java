@@ -1,15 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
-import controller.TrapCheckers.CardControllerIsCurrentGamerChecker;
-import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
-import controller.TrapCheckers.Checker;
-import controller.TrapCheckers.TurnChecker;
-import model.Card.Card;
-import model.Card.Monster;
-import model.Card.SpellAndTraps;
-import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
@@ -17,12 +8,12 @@ import model.Enums.Icon;
 import model.Enums.Status;
 import model.Enums.Type;
 import model.Phase;
-import view.Printer.Printer;
 
-import java.util.ArrayList;
+public class TimeSeal extends SpeedEffectTrap {
 
-public class TimeSeal extends Trap {
-
+    public TimeSeal(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
 
     private int effectTurn = 0;
     @Override
@@ -45,23 +36,6 @@ public class TimeSeal extends Trap {
             effectTurn = turnActivated + 1;
         else
             effectTurn = turnActivated + 2;
-    }
-
-    public boolean canActivate(GameData gameData) {
-
-        ArrayList<Checker> checkers = new ArrayList<>();
-
-        checkers.add(new TurnChecker(gameData, this));
-
-        if(!Checker.multipleCheck(checkers)){
-            return false;
-        }
-
-        return true;
-    }
-
-    public TimeSeal(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
     }
 
     public boolean shouldEffectRun(EffectLabel label){

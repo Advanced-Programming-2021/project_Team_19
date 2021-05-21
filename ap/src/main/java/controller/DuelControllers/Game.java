@@ -7,7 +7,7 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
-import model.Card.Trap;
+import model.Card.Traps.SpeedEffectTrap;
 import model.EffectLabel;
 import model.Gamer;
 import model.Phase;
@@ -30,12 +30,13 @@ public class Game {
             }
 
             if(!gameData.hasAskedForSpellsThisPhase){
-                if(c(gameData)){
+
+                if(canRivalActivateSpell(gameData)){
                     Utils.changeTurn(gameData);
                     gameData.showBoard();
 
-                    if(Utils.askForActivate("It's " + gameData.getCurrentPhase())){
-                        f(gameData);
+                    if(Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")){
+                        handleActivatingSpellByRival(gameData);
                     }
 
                     Utils.changeTurn(gameData);
@@ -211,17 +212,17 @@ public class Game {
         return false;
     }
 
-    private static void f(GameData gameData) {
+    private static void handleActivatingSpellByRival(GameData gameData) {
 
-        if(c(gameData)){
+        if(canRivalActivateSpell(gameData)){
             new ActivateSpeedEffect(gameData).run();
         }
     }
 
-    private static boolean c(GameData gameData){
+    private static boolean canRivalActivateSpell(GameData gameData){
         for(SpellAndTraps card :
                 gameData.getNextTurnOwner().getGameBoard().getSpellAndTrapCardZone().getAllCards()){
-            if(card instanceof Trap){
+            if(card instanceof SpeedEffectTrap){
                 if(card.canActivate(gameData)){
                     return true;
                 }
