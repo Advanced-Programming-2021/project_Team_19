@@ -27,7 +27,9 @@ public class NegateAttack extends Trap {
                 (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
 
         return new TriggerActivationData
-                (true, "spell activated successfully", this);
+                (true,
+                        "trap activated successfully\nattack has stopped and battle phase has finished",
+                        this);
 
     }
 
@@ -65,7 +67,7 @@ public class NegateAttack extends Trap {
 
         label.label = 1;
 
-        return new TriggerActivationData(true,"Spell Activated Successfully",
+        return new TriggerActivationData(true,"",
                 label.card);
     }
 

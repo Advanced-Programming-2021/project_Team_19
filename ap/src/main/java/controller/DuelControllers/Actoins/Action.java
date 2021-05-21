@@ -87,6 +87,8 @@ public abstract class Action {
             if(tempData.activatedCard == null){
                 data = new TriggerActivationData
                         (false, tempData.message, null);
+            } else{
+                data = (TriggerActivationData) tempData;
             }
 
         }

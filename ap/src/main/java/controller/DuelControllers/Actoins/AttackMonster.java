@@ -42,7 +42,6 @@ public class AttackMonster extends Attack {
 
                     ((Monster)attackingMonster).handleAttack(gameData, enemyId);
 
-
                 }
             }
         }
