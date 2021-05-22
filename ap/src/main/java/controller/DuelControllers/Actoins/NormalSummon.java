@@ -63,6 +63,8 @@ public class NormalSummon extends Summon {
 
         if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
             ((RitualSummon) gameData.getRitualSummoning()).run((Monster) summoningMonster);
+            handleTriggerEffects();
+            return;
         }
 
         int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
