@@ -13,7 +13,11 @@ public class DirectAttack extends Attack{
     }
 
     public void run(){
-        directAttack();
+
+        if(canAttack()){
+            directAttack();
+        }
+
     }
 
 

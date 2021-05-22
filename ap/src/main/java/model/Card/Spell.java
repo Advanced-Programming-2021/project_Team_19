@@ -16,6 +16,7 @@ public abstract class Spell extends SpellAndTraps{
         super(name,description,price,type, icon, status);
         setCardFamily(CardFamily.SPELL);
     }
+
     public SpellTypes getSpellType() {
         return spellType;
     }
@@ -32,6 +33,8 @@ public abstract class Spell extends SpellAndTraps{
         this.activationTurn = activationTurn;
     }
 
-    public boolean canActivate(GameData gameData){return false;}
+    public boolean canActivate(GameData gameData){
+        return true;
+    }
 
 }

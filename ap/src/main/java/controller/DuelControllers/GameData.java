@@ -60,6 +60,15 @@ public class GameData {
         return gamers.get(1);
     }
 
+    public Gamer getOtherGamer(Gamer gamer) {
+        if (!gamers.contains(gamer)) {
+            return null;
+        }
+
+        return gamers.get(1 - gamers.indexOf(gamer));
+
+    }
+
     public int getTurn() {
         return turn;
     }
@@ -75,7 +84,7 @@ public class GameData {
         gameStarterId = 1 - gameStarterId;
     }
 
-    public void surrender(){
+    public void surrender() {
         changeTurn();
         getCurrentGamer().decreaseLifePoint(getCurrentGamer().getLifePoint());
         getSecondGamer().decreaseLifePoint(getSecondGamer().getLifePoint() + 1);
@@ -91,11 +100,10 @@ public class GameData {
 
 
     public void moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
-        if(sourceZone instanceof GraveYard){
+        if (sourceZone instanceof GraveYard) {
             String removedCardName = sourceZone.removeCard(sourceZone.getId(card)).getName();
             destinationZone.addCard(Utils.getCardByName(removedCardName));
-        }
-        else {
+        } else {
             destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));
         }
     }
@@ -128,12 +136,12 @@ public class GameData {
         currentPhase = phases.get(nextPhaseIndex);
         setSelectedCard(null);
 
-        if(currentPhase.equals(Phase.DRAW)){
+        if (currentPhase.equals(Phase.DRAW)) {
             turnOwner = getCurrentGamer();
         }
     }
 
-    public void goToEndPhase(){
+    public void goToEndPhase() {
         currentPhase = Phase.END;
     }
 
@@ -151,11 +159,11 @@ public class GameData {
         }
     }
 
-    public Gamer getTurnOwner(){
+    public Gamer getTurnOwner() {
         return turnOwner;
     }
 
-    public Gamer getNextTurnOwner(){
+    public Gamer getNextTurnOwner() {
         int index = gamers.indexOf(getTurnOwner());
         return gamers.get(1 - index);
     }
@@ -168,13 +176,13 @@ public class GameData {
         return gamers.get(1 - gameStarterId);
     }
 
-    public ArrayList<Action> getCurrentActions(){
+    public ArrayList<Action> getCurrentActions() {
         return currentActions;
     }
 
     //test
 
-    public static GameData getTestGameData(){
+    public static GameData getTestGameData() {
 
         User user1 = new User("mohammad", "mohammad", "123");
 
@@ -189,7 +197,7 @@ public class GameData {
         return gameData;
     }
 
-    public Gamer getCardController(Card card){
+    public Gamer getCardController(Card card) {
 
         if (getCurrentGamer().getGameBoard().getZone(card) != null)
             return getCurrentGamer();

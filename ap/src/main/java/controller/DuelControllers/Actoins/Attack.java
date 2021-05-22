@@ -3,9 +3,13 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import model.Enums.CardMod;
 import model.Phase;
 import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public abstract class Attack extends Action{
 
@@ -40,6 +44,32 @@ public abstract class Attack extends Action{
             return false;
         }
         return true;
+    }
+
+    protected boolean canAttack(){
+
+        boolean canAttack = true;
+
+        gameData.addActionToCurrentActions(this);
+
+        ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>)
+                gameData.getSecondGamer().getEffectLabels().clone();
+
+        for (EffectLabel label : tempArray) {
+            if (label.checkLabel()) {
+                TriggerActivationData data = label.runEffect();
+                if (!data.message.equals("")) {
+                    Printer.print(data.message);
+                }
+                if(data.hasActionStopped){
+                    canAttack = false;
+                }
+            }
+        }
+
+        gameData.removeActionFromCurrentActions(this);
+
+        return canAttack;
     }
 
 }

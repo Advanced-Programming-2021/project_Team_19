@@ -79,7 +79,7 @@ public class Monster extends Card {
         this.attack = attack;
     }
 
-    public int getDefence(GameData gameData) {
+    public int getDefence(GameData gameData) {//bug
         int defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
         int defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
         return defence + defenceChangeFromRival + defenceChangeFromSelf;

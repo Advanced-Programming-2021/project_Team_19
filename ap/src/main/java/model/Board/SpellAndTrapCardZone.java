@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("mind crush"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("swords of revealing light"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);

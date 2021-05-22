@@ -4,8 +4,10 @@ import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import view.Printer.Printer;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class AttackMonster extends Attack {
@@ -14,9 +16,12 @@ public class AttackMonster extends Attack {
         super(gameData, "attack monster");
     }
 
-
     public void run(Matcher matcher) {
-         attackMonster(matcher);
+
+        if(canAttack()){
+            attackMonster(matcher);
+        }
+
     }
 
     public void attackMonster(Matcher matcher) {
