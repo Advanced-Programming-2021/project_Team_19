@@ -114,7 +114,7 @@ public class Game {
                 goToNextPhase(gameData);
             } else if (command.matches("show graveyard")) {
                 gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
-            } else if (command.matches("activate effect")) {
+            } else if (command.matches("activate")) {
                 new ActivateSpellOrTrapNormally(gameData).run();
             } else if (command.matches("help")) {
                 help(gameData);

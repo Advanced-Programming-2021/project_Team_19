@@ -31,7 +31,7 @@ public class GameHelp {
                 show board
                 show graveyard
                 show AD
-                activate effect""");
+                activate""");
     }
 
 }

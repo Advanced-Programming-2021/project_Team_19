@@ -2,6 +2,7 @@ package model;
 
 import controller.DuelControllers.GameData;
 import model.Card.Card;
+import model.Card.Monsters.EffectMonster;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -26,11 +27,17 @@ public class EffectLabel {
     }
 
     public boolean checkLabel(){
-
+        if(card instanceof EffectMonster){
+            return ((EffectMonster) card).shouldEffectRun(this);
+        }
         return ((SpellAndTraps)card).shouldEffectRun(this);
     }
 
     public TriggerActivationData runEffect(){
+
+        if(card instanceof EffectMonster){
+            return ((EffectMonster) card).runEffect(this);
+        }
         return ((SpellAndTraps)card).runEffect(this);
     }
 

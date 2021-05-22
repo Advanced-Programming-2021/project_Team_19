@@ -34,7 +34,7 @@ public abstract class ActivateTrapWithNotification extends Activate {
                 new Select(gameData).select(command);
             } else if (command.matches("card show --selected")) {
                 new Select(gameData).select(command);
-            } else if (command.matches("activate effect")) {
+            } else if (command.matches("activate")) {
                 ActivationData data1 = handleActivate();
                 Printer.print(data1.message);
                 if (data1.activatedCard != null) {
@@ -76,7 +76,7 @@ public abstract class ActivateTrapWithNotification extends Activate {
 
     private void help() {
 
-        Printer.print("activate effect");
+        Printer.print("activate");
 
         Select.help();
 
