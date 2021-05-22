@@ -131,7 +131,9 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("swords of revealing light");
+        Card card = Utils.getCardByName("Advanced ritual art");
+        board.getHand().getCardsInHand().set(1, card);
+        card = Utils.getCardByName("Crab Turtle");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());

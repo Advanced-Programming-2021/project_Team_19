@@ -75,7 +75,7 @@ public class Game {
             }
 
             if (gameData.isRitualSummoning() &&
-                    (!command.matches("summon") || !command.matches("select"))){
+                    (!command.matches("summon") && !command.startsWith("select"))){
                 Printer.print("you should ritual summon right now");
                 continue;
             }

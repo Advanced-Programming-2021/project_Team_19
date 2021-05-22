@@ -13,6 +13,8 @@ import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ManEaterBug extends Monster {
 
@@ -24,6 +26,8 @@ public class ManEaterBug extends Monster {
             return false;
         }
         ArrayList<Card> cards = new ArrayList<>(gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards());
+
+        cards.removeAll(Collections.singleton(null));
 
         Card monsterToDestroy = Utils.askUserToSelectCard
                 (cards, "select an enemy id to destroy:", null);

@@ -53,8 +53,5 @@ public class Hand extends Zones {
         }
     }
 
-    public ArrayList<Card> getHandCards(){
-        return cardsInHand;
-    }
 
 }

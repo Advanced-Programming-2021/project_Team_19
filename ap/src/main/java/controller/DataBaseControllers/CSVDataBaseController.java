@@ -98,6 +98,7 @@ public class CSVDataBaseController {
         getClassByName.put("Black Pendant", BlackPendant.class);
         getClassByName.put("United We Stand", UnitedWeStand.class);
         getClassByName.put("Magnum Shield", MagnumShield.class);
+        getClassByName.put("Advanced Ritual Art", AdvancedRitualArt.class);
     }
     public static Card getMonsterCardByName(String searchingName) throws IOException
             , NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {

@@ -13,9 +13,9 @@ public class Main {
     public static void main(String[] arg) {
 
 
-        Printer.print(Controllers.);
+        Printer.print("");
 
-//        new Game().run(GameData.getTestGameData());
+        new Game().run(GameData.getTestGameData());
 
 //        DataBaseController.makeResourceDirectory();
 
