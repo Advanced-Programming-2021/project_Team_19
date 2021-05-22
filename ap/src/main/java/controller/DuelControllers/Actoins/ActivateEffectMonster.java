@@ -42,6 +42,5 @@ public class ActivateEffectMonster extends Activate{
         }
 
         card.activate(gameData);
-
     }
 }

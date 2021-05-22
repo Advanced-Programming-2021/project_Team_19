@@ -80,5 +80,4 @@ public class NormalSummon extends Summon {
         }
 
     }
-
 }

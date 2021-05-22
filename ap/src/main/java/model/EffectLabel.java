@@ -27,6 +27,7 @@ public class EffectLabel {
     }
 
     public boolean checkLabel(){
+
         if(card instanceof EffectMonster){
             return ((EffectMonster) card).shouldEffectRun(this);
         }

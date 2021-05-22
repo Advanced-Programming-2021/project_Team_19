@@ -2,6 +2,7 @@ package model.Card.Monsters;
 
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Actoins.Activate;
+import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.EffectTypes.Exist;
 import model.Card.Monster;
@@ -60,4 +61,10 @@ public class MirageDragon extends EffectMonster{
         return new TriggerActivationData(true, "", this);
     }
 
+    @Override
+    public void handleSummon(GameData gameData, int numberOfSacrifices) {
+        super.handleSummon(gameData, numberOfSacrifices);
+        gameData.getCurrentGamer().addEffectLabel
+                (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
+    }
 }

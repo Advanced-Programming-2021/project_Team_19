@@ -1,5 +1,6 @@
 package view;
 
+import controller.DataBaseControllers.DataBaseController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import view.Printer.Printer;
@@ -13,7 +14,7 @@ public class Main {
 
         new Game().run(GameData.getTestGameData());
 
-//        DataBaseController.makeResourceDirectory();
+        DataBaseController.makeResourceDirectory();
 
 //        LoginMenu.getInstance().run();
     }

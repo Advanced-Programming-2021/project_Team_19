@@ -21,7 +21,8 @@ public class SwordOfDarkDestruction extends Spell implements Undo {
 
     }
 
-    public SwordOfDarkDestruction(String name, String description, int price, Type type, Icon icon, Status status){
+    public SwordOfDarkDestruction(String name, String description,
+                                  int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
     }
 }
