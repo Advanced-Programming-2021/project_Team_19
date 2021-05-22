@@ -28,7 +28,8 @@ public class NormalSummon extends Summon {
         if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
                 .contains(summoningMonster) ||
                 !summoningMonster.getCardFamily().equals(CardFamily.MONSTER) ||
-                ((Monster) (summoningMonster)).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
+                ((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL) ^
+                        gameData.isRitualSummoning()) {
             Printer.print("you can’t summon this card");
             return false;
         }
@@ -43,7 +44,7 @@ public class NormalSummon extends Summon {
             return false;
         }
         if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
-                !gameData.getSelectedCard().getName().equals("Gate Guardian")) {
+                !summoningMonster.getName().equals("Gate Guardian")) {
             Printer.print("you already summoned/set on this turn");
             return false;
         }
@@ -52,12 +53,16 @@ public class NormalSummon extends Summon {
 
     private void summonMonster() {
 
-        if (gameData.getSelectedCard().getName().equals("Gate Guardian")) {
+        if (summoningMonster.getName().equals("Gate Guardian")) {
             if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
                 new SpecialSummon(gameData).run(gameData.getSelectedCard());
                 Printer.print("summoned successfully");
             }
             return;
+        }
+
+        if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
+            ((RitualSummon) gameData.getRitualSummoning()).run((Monster) summoningMonster);
         }
 
         int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
