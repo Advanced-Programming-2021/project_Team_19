@@ -10,6 +10,11 @@ import model.Enums.Status;
 import model.Enums.Type;
 
 public class DarkHole extends Spell {
+
+    public DarkHole(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
+
     @Override
     public ActivationData activate(GameData gameData) {
         gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
@@ -17,9 +22,6 @@ public class DarkHole extends Spell {
 
         handleDestroy(gameData);
         return new ActivationData(this, "all monsters were destroyed");
-    }
-    public DarkHole(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
     }
 
 }

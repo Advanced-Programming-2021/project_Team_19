@@ -1,15 +1,16 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Data.ActivationData;
 import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public abstract class ActivateTrapWithNotification extends Activate{
+public abstract class ActivateTrapWithNotification extends Activate {
 
-    public ActivateTrapWithNotification(GameData gameData){
+    public ActivateTrapWithNotification(GameData gameData) {
         super(gameData);
     }
 
@@ -30,15 +31,18 @@ public abstract class ActivateTrapWithNotification extends Activate{
             } else if (command.matches("card show --selected")) {
                 new Select(gameData).select(command);
             } else if (command.matches("activate effect")) {
-
                 ActivationData data1 = handleActivate();
                 Printer.print(data1.message);
-
                 if (data1.activatedCard != null) {
+                    if (this instanceof ActivateSpeedEffect) {
+                        if (Utils.askForConfirmation("do you want to activate another effect ?")) {
+                            continue;
+                        }
+                    }
                     return data1;
                 }
-
-            } else if (command.matches("help")) {
+            }
+            else if (command.matches("help")) {
                 help();
             } else if (command.equals("show board")) {
                 gameData.showBoard();

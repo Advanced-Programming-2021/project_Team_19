@@ -5,10 +5,14 @@ import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.Enums.EffectOfLabel;
 import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public class EffectLabel {
 
+    public ArrayList<EffectOfLabel> effectsOfLabel = new ArrayList<>();
     public int label = 0;
     public Card card;
     public Gamer gamer;
@@ -26,7 +30,7 @@ public class EffectLabel {
         return ((SpellAndTraps)card).shouldEffectRun(this);
     }
 
-    public ActivationData runEffect(){
+    public TriggerActivationData runEffect(){
         return ((SpellAndTraps)card).runEffect(this);
     }
 

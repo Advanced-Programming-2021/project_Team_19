@@ -121,8 +121,10 @@ public class Utils {
         int cnt = 1;
         StringBuilder stringBuilder = new StringBuilder();
         for (Card card : cards) {
-            stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
-            cnt++;
+            if(card != null){
+                stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
+                cnt++;
+            }
         }
         Printer.print(stringBuilder.toString().trim());
     }

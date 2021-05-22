@@ -144,7 +144,7 @@ public class MonsterCardZone extends Zones {
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 
-        tempMonster = (Monster) Utils.getCardByName("Man-Eater Bug");
+        tempMonster = (Monster) Utils.getCardByName("battle OX");
         tempMonster.setCardMod(CardMod.DEFENSIVE_HIDDEN);
         monsterCardZone.addCard(tempMonster);
 
