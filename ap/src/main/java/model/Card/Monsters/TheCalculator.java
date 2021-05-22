@@ -28,9 +28,6 @@ public class TheCalculator extends Monster {
                 attack += ((Monster)attackerZone.getCardById(i)).getLevel() * 300;
             }
         }
-        if (attackerZone.containsCard(this)){
-            return attack - 600;
-        }
         return attack;
     }
 
