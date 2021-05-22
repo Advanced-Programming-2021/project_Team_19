@@ -39,9 +39,9 @@ public class Monster extends Card {
     @Expose
     private Trap callOfTheHauntedTrap = null;
 
-    public Monster(String name,String description,int price,int attack, int defence,int level,Attribute attribute,MonsterType monsterType,MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price);
-        this.attack=attack;
+    public Monster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price);
+        this.attack = attack;
         this.defence = defence;
         this.level = level;
         this.attribute = attribute;
@@ -52,17 +52,20 @@ public class Monster extends Card {
         setEffectType(MonsterTypesForEffects.EFFECT);
     }
 
-    public void setCallOfTheHauntedTrap(Trap trap){
+    public void setCallOfTheHauntedTrap(Trap trap) {
         callOfTheHauntedTrap = trap;
     }
 
 
     public int getAttack(GameData gameData) {
-        int attackChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
-                .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
-
-        int attackChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
-                .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+        int attackChangeFromSelf = 0;
+        int attackChangeFromRival = 0;
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null)
+            attackChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
+                    .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null)
+            attackChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
+                    .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
 
         return attack + attackChangeFromRival + attackChangeFromSelf;
     }
@@ -80,8 +83,12 @@ public class Monster extends Card {
     }
 
     public int getDefence(GameData gameData) {
-        int defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
-        int defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        int defenceChangeFromSelf = 0;
+        int defenceChangeFromRival = 0;
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null)
+            defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null)
+            defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
         return defence + defenceChangeFromRival + defenceChangeFromSelf;
     }
 
@@ -163,7 +170,7 @@ public class Monster extends Card {
         attackDefensiveMonster(defendingMonster, gameData);
     }
 
-    public  void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+    public void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (getAttack(gameData) > defendingMonster.getDefence(gameData)) {
             defendingMonster.handleDestroy(gameData);
@@ -178,7 +185,7 @@ public class Monster extends Card {
         }
     }
 
-    public  void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
 
         int damage;
 
@@ -247,9 +254,9 @@ public class Monster extends Card {
         super.handleDestroy(gameData);
     }
 
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed){
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed) {
         if (level <= 4) {
-            return  0;
+            return 0;
         } else if (level <= 6) {
             return 1;
         }
