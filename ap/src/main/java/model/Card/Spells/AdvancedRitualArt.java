@@ -36,7 +36,7 @@ public class AdvancedRitualArt extends Spell {
         gameData.addActionToCurrentActions(new RitualSummon(gameData, this));
 
 
-            return new ActivationData(this, "");
+            return new ActivationData(this, "you activated advanced ritual art, you should summon a ritual monster now");
     }
 
 

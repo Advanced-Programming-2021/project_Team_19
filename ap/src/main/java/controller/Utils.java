@@ -121,38 +121,34 @@ public class Utils {
         int cnt = 1;
         StringBuilder stringBuilder = new StringBuilder();
         for (Card card : cards) {
-            if(card != null){
-                stringBuilder.append(cnt).append(".").append(" ").append(card.toString()).append("\n");
-                cnt++;
-            }
+            stringBuilder.append(cnt).append(".").append(" ").append(card).append("\n");
+            cnt++;
         }
         Printer.print(stringBuilder.toString().trim());
     }
 
     public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message, CardFamily cardFamily) {
         String command;
-        while (true){
+        while (true) {
             Printer.print(message);
             printArrayListOfCards(listOfCards);
             command = GetInput.getString();
 
             if (command.matches("cancel")) {
                 return null;
-            }else if (command.matches("\\d+")){
+            } else if (command.matches("\\d+")) {
                 int id = Integer.parseInt(command);
-                if (id > listOfCards.size() || id < 1){
+                if (id > listOfCards.size() || id < 1) {
                     Printer.print("please enter a valid id:");
-                }
-                else {
+                } else {
                     Card returnedCard = listOfCards.get(id - 1);
 
-                    if(cardFamily == null){
+                    if (cardFamily == null) {
                         return returnedCard;
-                    } else{
-                        if(returnedCard.getCardFamily().equals(cardFamily)){
+                    } else {
+                        if (returnedCard.getCardFamily().equals(cardFamily)) {
                             return returnedCard;
-                        }
-                        else{
+                        } else {
                             Printer.print("pleas enter " + cardFamily.toString().toLowerCase() + " id");
                         }
                     }
@@ -164,11 +160,11 @@ public class Utils {
         }
     }
 
-    public static boolean askForConfirmation(String message){
+    public static boolean askForConfirmation(String message) {
         Printer.print(message);
         Printer.print("""
-                    1- yes
-                    2- no""");
+                1- yes
+                2- no""");
         while (true) {
             String command = GetInput.getString();
             switch (command) {
@@ -183,9 +179,9 @@ public class Utils {
     }
 
 
-    public static boolean askForActivate(String event){
+    public static boolean askForActivate(String event) {
 
-        if (askForConfirmation(event + "\ndo you want to activate your trap and spell?")){
+        if (askForConfirmation(event + "\ndo you want to activate your trap and spell?")) {
             Printer.print("So please do that :)");
             return true;
         }
@@ -193,9 +189,9 @@ public class Utils {
 
     }
 
-    public static void changeTurn(GameData gameData){
+    public static void changeTurn(GameData gameData) {
 
         gameData.changeTurn();
-        Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() +"’s turn");
+        Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() + "’s turn");
     }
 }

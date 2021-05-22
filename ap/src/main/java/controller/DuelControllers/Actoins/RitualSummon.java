@@ -10,7 +10,6 @@ import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
-import java.util.spi.AbstractResourceBundleProvider;
 
 public class RitualSummon extends Summon {
     public Card advancedRitualArt;
@@ -21,30 +20,31 @@ public class RitualSummon extends Summon {
     }
 
     public void run(Monster monster) {
-        ArrayList<Card> monsterstoTribute = new ArrayList<>(gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards());
+        ArrayList<Card> monstersToTribute = new ArrayList<>(gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards());
         ArrayList<Card> selectedMonsters = new ArrayList<>();
 
 
         for (Card card : gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()) {
-            if (card.getCardFamily().equals(CardFamily.MONSTER))
-                monsterstoTribute.add(card);
+            if (card.getCardFamily().equals(CardFamily.MONSTER) && !card.equals(gameData.getSelectedCard()))
+                monstersToTribute.add(card);
         }
 
+        gameData.removeRitualSummoning();
 
         Printer.print("choose some monster cards who's levels add up to " + monster.getLevel() + " or more to discard from hand or monster card zone:");
         while (true) {
             String command;
-            Utils.printArrayListOfCards(monsterstoTribute);
+            Utils.printArrayListOfCards(monstersToTribute);
             command = GetInput.getString();
             if (command.matches("cancel")) {
                 break;
             } else if (command.matches("\\d+")) {
                 int id = Integer.parseInt(command);
-                if (id > monsterstoTribute.size()) {
+                if (id > monstersToTribute.size()) {
                     Printer.print("invalid id");
                 } else {
-                    selectedMonsters.add(monsterstoTribute.get(id - 1));
-                    monsterstoTribute.remove(id - 1);
+                    selectedMonsters.add(monstersToTribute.get(id - 1));
+                    monstersToTribute.remove(id - 1);
                 }
             } else {
                 Printer.printInvalidCommand();
@@ -80,7 +80,8 @@ public class RitualSummon extends Summon {
     public static int getLevelSum(ArrayList<Card> monstersInDeck) {
         int toReturn = 0;
         for (Card card : monstersInDeck) {
-            toReturn += ((Monster) card).getLevel();
+            if (card != null)
+                toReturn += ((Monster) card).getLevel();
         }
         return toReturn;
     }
@@ -99,7 +100,6 @@ public class RitualSummon extends Summon {
 
         monster.handleSummon(gameData, 0);
 
-        gameData.removeRitualSummoning();
     }
 
 
