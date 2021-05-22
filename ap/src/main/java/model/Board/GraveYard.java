@@ -48,4 +48,9 @@ public class GraveYard extends Zones {
 
     //test
 
+    public static GraveYard getTestGraveYard(){
+        GraveYard graveYard = new GraveYard();
+        graveYard.addCard(Utils.getCardByName("baby dragon"));
+        return graveYard;
+    }
 }
