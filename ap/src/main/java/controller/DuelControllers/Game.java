@@ -67,6 +67,19 @@ public class Game {
 
             command = GetInput.getString();
 
+            if (gameData.isRitualSummoning() &&
+                    command.matches("cancel")){
+                Printer.print("you successfully cancelled your ritual summon");
+                gameData.removeRitualSummoning();
+                continue;
+            }
+
+            if (gameData.isRitualSummoning() &&
+                    (!command.matches("summon") || !command.matches("select"))){
+                Printer.print("you should ritual summon right now");
+                continue;
+            }
+
             if (gameData.getTurn() == 1) {
                 if (command.equals("next phase")) {
                     gameData.goToEndPhase();

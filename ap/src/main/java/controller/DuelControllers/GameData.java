@@ -94,6 +94,28 @@ public class GameData {
         currentActions.add(action);
     }
 
+    public boolean isRitualSummoning(){
+        for (Action action : currentActions) {
+            if (action.getActionName().equals("Ritual Summon")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeRitualSummoning(){
+       removeActionFromCurrentActions(getRitualSummoning());
+    }
+
+    public Action getRitualSummoning(){
+        for (Action action : currentActions) {
+            if (action.getActionName().equals("Ritual Summon")){
+                return action;
+            }
+        }
+        return null;
+    }
+
     public void removeActionFromCurrentActions(Action action) {
         currentActions.remove(action);
     }

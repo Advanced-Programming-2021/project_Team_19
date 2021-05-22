@@ -129,16 +129,6 @@ public class Utils {
         Printer.print(stringBuilder.toString().trim());
     }
 
-    public static void printArrayListOfMonsters(ArrayList<Monster> monsters) {
-        int cnt = 1;
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Monster monster : monsters) {
-            stringBuilder.append(cnt).append(".").append(" ").append(monster.toString()).append("\n");
-            cnt++;
-        }
-        Printer.print(stringBuilder.toString().trim());
-    }
-
     public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message, CardFamily cardFamily) {
         String command;
         while (true){
