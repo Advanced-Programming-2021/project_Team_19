@@ -35,7 +35,6 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
 
-        activatedCard = gameData.getSelectedCard();
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));

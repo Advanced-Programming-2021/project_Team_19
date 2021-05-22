@@ -14,7 +14,7 @@ public class DirectAttack extends Attack{
 
     public void run(){
 
-        if(canAttack()){
+        if(canActionBeDone()){
             directAttack();
         }
 

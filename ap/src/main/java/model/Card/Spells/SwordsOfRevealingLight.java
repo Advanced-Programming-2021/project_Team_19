@@ -26,7 +26,7 @@ public class SwordsOfRevealingLight extends Spell{
     }
 
     @Override
-    public ActivationData activate(GameData gameData)  {
+    public ActivationData activate(GameData gameData) {
         
         handleCommonsForActivate(gameData);
         EffectLabel label = new EffectLabel(gameData, gameData.getCurrentGamer(), this);

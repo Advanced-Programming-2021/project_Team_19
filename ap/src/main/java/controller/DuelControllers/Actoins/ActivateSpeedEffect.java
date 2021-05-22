@@ -19,8 +19,6 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
         ActivationData data = new ActivationData(null, "");
 
-        activatedCard = gameData.getSelectedCard();
-
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
 
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));

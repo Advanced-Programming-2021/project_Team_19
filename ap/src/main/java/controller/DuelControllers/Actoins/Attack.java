@@ -46,30 +46,4 @@ public abstract class Attack extends Action{
         return true;
     }
 
-    protected boolean canAttack(){
-
-        boolean canAttack = true;
-
-        gameData.addActionToCurrentActions(this);
-
-        ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>)
-                gameData.getSecondGamer().getEffectLabels().clone();
-
-        for (EffectLabel label : tempArray) {
-            if (label.checkLabel()) {
-                TriggerActivationData data = label.runEffect();
-                if (!data.message.equals("")) {
-                    Printer.print(data.message);
-                }
-                if(data.hasActionStopped){
-                    canAttack = false;
-                }
-            }
-        }
-
-        gameData.removeActionFromCurrentActions(this);
-
-        return canAttack;
-    }
-
 }

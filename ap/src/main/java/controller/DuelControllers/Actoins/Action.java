@@ -5,9 +5,12 @@ import controller.Utils;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public abstract class Action {
 
@@ -153,4 +156,29 @@ public abstract class Action {
 
     }
 
+    protected boolean canActionBeDone(){
+
+        boolean canActionBeDone = true;
+
+        gameData.addActionToCurrentActions(this);
+
+        ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>)
+                gameData.getSecondGamer().getEffectLabels().clone();
+
+        for (EffectLabel label : tempArray) {
+            if (label.checkLabel()) {
+                TriggerActivationData data = label.runEffect();
+                if (!data.message.equals("")) {
+                    Printer.print(data.message);
+                }
+                if(data.hasActionStopped){
+                    canActionBeDone = false;
+                }
+            }
+        }
+
+        gameData.removeActionFromCurrentActions(this);
+
+        return canActionBeDone;
+    }
 }

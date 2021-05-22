@@ -10,6 +10,7 @@ public class Activate extends Action {
 
     public Activate(GameData gameData) {
         super(gameData, "Activate");
+        activatedCard = gameData.getSelectedCard();
     }
 
     public Card getActivatedCard() {

@@ -22,7 +22,9 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
     public void run(){
 
-        activatedCard = gameData.getSelectedCard();
+        if(!canActionBeDone()){
+            return;
+        }
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
