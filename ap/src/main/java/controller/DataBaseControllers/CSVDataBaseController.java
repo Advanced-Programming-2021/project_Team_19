@@ -1,5 +1,6 @@
 package controller.DataBaseControllers;
 
+import controller.Utils;
 import model.Card.Card;
 import model.Card.Monsters.*;
 import model.Card.Spells.*;
@@ -10,6 +11,7 @@ import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Enums.Status;
 import model.Enums.Type;
+import view.Printer.Printer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -54,7 +56,7 @@ public class CSVDataBaseController {
         getClassByName.put("Leotron",NormalMonster.class);
         getClassByName.put("The Calculator",TheCalculator.class);
         getClassByName.put("Alexandrite Dragon",NormalMonster.class);
-        getClassByName.put("Mirage Dragon",MirageDragon.class);
+        getClassByName.put("Mirage Dragon",NormalMonster.class);
         getClassByName.put("Herald of Creation",HeraldOfCreation.class);
         getClassByName.put("Exploder Dragon",ExploderDragon.class);
         getClassByName.put("Warrior Dai Grepher",NormalMonster.class);

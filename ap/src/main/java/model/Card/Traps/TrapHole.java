@@ -5,6 +5,7 @@ import controller.DuelControllers.GameData;
 import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
+import controller.TrapCheckers.mirageDragonChecker;
 import controller.Utils;
 import model.Card.Monster;
 import model.Card.TrapAndSpellTypes.Normal;
@@ -40,7 +41,7 @@ public class TrapHole extends Normal {
 
         checkers.add(new TurnChecker(action.getGameData(), this));
         checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
-
+        checkers.add(new mirageDragonChecker(action.getGameData(), this));
 
         if(!Checker.multipleCheck(checkers)){
             return false;
@@ -51,7 +52,8 @@ public class TrapHole extends Normal {
            return false;
         }
 
-        if (((Monster)((Summon) action).getSummoningMonster()).getAttack(action.getGameData()) >= 1000) {
+
+        if (((Monster)((Summon) action).getSummoningMonster()).getAttack(action.getGameData()) < 1000) {
             return false;
         }
 

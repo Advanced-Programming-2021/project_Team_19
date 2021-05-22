@@ -10,14 +10,13 @@ public class Activate extends Action {
 
     public Activate(GameData gameData) {
         super(gameData, "Activate");
-        activatedCard = gameData.getSelectedCard();
     }
 
     public Card getActivatedCard() {
         return activatedCard;
     }
 
-    protected void setActivatedCard(SpellAndTraps card) {
+    protected void setActivatedCard(Card card) {
         activatedCard = card;
     }
 

@@ -29,7 +29,4 @@ public class GetInput {
         return scanner.nextInt();
     }
 
-
-
-
 }

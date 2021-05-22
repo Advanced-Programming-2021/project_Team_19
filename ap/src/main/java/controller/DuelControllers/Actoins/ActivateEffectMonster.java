@@ -11,14 +11,11 @@ public class ActivateEffectMonster extends Activate{
 
     public ActivateEffectMonster(GameData gameData) {
         super(gameData);
+        setActivatedCard(gameData.getSelectedCard());
     }
 
 
     public void run(){
-
-        if(!canActionBeDone()){
-            return;
-        }
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));

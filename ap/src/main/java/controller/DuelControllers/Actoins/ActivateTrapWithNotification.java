@@ -16,10 +16,6 @@ public abstract class ActivateTrapWithNotification extends Activate {
 
     public ActivationData run() {
 
-        if(!canActionBeDone()){
-            return null;
-        }
-
         String command;
 
         ActivationData data = new ActivationData(null, "");

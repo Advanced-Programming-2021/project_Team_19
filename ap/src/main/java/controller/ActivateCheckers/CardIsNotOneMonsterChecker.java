@@ -12,7 +12,7 @@ public class CardIsNotOneMonsterChecker extends ActivationChecker {
 
     public String check(){
 
-        if (gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
+        if (card.getCardFamily().equals(CardFamily.MONSTER)) {
             return "activate effect is only for spell and trap cards";
         }
         return null;
