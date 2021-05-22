@@ -98,6 +98,8 @@ public class RitualSummon extends Summon {
                 gameData.getCurrentGamer().getGameBoard().getGraveYard());
 
         monster.handleSummon(gameData, 0);
+
+        gameData.removeRitualSummoning();
     }
 
 
