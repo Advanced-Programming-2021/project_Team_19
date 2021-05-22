@@ -6,9 +6,9 @@ import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
 import model.Enums.CardFamily;
 
-public class CardIsInCorrectZoneChecker extends ActivationChecker {
+public class CardIsInCorrectSpellZoneChecker extends ActivationChecker {
 
-    public CardIsInCorrectZoneChecker(GameData gameData, Card card) {
+    public CardIsInCorrectSpellZoneChecker(GameData gameData, Card card) {
         super(gameData, card);
     }
 

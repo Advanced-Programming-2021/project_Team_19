@@ -4,7 +4,6 @@ import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
-import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
         checkers.add(new CardIsNotOneMonsterChecker(gameData, activatedCard));
-        checkers.add(new CardIsInCorrectZoneChecker(gameData, activatedCard));
+        checkers.add(new CardIsInCorrectSpellZoneChecker(gameData, activatedCard));
         checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);

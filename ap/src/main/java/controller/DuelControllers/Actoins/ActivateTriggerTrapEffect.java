@@ -1,13 +1,9 @@
 package controller.DuelControllers.Actoins;
 
 import controller.ActivateCheckers.*;
-import controller.Utils;
-import model.Board.SpellAndTrapCardZone;
-import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Enums.CardFamily;
 
 import java.util.ArrayList;
 
@@ -39,7 +35,7 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
         checkers.add(new CardIsNotOneMonsterChecker(gameData, activatedCard));
-        checkers.add(new CardIsInCorrectZoneChecker(gameData, activatedCard));
+        checkers.add(new CardIsInCorrectSpellZoneChecker(gameData, activatedCard));
         checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
