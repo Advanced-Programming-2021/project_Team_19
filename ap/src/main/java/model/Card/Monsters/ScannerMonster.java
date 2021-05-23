@@ -251,12 +251,12 @@ public class ScannerMonster extends Monster {
     }
 
     @Override
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed){
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData){
         if(tempMonster == null){
-            return super.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed);
+            return super.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed, gameData);
         }
         else{
-            return tempMonster.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed);
+            return tempMonster.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed, gameData);
         }
     }
 

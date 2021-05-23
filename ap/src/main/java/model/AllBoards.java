@@ -131,9 +131,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("Advanced ritual art");
-        board.getHand().getCardsInHand().set(1, card);
-        card = Utils.getCardByName("skull guardian");
+        Card card = Utils.getCardByName("the tricky");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());

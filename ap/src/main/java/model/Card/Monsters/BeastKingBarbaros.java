@@ -10,7 +10,7 @@ import view.Printer.Printer;
 
 public class BeastKingBarbaros extends Monster {
     @Override
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed) {
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
         if (isForSetting)
             return sacrificesForSetting(cardsThatCanBeSacrificed);
         return sacrificesForSummoning(cardsThatCanBeSacrificed);

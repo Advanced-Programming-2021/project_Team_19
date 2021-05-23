@@ -254,7 +254,7 @@ public class Monster extends Card {
         super.handleDestroy(gameData);
     }
 
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed) {
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
         if (level <= 4) {
             return 0;
         } else if (level <= 6) {

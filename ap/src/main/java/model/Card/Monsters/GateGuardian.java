@@ -10,7 +10,7 @@ import view.Printer.Printer;
 public class GateGuardian extends Monster {
 
     @Override
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed) {
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
         if (isForSetting){
             Printer.print("you cannot set this monster");
             return -1;

@@ -14,7 +14,7 @@ public class mirageDragonChecker extends Checker {
     public boolean check(){
         for(Monster monster : gameData.getOtherGamer
                 (gameData.getCardController(card)).getGameBoard().getMonsterCardZone().getCards()){
-            if(monster.getName().equals("Mirage Dragon")){
+            if(monster != null && monster.getName().equals("Mirage Dragon")){
                 if(!monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)){
                     return false;
                 }

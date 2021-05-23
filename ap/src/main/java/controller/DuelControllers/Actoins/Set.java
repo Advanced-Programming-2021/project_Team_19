@@ -69,7 +69,7 @@ public class Set extends SummonAndSet {
 
         Monster monster = (Monster) card;
 
-        if (sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards()))) {
+        if (sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData))) {
             monster.handleSet(gameData);
             Printer.print("set successfully");
             handleTriggerEffects();
