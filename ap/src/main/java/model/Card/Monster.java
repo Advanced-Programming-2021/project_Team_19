@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class Monster extends Card {
 
     @SerializedName("Atk")
-    private int attack;
+    public int attack;
     @SerializedName("Def")
-    private int defence;
+    public int defence;
     @SerializedName("Level")
     private int level;
     @SerializedName("Attribute")
@@ -65,15 +65,41 @@ public class Monster extends Card {
     public int getAttack(GameData gameData) {
         int attackChangeFromSelf = 0;
         int attackChangeFromRival = 0;
-        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null)
+        int attackChangeFromEquippedSpells = 0;
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null) {
             attackChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
                     .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
-        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null)
+        }
+        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null) {
             attackChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
                     .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+        }
+        for (EquipSpell equippedSpell : equippedSpells) {
+            attackChangeFromEquippedSpells += equippedSpell.changeInAttack(gameData);
+        }
 
-        return attack + attackChangeFromRival + attackChangeFromSelf;
+        return attack + attackChangeFromRival + attackChangeFromSelf + attackChangeFromEquippedSpells;
     }
+
+    public int getDefence(GameData gameData) {
+        int defenceChangeFromSelf = 0;
+        int defenceChangeFromRival = 0;
+        int defenceChangeFromEquippedSpells = 0;
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null) {
+            defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
+                    .getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        }
+        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null) {
+            defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
+                    .getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+        }
+        for (EquipSpell equippedSpell : equippedSpells) {
+            defenceChangeFromEquippedSpells += equippedSpell.changeInDefence(gameData);
+        }
+
+        return defence + defenceChangeFromRival + defenceChangeFromSelf + defenceChangeFromEquippedSpells;
+    }
+
 
     public MonsterTypesForEffects getEffectType() {
         return monsterTypesForEffects;
@@ -87,15 +113,6 @@ public class Monster extends Card {
         this.attack = attack;
     }
 
-    public int getDefence(GameData gameData) {
-        int defenceChangeFromSelf = 0;
-        int defenceChangeFromRival = 0;
-        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null)
-            defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
-        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null)
-            defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0)).defenceDifference(getMonsterType());
-        return defence + defenceChangeFromRival + defenceChangeFromSelf;
-    }
 
     public void setDefence(int defence) {
         this.defence = defence;
@@ -268,7 +285,7 @@ public class Monster extends Card {
         return 2;
     }
 
-    public void addEquipSpell(EquipSpell equipSpell){
+    public void addEquipSpell(EquipSpell equipSpell) {
         equippedSpells.add(equipSpell);
     }
 

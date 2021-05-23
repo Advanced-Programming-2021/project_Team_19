@@ -1,20 +1,13 @@
 package model.Card.Spells;
 
 import controller.DuelControllers.GameData;
-import model.Card.Card;
-import model.Card.Spell;
-import model.Card.TrapAndSpellTypes.Undo;
-import model.Data.ActivationData;
+import model.Enums.CardMod;
 import model.Enums.Icon;
 import model.Enums.Status;
 import model.Enums.Type;
 
-public class MagnumShield extends EquipSpell implements Undo {
+public class MagnumShield extends EquipSpell {
 
-    @Override
-    public void undo() {
-
-    }
 
     public MagnumShield(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
@@ -22,12 +15,18 @@ public class MagnumShield extends EquipSpell implements Undo {
 
     @Override
     public int changeInAttack(GameData gameData) {
-        return super.changeInAttack(gameData);
+        if (monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+            return monsterEquippedWithThisSpell.defence;
+        }
+        return 0;
     }
 
     @Override
     public int changeInDefence(GameData gameData) {
-        return super.changeInDefence(gameData);
+        if (!monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+            return monsterEquippedWithThisSpell.attack;
+        }
+        return 0;
     }
 
 }
