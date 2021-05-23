@@ -2,21 +2,26 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
+import controller.TrapCheckers.Checker;
+import controller.TrapCheckers.TurnChecker;
 import controller.Utils;
-import model.Board.GraveYard;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
-import model.Data.TriggerActivationData;
 import model.Enums.Icon;
 import model.Enums.Status;
 import model.Enums.Type;
-import view.GetInput;
-import view.Printer.Printer;
 import model.Enums.CardFamily;
 
+import java.util.ArrayList;
+
 public class CallOfTheHaunted extends Trap {
+
+
+    public CallOfTheHaunted(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
 
     Monster summonedMonster;
 
@@ -41,22 +46,16 @@ public class CallOfTheHaunted extends Trap {
     }
 
     private void putMonsterToMonsterZone(GameData gameData, Card card) {
-
         new SpecialSummon(gameData).run(card);
-    }
-
-    private Card getSelectedCard(GraveYard graveYard, int id) {
-        return graveYard.getCard(id);
     }
 
     public boolean canActivate(GameData gameData) {
 
-        if (!gameData.getCurrentGamer().equals(gameData.getCardController(this))) {
-            return false;
-        }
+        ArrayList<Checker> checkers = new ArrayList<>();
+        checkers.add(new TurnChecker(gameData, this));
 
-        if (!canActivateThisTurn(gameData)) {
-            return false;
+        if(!Checker.multipleCheck(checkers)){
+           return false;
         }
 
         if (gameData.getCardController(this).getGameBoard().getMonsterCardZone().isZoneFull()) {
@@ -80,10 +79,6 @@ public class CallOfTheHaunted extends Trap {
         }
 
         super.handleDestroy(gameData);
-    }
-
-    public CallOfTheHaunted(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
     }
 
 }

@@ -14,7 +14,6 @@ public class MagicJammer extends Trap{
     @Override
     public TriggerActivationData activate(GameData gameData) {
 
-
         return null;
     }
 

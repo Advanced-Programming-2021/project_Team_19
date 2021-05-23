@@ -4,6 +4,7 @@ import controller.ActivateCheckers.*;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
 
+        setActivatedCard(gameData.getSelectedCard());
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));

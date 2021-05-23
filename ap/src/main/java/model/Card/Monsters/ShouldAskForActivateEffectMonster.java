@@ -6,7 +6,7 @@ import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 
-public class ShouldAskForActivateEffectMonster extends EffectMonster{
+public class ShouldAskForActivateEffectMonster extends EffectMonster {
 
     protected int turnActivated = 0;
 

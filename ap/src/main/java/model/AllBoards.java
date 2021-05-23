@@ -138,6 +138,7 @@ public class AllBoards {
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());
+        board.setGraveYard(GraveYard.getTestGraveYard());
         return board;
     }
 }

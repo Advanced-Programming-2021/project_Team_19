@@ -5,6 +5,7 @@ import controller.DuelControllers.GameData;
 import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
+import controller.TrapCheckers.mirageDragonChecker;
 import model.Card.Monster;
 import model.Card.Trap;
 import model.Data.ActivationData;
@@ -55,7 +56,7 @@ public class TorrentialTribute extends Trap {
 
         checkers.add(new TurnChecker(action.getGameData(), this));
         checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
-
+        checkers.add(new mirageDragonChecker(action.getGameData(), this));
 
         if(!Checker.multipleCheck(checkers)){
             return false;

@@ -5,6 +5,7 @@ import controller.DuelControllers.GameData;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
 import model.Enums.CardFamily;
+import view.Printer.Printer;
 
 public class CardIsInCorrectSpellZoneChecker extends ActivationChecker {
 

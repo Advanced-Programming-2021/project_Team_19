@@ -5,6 +5,7 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
+import view.Printer.Printer;
 
 public class CardOwnerIsNotActionDoerChecker extends Checker{
 
