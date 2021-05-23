@@ -15,7 +15,6 @@ public class SpecialSummon extends Summon{
     public void run(Card card){
 
         Monster monster = (Monster) card;
-
         monster.setCardMod (CardMod.OFFENSIVE_OCCUPIED);
 
         gameData.moveCardFromOneZoneToAnother(monster,

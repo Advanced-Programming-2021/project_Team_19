@@ -4,6 +4,7 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
+import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -5,6 +5,9 @@ import controller.Utils;
 import model.Board.GraveYard;
 import model.Board.Zones;
 import model.Card.Card;
+import model.Card.Monster;
+import model.Card.SpellAndTraps;
+import model.Enums.SpellCardMods;
 import model.Gamer;
 import model.Phase;
 import model.User;
@@ -123,11 +126,23 @@ public class GameData {
 
     public void moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
         if (sourceZone instanceof GraveYard) {
-            String removedCardName = sourceZone.removeCard(sourceZone.getId(card)).getName();
-            destinationZone.addCard(Utils.getCardByName(removedCardName));
+            sourceZone.removeCard(sourceZone.getId(card));
+            destinationZone.addCard(getCardToMoveFromGraveYardToAnotherZone(card));
         } else {
             destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));
         }
+    }
+
+    private Card getCardToMoveFromGraveYardToAnotherZone(Card card){
+        Card newCard = Utils.getCardByName(card.getName());
+
+        if(card instanceof SpellAndTraps){
+            ((SpellAndTraps)newCard).setSpellCardMod(((SpellAndTraps) card).getSpellCardMod());
+        }
+        if(card instanceof Monster){
+            ((Monster)newCard).setCardMod(((Monster) card).getCardMod());
+        }
+        return newCard;
     }
 
     public int getRole(Card card) {

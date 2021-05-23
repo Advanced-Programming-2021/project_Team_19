@@ -55,7 +55,7 @@ public abstract class SpellAndTraps extends Card {
         return spellCardMod;
     }
 
-    protected void setSpellCardMod(SpellCardMods spellCardMod) {
+    public void setSpellCardMod(SpellCardMods spellCardMod) {
         this.spellCardMod = spellCardMod;
     }
 
