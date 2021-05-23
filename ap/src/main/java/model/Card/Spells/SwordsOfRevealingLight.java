@@ -105,7 +105,7 @@ public class SwordsOfRevealingLight extends Spell{
             for(Monster monster : label.gameData.getOtherGamer(label.gamer).getGameBoard()
                     .getMonsterCardZone().getCards()){
                 if(monster != null && monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)){
-                    monster.handleFlip(label.gameData);//izadiiiiiiiiiiiiiiiiiiiiiiii
+                    monster.handleFlip(label.gameData, CardMod.DEFENSIVE_OCCUPIED);
                 }
             }
             return new TriggerActivationData(true,

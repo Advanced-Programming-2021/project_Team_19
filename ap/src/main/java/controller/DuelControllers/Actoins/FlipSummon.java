@@ -46,7 +46,7 @@ public class FlipSummon extends Summon {
 
     public void flip() {
 
-        if (!((Monster)summoningMonster).handleFlip(gameData)){
+        if (!((Monster)summoningMonster).handleFlip(gameData,CardMod.OFFENSIVE_OCCUPIED)){
             return;
         }
 

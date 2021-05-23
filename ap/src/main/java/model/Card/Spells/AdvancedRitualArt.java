@@ -4,7 +4,6 @@ import controller.DuelControllers.Actoins.RitualSummon;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Card.Monsters.RitualMonster;
 import model.Card.Spell;
 import model.Data.ActivationData;
 import model.Enums.CardFamily;
@@ -34,9 +33,9 @@ public class AdvancedRitualArt extends Spell {
         }
 
         gameData.addActionToCurrentActions(new RitualSummon(gameData, this));
+        handleCommonsForActivate(gameData);
 
-
-            return new ActivationData(this, "you activated advanced ritual art, you should summon a ritual monster now");
+        return new ActivationData(this, "you activated advanced ritual art, you should summon a ritual monster now");
     }
 
 

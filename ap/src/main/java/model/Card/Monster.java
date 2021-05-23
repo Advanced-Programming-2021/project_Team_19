@@ -144,8 +144,8 @@ public class Monster extends Card {
         this.turnWasPutInMonsterZone = turnWasPutInMonsterZone;
     }
 
-    public boolean handleFlip(GameData gameData) {
-        setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+    public boolean handleFlip(GameData gameData, CardMod modeToSet) {
+        setCardMod(modeToSet);
         return true;
     }
 
@@ -166,7 +166,7 @@ public class Monster extends Card {
 
     public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
-        defendingMonster.setCardMod(CardMod.DEFENSIVE_OCCUPIED);
+        defendingMonster.handleFlip(gameData, CardMod.DEFENSIVE_OCCUPIED);
         attackDefensiveMonster(defendingMonster, gameData);
     }
 

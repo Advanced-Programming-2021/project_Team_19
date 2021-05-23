@@ -10,8 +10,6 @@ import model.Enums.Icon;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
-import view.GetInput;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 

@@ -148,12 +148,12 @@ public class ScannerMonster extends Monster {
     }
 
     @Override
-    public boolean handleFlip(GameData gameData) {
+    public boolean handleFlip(GameData gameData, CardMod cardMod) {
         if(tempMonster == null){
-            return super.handleFlip(gameData);
+            return super.handleFlip(gameData, cardMod);
         }
         else{
-            return tempMonster.handleFlip(gameData);
+            return tempMonster.handleFlip(gameData, cardMod);
         }
     }
 

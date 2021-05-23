@@ -4,19 +4,21 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Card.Spell;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RitualSummon extends Summon {
-    public Card advancedRitualArt;
+    public Spell advancedRitualArt;
 
     public RitualSummon(GameData gameData, Card card) {
         super(gameData, "Ritual Summon");
-        this.advancedRitualArt = card;
+        this.advancedRitualArt = (Spell) card;
     }
 
     public void run(Monster monster) {
@@ -29,6 +31,8 @@ public class RitualSummon extends Summon {
                 monstersToTribute.add(card);
         }
 
+        monstersToTribute.removeAll(Collections.singleton(null));
+
         gameData.removeRitualSummoning();
 
         Printer.print("choose some monster cards who's levels add up to " + monster.getLevel() + " or more to discard from hand or monster card zone:");
@@ -37,6 +41,7 @@ public class RitualSummon extends Summon {
             Utils.printArrayListOfCards(monstersToTribute);
             command = GetInput.getString();
             if (command.matches("cancel")) {
+                Printer.print("you cancelled the ritual summon");
                 break;
             } else if (command.matches("\\d+")) {
                 int id = Integer.parseInt(command);
@@ -52,10 +57,12 @@ public class RitualSummon extends Summon {
             if (getLevelSum(selectedMonsters) >= monster.getLevel()) {
                 if (setOffenseDefence(monster)) {
                     summonAndDiscard(selectedMonsters, gameData, monster);
+                    Printer.print("you successfully ritual summoned " + gameData.getSelectedCard().getName());
                 }
                 break;
             }
         }
+
     }
 
     private boolean setOffenseDefence(Monster monster) {
@@ -64,6 +71,8 @@ public class RitualSummon extends Summon {
             String command;
             command = GetInput.getString();
             if (command.matches("cancel")) {
+                Printer.print("you cancelled the ritual summon");
+
                 return false;
             } else if (command.matches("offensive")) {
                 monster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
@@ -93,7 +102,7 @@ public class RitualSummon extends Summon {
                     gameData.getCurrentGamer().getGameBoard().getZone(card),
                     gameData.getCurrentGamer().getGameBoard().getGraveYard());
         }
-
+        
         gameData.moveCardFromOneZoneToAnother(advancedRitualArt,
                 gameData.getCurrentGamer().getGameBoard().getZone(advancedRitualArt),
                 gameData.getCurrentGamer().getGameBoard().getGraveYard());
