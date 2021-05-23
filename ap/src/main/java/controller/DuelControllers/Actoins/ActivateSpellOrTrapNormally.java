@@ -8,6 +8,7 @@ import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
 import model.Enums.CardFamily;
+import model.Enums.SpellCardMods;
 import model.Phase;
 import view.Printer.Printer;
 
@@ -83,6 +84,7 @@ public class ActivateSpellOrTrapNormally extends Activate {
         gameData.moveCardFromOneZoneToAnother(card,
                 gameData.getCurrentGamer().getGameBoard().getHand(),
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
+        card.setSpellCardMod(SpellCardMods.OFFENSIVE);
 
         Printer.print(card.activate(gameData).message);
 

@@ -31,9 +31,9 @@ public class EquipSpell extends Spell {
         swordsOfDarkDestruction.add(MonsterType.FIEND);
 
         spellToProperties.put("Magnum Shield", magnumShield);
-        spellToProperties.put("United we Stand", new ArrayList<>());
+        spellToProperties.put("United We Stand", new ArrayList<>());
         spellToProperties.put("Black Pendant", new ArrayList<>());
-        spellToProperties.put("Swords of Dark Destruction", swordsOfDarkDestruction);
+        spellToProperties.put("Sword of dark destruction", swordsOfDarkDestruction);
     }
 
 

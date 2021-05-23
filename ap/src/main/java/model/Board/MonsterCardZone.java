@@ -141,7 +141,7 @@ public class MonsterCardZone extends Zones {
 
         MonsterCardZone monsterCardZone = new MonsterCardZone();
 
-        Monster tempMonster = (Monster) Utils.getCardByName("mirage dragon");
+        Monster tempMonster = (Monster) Utils.getCardByName("horn imp");
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 

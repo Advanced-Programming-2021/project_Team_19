@@ -131,7 +131,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("the tricky");
+        Card card = Utils.getCardByName("sword of dark destruction");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
