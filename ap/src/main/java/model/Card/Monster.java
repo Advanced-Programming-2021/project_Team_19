@@ -176,7 +176,7 @@ public class Monster extends Card {
         Monster defendingMonster = (Monster) gameData.getSecondGamer()
                 .getGameBoard().getMonsterCardZone().getCardById(enemyId);
 
-        lastTurnAttacked = gameData.getTurn();
+        setLastTurnAttacked(gameData);
 
         switch (defendingMonster.getCardMod()) {
             case OFFENSIVE_OCCUPIED -> attackOffensiveMonster(defendingMonster, gameData);
@@ -184,6 +184,10 @@ public class Monster extends Card {
             case DEFENSIVE_HIDDEN -> attackDefensiveHiddenMonster(defendingMonster, gameData);
         }
 
+    }
+
+    public void setLastTurnAttacked(GameData gameData) {
+        this.lastTurnAttacked = gameData.getTurn();
     }
 
     public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
@@ -243,7 +247,7 @@ public class Monster extends Card {
 
 
     public void handleDirectAttack(GameData gameData) {
-        lastTurnAttacked = gameData.getTurn();
+        setLastTurnAttacked(gameData);
         gameData.getSecondGamer().decreaseLifePoint(getAttack(gameData));
         Printer.print("your opponent receives " + getAttack(gameData) + " battle damage");
     }
