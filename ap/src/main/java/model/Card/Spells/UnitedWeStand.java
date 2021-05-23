@@ -8,11 +8,8 @@ import model.Enums.Icon;
 import model.Enums.Status;
 import model.Enums.Type;
 
-public class UnitedWeStand extends Spell implements Undo {
-    @Override
-    public ActivationData activate(GameData gameData)  {
-        return null;
-    }
+public class UnitedWeStand extends EquipSpell implements Undo {
+
     @Override
     public void undo() {
 

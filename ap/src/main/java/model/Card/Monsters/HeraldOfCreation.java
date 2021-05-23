@@ -2,6 +2,7 @@ package model.Card.Monsters;
 
 import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.Destroy;
+import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Board.GraveYard;
@@ -17,7 +18,7 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class HeraldOfCreation extends Monster {
+public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
 
     @Expose
     private int lastTurnEffectUsed;
@@ -52,9 +53,7 @@ public class HeraldOfCreation extends Monster {
 
     private void discardAndRevive(GameData gameData, Card toDiscard, Card toRevive) {
         new Destroy(gameData).run(toDiscard, true);
-        gameData.moveCardFromOneZoneToAnother(toRevive,
-                gameData.getCurrentGamer().getGameBoard().getGraveYard(),
-                gameData.getCurrentGamer().getGameBoard().getHand());
+        new SpecialSummon(gameData).run(toRevive);
     }
 
     private boolean canUseEffect(GameData gameData) {

@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import model.Card.Spells.EquipSpell;
 import model.Card.Spells.FieldSpell;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
@@ -12,6 +13,8 @@ import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
 import view.Printer.Printer;
+
+import java.util.ArrayList;
 
 public class Monster extends Card {
 
@@ -38,6 +41,8 @@ public class Monster extends Card {
     private int turnWasPutInMonsterZone = 0;
     @Expose
     private Trap callOfTheHauntedTrap = null;
+    @Expose
+    private ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
 
     public Monster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
         super(name, description, price);
@@ -263,5 +268,8 @@ public class Monster extends Card {
         return 2;
     }
 
+    public void addEquipSpell(EquipSpell equipSpell){
+        equippedSpells.add(equipSpell);
+    }
 
 }
