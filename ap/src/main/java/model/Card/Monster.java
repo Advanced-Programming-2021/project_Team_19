@@ -273,6 +273,12 @@ public class Monster extends Card {
         if (callOfTheHauntedTrap != null) {
             new Destroy(gameData).run(callOfTheHauntedTrap, false);
         }
+        if (!equippedSpells.isEmpty()){
+            for (EquipSpell equippedSpell : equippedSpells) {
+                equippedSpell.handleDestroy(gameData);
+            }
+        }
+
         super.handleDestroy(gameData);
     }
 
