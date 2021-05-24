@@ -5,6 +5,7 @@ import controller.Utils;
 import model.Card.Card;
 import model.Data.ActivationData;
 import model.Enums.*;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -13,8 +14,8 @@ import java.util.Random;
 
 public class MindCrush extends SpeedEffectTrap {
 
-    public MindCrush(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public MindCrush(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, trapType, status);
     }
 
     @Override

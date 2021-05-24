@@ -1,24 +1,13 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.Attack;
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
-import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
-import controller.TrapCheckers.Checker;
-import controller.TrapCheckers.TurnChecker;
-import controller.Utils;
-import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
-import model.Enums.Icon;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 import model.Phase;
-import view.Printer.Printer;
-
-import java.util.ArrayList;
 
 public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
 
@@ -58,7 +47,7 @@ public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
                 label.card);
     }
 
-    public NegateAttack(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public NegateAttack(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, trapType, status);
     }
 }

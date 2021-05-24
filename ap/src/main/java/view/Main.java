@@ -16,7 +16,7 @@ public class Main {
 
 //        Printer.print("");
 //
-//        new Game().run(GameData.getTestGameData());
+        new Game().run(GameData.getTestGameData());
 
         DataBaseController.makeResourceDirectory();
 

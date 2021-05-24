@@ -131,7 +131,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("bitron");
+        Card card = Utils.getCardByName("magic jamamer");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());

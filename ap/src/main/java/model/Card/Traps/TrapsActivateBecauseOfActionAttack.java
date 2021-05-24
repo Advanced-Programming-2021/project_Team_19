@@ -7,7 +7,8 @@ import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
 import controller.TrapCheckers.mirageDragonChecker;
 import model.Card.Trap;
-import model.Enums.Icon;
+import model.Enums.SpellsAndTraps.SpellTypes;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
@@ -16,9 +17,9 @@ import java.util.ArrayList;
 public abstract class TrapsActivateBecauseOfActionAttack extends Trigger {
 
     public TrapsActivateBecauseOfActionAttack
-            (String name, String description, int price, Type type, Icon icon, Status status){
+            (String name, String description, int price, Type type, TrapTypes trapType, Status status){
 
-        super(name,description,price,type, icon, status);
+        super(name,description,price,type, trapType, status);
     }
 
 

@@ -3,7 +3,7 @@ package model.Card.Spells;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Enums.CardMod;
-import model.Enums.Icon;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
@@ -35,7 +35,7 @@ public class UnitedWeStand extends EquipSpell {
         return faceUpMonsters * 800;
     }
 
-    public UnitedWeStand(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public UnitedWeStand(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type, spellType, status);
     }
 }

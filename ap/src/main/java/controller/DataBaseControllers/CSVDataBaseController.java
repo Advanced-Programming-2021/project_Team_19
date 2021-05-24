@@ -1,25 +1,22 @@
 package controller.DataBaseControllers;
 
-import controller.Utils;
 import model.Card.Card;
 import model.Card.Monsters.*;
 import model.Card.Spells.*;
 import model.Card.Traps.*;
-import model.Enums.Icon;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
+import model.Enums.SpellsAndTraps.SpellTypes;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
-import view.Printer.Printer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.util.TreeMap;
 
 public class CSVDataBaseController {
@@ -190,7 +187,6 @@ public class CSVDataBaseController {
             if(searchingName.equalsIgnoreCase(name)) {
                 //change
                 Type type = Type.valueOf(data[1].trim().toUpperCase());
-                Icon icon = Icon.valueOf(data[2].trim().toUpperCase().replaceAll("-","_"));
                 String description;
                 Status status;
                 int price;
@@ -211,8 +207,15 @@ public class CSVDataBaseController {
                 status = Status.valueOf(current.trim().toUpperCase().replaceAll("-","_"));
                 price = Integer.parseInt(data[4+temp]);
                 Class<?> clazz = getClassByName.get(name);
-                Constructor<?> constructor = clazz.getConstructor(String.class,String.class,int.class, Type.class,Icon.class,Status.class);
-                return (Card)constructor.newInstance(name,description,price,type,icon,status);
+                if (type.equals(Type.SPELL)){
+                    SpellTypes spellType = SpellTypes.valueOf(data[2].trim().toUpperCase().replaceAll("-","_"));
+                    Constructor<?> constructor = clazz.getConstructor(String.class,String.class,int.class, Type.class,SpellTypes.class,Status.class);
+                    return (Card)constructor.newInstance(name,description,price,type,spellType,status);
+                } else{
+                    TrapTypes trapType = TrapTypes.valueOf(data[2].trim().toUpperCase().replaceAll("-","_"));
+                    Constructor<?> constructor = clazz.getConstructor(String.class,String.class,int.class, Type.class,TrapTypes.class,Status.class);
+                    return (Card)constructor.newInstance(name,description,price,type, trapType,status);
+                }
             }
 
 

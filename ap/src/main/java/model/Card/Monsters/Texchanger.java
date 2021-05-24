@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose;
 import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.Utils;
-import model.Board.DeckZone;
-import model.Board.GraveYard;
+import model.AllBoards;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardFamily;
@@ -17,6 +16,7 @@ import model.Gamer;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Texchanger extends Monster {
 
@@ -66,30 +66,18 @@ public class Texchanger extends Monster {
     }
 
     private ArrayList<Card> getCyberseInGraveyardAndDeck(Gamer gamer) {
-        GraveYard graveYard = gamer.getGameBoard().getGraveYard();
-        DeckZone deck = gamer.getGameBoard().getDeckZone();
-        ArrayList<Card> cyberseCards = new ArrayList<>();
-        for (Card card : graveYard.getCardsInGraveYard()) {
-            if (card != null &&
-                    card.getCardFamily().equals(CardFamily.MONSTER) &&
-                    ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
-                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL))
-                cyberseCards.add(card);
-        }for (Card card : gamer.getGameBoard().getHand().getCardsInHand()) {
-            if (card != null &&
-                    card.getCardFamily().equals(CardFamily.MONSTER) &&
-                    ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
-                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL))
-                cyberseCards.add(card);
-        }
-        for (int i = 0; i < deck.getSize(); i++) {
-            Card card = deck.getCard(i);
-            if (card != null &&
-                    card.getCardFamily().equals(CardFamily.MONSTER) &&
-                    ((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
-                    ((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL))
-                cyberseCards.add(card);
-        }
+        AllBoards gameBoard = gamer.getGameBoard();
+
+        ArrayList<Card> cyberseCards = new ArrayList<>(gameBoard.getHand().getCardsInHand());
+        cyberseCards.addAll(gameBoard.getGraveYard().getCardsInGraveYard());
+        cyberseCards.addAll(gameBoard.getDeckZone().getMainDeckCards());
+
+        cyberseCards.removeAll(Collections.singleton(null));
+
+        cyberseCards.removeIf(card -> !card.getCardFamily().equals(CardFamily.MONSTER) &&
+                !((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
+                !((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL));
+
         return cyberseCards;
     }
 

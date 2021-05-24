@@ -6,7 +6,6 @@ import model.Card.Card;
 import model.Card.Spell;
 import model.Data.ActivationData;
 import model.Enums.CardFamily;
-import model.Enums.Icon;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
@@ -50,13 +49,13 @@ public class Terraforming extends Spell {
     private ArrayList<Card> getFieldSpells(ArrayList<Card> deckCards) {
         ArrayList<Card> toReturn = new ArrayList<>();
         for (Card card : deckCards) {
-            if (card.getCardFamily().equals(CardFamily.SPELL) && ((Spell) card).getSpellType().equals(SpellTypes.FIELD))
+            if (card != null && card.getCardFamily().equals(CardFamily.SPELL) && ((Spell) card).getSpellType().equals(SpellTypes.FIELD))
                 toReturn.add(card);
         }
         return toReturn;
     }
 
-    public Terraforming(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public Terraforming(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type, spellType, status);
     }
 }
