@@ -1,19 +1,23 @@
 package model.Card;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.GameData;
 import model.Enums.*;
 import model.Enums.SpellsAndTraps.SpellTypes;
 
 public abstract class Spell extends SpellAndTraps{
 
-    private SpellTypes spellType;
+    @SerializedName("Icon")
+    public SpellTypes spellType;
 
     @Expose
     private int activationTurn;
 
-    public Spell(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public Spell(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type,status);
+
+        setSpellType(spellType);
         setCardFamily(CardFamily.SPELL);
     }
 

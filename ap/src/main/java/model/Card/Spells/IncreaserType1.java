@@ -4,8 +4,8 @@ import controller.DuelControllers.GameData;
 import model.Card.Spell;
 import model.Card.TrapAndSpellTypes.Undo;
 import model.Data.ActivationData;
-import model.Enums.Icon;
 import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
@@ -26,7 +26,7 @@ public class IncreaserType1 extends Spell implements Undo {
 
     }
 
-    public IncreaserType1(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public IncreaserType1(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type, spellType, status);
     }
 }

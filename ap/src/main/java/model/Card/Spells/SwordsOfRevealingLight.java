@@ -11,6 +11,7 @@ import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.*;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Gamer;
 import model.Phase;
 import view.Printer.Printer;
@@ -20,9 +21,8 @@ import java.awt.*;
 public class SwordsOfRevealingLight extends Spell{
 
 
-    public SwordsOfRevealingLight(String name, String description, int price, Type type,
-                                  Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public SwordsOfRevealingLight(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type, spellType, status);
     }
 
     @Override

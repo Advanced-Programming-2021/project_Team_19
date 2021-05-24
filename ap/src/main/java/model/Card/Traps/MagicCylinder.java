@@ -2,24 +2,18 @@ package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
-import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
-import controller.TrapCheckers.Checker;
-import controller.TrapCheckers.TurnChecker;
 import controller.Utils;
 import model.Card.Monster;
-import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Enums.Icon;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
-import java.util.ArrayList;
-
 public class MagicCylinder extends TrapsActivateBecauseOfActionAttack {
 
-    public MagicCylinder(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public MagicCylinder(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, trapType, status);
     }
 
     @Override

@@ -6,15 +6,13 @@ import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
 import controller.TrapCheckers.mirageDragonChecker;
-import controller.Utils;
 import model.Card.Monster;
 import model.Card.TrapAndSpellTypes.Normal;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Enums.Icon;
+import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -60,8 +58,8 @@ public class TrapHole extends Normal {
         return true;
     }
 
-    public TrapHole(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public TrapHole(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, trapType, status);
     }
 
 }

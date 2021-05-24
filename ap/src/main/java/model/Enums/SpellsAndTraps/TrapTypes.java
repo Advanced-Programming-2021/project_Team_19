@@ -1,7 +1,10 @@
 package model.Enums.SpellsAndTraps;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum TrapTypes {
+    @SerializedName("Continuous")
     CONTINUOUS,
-    NORMAL,
-    CHAIN
+    @SerializedName("Normal")
+    NORMAL
 }

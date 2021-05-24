@@ -1,20 +1,22 @@
 package model.Card;
 
-import com.google.gson.annotations.Expose;
-import controller.DuelControllers.Actoins.Action;
+import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.GameData;
-import model.Enums.*;
+import model.Enums.CardFamily;
 import model.Enums.SpellsAndTraps.TrapTypes;
+import model.Enums.Status;
+import model.Enums.Type;
 
 public abstract class Trap extends SpellAndTraps {
 
-    @Expose
-    private TrapTypes trapType;
+    @SerializedName("Icon")
+    public TrapTypes trapType;
 
-    public Trap(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public Trap(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, status);
 
         setCardFamily(CardFamily.TRAP);
+        setTrapType(trapType);
     }
 
     public TrapTypes getTrapType() {

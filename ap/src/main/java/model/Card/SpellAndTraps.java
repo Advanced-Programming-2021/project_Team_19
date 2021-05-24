@@ -3,21 +3,16 @@ package model.Card;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
-import model.Enums.Icon;
 import model.Enums.SpellCardMods;
 import model.Enums.Status;
 import model.Enums.Type;
-import model.Phase;
 
 public abstract class SpellAndTraps extends Card {
 
-    @SerializedName("Icon")
-    public Icon icon;
     @SerializedName("Status")
     public Status status;
     @SerializedName("Type")
@@ -30,10 +25,9 @@ public abstract class SpellAndTraps extends Card {
     @Expose
     protected int turnActivated = 0;
 
-    public SpellAndTraps(String name,String description,int price,Type type,Icon icon,Status status){
+    public SpellAndTraps(String name,String description,int price,Type type,Status status){
         super(name,description,price);
         this.type = type;
-        this.icon = icon;
         this.status = status;
     }
 
@@ -69,10 +63,7 @@ public abstract class SpellAndTraps extends Card {
 
     public boolean canActivateThisTurn(GameData gameData){
 
-        if(setTurn == gameData.getTurn()){
-            return false;
-        }
-        return true;
+        return setTurn != gameData.getTurn();
     }
 
     public boolean canActivateBecauseOfAnAction(Action action){

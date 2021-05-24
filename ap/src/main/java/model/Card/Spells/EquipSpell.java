@@ -6,8 +6,8 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Spell;
 import model.Data.ActivationData;
-import model.Enums.Icon;
 import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
@@ -37,8 +37,8 @@ public class EquipSpell extends Spell {
     }
 
 
-    public EquipSpell(String name, String description, int price, Type type, Icon icon, Status status) {
-        super(name, description, price, type, icon, status);
+    public EquipSpell(String name, String description, int price, Type type, SpellTypes spellType, Status status){
+        super(name,description,price,type, spellType, status);
     }
 
     @Override
