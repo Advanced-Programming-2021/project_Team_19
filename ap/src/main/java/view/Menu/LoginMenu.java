@@ -133,7 +133,7 @@ public class LoginMenu extends Menu {
         }
 
         if (Utils.isPasswordWeak(password)) {
-            RegisterProfilePrinter.printPasswordSafetyError();
+            Printer.print("password is weak");
             return;
         }
 

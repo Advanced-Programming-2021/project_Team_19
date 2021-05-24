@@ -5,6 +5,7 @@ import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 import model.User;
+import view.Printer.Printer;
 import view.Printer.RegisterProfilePrinter;
 
 import java.util.regex.Matcher;
@@ -57,7 +58,7 @@ public class ProfileMenuController {
                     "user with nickname " + newNickname + " already exists", MessageType.ERROR);
 
         } else {
-            RegisterProfilePrinter.printNicknameChanged();
+            Printer.print("nickname changed successfully!");
 
             if (UserDataBaseController.changeNickname(user, newNickname))
                 return new DataForClientFromServer("", MessageType.SUCCESSFUL);

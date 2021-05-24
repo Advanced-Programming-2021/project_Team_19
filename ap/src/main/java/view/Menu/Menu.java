@@ -66,7 +66,7 @@ public class Menu {
             return;
         }
         if (!canEnterTheMenu(menuName)) {
-            RegisterProfilePrinter.printCanNotNavigate();
+            Printer.print("menu navigation is not possible");
             return;
         }
 

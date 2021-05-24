@@ -1,11 +1,15 @@
 package view;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 
 
 public class GetInput {
+
+    static Queue<String> commands = new LinkedList<>();
 
     static Scanner scanner = new Scanner(System.in);
 
@@ -17,12 +21,15 @@ public class GetInput {
 
     public static String getString() {
         if(testMod) {
-//            return ProjectTest.giveInput();
+            return commands.poll();
         }
         else {
             return scanner.nextLine().replaceAll("\\s+", " ").trim();
         }
-        return null;
+    }
+
+    public static void addCommand(String command){
+        commands.add(command);
     }
 
     public static int getInt(){

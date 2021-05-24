@@ -3,6 +3,7 @@ package view;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
+import view.Menu.LoginMenu;
 import view.Printer.Printer;
 
 import java.util.Random;
@@ -13,13 +14,13 @@ public class Main {
     public static void main(String[] arg) {
 
 
-        Printer.print("");
+//        Printer.print("");
+//
+//        new Game().run(GameData.getTestGameData());
 
-        new Game().run(GameData.getTestGameData());
+        DataBaseController.makeResourceDirectory();
 
-//        DataBaseController.makeResourceDirectory();
-
-//        LoginMenu.getInstance().run();
+        LoginMenu.getInstance().run();
     }
 
 }

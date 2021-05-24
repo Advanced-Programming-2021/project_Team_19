@@ -1,5 +1,6 @@
 package view;
 
+import view.Printer.Printer;
 import view.Printer.RegisterProfilePrinter;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class Utils {
 
         for (String dataKey : userData.keySet()) {
             if (!isFormatValid(userData.get(dataKey))) {
-                RegisterProfilePrinter.printFormatError(dataKey);
+                Printer.print(dataKey+" format is not valid");
                 return false;
             }
         }

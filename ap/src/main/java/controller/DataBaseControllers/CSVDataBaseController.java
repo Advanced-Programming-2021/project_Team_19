@@ -245,4 +245,15 @@ public class CSVDataBaseController {
         return returnedData.substring(0,returnedData.length()-1);
     }
 
+    public static void main(String[] arg){
+        for(String string:getClassByName.keySet()){
+            Card card = getCardByCardName(string);
+            try{
+                System.out.println(card.toString());
+            }catch(NullPointerException e){
+                System.out.println(string);
+            }
+        }
+    }
+
 }
