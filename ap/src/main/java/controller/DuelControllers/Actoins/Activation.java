@@ -127,11 +127,20 @@ public class Activation extends Action {
 
         for(SpellAndTraps card : cardsForChain){
 
-            if(canThisCardChainOnActivatedCard(card)){
+            if(canThisCardChainOnActivatedCard(card) && !cardIsAlreadyInChain(card)){
                 return true;
             }
         }
 
+        return false;
+    }
+
+    public boolean cardIsAlreadyInChain(Card card){
+        for (Action action : gameData.getCurrentActions()) {
+            if (action instanceof Activation && ((Activation) action).getActivatedCard().equals(card)){
+                return true;
+            }
+        }
         return false;
     }
 

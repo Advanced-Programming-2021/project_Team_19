@@ -133,8 +133,6 @@ public class AllBoards {
 
         Card card = Utils.getCardByName("closed forest");
         board.getHand().getCardsInHand().set(0, card);
-        card = Utils.getCardByName("forest");
-        board.getHand().getCardsInHand().set(1, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());

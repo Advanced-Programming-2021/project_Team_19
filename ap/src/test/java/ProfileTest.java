@@ -7,24 +7,25 @@ import view.Printer.Printer;
 
 public class ProfileTest {
     static User user;
+
     @BeforeAll
-    public static void createUser(){
+    public static void createUser() {
         GetInput.setTestingMod();
         Printer.setTestingMod();
-        user = new User(Utils.getRandomString(10),Utils.getRandomString(10),Utils.getRandomString(50));
+        user = new User(Utils.getRandomString(10), Utils.getRandomString(10), Utils.getRandomString(50));
         UserDataBaseController.createUser(user);
     }
 
     @AfterEach
-    public void deleteExtraCommands(){
+    public void deleteExtraCommands() {
         Printer.clearLog();
     }
 
 
     @Test
-    public void testChangingNickName(){
+    public void testChangingNickName() {
         String newNickname = Utils.getRandomString(10);
-        GetInput.addCommand("profile change --nickname "+newNickname);
+        GetInput.addCommand("profile change --nickname " + newNickname);
         GetInput.addCommand("menu exit");
         ProfileMenu.getInstance().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
@@ -33,9 +34,9 @@ public class ProfileTest {
     }
 
     @Test
-    public void testChangingNickNameAbbreviated(){
+    public void testChangingNickNameAbbreviated() {
         String newNickname = Utils.getRandomString(10);
-        GetInput.addCommand("profile change -n "+newNickname);
+        GetInput.addCommand("profile change -n " + newNickname);
         GetInput.addCommand("menu exit");
         ProfileMenu.getInstance().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
@@ -45,25 +46,25 @@ public class ProfileTest {
     }
 
     @Test
-    public void changingPasswordTest(){
+    public void changingPasswordTest() {
         String newPassword = Utils.getRandomString(50);
-        GetInput.addCommand("profile change --password "+"--current "+user.getPassword()+" --new "+newPassword);
+        GetInput.addCommand("profile change --password " + "--current " + user.getPassword() + " --new " + newPassword);
         GetInput.addCommand("menu exit");
         ProfileMenu.getInstance().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
-        Assertions.assertEquals("password changed successfully!",Printer.getResponse());
-        Assertions.assertEquals(newPassword,user.getPassword());
+        Assertions.assertEquals("password changed successfully!", Printer.getResponse());
+        Assertions.assertEquals(newPassword, user.getPassword());
     }
 
     @Test
-    public void changePasswordTestAbbreviated(){
+    public void changePasswordTestAbbreviated() {
         String newPassword = Utils.getRandomString(50);
-        GetInput.addCommand("profile change -p "+"-c "+user.getPassword()+" -n "+newPassword);
+        GetInput.addCommand("profile change -p " + "-c " + user.getPassword() + " -n " + newPassword);
         GetInput.addCommand("menu exit");
         ProfileMenu.getInstance().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
-        Assertions.assertEquals("password changed successfully!",Printer.getResponse());
-        Assertions.assertEquals(newPassword,user.getPassword());
+        Assertions.assertEquals("password changed successfully!", Printer.getResponse());
+        Assertions.assertEquals(newPassword, user.getPassword());
     }
 
 }
