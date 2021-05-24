@@ -38,8 +38,6 @@ public class FieldSpell extends Spell {
     }
 
 
-
-
     @Override
     public ActivationData activate(GameData gameData) {
 
@@ -49,12 +47,13 @@ public class FieldSpell extends Spell {
 
     @Override
     public boolean canActivate(GameData gameData) {
-        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard() == null){
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard() == null ||
+                gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard().equals(this)) {
             return true;
         }
 
         if (Utils.askForConfirmation("to activate a new field spell you have to destroy your current field spell\n" +
-                "do you still want to activate it?")){
+                "do you still want to activate it?")) {
             gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard().handleDestroy(gameData);
             return true;
         }
@@ -63,23 +62,23 @@ public class FieldSpell extends Spell {
 
     protected HashMap<MonsterType, Integer[]> typesAndAmountToChangeAttackAndDefence = spellToProperties.get(getName());
 
-    public int attackDifference(MonsterType monsterType, GameData gameData){
-        if (!typesAndAmountToChangeAttackAndDefence.containsKey(monsterType)){
+    public int attackDifference(MonsterType monsterType, GameData gameData) {
+        if (!typesAndAmountToChangeAttackAndDefence.containsKey(monsterType)) {
             return 0;
         }
         return typesAndAmountToChangeAttackAndDefence.get(monsterType)[0];
 
     }
 
-    public int defenceDifference(MonsterType monsterType){
-        if (!typesAndAmountToChangeAttackAndDefence.containsKey(monsterType)){
+    public int defenceDifference(MonsterType monsterType) {
+        if (!typesAndAmountToChangeAttackAndDefence.containsKey(monsterType)) {
             return 0;
         }
         return typesAndAmountToChangeAttackAndDefence.get(monsterType)[1];
 
     }
 
-    public FieldSpell(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public FieldSpell(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

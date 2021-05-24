@@ -26,8 +26,8 @@ public class Set extends SummonAndSet {
 
         if (selectedCard == null) {
             Printer.print("no card is selected yet");
-        } else if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
-                .contains(selectedCard)) {
+        } else if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand().contains(selectedCard) ||
+                (selectedCard.getCardFamily().equals(CardFamily.SPELL) && ((Spell) selectedCard).getSpellType().equals(SpellTypes.FIELD))) {
             Printer.print("you can’t set this card");
         } else if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");
