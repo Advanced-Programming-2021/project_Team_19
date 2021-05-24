@@ -11,6 +11,10 @@ import model.Enums.Type;
 
 public class MagicJammer extends Trap{
 
+    public MagicJammer(String name, String description, int price, Type type, Icon icon, Status status){
+        super(name,description,price,type, icon, status);
+    }
+
     @Override
     public TriggerActivationData activate(GameData gameData) {
 
@@ -30,7 +34,4 @@ public class MagicJammer extends Trap{
         return false;
     }
 
-    public MagicJammer(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
-    }
 }

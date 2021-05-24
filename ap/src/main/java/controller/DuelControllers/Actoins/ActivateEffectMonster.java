@@ -3,11 +3,12 @@ package controller.DuelControllers.Actoins;
 import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Card.Monsters.ShouldAskForActivateEffectMonster;
+import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class ActivateEffectMonster extends Activate{
+public class ActivateEffectMonster extends Activation {
 
     public ActivateEffectMonster(GameData gameData) {
         super(gameData);
@@ -38,6 +39,8 @@ public class ActivateEffectMonster extends Activate{
             return;
         }
 
-        card.activate(gameData);
+//        super.activate();
+
+        card.activate(gameData);//
     }
 }

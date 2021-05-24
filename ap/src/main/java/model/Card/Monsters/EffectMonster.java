@@ -12,6 +12,7 @@ public abstract class EffectMonster extends Monster {
                          int level, Attribute attribute, MonsterType monsterType,
                          MonsterTypesForEffects monsterTypesForEffects) {
         super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
+        setEffectSpeed(1);
     }
 
     public boolean shouldEffectRun(EffectLabel label){

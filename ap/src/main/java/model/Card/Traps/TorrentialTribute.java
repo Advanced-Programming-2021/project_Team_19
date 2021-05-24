@@ -16,7 +16,7 @@ import model.Enums.Type;
 
 import java.util.ArrayList;
 
-public class TorrentialTribute extends Trap {
+public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
 
     public TorrentialTribute(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);

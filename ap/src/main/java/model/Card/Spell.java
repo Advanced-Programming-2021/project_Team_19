@@ -15,6 +15,7 @@ public abstract class Spell extends SpellAndTraps{
     public Spell(String name, String description, int price, Type type, Icon icon, Status status){
         super(name,description,price,type, icon, status);
         setCardFamily(CardFamily.SPELL);
+        setEffectSpeed(1);
     }
 
     public SpellTypes getSpellType() {

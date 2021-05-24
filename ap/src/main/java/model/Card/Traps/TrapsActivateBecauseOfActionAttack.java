@@ -13,7 +13,7 @@ import model.Enums.Type;
 
 import java.util.ArrayList;
 
-public abstract class TrapsActivateBecauseOfActionAttack extends Trap {
+public abstract class TrapsActivateBecauseOfActionAttack extends Trigger {
 
     public TrapsActivateBecauseOfActionAttack
             (String name, String description, int price, Type type, Icon icon, Status status){

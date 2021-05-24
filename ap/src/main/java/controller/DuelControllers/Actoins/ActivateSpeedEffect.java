@@ -2,8 +2,10 @@ package controller.DuelControllers.Actoins;
 
 import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
+import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -40,13 +42,15 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
             return data;
         }
 
+//        return (TriggerActivationData) super.activate();
+
         return card.activate(gameData);
 
     }
 
     protected boolean checkInvalidMoves(String command){
 
-        for(String str : getInvalidMoves()){
+        for(String str : Utils.getCommandsExceptActivation()){
             if(command.matches(str)){
                 Printer.print("please activate one trap or spell");
                 return true;

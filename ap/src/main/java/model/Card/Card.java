@@ -21,6 +21,14 @@ public class Card {
 
     @Expose
     private CardFamily cardFamily;
+    @Expose
+    private int effectSpeed = 0;
+    @Expose
+    public boolean hasActivationEffectCanceledInChain = false;
+
+    public int getEffectSpeed(){ return effectSpeed; }
+
+    public void setEffectSpeed(int speed){ effectSpeed = speed; }
 
     public int getPrice() {
         return price;

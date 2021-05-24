@@ -15,6 +15,7 @@ public abstract class Trap extends SpellAndTraps {
         super(name,description,price,type, icon, status);
 
         setCardFamily(CardFamily.TRAP);
+        setEffectSpeed(2);
     }
 
     public TrapTypes getTrapType() {

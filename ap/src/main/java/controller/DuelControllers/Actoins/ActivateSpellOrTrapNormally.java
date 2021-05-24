@@ -4,17 +4,15 @@ import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
-import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
-import model.Enums.CardFamily;
+import model.Data.TriggerActivationData;
 import model.Enums.SpellCardMods;
-import model.Phase;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class ActivateSpellOrTrapNormally extends Activate {
+public class ActivateSpellOrTrapNormally extends Activation {
 
 
     public ActivateSpellOrTrapNormally(GameData gameData){
@@ -60,7 +58,7 @@ public class ActivateSpellOrTrapNormally extends Activate {
 
     private boolean activateFromSpellZone(SpellAndTraps card) {
 
-        Printer.print(card.activate(gameData).message);
+        Printer.print(card.activate(gameData).message);//
         return true;
 
     }
@@ -85,6 +83,9 @@ public class ActivateSpellOrTrapNormally extends Activate {
                 gameData.getCurrentGamer().getGameBoard().getHand(),
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);
+
+
+//        Printer.print(super.activate().message);
 
         Printer.print(card.activate(gameData).message);
 

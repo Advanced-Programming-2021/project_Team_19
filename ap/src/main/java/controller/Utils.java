@@ -2,6 +2,7 @@ package controller;
 
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actoins.Select;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
@@ -194,4 +195,34 @@ public class Utils {
         gameData.changeTurn();
         Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() + "’s turn");
     }
+
+    public static boolean handleSelect(GameData gameData, String command){
+
+        if (command.startsWith("select")) {
+            new Select(gameData).select(command);
+        } else if (command.matches("card show --selected")) {
+            new Select(gameData).select(command);
+        }else if (command.equals("show board")) {
+            gameData.showBoard();
+        }else{
+            return false;
+        }
+        return true;
+    }
+
+    public static ArrayList<String> getCommandsExceptActivation() {
+
+        ArrayList<String> answer = new ArrayList<>();
+
+        answer.add("attack ([1-5])");
+        answer.add("attack direct");
+        answer.add("summon");
+        answer.add("set");
+        answer.add("set --position (attack|defence)");
+        answer.add("flip summon");
+        answer.add("next phase");
+
+        return answer;
+    }
+
 }

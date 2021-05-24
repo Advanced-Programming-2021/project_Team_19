@@ -4,17 +4,16 @@ import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
+import controller.TrapCheckers.mirageDragonChecker;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Enums.*;
-import view.Printer.Printer;
-
 import java.util.ArrayList;
 
-public class CallOfTheHaunted extends Trap {
+
+public class CallOfTheHaunted extends SpeedEffectTrap {
 
     Monster summonedMonster;
 
@@ -53,6 +52,7 @@ public class CallOfTheHaunted extends Trap {
 
         ArrayList<Checker> checkers = new ArrayList<>();
         checkers.add(new TurnChecker(gameData, this));
+        checkers.add(new mirageDragonChecker(gameData, this));
 
         if(!Checker.multipleCheck(checkers)){
            return false;
@@ -62,7 +62,7 @@ public class CallOfTheHaunted extends Trap {
             return false;
         }
 
-        for (Card card : gameData.getCardController(this).getGameBoard().getGraveYard().getCardsInGraveYard()) {
+        for (Card card : gameData.getCardController(this).getGameBoard().getGraveYard().getCardsInGraveYard()){
             if (card instanceof Monster) {
                 return true;
             }

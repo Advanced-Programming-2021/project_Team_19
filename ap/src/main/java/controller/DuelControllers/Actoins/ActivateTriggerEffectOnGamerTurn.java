@@ -1,5 +1,6 @@
 package controller.DuelControllers.Actoins;
 
+import controller.Utils;
 import view.Printer.Printer;
 
 public class ActivateTriggerEffectOnGamerTurn extends ActivateTriggerTrapEffect {
@@ -11,7 +12,7 @@ public class ActivateTriggerEffectOnGamerTurn extends ActivateTriggerTrapEffect 
 
     protected boolean checkInvalidMoves(String command){
 
-        for(String str : getInvalidMoves()){
+        for(String str : Utils.getCommandsExceptActivation()){
             if(command.matches(str)){
                 Printer.print("please activate one trap or spell");
                 return true;
