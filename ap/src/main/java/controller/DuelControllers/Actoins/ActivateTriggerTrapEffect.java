@@ -55,9 +55,9 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
 
         if (((SpellAndTraps)activatedCard).canActivateBecauseOfAnAction(action)) {
 
-//            return (TriggerActivationData) super.activate();
+            return (TriggerActivationData) super.activate();
 
-            return (TriggerActivationData) ((SpellAndTraps)activatedCard).activate(gameData);
+//            return (TriggerActivationData) ((SpellAndTraps)activatedCard).activate(gameData);
 
 
 

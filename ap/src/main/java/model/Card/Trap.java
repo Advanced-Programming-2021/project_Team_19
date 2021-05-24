@@ -27,7 +27,8 @@ public abstract class Trap extends SpellAndTraps {
         this.trapType = trapType;
     }
 
-    public boolean canActivate(GameData gameData){return false;}
-
+    public boolean canActivate(GameData gameData){
+        return false;
+    }
 
 }

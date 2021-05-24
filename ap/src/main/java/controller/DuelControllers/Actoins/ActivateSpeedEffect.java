@@ -42,9 +42,9 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
             return data;
         }
 
-//        return (TriggerActivationData) super.activate();
+        return (TriggerActivationData) super.activate();
 
-        return card.activate(gameData);
+//        return card.activate(gameData);
 
     }
 
