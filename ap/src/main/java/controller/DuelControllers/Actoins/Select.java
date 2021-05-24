@@ -9,6 +9,7 @@ import model.Enums.CardMod;
 import view.GetInput;
 import view.Printer.Printer;
 
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class Select extends Action {
@@ -80,14 +81,10 @@ public class Select extends Action {
                     if (selectedCard.getClass() == ScannerMonster.class) {
                         ((ScannerMonster) selectedCard).setValidity(gameData);
                         if (!((ScannerMonster) selectedCard).isMonsterSet()) {
-                            gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
-                            Printer.print("Please choose a monster to change to");
-                            int selectIndexToConvertTo = GetInput.getInt();
-                            String cardName = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(selectIndexToConvertTo).getName();
-                            Monster convertToCard = (Monster) Utils.getCardByName(cardName);
-                            //khalafi
-                            ((ScannerMonster) selectedCard).setMonster(convertToCard, gameData);
-                            ((ScannerMonster) selectedCard).setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+                            boolean isSet = ((ScannerMonster) selectedCard).handleScannerMonster(gameData);
+                            if(!isSet){
+                                gameData.setSelectedCard(null);
+                            }
                         }
                     }
                 }

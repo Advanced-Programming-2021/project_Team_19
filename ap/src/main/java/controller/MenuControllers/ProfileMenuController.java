@@ -58,10 +58,9 @@ public class ProfileMenuController {
                     "user with nickname " + newNickname + " already exists", MessageType.ERROR);
 
         } else {
-            Printer.print("nickname changed successfully!");
 
             if (UserDataBaseController.changeNickname(user, newNickname))
-                return new DataForClientFromServer("", MessageType.SUCCESSFUL);
+                return new DataForClientFromServer("nickname changed successfully!", MessageType.SUCCESSFUL);
             else
                 return Utils.getDataSendToClientForOperationFailed();
         }

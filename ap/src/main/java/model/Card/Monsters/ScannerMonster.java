@@ -2,6 +2,7 @@ package model.Card.Monsters;
 
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Trap;
 import model.Enums.CardFamily;
@@ -10,6 +11,7 @@ import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
+import view.GetInput;
 import view.Printer.Printer;
 
 public class ScannerMonster extends Monster {
@@ -26,6 +28,54 @@ public class ScannerMonster extends Monster {
         }
         else{
             tempMonster = null;
+        }
+    }
+
+    public boolean handleScannerMonster(GameData gameData){
+        boolean isThereMonster = false;
+        for(Card card : gameData.getSecondGamer().getGameBoard().getGraveYard().getCardsInGraveYard()){
+            if (card instanceof Monster) {
+                isThereMonster = true;
+                break;
+            }
+        }
+        if(!isThereMonster){
+            System.out.println("There is no monster card in opponents graveYard!");
+            return false;
+        }
+        else{
+            gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
+            Printer.print("Please choose a card From GraveYard!(Just a digit telling the position)");
+            Integer index = getIndex(gameData);
+            if(index == null){
+                return false;
+            }
+            else{
+                setMonster((Monster)gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index),gameData);
+                return true;
+            }
+        }
+    }
+
+    public Integer getIndex(GameData gameData){
+        String command = GetInput.getString();
+        while(!command.matches("\\d+")&&!command.equals("cancel")){
+            Printer.print("invalid format!");
+            Printer.print("try of format (number)");
+            command = GetInput.getString();
+        }
+        if(command.equals("cancel")){
+            return null;
+        }
+        else{
+            int index = Integer.parseInt(command);
+            if(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(index) != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
+                return index;
+            }
+            else{
+                Printer.print("invalid index please try again");
+                return getIndex(gameData);
+            }
         }
     }
 
