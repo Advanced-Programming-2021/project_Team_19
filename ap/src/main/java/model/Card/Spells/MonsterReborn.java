@@ -18,6 +18,9 @@ import java.util.regex.Pattern;
 public class MonsterReborn extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
+        if(gameData.getSecondGamer().getGameBoard().getGraveYard().getSize()+gameData.getCurrentGamer().getGameBoard().getGraveYard().getSize() == 0){
+            return new ActivationData(this, "This card cannot be activated");
+        }
         Printer.print("Your grave yard");
         gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
         Printer.print("Your rival's graveYard");
