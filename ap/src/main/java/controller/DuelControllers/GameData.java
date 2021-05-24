@@ -7,6 +7,7 @@ import model.Board.Zones;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
+import model.Enums.GameEvent;
 import model.Enums.SpellCardMods;
 import model.Gamer;
 import model.Phase;
@@ -19,6 +20,7 @@ import java.util.Collections;
 public class GameData {
 
 
+    private static ArrayList<GameData> gameDatas = new ArrayList<>();
     private int gameStarterId = 0;
     private ArrayList<Gamer> gamers = new ArrayList<>();
     private ArrayList<Action> currentActions = new ArrayList<>();
@@ -27,16 +29,31 @@ public class GameData {
     private Phase currentPhase = Phase.DRAW;
     private Gamer turnOwner;
     public boolean hasAskedForSpellsThisPhase = true;
+    private GameEvent event = null;
+
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
         gamers.add(secondGamer);
         turnOwner = firstGamer;
+        gameDatas.add(this);
+    }
+
+    public static GameData getGameData(int index){
+        return gameDatas.get(index);
     }
 
     public boolean isGameOver() {
         return (gamers.get(0).getLifePoint() == 0 || gamers.get(1).getLifePoint() == 0);
 
+    }
+
+    public GameEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(GameEvent event) {
+        this.event = event;
     }
 
     public Card getSelectedCard() {

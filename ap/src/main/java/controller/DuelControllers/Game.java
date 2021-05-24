@@ -9,6 +9,7 @@ import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
 import model.EffectLabel;
+import model.Enums.GameEvent;
 import model.Gamer;
 import model.Phase;
 import view.GetInput;
@@ -65,7 +66,9 @@ public class Game {
                 continue;
             }
 
+            gameData.setEvent(GameEvent.NORMAL);
             command = GetInput.getString();
+            gameData.setEvent(null);
 
             if (gameData.isRitualSummoning() &&
                     command.matches("cancel")){

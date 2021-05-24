@@ -3,6 +3,7 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
+import model.Enums.GameEvent;
 import model.Gamer;
 import model.User;
 import view.GetInput;
@@ -134,12 +135,15 @@ public class DuelMenuController extends Menu {
 
     private void changeDecks(Gamer gameStarter, Gamer rivalGamer) {
 
+        GameData.getGameData(0).setEvent(GameEvent.ASK_FOR_SIDE_DECK);
+
         if (Utils.askForConfirmation(gameStarter.getUsername() +", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(gameStarter.getUser()).run();
 
         if (Utils.askForConfirmation(rivalGamer.getUsername() +", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(rivalGamer.getUser()).run();
 
+        GameData.getGameData(0).setEvent(null);
     }
 
     private void finishDuel(Gamer winner, GameData gameData, int rounds) {

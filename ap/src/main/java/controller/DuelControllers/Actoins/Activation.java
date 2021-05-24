@@ -11,6 +11,7 @@ import model.Card.Traps.SpeedEffectTrap;
 import model.Card.Traps.Trigger;
 import model.Data.ActivationData;
 import model.Enums.CardFamily;
+import model.Enums.GameEvent;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -96,10 +97,13 @@ public class Activation extends Action {
 
     private boolean handleChainForTurnPlayer() {
 
+        gameData.setEvent(GameEvent.ASK_FOR_CONFIRMATION_FOR_CHAIN);
         if(Utils.askForConfirmation("do want to Chain ?")){
             selectCardForChain();
             return true;
+
         }
+        gameData.setEvent(null);
 
         return false;
     }
@@ -156,12 +160,16 @@ public class Activation extends Action {
     }
 
     public boolean selectCardForChain(){
+
         Printer.print("so please do that");
 
         String command;
 
         while(true){
+
+            gameData.setEvent(GameEvent.CHAIN);
             command = GetInput.getString();
+            gameData.setEvent(null);
 
             if (checkInvalidMoves(command)) {
 

@@ -3,6 +3,7 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Board.MonsterCardZone;
 import model.Card.Monster;
+import model.Enums.GameEvent;
 import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
@@ -36,7 +37,11 @@ public class SummonAndSet extends Action{
             String command;
             while (true) {
                 Printer.print(enterId);
+
+                gameData.setEvent(GameEvent.SACRIFICE_FOR_SUMMON_SET);
                 command = GetInput.getString();
+                gameData.setEvent(null);
+
                 if (hasNIds(numberOfSacrifices, command)) {
                     String[] ids = command.split(" ");
                     if (containsRecurringId(ids)){
