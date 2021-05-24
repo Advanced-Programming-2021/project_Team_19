@@ -131,8 +131,10 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("magic jamamer");
+        Card card = Utils.getCardByName("forest");
         board.getHand().getCardsInHand().set(0, card);
+        card = Utils.getCardByName("forest");
+        board.getHand().getCardsInHand().set(1, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());

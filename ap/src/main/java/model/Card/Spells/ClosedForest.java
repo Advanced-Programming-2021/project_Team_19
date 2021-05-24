@@ -2,7 +2,6 @@ package model.Card.Spells;
 
 import controller.DuelControllers.GameData;
 import model.Card.Card;
-import model.Data.ActivationData;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.SpellsAndTraps.SpellTypes;
@@ -13,10 +12,6 @@ import model.Gamer;
 import java.util.HashMap;
 
 public class ClosedForest extends FieldSpell {
-    @Override
-    public ActivationData activate(GameData gameData) {
-        return null;
-    }
 
     {
         typesAndAmountToChangeAttackAndDefence = new HashMap<>();

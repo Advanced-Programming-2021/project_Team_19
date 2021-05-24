@@ -2,10 +2,14 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import controller.Utils;
+import model.Card.Card;
+import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
+import model.Enums.CardFamily;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
@@ -180,5 +184,17 @@ public abstract class Action {
         gameData.removeActionFromCurrentActions(this);
 
         return canActionBeDone;
+    }
+
+    public void activateOrSetCheckFieldSpell(Card card, GameData gameData){
+        if (!card.getCardFamily().equals(CardFamily.SPELL) || !((Spell) card).getSpellType().equals(SpellTypes.FIELD)) {
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getCurrentGamer().getGameBoard().getHand(),
+                    gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
+        }else {
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getCurrentGamer().getGameBoard().getHand(),
+                    gameData.getCurrentGamer().getGameBoard().getFieldZone());
+        }
     }
 }

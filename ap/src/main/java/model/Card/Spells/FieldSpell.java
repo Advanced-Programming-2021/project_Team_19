@@ -1,9 +1,11 @@
 package model.Card.Spells;
 
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import model.Card.Spell;
 import model.Data.ActivationData;
 import model.Enums.MonsterEnums.MonsterType;
+import model.Enums.SpellCardMods;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
@@ -40,7 +42,23 @@ public class FieldSpell extends Spell {
 
     @Override
     public ActivationData activate(GameData gameData) {
-        return null;
+
+        return new ActivationData(this, "you successfully activated " + this.getName());
+    }
+
+
+    @Override
+    public boolean canActivate(GameData gameData) {
+        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard() == null){
+            return true;
+        }
+
+        if (Utils.askForConfirmation("to activate a new field spell you have to destroy your current field spell\n" +
+                "do you still want to activate it?")){
+            gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard().handleDestroy(gameData);
+            return true;
+        }
+        return false;
     }
 
     protected HashMap<MonsterType, Integer[]> typesAndAmountToChangeAttackAndDefence = spellToProperties.get(getName());

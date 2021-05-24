@@ -11,9 +11,10 @@ public abstract class Trap extends SpellAndTraps {
     @Expose
     private TrapTypes trapType;
 
-    public Trap(String name, String description, int price, Type type, Icon icon, Status status){
-        super(name,description,price,type, icon, status);
+    public Trap(String name, String description, int price, Type type, TrapTypes trapType, Status status){
+        super(name,description,price,type, status);
 
+        setTrapType(trapType);
         setCardFamily(CardFamily.TRAP);
         setEffectSpeed(2);
     }

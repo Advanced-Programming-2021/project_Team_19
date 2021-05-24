@@ -3,8 +3,10 @@ package controller.DuelControllers.Actoins;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Enums.CardFamily;
+import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Phase;
 import view.Printer.Printer;
 
@@ -47,9 +49,7 @@ public class Set extends SummonAndSet {
 
         if (((SpellAndTraps) card).handleSet(gameData)) {
 
-            gameData.moveCardFromOneZoneToAnother(card,
-                    gameData.getCurrentGamer().getGameBoard().getHand(),
-                    gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
+            activateOrSetCheckFieldSpell(card, gameData);
 
             Printer.print("set successfully");
         }

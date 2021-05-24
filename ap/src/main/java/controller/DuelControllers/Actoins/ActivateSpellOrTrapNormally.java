@@ -6,7 +6,6 @@ import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
-import model.Data.TriggerActivationData;
 import model.Enums.SpellCardMods;
 import view.Printer.Printer;
 
@@ -42,54 +41,46 @@ public class ActivateSpellOrTrapNormally extends Activation {
         }
 
         if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
-            if(!activateFromHand(card)) return;
+            activateFromHand(card);
         }
 
         else if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone){
-            if(!activateFromSpellZone(card)) return;
+            activateFromSpellZone(card);
         }
 
         else{
             Printer.print("invalid Zone");
-            return;
         }
 
     }
 
-    private boolean activateFromSpellZone(SpellAndTraps card) {
+    private void activateFromSpellZone(SpellAndTraps card) {
 
         Printer.print(card.activate(gameData).message);//
-        return true;
 
     }
 
-    private boolean activateFromHand(SpellAndTraps card){
+    private void activateFromHand(SpellAndTraps card){
 
         if(card instanceof Trap){
             Printer.print("you should set trap card first");
-            return false;
+            return;
         }
 
         if(gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()){
             Printer.print("spell card zone is full");
-            return false;
+            return;
         }
         if(!card.canActivate(gameData)){
             Printer.print("preparations of this spell are not done yet");
-            return false;
+            return;
         }
 
-        gameData.moveCardFromOneZoneToAnother(card,
-                gameData.getCurrentGamer().getGameBoard().getHand(),
-                gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
+        activateOrSetCheckFieldSpell(card, gameData);
+
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);
 
-
-//        Printer.print(super.activate().message);
-
         Printer.print(card.activate(gameData).message);
-
-        return true;
 
     }
 

@@ -145,7 +145,7 @@ public class Select extends Action {
     private void selectField(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            Card selectedCard = gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0);
+            Card selectedCard = gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard();
             if (selectedCard == null) {
                 Printer.print("no card found in the given position");
             } else {
@@ -158,7 +158,7 @@ public class Select extends Action {
     private void selectOpponentField(Matcher matcher) {
         if (matcher.matches()) {
             commandIsDone = true;
-            gameData.setSelectedCard(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0));
+            gameData.setSelectedCard(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard());
         }
     }
 

@@ -22,8 +22,10 @@ public class Terraforming extends Spell {
             return new ActivationData(this, "you have no field cards in your deck");
         }
 
-        if (selectCardAndMoveToHand(fieldSpellsInDeck, gameData))
+        if (selectCardAndMoveToHand(fieldSpellsInDeck, gameData)) {
+            handleCommonsForActivate(gameData);
             return new ActivationData(this, "spell activated successfully");
+        }
         return new ActivationData(this, "you cancelled the activation");
     }
 

@@ -69,7 +69,7 @@ public class ScannerMonster extends Monster {
         }
         else{
             int index = Integer.parseInt(command);
-            if(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(index) != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
+            if(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard() != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
                 return index;
             }
             else{

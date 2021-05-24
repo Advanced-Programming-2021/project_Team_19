@@ -11,6 +11,7 @@ import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
+import model.Enums.SpellCardMods;
 import model.Gamer;
 import view.Printer.Printer;
 
@@ -66,14 +67,17 @@ public class Monster extends Card {
         int attackChangeFromSelf = 0;
         int attackChangeFromRival = 0;
         int attackChangeFromEquippedSpells = 0;
-        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null) {
+
+        if (shouldFieldSpellBeChecked(gameData.getCurrentGamer())) {
             attackChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
-                    .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+                    .getFieldZone().getCard()).attackDifference(getMonsterType(), gameData);
         }
-        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null) {
+
+        if (shouldFieldSpellBeChecked(gameData.getSecondGamer())) {
             attackChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
-                    .getFieldZone().getCard(0)).attackDifference(getMonsterType(), gameData);
+                    .getFieldZone().getCard()).attackDifference(getMonsterType(), gameData);
         }
+
         for (EquipSpell equippedSpell : equippedSpells) {
             attackChangeFromEquippedSpells += equippedSpell.changeInAttack(gameData);
         }
@@ -85,19 +89,27 @@ public class Monster extends Card {
         int defenceChangeFromSelf = 0;
         int defenceChangeFromRival = 0;
         int defenceChangeFromEquippedSpells = 0;
-        if (gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard(0) != null) {
-            defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
-                    .getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+
+        if (shouldFieldSpellBeChecked(gameData.getCurrentGamer())){
+                defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
+                    .getFieldZone().getCard()).defenceDifference(getMonsterType());
         }
-        if (gameData.getSecondGamer().getGameBoard().getFieldZone().getCard(0) != null) {
+
+        if (shouldFieldSpellBeChecked(gameData.getSecondGamer())) {
             defenceChangeFromRival = ((FieldSpell) gameData.getSecondGamer().getGameBoard()
-                    .getFieldZone().getCard(0)).defenceDifference(getMonsterType());
+                    .getFieldZone().getCard()).defenceDifference(getMonsterType());
         }
+
         for (EquipSpell equippedSpell : equippedSpells) {
             defenceChangeFromEquippedSpells += equippedSpell.changeInDefence(gameData);
         }
 
         return defence + defenceChangeFromRival + defenceChangeFromSelf + defenceChangeFromEquippedSpells;
+    }
+
+    private boolean shouldFieldSpellBeChecked(Gamer gamer){
+        return gamer.getGameBoard().getFieldZone().getCard() != null &&
+                ((Spell) gamer.getGameBoard().getFieldZone().getCard()).getSpellCardMod().equals(SpellCardMods.OFFENSIVE);
     }
 
 

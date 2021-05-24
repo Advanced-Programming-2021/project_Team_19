@@ -6,7 +6,7 @@ public class FieldZone extends Zones {
 
     private Card card;
 
-    public Card getCard(int id) {
+    public Card getCard() {
         return card;
     }
 
