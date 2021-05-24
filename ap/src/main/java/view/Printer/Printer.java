@@ -24,15 +24,12 @@ public class Printer {
     }
 
     public static  String getResponse(){
-        String temp = responses.poll();
-        if(temp.matches("\\s+")){
-            return getResponse();
-        }
-        else{
-            return temp;
-        }
+        return responses.poll();
     }
 
+    public static void clearLog(){
+        responses.clear();
+    }
 
     public static void printInvalidCommand(){
         print("invalid command!");

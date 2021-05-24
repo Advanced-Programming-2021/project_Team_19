@@ -1,9 +1,6 @@
 import controller.DataBaseControllers.UserDataBaseController;
 import model.User;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import view.GetInput;
 import view.Menu.ProfileMenu;
 import view.Printer.Printer;
@@ -16,6 +13,11 @@ public class ProfileTest {
         Printer.setTestingMod();
         user = new User(Utils.getRandomString(10),Utils.getRandomString(10),Utils.getRandomString(50));
         UserDataBaseController.createUser(user);
+    }
+
+    @AfterEach
+    public void deleteExtraCommands(){
+        Printer.clearLog();
     }
 
 
@@ -38,6 +40,7 @@ public class ProfileTest {
         ProfileMenu.getInstance().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
         Assertions.assertEquals("nickname changed successfully!", Printer.getResponse());
+        System.out.println(Printer.getResponse());
         Assertions.assertEquals(newNickname, user.getNickname());
     }
 
