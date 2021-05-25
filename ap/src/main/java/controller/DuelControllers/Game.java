@@ -108,6 +108,12 @@ public class Game {
                 new NormalSummon(gameData).run();
             } else if (command.matches("set")) {
                 normalSetCommand(gameData);
+            } else if (command.matches("increase --LP \\d+")) {
+                CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
+            } else if (command.matches("duel set-winner \\w+")) {
+                if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))){
+                    handleSurrender(gameData);
+                }
             } else if (command.matches("show hand")) {
                 gameData.getCurrentGamer().getGameBoard().getHand().showHand();
             } else if (command.matches("set --position (attack|defence)")) {
@@ -116,6 +122,8 @@ public class Game {
                 new FlipSummon(gameData).flipByCommand();
             } else if (command.matches("next phase")) {
                 goToNextPhase(gameData);
+            } else if (command.matches("multiply --attack \\d+")) {
+                CheatCodes.multiplyAttack(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "multiply --attack (\\d+)")));
             } else if (command.matches("show graveyard")) {
                 gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
             } else if (command.matches("activate")) {

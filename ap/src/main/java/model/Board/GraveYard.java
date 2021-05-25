@@ -10,7 +10,11 @@ public class GraveYard extends Zones {
     private ArrayList<Card> cardsInGraveYard = new ArrayList<>();
 
     public Card getCard(int id) {
-        return cardsInGraveYard.get(id - 1);
+        try {
+            return cardsInGraveYard.get(id - 1);
+        }catch(IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     public Card removeCard(int id) {
