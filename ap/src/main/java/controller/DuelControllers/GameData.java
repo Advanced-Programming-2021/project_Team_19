@@ -8,7 +8,6 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Enums.GameEvent;
-import model.Enums.SpellCardMods;
 import model.Gamer;
 import model.Phase;
 import model.User;
@@ -30,7 +29,7 @@ public class GameData {
     private Gamer turnOwner;
     public boolean hasAskedForSpellsThisPhase = true;
     private GameEvent event = null;
-
+    private int actionIndexForTriggerActivation = -1;
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
@@ -46,6 +45,14 @@ public class GameData {
     public boolean isGameOver() {
         return (gamers.get(0).getLifePoint() == 0 || gamers.get(1).getLifePoint() == 0);
 
+    }
+
+    public int getActionIndexForTriggerActivation() {
+        return actionIndexForTriggerActivation;
+    }
+
+    public void setActionIndexForTriggerActivation(int index) {
+        actionIndexForTriggerActivation = index;
     }
 
     public GameEvent getEvent() {

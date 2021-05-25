@@ -133,6 +133,7 @@ public abstract class Action {
                 (false, "", null);
 
         gameData.addActionToCurrentActions(this);
+        gameData.setActionIndexForTriggerActivation(gameData.getCurrentActions().indexOf(this));
 
         boolean hasTurnOwnerActivatedEffect = false;
 
@@ -155,6 +156,7 @@ public abstract class Action {
         }
 
         gameData.removeActionFromCurrentActions(this);
+        gameData.setActionIndexForTriggerActivation(0);
 
         return data;
 

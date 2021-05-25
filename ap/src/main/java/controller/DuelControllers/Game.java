@@ -40,6 +40,7 @@ public class Game {
                         handleActivatingSpellByRival(gameData);
                     }
 
+
                     Utils.changeTurn(gameData);
                 }
                 gameData.hasAskedForSpellsThisPhase = true;

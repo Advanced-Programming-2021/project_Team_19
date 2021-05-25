@@ -1,6 +1,7 @@
 package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
@@ -23,10 +24,20 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
         super(name,description,price,type, trapType, status);
     }
 
+    public ArrayList<Card> getGraveYardMonsters(GameData gameData){
+        ArrayList<Card> cards = new ArrayList<>();
+        for(Card card : gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard()){
+            if(card instanceof Monster){
+                cards.add(card);
+            }
+        }
+        return cards;
+    }
+
     public ActivationData activate(GameData gameData) {
 
         Card card = Utils.askUserToSelectCard(
-                gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard(),
+                getGraveYardMonsters(gameData),
                 "enter monster id to special summon it", CardFamily.MONSTER);
 
         if(card == null){

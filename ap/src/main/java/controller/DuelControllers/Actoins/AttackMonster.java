@@ -10,8 +10,14 @@ import java.util.regex.Matcher;
 
 public class AttackMonster extends Attack {
 
+    private int enemyId;
+
     public AttackMonster(GameData gameData) {
         super(gameData, "attack monster");
+    }
+
+    public int getEnemyId(){
+        return enemyId;
     }
 
     public void run(Matcher matcher) {
@@ -26,7 +32,7 @@ public class AttackMonster extends Attack {
 
         Card selectedCard = gameData.getSelectedCard();
         matcher.find();
-        int enemyId = Integer.parseInt(matcher.group(1));
+        enemyId = Integer.parseInt(matcher.group(1));
 
         if (checkMutualAttackErrors(selectedCard, gameData)) {
 
