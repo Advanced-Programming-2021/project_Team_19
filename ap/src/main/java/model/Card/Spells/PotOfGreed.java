@@ -19,6 +19,8 @@ public class PotOfGreed extends Spell {
             Card secondCard = gameData.getCurrentGamer().getGameBoard().getDeckZone().getCard(2);
             gameData.moveCardFromOneZoneToAnother(firstCard, gameData.getCurrentGamer().getGameBoard().getDeckZone(),
                     gameData.getCurrentGamer().getGameBoard().getHand());
+            gameData.moveCardFromOneZoneToAnother(secondCard, gameData.getCurrentGamer().getGameBoard().getDeckZone(),
+                    gameData.getCurrentGamer().getGameBoard().getHand());
             return new ActivationData(this, "Successfully added two cards from the deck!");
         }
     }
