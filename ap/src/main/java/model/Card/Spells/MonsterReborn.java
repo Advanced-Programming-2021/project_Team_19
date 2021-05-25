@@ -28,20 +28,21 @@ public class MonsterReborn extends Spell {
         Printer.print("Please select a card of format: (index in the graveYard) --<opponent>(optional)");
         Pair<Integer, Boolean> cardPosition = chooseCard(gameData);
         Card cardToSummon;
+        Card newCard;
         if(cardPosition == null){
             return new ActivationData(this,"The procces was canceled by user");
         }
         else if(cardPosition.getSecond()){
             cardToSummon = gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst());
-            gameData.moveCardFromOneZoneToAnother(gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst()),
+            newCard = gameData.moveCardFromOneZoneToAnother(cardToSummon,
                     gameData.getSecondGamer().getGameBoard().getGraveYard(),gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
         }
         else{
             cardToSummon = gameData.getCurrentGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst());
-            gameData.moveCardFromOneZoneToAnother(gameData.getCurrentGamer().getGameBoard().getGraveYard().getCard(cardPosition.getFirst()),
-                    gameData.getSecondGamer().getGameBoard().getGraveYard(),gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
+            newCard = gameData.moveCardFromOneZoneToAnother(cardToSummon,
+                    gameData.getCurrentGamer().getGameBoard().getGraveYard(),gameData.getCurrentGamer().getGameBoard().getMonsterCardZone());
         }
-        new SpecialSummon(gameData).run(cardToSummon);
+        new SpecialSummon(gameData).run(newCard);
 
         return new ActivationData(this, "The card "+cardToSummon.getName()+" was summoned specially");
     }
@@ -60,18 +61,18 @@ public class MonsterReborn extends Spell {
             Pattern chooseCardPattern = Pattern.compile("(\\d+)(| --opponent)");
             Matcher chooseCardMatcher = chooseCardPattern.matcher(userCommand);
             chooseCardMatcher.matches();
-            boolean isForRival = (chooseCardMatcher.group(2).equals(""));
-            int selectIndex = Integer.parseInt(chooseCardMatcher.group(2));
+            boolean isForRival = !(chooseCardMatcher.group(2).equals(""));
+            int selectIndex = Integer.parseInt(chooseCardMatcher.group(1));
             if(isForRival&&selectIndex > gameData.getSecondGamer().getGameBoard().getGraveYard().getSize()){
                 Printer.print("This is an invalid index rival's grave yard has "+
                         gameData.getSecondGamer().getGameBoard().getGraveYard().getSize()+
-                        "elements");
+                        " elements");
                 return chooseCard(gameData);
             }
             else if(!isForRival&&selectIndex > gameData.getCurrentGamer().getGameBoard().getGraveYard().getSize()){
                 Printer.print("This is an invalid index your grave yard has "+
                         gameData.getCurrentGamer().getGameBoard().getGraveYard().getSize()+
-                        "elements");
+                        " elements");
                 return chooseCard(gameData);
             }
             else{

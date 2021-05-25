@@ -141,12 +141,15 @@ public class GameData {
     }
 
 
-    public void moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
+    public Card moveCardFromOneZoneToAnother(Card card, Zones sourceZone, Zones destinationZone) {
         if (sourceZone instanceof GraveYard) {
             sourceZone.removeCard(sourceZone.getId(card));
-            destinationZone.addCard(getCardToMoveFromGraveYardToAnotherZone(card));
+            Card newCard = getCardToMoveFromGraveYardToAnotherZone(card);
+            destinationZone.addCard(newCard);
+            return newCard;
         } else {
             destinationZone.addCard(sourceZone.removeCard(sourceZone.getId(card)));
+            return null;
         }
     }
 

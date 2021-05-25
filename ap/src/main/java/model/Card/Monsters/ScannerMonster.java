@@ -44,6 +44,7 @@ public class ScannerMonster extends Monster {
             return false;
         }
         else{
+            Printer.print("Grave Yard Cards:");
             gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
             Printer.print("Please choose a card From GraveYard!(Just a digit telling the position)");
             Integer index = getIndex(gameData);
@@ -69,7 +70,7 @@ public class ScannerMonster extends Monster {
         }
         else{
             int index = Integer.parseInt(command);
-            if(gameData.getSecondGamer().getGameBoard().getFieldZone().getCard() != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
+            if(gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
                 return index;
             }
             else{

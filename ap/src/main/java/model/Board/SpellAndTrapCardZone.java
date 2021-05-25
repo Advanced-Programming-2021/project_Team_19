@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("Pot of Greed"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("Monster Reborn"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);
