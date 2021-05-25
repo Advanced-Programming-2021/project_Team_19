@@ -18,9 +18,9 @@ public class Main {
 //
         new Game().run(GameData.getTestGameData());
 
-        DataBaseController.makeResourceDirectory();
-
-        LoginMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }
