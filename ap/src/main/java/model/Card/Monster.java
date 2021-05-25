@@ -41,6 +41,8 @@ public class Monster extends Card {
     @Expose
     private int turnWasPutInMonsterZone = 0;
     @Expose
+    private int attackMultiplier = 1;
+    @Expose
     private Trap callOfTheHauntedTrap = null;
     @Expose
     private ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
@@ -82,7 +84,11 @@ public class Monster extends Card {
             attackChangeFromEquippedSpells += equippedSpell.changeInAttack(gameData);
         }
 
-        return attack + attackChangeFromRival + attackChangeFromSelf + attackChangeFromEquippedSpells;
+        return (attack + attackChangeFromRival + attackChangeFromSelf + attackChangeFromEquippedSpells) * attackMultiplier;
+    }
+
+    public void setAttackMultiplier(int attackMultiplier) {
+        this.attackMultiplier = attackMultiplier;
     }
 
     public int getDefence(GameData gameData) {

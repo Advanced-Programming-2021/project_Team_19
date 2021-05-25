@@ -74,8 +74,8 @@ public class Texchanger extends Monster {
 
         cyberseCards.removeAll(Collections.singleton(null));
 
-        cyberseCards.removeIf(card -> !card.getCardFamily().equals(CardFamily.MONSTER) &&
-                !((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) &&
+        cyberseCards.removeIf(card -> !card.getCardFamily().equals(CardFamily.MONSTER) ||
+                !((Monster) card).getMonsterType().equals(MonsterType.CYBERSE) ||
                 !((Monster) card).getEffectType().equals(MonsterTypesForEffects.NORMAL));
 
         return cyberseCards;

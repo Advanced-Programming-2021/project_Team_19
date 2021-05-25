@@ -3,6 +3,7 @@ package controller.MenuControllers;
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
+import controller.DuelControllers.CheatCodes;
 import controller.Utils;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
@@ -34,6 +35,8 @@ public class ShopMenuController {
             return manageBuyCards(user, Utils.getMatcher(command, "shop buy (.+)"));
         } else if (command.matches("shop show --all")) {
             return showAllCards();
+        } else if(command.equals("increase --money \\d+")){
+            CheatCodes.increaseMoney(user, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --money (\\d+)")));
         }
         return Utils.getDataSendToClientForInvalidInput();
 
