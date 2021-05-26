@@ -529,7 +529,7 @@ public class AI {
 
     private static void directAttack(Monster monster) {
         initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster) + "\n"
-                + "direct attack", 2);
+                + "attack direct", 2);
     }
 
     private static Monster getOneHOMonsterOfRival() {

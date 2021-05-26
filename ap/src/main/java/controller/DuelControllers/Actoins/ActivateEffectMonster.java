@@ -15,7 +15,6 @@ public class ActivateEffectMonster extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
-
     public void run(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
