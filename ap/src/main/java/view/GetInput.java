@@ -3,6 +3,7 @@ package view;
 
 import controller.DuelControllers.AI;
 import controller.DuelControllers.GameData;
+import view.Printer.Printer;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -36,7 +37,7 @@ public class GetInput {
                 String ans = AIScanner.nextLine();
                 return ans;
             } else {
-
+                Printer.print("enter hehe for see AI power");
                 scanner.nextLine();
 //                try {
 //                    Thread.sleep(1500);

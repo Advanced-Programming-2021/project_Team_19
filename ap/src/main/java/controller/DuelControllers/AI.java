@@ -23,7 +23,7 @@ import java.util.*;
 public class AI {
 
     public static GameData gameData;
-    public static Gamer khalafi;
+    public static Gamer mtm;
     public static Gamer rival;
     public static int errorCounter = 0;
 
@@ -34,7 +34,7 @@ public class AI {
     public static void run(GameData gameData) {
 
         AI.gameData = gameData;
-        AI.khalafi = gameData.getCurrentGamer();
+        AI.mtm = gameData.getCurrentGamer();
         AI.rival = gameData.getSecondGamer();
 
         if (gameData.getEvent().equals(GameEvent.ASK_FOR_ACTIVATE_TRAP)) {
@@ -93,13 +93,13 @@ public class AI {
     private static void handleSacrifice(){
         if(summoningMonster != null){
             int num = summoningMonster.numberOfSacrifices
-                    (false, khalafi.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+                    (false, mtm.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
             if(runSacrifice(num)){
                 return;
             }
         }else if(settingMonster != null){
             int num = settingMonster.numberOfSacrifices
-                    (true, khalafi.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+                    (true, mtm.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
             if(runSacrifice(num)){
                 return;
             }
@@ -110,7 +110,7 @@ public class AI {
 
     private static boolean runSacrifice(int num){
 
-        if(num > khalafi.getGameBoard().getMonsterCardZone().getNumberOfCards()){
+        if(num > mtm.getGameBoard().getMonsterCardZone().getNumberOfCards()){
             return false;
         }else{
             sacrifice(getIndexForSacrifice(num));
@@ -128,13 +128,13 @@ public class AI {
     }
 
     private static ArrayList<Integer> getIndexForSacrifice(int numSacrifice){
-        ArrayList<Monster> monsters = khalafi.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> monsters = mtm.getGameBoard().getMonsterCardZone().getCards();
         monsters = deleteNulls(monsters);
         monsters.sort(new sort2());
         ArrayList<Integer> answer = new ArrayList<>();
 
         for(int i = 0; i < numSacrifice; i++){
-            answer.add(khalafi.getGameBoard().getMonsterCardZone().getId(monsters.get(i)));
+            answer.add(mtm.getGameBoard().getMonsterCardZone().getId(monsters.get(i)));
         }
         
         return answer;
@@ -195,7 +195,7 @@ public class AI {
 
         ArrayList<Card> spellCards = new ArrayList<>();
 
-        spellCards.addAll(khalafi.getGameBoard().getSpellAndTrapCardZone().getAllCards());
+        spellCards.addAll(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
 
 
         if (action instanceof Summon) {
@@ -230,7 +230,7 @@ public class AI {
 
         boolean isLPNecessary = false;
         if (LpDecreasing > 0) {
-            if (khalafi.getLifePoint() - LpDecreasing < 500) {
+            if (mtm.getLifePoint() - LpDecreasing < 500) {
                 isLPNecessary = true;
             }
             Trap trap1 = (Trap) getCardInArrayListByName(spellCards, "Negate Attack");
@@ -267,10 +267,10 @@ public class AI {
 
                 int rivalValue, myValue;
 
-                myValue = getMonsterZoneValue(khalafi.getGameBoard().getMonsterCardZone());
+                myValue = getMonsterZoneValue(mtm.getGameBoard().getMonsterCardZone());
                 rivalValue = getMonsterZoneValue(rival.getGameBoard().getMonsterCardZone());
 
-                if (getMaxAttackOfGamerMonsters(khalafi, false) >
+                if (getMaxAttackOfGamerMonsters(mtm, false) >
                         getMaxAttackOfGamerMonsters(rival, true)) {
                     myValue += 200;
                 } else {
@@ -298,7 +298,7 @@ public class AI {
 
         ArrayList<Card> spellCards = new ArrayList<>();
 
-        spellCards.addAll(khalafi.getGameBoard().getSpellAndTrapCardZone().getAllCards());
+        spellCards.addAll(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
 
         Trap trap = (Trap) getCardInArrayListByName(spellCards, "call of the haunted");
 
@@ -308,7 +308,7 @@ public class AI {
                 monsters.addAll((Collection<? extends Monster>) ((CallOfTheHaunted) trap).getGraveYardMonsters(gameData));
                 int monsterIndex = monsters.indexOf(getMaxAttack(monsters)) + 1;
                 initScanner("select --spell " +
-                        khalafi.getGameBoard().getSpellAndTrapCardZone().getId(trap) + "\n" +
+                        mtm.getGameBoard().getSpellAndTrapCardZone().getId(trap) + "\n" +
                         "activate" + "\n" + monsterIndex, 3);
 
                 return;
@@ -329,7 +329,7 @@ public class AI {
         if (getNumFreePlaceOfSpellZone() < 3) {
             return false;
         }
-        for (Card card : khalafi.getGameBoard().getHand().getCardsInHand()) {
+        for (Card card : mtm.getGameBoard().getHand().getCardsInHand()) {
             if (card instanceof Trap) {
                 setTrap(card);
                 return true;
@@ -339,7 +339,7 @@ public class AI {
     }
 
     private static void setTrap(Card card) {
-        initScanner("select --hand " + khalafi.getGameBoard().getHand().getId(card) + "\n" +
+        initScanner("select --hand " + mtm.getGameBoard().getHand().getId(card) + "\n" +
                 "set", 2);
     }
 
@@ -362,13 +362,13 @@ public class AI {
 
 
     private static void activateSpell(SpellAndTraps spell) {
-        initScanner("select --spell " + khalafi.getGameBoard().getSpellAndTrapCardZone().getId(spell) +
+        initScanner("select --spell " + mtm.getGameBoard().getSpellAndTrapCardZone().getId(spell) +
                 "\n" + "activate", 2);
     }
 
     private static int getNumFreePlaceOfSpellZone() {
         int ans = 0;
-        for (Card card : khalafi.getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
+        for (Card card : mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
             if (card == null) {
                 ans++;
             }
@@ -427,7 +427,7 @@ public class AI {
 
     private static ArrayList<Card> getSpellsInHand() {
         ArrayList<Card> spells = new ArrayList<>();
-        for (Card card : khalafi.getGameBoard().getHand().getCardsInHand()) {
+        for (Card card : mtm.getGameBoard().getHand().getCardsInHand()) {
             if (card instanceof Spell) {
                 spells.add(card);
             }
@@ -440,7 +440,7 @@ public class AI {
         ArrayList<Monster> hand = getMonstersInHand();
         Monster handMonster = getMaxAttack(hand);
 
-        ArrayList<Monster> myMonsters1 = khalafi.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> myMonsters1 = mtm.getGameBoard().getMonsterCardZone().getCards();
         ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
 
         while (true){
@@ -460,12 +460,12 @@ public class AI {
 
     private static void handleSummon() {
 
-        if (khalafi.getLastTurnHasSummonedOrSet() == gameData.getTurn() || isMYMonsterZoneFull()) {
+        if (mtm.getLastTurnHasSummonedOrSet() == gameData.getTurn() || isMYMonsterZoneFull()) {
             initScanner("next phase", 1);
             return;
         }
 
-        ArrayList<Monster> myMonsters1 = khalafi.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> myMonsters1 = mtm.getGameBoard().getMonsterCardZone().getCards();
         ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
 
         Monster handMonster = getMonsterForSummonFromHand();
@@ -528,7 +528,7 @@ public class AI {
     }
 
     private static void directAttack(Monster monster) {
-        initScanner("select --monster " + khalafi.getGameBoard().getMonsterCardZone().getId(monster) + "\n"
+        initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster) + "\n"
                 + "direct attack", 2);
     }
 
@@ -585,7 +585,7 @@ public class AI {
     }
 
     private static void attack(Monster monster1, Monster monster2) {
-        initScanner("select --monster " + khalafi.getGameBoard().getMonsterCardZone().getId(monster1) +
+        initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster1) +
                 " \n" + "attack " + rival.getGameBoard().getMonsterCardZone().getId(monster2), 2);
     }
 
@@ -600,7 +600,7 @@ public class AI {
     private static void set(Monster monster) {
         settingMonster = monster;
 
-        initScanner("select --hand " + khalafi.getGameBoard().getHand().getId(monster) + "\n" +
+        initScanner("select --hand " + mtm.getGameBoard().getHand().getId(monster) + "\n" +
                 "set", 2);
     }
 
@@ -627,8 +627,8 @@ public class AI {
         }
 
         if (monster.numberOfSacrifices
-                (true, khalafi.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData)
-                > khalafi.getGameBoard().getMonsterCardZone().getNumberOfCards()) {
+                (true, mtm.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData)
+                > mtm.getGameBoard().getMonsterCardZone().getNumberOfCards()) {
             value = -1;
         }
 
@@ -699,7 +699,7 @@ public class AI {
 
     private static void summon(Monster monster) {
         summoningMonster = monster;
-        initScanner("select --monster " + khalafi.getGameBoard().getHand().getId(monster) + "\n"
+        initScanner("select --monster " + mtm.getGameBoard().getHand().getId(monster) + "\n"
                 + "summon", 2);
     }
 
@@ -740,11 +740,11 @@ public class AI {
     }
 
     private static boolean isMYMonsterZoneFull() {
-        return khalafi.getGameBoard().getMonsterCardZone().getCards().size() == 5;
+        return mtm.getGameBoard().getMonsterCardZone().getCards().size() == 5;
     }
 
     private static Monster getMaxAttackOfMyMonsterZone() {
-        return getMaxAttack(khalafi.getGameBoard().getMonsterCardZone().getCards());
+        return getMaxAttack(mtm.getGameBoard().getMonsterCardZone().getCards());
     }
 
     private static Monster getMaxAttack(ArrayList<Monster> monsters) {
@@ -769,7 +769,7 @@ public class AI {
 
     private static ArrayList<Monster> getMonstersInHand() {
         ArrayList<Monster> monsters = new ArrayList<>();
-        for (Card card : khalafi.getGameBoard().getHand().getCardsInHand()) {
+        for (Card card : mtm.getGameBoard().getHand().getCardsInHand()) {
             if (card instanceof Monster) {
                 monsters.add((Monster) card);
             }

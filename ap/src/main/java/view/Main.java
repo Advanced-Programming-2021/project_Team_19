@@ -14,13 +14,13 @@ public class Main {
     public static void main(String[] arg) {
 
 
-//        Printer.print("");
-//
-        new Game().run(GameData.getTestGameData());
+        Printer.print("");
 
-//        DataBaseController.makeResourceDirectory();
-//
-//        LoginMenu.getInstance().run();
+//        new Game().run(GameData.getTestGameData());
+
+        DataBaseController.makeResourceDirectory();
+
+        LoginMenu.getInstance().run();
     }
 
 }
