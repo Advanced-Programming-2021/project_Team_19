@@ -16,11 +16,11 @@ public class Main {
 
         Printer.print("");
 
-//        new Game().run(GameData.getTestGameData());
-
-        DataBaseController.makeResourceDirectory();
-
-        LoginMenu.getInstance().run();
+        new Game().run(GameData.getTestGameData());
+//
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }

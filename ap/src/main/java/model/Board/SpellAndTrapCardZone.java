@@ -117,7 +117,7 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("Monster Reborn"));
+        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("call of the haunted"));
 
         card.setSetTurn(0);
         card.changeMode(card, SpellCardMods.HIDDEN);

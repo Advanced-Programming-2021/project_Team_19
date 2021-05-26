@@ -305,7 +305,10 @@ public class AI {
         if (trap != null) {
             if (trap.canActivate(gameData)) {
                 ArrayList<Monster> monsters = new ArrayList<>();
-                monsters.addAll((Collection<? extends Monster>) ((CallOfTheHaunted) trap).getGraveYardMonsters(gameData));
+                for(Card card : ((CallOfTheHaunted) trap).getGraveYardMonsters(gameData)){
+                    monsters.add((Monster) card);
+                }
+
                 int monsterIndex = monsters.indexOf(getMaxAttack(monsters)) + 1;
                 initScanner("select --spell " +
                         mtm.getGameBoard().getSpellAndTrapCardZone().getId(trap) + "\n" +
@@ -814,7 +817,8 @@ public class AI {
     private static ArrayList<Gamer> AIGamers = new ArrayList<>();
 
     public static Gamer getGamer(int index){
-        if(AIGamers.get(index) == null){
+
+        if(AIGamers.size() - 1 < index){
             User user = new User("mtm", "mtm", "mtm");
             user.setActiveDeckName("AI");
             return Gamer.getAIGamer(user);

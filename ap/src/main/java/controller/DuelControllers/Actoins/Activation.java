@@ -46,11 +46,7 @@ public class Activation extends Action {
 
         gameData.addActionToCurrentActions(this);
 
-        if(handleChain() != null){
-            data =  handleChain();
-        }else{
-            data = runActivation();
-        }
+        data = handleChain();
 
         gameData.removeActionFromCurrentActions(this);
 
@@ -76,23 +72,15 @@ public class Activation extends Action {
 
         if(canThisCardsChainOnActivatedCard
                 (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())){
-
-            if(handleChainForOtherPlayer()){
-                selectCardForChain();
-                return null;
+            if(!handleChainForOtherPlayer()){
+                if(canThisCardsChainOnActivatedCard
+                        (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())){
+                    handleChainForTurnPlayer();
+                }
             }
         }
 
-        if(canThisCardsChainOnActivatedCard
-                (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())){
-
-            if(handleChainForTurnPlayer()){
-                selectCardForChain();
-                return null;
-            }
-        }
-
-        return ((SpellAndTraps)activatedCard).activate(gameData);
+        return runActivation();
     }
 
     private boolean handleChainForTurnPlayer() {
@@ -101,7 +89,6 @@ public class Activation extends Action {
         if(Utils.askForConfirmation("do want to Chain ?")){
             selectCardForChain();
             return true;
-
         }
         gameData.setEvent(null);
 

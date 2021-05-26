@@ -131,7 +131,7 @@ public class AllBoards {
 
         board.initializeHand();
 
-        Card card = Utils.getCardByName("closed forest");
+        Card card = Utils.getCardByName("call of the haunted");
         board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
