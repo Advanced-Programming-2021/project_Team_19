@@ -6,6 +6,7 @@ import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
+import model.Data.ActivationData;
 import model.Enums.SpellCardMods;
 import view.Printer.Printer;
 
@@ -45,7 +46,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         }
 
         else if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone){
-            activateFromSpellZone(card);
+            activateSpellOrTrap();
         }
 
         else{
@@ -54,11 +55,15 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
     }
 
-    private void activateFromSpellZone(SpellAndTraps card) {
+    private void activateSpellOrTrap(){
 
-        Printer.print(card.activate(gameData).message);//
+        ActivationData data = super.activate();
 
+        if(!data.message.equals("")){
+            Printer.print(data.message);
+        }
     }
+
 
     private void activateFromHand(SpellAndTraps card){
 
@@ -80,8 +85,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);
 
-        Printer.print(card.activate(gameData).message);
-
+        activateSpellOrTrap();
     }
 
 }

@@ -44,8 +44,6 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
         return (TriggerActivationData) super.activate();
 
-//        return card.activate(gameData);
-
     }
 
     protected boolean checkInvalidMoves(String command){

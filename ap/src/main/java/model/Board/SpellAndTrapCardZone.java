@@ -112,7 +112,6 @@ public class SpellAndTrapCardZone extends Zones {
     }
 
 
-
     public static SpellAndTrapCardZone getTestZone(){
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
