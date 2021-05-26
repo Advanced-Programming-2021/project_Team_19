@@ -70,16 +70,19 @@ public class DuelMenuController extends Menu {
 
     private void startDuelWithAi(Matcher matcher) {
 
-        int turn = Integer.parseInt(matcher.group(1));
+        int rounds = Integer.parseInt(matcher.group(1));
 
         if (user.getActiveDeckName() == null) {
             Printer.print(user.getUsername() + "has no active deck");
         } else if (!DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName()).isDeckValid()) {
             Printer.print(user.getUsername() + "’s deck is invalid");
-        } else if (turn != 1 && turn != 3) {
+        } else if (rounds != 1 && rounds != 3) {
             Printer.print("number of rounds is not supported");
         } else {
-
+            gameStarter = new Gamer(user);
+            rivalGamer = AI.getGamer(0);
+            GameData gameData = new GameData(gameStarter, rivalGamer);
+            handleDuel(gameData, rounds);
         }
 
     }

@@ -15,6 +15,7 @@ import model.Enums.GameEvent;
 import model.Enums.SpellCardMods;
 import model.Gamer;
 import model.Phase;
+import model.User;
 import view.GetInput;
 
 import java.util.*;
@@ -24,6 +25,7 @@ public class AI {
     public static GameData gameData;
     public static Gamer khalafi;
     public static Gamer rival;
+    public static int errorCounter = 0;
 
     //data
     public static Monster summoningMonster = null;
@@ -52,7 +54,39 @@ public class AI {
             GetInput.initializeAIScanner(new Scanner("2"), 1);
         } else if (gameData.getEvent().equals(GameEvent.SACRIFICE_FOR_SUMMON_SET)) {
             handleSacrifice();
+        } else if(gameData.getEvent().equals(GameEvent.MAN_EATER_BUG)){
+            handleManEaterBug();
+        }else{
+            if(errorCounter % 3 == 0){
+                initScanner("cancel", 1);
+            } else if(errorCounter % 3 == 1){
+                initScanner("2", 1);
+            } else {
+                initScanner("next phase", 1);
+            }
+            errorCounter++;
         }
+    }
+
+    private static void handleManEaterBug() {
+
+        ArrayList<Card> cards = new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards());
+        cards.removeAll(Collections.singleton(null));
+
+        if(cards.size() == 0){
+            initScanner("cancel", 1);
+            return;
+        }
+
+        Monster destroyingMonster = (Monster) cards.get(0);
+
+        for(int i = 1; i < cards.size(); i++){
+            if(getMonsterValue(destroyingMonster) < getMonsterValue((Monster)cards.get(i))){
+                destroyingMonster = (Monster) cards.get(i);
+            }
+        }
+
+        initScanner(cards.indexOf(destroyingMonster) + "", 1);
     }
 
 
@@ -115,12 +149,11 @@ public class AI {
         return list;
     }
 
-
     static class sort2 implements Comparator<Monster>{
 
         @Override
         public int compare(Monster o1, Monster o2) {
-            return getMosterValue(o1) - getMosterValue(o2);
+            return getMonsterValue(o1) - getMonsterValue(o2);
         }
     }
 
@@ -145,16 +178,6 @@ public class AI {
             return;
         }
         handleSummon();
-    }
-
-    private static int getNumFreePlaceOfSpellZone() {
-        int ans = 0;
-        for (Card card : khalafi.getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
-            if (card == null) {
-                ans++;
-            }
-        }
-        return ans;
     }
 
     private static void handleActivateTrap() {
@@ -270,41 +293,6 @@ public class AI {
         initScanner("cancel", 1);
     }
 
-    private static int getMaxAttackOfGamerMonsters(Gamer gamer, boolean canCheckOHs) {
-
-        int attack = 0;
-
-        for (Monster card : gamer.getGameBoard().getMonsterCardZone().getCards()) {
-            if (card.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
-                if (!canCheckOHs) {
-                    continue;
-                }
-            }
-            if (attack < card.getAttack(gameData)) {
-                attack = card.getAttack(gameData);
-            }
-        }
-        return attack;
-    }
-
-
-    private static int getMonsterZoneValue(MonsterCardZone zone) {
-
-        int ans = 0;
-
-        for (Monster monster : zone.getCards()) {
-
-            if (monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
-                ans += 75;
-            } else {
-                ans += monster.getAttack(gameData) / 100 + monster.getDefence(gameData) / 100;
-                if (monster instanceof EffectMonster) {
-                    ans += 10;
-                }
-            }
-        }
-        return ans;
-    }
 
     private static void handleSpeedTrap() {
 
@@ -376,6 +364,53 @@ public class AI {
     private static void activateSpell(SpellAndTraps spell) {
         initScanner("select --spell " + khalafi.getGameBoard().getSpellAndTrapCardZone().getId(spell) +
                 "\n" + "activate", 2);
+    }
+
+    private static int getNumFreePlaceOfSpellZone() {
+        int ans = 0;
+        for (Card card : khalafi.getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
+            if (card == null) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+
+    private static int getMaxAttackOfGamerMonsters(Gamer gamer, boolean canCheckOHs) {
+
+        int attack = 0;
+
+        for (Monster card : gamer.getGameBoard().getMonsterCardZone().getCards()) {
+            if (card.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
+                if (!canCheckOHs) {
+                    continue;
+                }
+            }
+            if (attack < card.getAttack(gameData)) {
+                attack = card.getAttack(gameData);
+            }
+        }
+        return attack;
+    }
+
+
+    private static int getMonsterZoneValue(MonsterCardZone zone) {
+
+        int ans = 0;
+
+        for (Monster monster : zone.getCards()) {
+
+            if (monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
+                ans += 75;
+            } else {
+                ans += monster.getAttack(gameData) / 100 + monster.getDefence(gameData) / 100;
+                if (monster instanceof EffectMonster) {
+                    ans += 10;
+                }
+            }
+        }
+        return ans;
     }
 
     private static Card getCardInArrayListByName(ArrayList<Card> cards, String cardName) {
@@ -452,7 +487,7 @@ public class AI {
 
         } else {
 
-            if (isAttacksGood2(getAttacks(myMonsters2), getAttacks(rivalMonsters))) {
+            if (isAttacksGood2(getAttacks(myMonsters1), getAttacks(myMonsters2), getAttacks(rivalMonsters))) {
                 summon(handMonster);
             } else {
                 handleSet();
@@ -575,16 +610,16 @@ public class AI {
             if (monster == null) {
                 continue;
             }
-            if (returnedMonster == null && getMosterValue(monster) > 0) {
+            if (returnedMonster == null && getMonsterValue(monster) > 0) {
                 returnedMonster = monster;
-            } else if (getMosterValue(monster) > getMosterValue(returnedMonster)) {
+            } else if (getMonsterValue(monster) > getMonsterValue(returnedMonster)) {
                 returnedMonster = monster;
             }
         }
         return returnedMonster;
     }
 
-    private static int getMosterValue(Monster monster) {
+    private static int getMonsterValue(Monster monster) {
 
         int value = monster.getDefence(gameData) / 10;
         if (monster.getName().equalsIgnoreCase("yomi ship")) {
@@ -639,12 +674,17 @@ public class AI {
         return true;
     }
 
-    private static boolean isAttacksGood2(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
+    private static boolean isAttacksGood2(ArrayList<Integer> myAttacks0,
+                                          ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
+
+        return getNumOks(myAttacks, rivalAttacks) > getNumOks(myAttacks0, rivalAttacks);
+    }
+
+    private static int getNumOks(ArrayList<Integer> myAttacks, ArrayList<Integer>rivalAttacks){
 
         int j = 0;
         int OKs = 0;
         for (int attack : myAttacks) {
-
             for (; j < rivalAttacks.size(); j++) {
                 if (attack > rivalAttacks.get(j)) {
                     j++;
@@ -654,7 +694,7 @@ public class AI {
             }
         }
 
-        return OKs == myAttacks.size();
+        return OKs;
     }
 
     private static void summon(Monster monster) {
@@ -768,5 +808,19 @@ public class AI {
                 return monster.getAttack(AI.gameData);
             } else return -1;
         }
+    }
+
+
+    private static ArrayList<Gamer> AIGamers = new ArrayList<>();
+
+    public static Gamer getGamer(int index){
+        if(AIGamers.get(index) == null){
+            User user = new User("mtm", "mtm", "mtm");
+            user.setActiveDeckName("AI");
+            return Gamer.getAIGamer(user);
+        }else{
+            return AIGamers.get(index);
+        }
+
     }
 }

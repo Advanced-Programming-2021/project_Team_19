@@ -124,4 +124,10 @@ public class Gamer {
         gamer.gameBoard = AllBoards.getTestBoard(user);
         return gamer;
     }
+
+    public static Gamer getAIGamer(User user){
+        Gamer gamer = new Gamer();
+        gamer.user = user;
+        return gamer;
+    }
 }

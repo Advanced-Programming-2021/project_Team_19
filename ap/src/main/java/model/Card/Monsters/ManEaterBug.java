@@ -6,6 +6,7 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
+import model.Enums.GameEvent;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
@@ -29,8 +30,11 @@ public class ManEaterBug extends Monster {
 
         cards.removeAll(Collections.singleton(null));
 
+        gameData.setEvent(GameEvent.MAN_EATER_BUG);
+
         Card monsterToDestroy = Utils.askUserToSelectCard
                 (cards, "select an enemy id to destroy:", null);
+        gameData.setEvent(null);
 
         if (monsterToDestroy == null)
             return false;

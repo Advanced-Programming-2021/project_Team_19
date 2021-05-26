@@ -9,53 +9,65 @@ import java.util.Queue;
 import java.util.Scanner;
 
 
-
 public class GetInput {
     private static Scanner scanner = new Scanner(System.in);
 
     private static boolean testMod = false;
     private static Queue<String> commands = new LinkedList<>();
 
-
-    public static boolean AIMod = false;
     private static Scanner AIScanner;
     private static int scannerCounter;
 
-    public static void initializeAIScanner(Scanner scanner, int counter){
+    public static void initializeAIScanner(Scanner scanner, int counter) {
         AIScanner = scanner;
         scannerCounter = counter;
     }
 
-    public static void setTestingMod(){
-        testMod=true;
+    public static void setTestingMod() {
+        testMod = true;
     }
 
 
     public static String getString() {
 
-        if(AIMod){
-            if(scannerCounter > 0){
+        if (AIMod()) {
+            if (scannerCounter > 0) {
                 scannerCounter--;
-                return AIScanner.nextLine();
-            } else{
+                String ans = AIScanner.nextLine();
+                return ans;
+            } else {
+
+                scanner.nextLine();
+//                try {
+//                    Thread.sleep(1500);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
                 AI.run(GameData.getGameData(0));
                 return getString();
             }
         }
-        if(testMod) {
+        if (testMod) {
             return commands.poll();
-        }
-        else {
+        } else {
             return scanner.nextLine().replaceAll("\\s+", " ").trim();
         }
     }
 
-    public static void addCommand(String command){
+    public static void addCommand(String command) {
         commands.add(command);
     }
 
-    public static int getInt(){
+    public static int getInt() {
         return scanner.nextInt();
+    }
+
+    public static boolean AIMod(){
+        if(GameData.getGameData(0).getCurrentGamer().equals(AI.getGamer(0))){
+            return true;
+        }
+        return false;
     }
 
 }
