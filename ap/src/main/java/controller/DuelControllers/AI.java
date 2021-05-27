@@ -17,6 +17,7 @@ import model.Gamer;
 import model.Phase;
 import model.User;
 import view.GetInput;
+import view.Printer.Printer;
 
 import java.util.*;
 
@@ -31,14 +32,18 @@ public class AI {
     public static Monster summoningMonster = null;
     public static Monster settingMonster = null;
 
+
     public static void run(GameData gameData) {
 
         AI.gameData = gameData;
         AI.mtm = gameData.getCurrentGamer();
         AI.rival = gameData.getSecondGamer();
 
+        gameData.showBoard();
+        Printer.print(mtm.getGameBoard().getHand().getCardsInHand());
+
         if (gameData.getEvent().equals(GameEvent.ASK_FOR_ACTIVATE_TRAP)) {
-            GetInput.initializeAIScanner(new Scanner("yes"), 1);
+            GetInput.initializeAIScanner(new Scanner("1"), 1);
             return;
         } else if (gameData.getEvent().equals(GameEvent.NORMAL)) {
             summoningMonster = null;
@@ -70,7 +75,7 @@ public class AI {
 
     private static void handleManEaterBug() {
 
-        ArrayList<Card> cards = new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards());
+        ArrayList<Card> cards = (ArrayList<Card>) new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards()).clone();
         cards.removeAll(Collections.singleton(null));
 
         if(cards.size() == 0){
@@ -128,7 +133,7 @@ public class AI {
     }
 
     private static ArrayList<Integer> getIndexForSacrifice(int numSacrifice){
-        ArrayList<Monster> monsters = mtm.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> monsters = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
         monsters = deleteNulls(monsters);
         monsters.sort(new sort2());
         ArrayList<Integer> answer = new ArrayList<>();
@@ -239,16 +244,16 @@ public class AI {
 
             if (trap2 != null) {
                 if (((Monster) ((Attack) action).getAttackingMonster()).getAttack(gameData) >= 1000 || isLPNecessary) {
-                    activateSpell(trap2);
+                    activateSpellFromHand(trap2);
                     return;
                 }
             }
             if (trap1 != null) {
-                activateSpell(trap1);
+                activateSpellFromHand(trap1);
                 return;
             }
             if (trap3 != null) {
-                activateSpell(trap3);
+                activateSpellFromHand(trap3);
                 return;
             }
         } else {
@@ -277,7 +282,7 @@ public class AI {
                     rivalValue += 200;
                 }
                 if (myValue < rivalValue) {
-                    activateSpell(trap1);
+                    activateSpellFromHand(trap1);
                     return;
                 }
             }
@@ -285,7 +290,7 @@ public class AI {
 
         if (trap1 != null) {
             if (trap1.canActivateBecauseOfAnAction(action)) {
-                activateSpell(trap1);
+                activateSpellFromHand(trap1);
                 return;
             }
         }
@@ -320,7 +325,7 @@ public class AI {
 
         trap = (Trap) getCardInArrayListByName(spellCards, "time seal");
         if (trap != null) {
-            activateSpell(trap);
+            activateSpellFromHand(trap);
             return;
         }
 
@@ -359,7 +364,7 @@ public class AI {
                     continue;
                 }
             }
-            activateSpell((Spell) spell);
+            activateSpellFromHand((Spell) spell);
             return true;
         }
 
@@ -368,8 +373,8 @@ public class AI {
     }
 
 
-    private static void activateSpell(SpellAndTraps spell) {
-        initScanner("select --spell " + mtm.getGameBoard().getSpellAndTrapCardZone().getId(spell) +
+    private static void activateSpellFromHand(SpellAndTraps spell) {
+        initScanner("select --hand " + mtm.getGameBoard().getHand().getId(spell) +
                 "\n" + "activate", 2);
     }
 
@@ -447,7 +452,7 @@ public class AI {
         ArrayList<Monster> hand = getMonstersInHand();
         Monster handMonster = getMaxAttack(hand);
 
-        ArrayList<Monster> myMonsters1 = mtm.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> myMonsters1 = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
         ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
 
         while (true){
@@ -472,13 +477,13 @@ public class AI {
             return;
         }
 
-        ArrayList<Monster> myMonsters1 = mtm.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> myMonsters1 = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
         ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
 
         Monster handMonster = getMonsterForSummonFromHand();
         myMonsters2.add(handMonster);
 
-        ArrayList<Monster> rivalMonsters = rival.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> rivalMonsters = (ArrayList<Monster>) rival.getGameBoard().getMonsterCardZone().getCards().clone();
 
         if (new Random().nextInt() % 2 == 1) {
 
@@ -541,7 +546,7 @@ public class AI {
 
     private static Monster getOneHOMonsterOfRival() {
 
-        ArrayList<Monster> monsters = rival.getGameBoard().getMonsterCardZone().getCards();
+        ArrayList<Monster> monsters = (ArrayList<Monster>) rival.getGameBoard().getMonsterCardZone().getCards().clone();
 
         for (Monster monster : (ArrayList<Monster>) monsters.clone()) {
             if (monster == null) {
@@ -627,6 +632,10 @@ public class AI {
     }
 
     private static int getMonsterValue(Monster monster) {
+
+        if(monster == null){
+            return 0;
+        }
 
         int value = monster.getDefence(gameData) / 10;
         if (monster.getName().equalsIgnoreCase("yomi ship")) {
@@ -747,11 +756,11 @@ public class AI {
     }
 
     private static boolean isMYMonsterZoneFull() {
-        return mtm.getGameBoard().getMonsterCardZone().getCards().size() == 5;
+        return mtm.getGameBoard().getMonsterCardZone().getNumberOfCards() == 5;
     }
 
     private static Monster getMaxAttackOfMyMonsterZone() {
-        return getMaxAttack(mtm.getGameBoard().getMonsterCardZone().getCards());
+        return getMaxAttack((ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone());
     }
 
     private static Monster getMaxAttack(ArrayList<Monster> monsters) {
