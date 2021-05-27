@@ -1,6 +1,8 @@
 package model.Card.Monsters;
 
+import controller.DuelControllers.GameData;
 import model.Card.Monster;
+import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.MonsterEnums.Attribute;
@@ -22,4 +24,6 @@ public abstract class EffectMonster extends Monster {
     public TriggerActivationData runEffect(EffectLabel label){
         return null;
     }
+
+    public abstract ActivationData activate(GameData gameData);
 }

@@ -1,11 +1,13 @@
 package model.Card.Monsters;
 
+import controller.DuelControllers.Actoins.Activation;
 import controller.DuelControllers.Actoins.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Board.Hand;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.ActivationData;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
@@ -15,30 +17,37 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class TerratigerTheEmpoweredWarrior extends Monster {
+public class TerratigerTheEmpoweredWarrior extends EffectMonster {
+    private ArrayList<Card> level4OrLessMonstersInHand;
+
     @Override
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
         super.handleSummon(gameData, numberOfSacrifices);
         Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
-        if (getLevel4OrLessMonstersInHand(hand).size() != 0 && !gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
-            specialSummonLevel4OrLessCard(gameData, getLevel4OrLessMonstersInHand(hand));
+
+        level4OrLessMonstersInHand = getLevel4OrLessMonstersInHand(hand);
+
+        if (level4OrLessMonstersInHand.size() != 0 && !gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
+            new Activation(gameData).activate();
         } else {
             Printer.print("your monster zone is full and you cannot special summon a monster");
         }
     }
 
-    private void specialSummonLevel4OrLessCard(GameData gameData, ArrayList<Card> level4OrLessMonstersInHand) {
+    @Override
+    public ActivationData activate(GameData gameData) {
         Card selectedCard = Utils.askUserToSelectCard(level4OrLessMonstersInHand,
                 "choose a monster to special summon:",
                 null);
 
         if (selectedCard == null)
-            return;
+            return null;
 
         new SpecialSummon(gameData).run(selectedCard);
         ((Monster) selectedCard).setCardMod(CardMod.DEFENSIVE_OCCUPIED);
-
+        return null;
     }
+
 
     private ArrayList<Card> getLevel4OrLessMonstersInHand(Hand hand) {
         ArrayList<Card> toReturn = new ArrayList<>();

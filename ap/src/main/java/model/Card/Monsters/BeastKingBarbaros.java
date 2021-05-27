@@ -1,14 +1,16 @@
 package model.Card.Monsters;
 
+import controller.DuelControllers.Actoins.Activation;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
+import model.Data.ActivationData;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import view.GetInput;
 import view.Printer.Printer;
 
-public class BeastKingBarbaros extends Monster {
+public class BeastKingBarbaros extends EffectMonster {
     @Override
     public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
         if (isForSetting)
@@ -18,10 +20,16 @@ public class BeastKingBarbaros extends Monster {
 
     @Override
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
-        if (numberOfSacrifices == 3) {
-            gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
-        }
         super.handleSummon(gameData, numberOfSacrifices);
+        if (numberOfSacrifices == 3) {
+            new Activation(gameData).activate();
+        }
+    }
+
+    @Override
+    public ActivationData activate(GameData gameData) {
+        gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+        return null;
     }
 
     private int sacrificesForSummoning(int cardsThatCanBeSacrificed) {
@@ -87,7 +95,9 @@ public class BeastKingBarbaros extends Monster {
                 "enter another number: ");
     }
 
-    public BeastKingBarbaros(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public BeastKingBarbaros(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
+
+
 }
