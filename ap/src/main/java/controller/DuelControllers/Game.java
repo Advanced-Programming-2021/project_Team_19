@@ -26,17 +26,17 @@ public class Game {
 
         while (true) {
 
-            if(checkLabels(gameData)){
+            if (checkLabels(gameData)) {
                 continue;
             }
 
-            if(!gameData.hasAskedForSpellsThisPhase){
+            if (!gameData.hasAskedForSpellsThisPhase) {
 
-                if(canRivalActivateSpell(gameData)){
+                if (canRivalActivateSpell(gameData)) {
                     Utils.changeTurn(gameData);
                     gameData.showBoard();
 
-                    if(Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")){
+                    if (Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")) {
                         handleActivatingSpellByRival(gameData);
                     }
 
@@ -71,14 +71,14 @@ public class Game {
             gameData.setEvent(null);
 
             if (gameData.isRitualSummoning() &&
-                    command.matches("cancel")){
+                    command.matches("cancel")) {
                 Printer.print("you successfully cancelled your ritual summon");
                 gameData.removeRitualSummoning();
                 continue;
             }
 
             if (gameData.isRitualSummoning() &&
-                    (!command.matches("summon") && !command.startsWith("select"))){
+                    (!command.matches("summon") && !command.startsWith("select"))) {
                 Printer.print("you should ritual summon right now");
                 continue;
             }
@@ -110,7 +110,7 @@ public class Game {
             } else if (command.matches("increase --LP \\d+")) {
                 CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
             } else if (command.matches("duel set-winner \\w+")) {
-                if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))){
+                if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))) {
                     handleSurrender(gameData);
                 }
             } else if (command.matches("show hand")) {
@@ -133,6 +133,8 @@ public class Game {
                 gameData.showBoard();
             } else if (command.equals("show AD")) {//attack and defense
                 showAtkDef(gameData);
+            } else if (command.equals("activate effect")) {
+                new ActivateEffectMonster(gameData);
             } else {
                 Printer.printInvalidCommand();
             }
@@ -226,7 +228,7 @@ public class Game {
                     Printer.print(message);
                 }
 
-                if(label.label == 1){
+                if (label.label == 1) {
                     goToNextPhase(label.gameData);
                 }
 
@@ -238,16 +240,16 @@ public class Game {
 
     private static void handleActivatingSpellByRival(GameData gameData) {
 
-        if(canRivalActivateSpell(gameData)){
+        if (canRivalActivateSpell(gameData)) {
             new ActivateSpeedEffect(gameData).run();
         }
     }
 
-    private static boolean canRivalActivateSpell(GameData gameData){
-        for(SpellAndTraps card :
-                gameData.getNextTurnOwner().getGameBoard().getSpellAndTrapCardZone().getAllCards()){
-            if(card instanceof SpeedEffectTrap){
-                if(card.canActivate(gameData)){
+    private static boolean canRivalActivateSpell(GameData gameData) {
+        for (SpellAndTraps card :
+                gameData.getNextTurnOwner().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
+            if (card instanceof SpeedEffectTrap) {
+                if (card.canActivate(gameData)) {
                     return true;
                 }
             }
