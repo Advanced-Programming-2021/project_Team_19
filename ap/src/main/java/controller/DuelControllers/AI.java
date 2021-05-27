@@ -348,6 +348,10 @@ public class AI {
 
     private static boolean handleSpell() {
 
+        if(mtm.getGameBoard().getSpellAndTrapCardZone().isZoneFull()){
+            return false;
+        }
+
         for (Card spell : getSpellsInHand()) {
 
             if (spell.getName().equals("Dark Hole")) {
