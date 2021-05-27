@@ -88,6 +88,10 @@ public class ScannerMonster extends Monster {
         return tempMonster != null;
     }
 
+    public Card getMonster(){
+        return tempMonster;
+    }
+
     @Override
     public int getAttack(GameData gameData) {
         if(tempMonster == null){

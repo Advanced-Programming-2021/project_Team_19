@@ -16,10 +16,10 @@ public class SelectedCardIsOneEffectMonsterForActivateEffectChecker extends Acti
 
     public String check(){
 
-//        if(card instanceof ScannerMonster){
-//            card = ((ScannerMonster)card).//getScannedCard
-//        }
-//
+        if(card instanceof ScannerMonster){
+            card = ((ScannerMonster) card).getMonster();
+        }
+
         if (!(card instanceof Monster)) {
             return "card should be a monster";
         }
