@@ -825,7 +825,8 @@ public class AI {
         if(AIGamers.size()  <= index){
             User user = new User("mtm", "mtm", "mtm");
             user.setActiveDeckName("deck");
-            return Gamer.getAIGamer(user);
+            AIGamers.add(Gamer.getAIGamer(user));
+            return getGamer(index);
         }else{
             return AIGamers.get(index);
         }

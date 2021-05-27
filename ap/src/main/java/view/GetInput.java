@@ -35,6 +35,7 @@ public class GetInput {
             if (scannerCounter > 0) {
                 scannerCounter--;
                 String ans = AIScanner.nextLine();
+                Printer.print(ans);
                 return ans;
             } else {
                 Printer.print("enter hehe for see AI power");
