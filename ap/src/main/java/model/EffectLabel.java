@@ -4,16 +4,10 @@ import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monsters.EffectMonster;
 import model.Card.SpellAndTraps;
-import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import model.Enums.EffectOfLabel;
-import view.Printer.Printer;
-
-import java.util.ArrayList;
 
 public class EffectLabel {
 
-    public ArrayList<EffectOfLabel> effectsOfLabel = new ArrayList<>();
     public int label = 0;
     public Card card;
     public Gamer gamer;

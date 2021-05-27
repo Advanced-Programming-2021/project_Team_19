@@ -13,14 +13,11 @@ public class Main {
 
     public static void main(String[] arg) {
 
+//        new Game().run(GameData.getTestGameData());
 
-        Printer.print("");
+        DataBaseController.makeResourceDirectory();
 
-        new Game().run(GameData.getTestGameData());
-//
-//        DataBaseController.makeResourceDirectory();
-//
-//        LoginMenu.getInstance().run();
+        LoginMenu.getInstance().run();
     }
 
 }

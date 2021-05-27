@@ -17,7 +17,7 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
-public class Monster extends Card {
+public abstract class Monster extends Card {
 
     @SerializedName("Atk")
     public int attack;

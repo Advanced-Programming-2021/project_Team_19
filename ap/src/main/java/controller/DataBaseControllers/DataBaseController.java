@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class DataBaseController {
 
     public static void makeResourceDirectory() {
-
         makeFolderByPath(getUsersPath());
         makeFolderByPath(getDecksPath());
         makeFolderByPath(getCardsPath());

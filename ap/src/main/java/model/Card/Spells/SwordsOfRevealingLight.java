@@ -31,9 +31,6 @@ public class SwordsOfRevealingLight extends Spell{
         handleCommonsForActivate(gameData);
         EffectLabel label = new EffectLabel(gameData, gameData.getCurrentGamer(), this);
 
-        label.effectsOfLabel.add(EffectOfLabel.CAN_NOT_ATTACK);
-        label.effectsOfLabel.add(EffectOfLabel.MONSTER_CAN_NOT_BE_HIDDEN);
-
         gameData.getCurrentGamer().addEffectLabel (label);
 
         return new ActivationData(this, "");
