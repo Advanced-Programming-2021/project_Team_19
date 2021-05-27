@@ -39,7 +39,11 @@ public class GameData {
     }
 
     public static GameData getGameData(int index){
-        return gameDatas.get(index);
+        try {
+            return gameDatas.get(index);
+        }catch(IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     public boolean isGameOver() {

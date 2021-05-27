@@ -120,7 +120,7 @@ public class AllBoards {
 
     //test
 
-    private AllBoards(){}
+    public AllBoards(){}
 
     public static AllBoards getTestBoard(User user){
 

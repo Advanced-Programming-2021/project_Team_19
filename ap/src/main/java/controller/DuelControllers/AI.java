@@ -822,9 +822,9 @@ public class AI {
 
     public static Gamer getGamer(int index){
 
-        if(AIGamers.size() - 1 < index){
+        if(AIGamers.size()  <= index){
             User user = new User("mtm", "mtm", "mtm");
-            user.setActiveDeckName("AI");
+            user.setActiveDeckName("deck");
             return Gamer.getAIGamer(user);
         }else{
             return AIGamers.get(index);

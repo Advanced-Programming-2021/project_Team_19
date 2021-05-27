@@ -59,8 +59,8 @@ public class DuelMenuController extends Menu {
 
     public void startDuel(String command) {
 
-        if (command.matches("duel --new --ai --rounds \\d")) {
-            startDuelWithAi(Utils.getMatcher(command, "duel --new --ai --rounds \\d"));
+        if (command.matches("duel --new --ai --rounds (\\d)")) {
+            startDuelWithAi(Utils.getMatcher(command, "duel --new --ai --rounds (\\d)"));
         } else if (command.matches("duel --new --second-player (\\S+) --rounds (\\d)")){
             startDuelWithTowPlayer(Utils.getMatcher(command, "duel --new --second-player (\\S+) --rounds (\\d)"));
         } else {
@@ -70,10 +70,12 @@ public class DuelMenuController extends Menu {
 
     private void startDuelWithAi(Matcher matcher) {
 
+        matcher.matches();
+
         int rounds = Integer.parseInt(matcher.group(1));
 
         if (user.getActiveDeckName() == null) {
-            Printer.print(user.getUsername() + "has no active deck");
+            Printer.print(user.getUsername() + " has no active deck");
         } else if (!DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName()).isDeckValid()) {
             Printer.print(user.getUsername() + "’s deck is invalid");
         } else if (rounds != 1 && rounds != 3) {

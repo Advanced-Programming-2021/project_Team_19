@@ -126,8 +126,7 @@ public class Gamer {
     }
 
     public static Gamer getAIGamer(User user){
-        Gamer gamer = new Gamer();
-        gamer.user = user;
+        Gamer gamer = new Gamer(user);
         return gamer;
     }
 }

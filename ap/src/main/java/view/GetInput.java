@@ -17,7 +17,7 @@ public class GetInput {
     private static Queue<String> commands = new LinkedList<>();
 
     private static Scanner AIScanner;
-    private static int scannerCounter;
+    private static int scannerCounter = 0;
 
     public static void initializeAIScanner(Scanner scanner, int counter) {
         AIScanner = scanner;
@@ -65,8 +65,12 @@ public class GetInput {
     }
 
     public static boolean AIMod(){
-        if(GameData.getGameData(0).getCurrentGamer().equals(AI.getGamer(0))){
-            return true;
+        try {
+            if (AI.getGamer(0).equals(GameData.getGameData(0).getCurrentGamer())) {
+                return true;
+            }
+        }catch(NullPointerException e) {
+            return false;
         }
         return false;
     }
