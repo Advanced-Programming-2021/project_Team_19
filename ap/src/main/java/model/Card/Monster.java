@@ -28,7 +28,7 @@ public abstract class Monster extends Card {
     @SerializedName("Attribute")
     private Attribute attribute;
     @SerializedName("Monster Type")
-    private MonsterType monsterType;
+    private final MonsterType monsterType;
     @SerializedName("Card Type")
     private MonsterTypesForEffects monsterTypesForEffects;
 
@@ -45,7 +45,7 @@ public abstract class Monster extends Card {
     @Expose
     private Trap callOfTheHauntedTrap = null;
     @Expose
-    private ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
+    private final ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
 
     public Monster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
         super(name, description, price);
@@ -96,8 +96,8 @@ public abstract class Monster extends Card {
         int defenceChangeFromRival = 0;
         int defenceChangeFromEquippedSpells = 0;
 
-        if (shouldFieldSpellBeChecked(gameData.getCurrentGamer())){
-                defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
+        if (shouldFieldSpellBeChecked(gameData.getCurrentGamer())) {
+            defenceChangeFromSelf = ((FieldSpell) gameData.getCurrentGamer().getGameBoard()
                     .getFieldZone().getCard()).defenceDifference(getMonsterType());
         }
 
@@ -113,7 +113,7 @@ public abstract class Monster extends Card {
         return defence + defenceChangeFromRival + defenceChangeFromSelf + defenceChangeFromEquippedSpells;
     }
 
-    private boolean shouldFieldSpellBeChecked(Gamer gamer){
+    private boolean shouldFieldSpellBeChecked(Gamer gamer) {
         return gamer.getGameBoard().getFieldZone().getCard() != null &&
                 ((Spell) gamer.getGameBoard().getFieldZone().getCard()).getSpellCardMod().equals(SpellCardMods.OFFENSIVE);
     }
@@ -295,7 +295,7 @@ public abstract class Monster extends Card {
         if (callOfTheHauntedTrap != null) {
             new Destroy(gameData).run(callOfTheHauntedTrap, false);
         }
-        if (!equippedSpells.isEmpty()){
+        if (!equippedSpells.isEmpty()) {
             for (EquipSpell equippedSpell : equippedSpells) {
                 equippedSpell.handleDestroy(gameData);
             }

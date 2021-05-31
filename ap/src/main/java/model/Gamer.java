@@ -3,12 +3,11 @@ package model;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 
-import javax.management.MalformedObjectNameException;
 import java.util.ArrayList;
 
 public class Gamer {
 
-    AllBoards gameBoard ;
+    AllBoards gameBoard;
     private int lifePoint = 4000;
 
     private User user;
@@ -16,14 +15,14 @@ public class Gamer {
     private int lastTurnHasSummonedOrSet = 0;
     private int maxLifePointsInDuel = 0;
     private int currentScoreInDuel = 0;
-    private ArrayList<EffectLabel> effectLabels = new ArrayList<>();
+    private final ArrayList<EffectLabel> effectLabels = new ArrayList<>();
 
     public Gamer(User user) {
         this.user = user;
         gameBoard = new AllBoards(user);
     }
 
-    public ArrayList<EffectLabel> getEffectLabels(){
+    public ArrayList<EffectLabel> getEffectLabels() {
         return effectLabels;
     }
 
@@ -31,11 +30,11 @@ public class Gamer {
         return lifePoint;
     }
 
-    public int getLastTurnHasSummonedOrSet(){
+    public int getLastTurnHasSummonedOrSet() {
         return lastTurnHasSummonedOrSet;
     }
 
-    public void setLastTurnHasSummoned(int lastTurnHasSummoned){
+    public void setLastTurnHasSummoned(int lastTurnHasSummoned) {
         this.lastTurnHasSummonedOrSet = lastTurnHasSummoned;
     }
 
@@ -49,11 +48,11 @@ public class Gamer {
                 gameBoard.rivalToString();
     }
 
-    public void addEffectLabel(EffectLabel effectLabel){
+    public void addEffectLabel(EffectLabel effectLabel) {
         effectLabels.add(effectLabel);
     }
 
-    public void removeLabel(EffectLabel effectLabel){
+    public void removeLabel(EffectLabel effectLabel) {
         effectLabels.remove(effectLabel);
     }
 
@@ -62,17 +61,16 @@ public class Gamer {
     }
 
     public void decreaseLifePoint(int amount) {
-        if (amount == this.lifePoint + 1){
+        if (amount == this.lifePoint + 1) {
             this.lifePoint = -1;
-        }
-        else {
+        } else {
             this.lifePoint -= amount;
             if (this.lifePoint < 0)
                 this.lifePoint = 0;
         }
     }
 
-    public AllBoards getGameBoard(){
+    public AllBoards getGameBoard() {
         return gameBoard;
     }
 
@@ -84,13 +82,13 @@ public class Gamer {
         return user;
     }
 
-    public void gameFinished(){
+    public void gameFinished() {
         maxLifePointsInDuel = Integer.max(lifePoint, maxLifePointsInDuel);
         lifePoint = 4000;
         gameBoard = new AllBoards(getUser());
     }
 
-    public void increaseCredit(int amount){
+    public void increaseCredit(int amount) {
         this.user.increaseCredit(amount);
     }
 
@@ -98,15 +96,19 @@ public class Gamer {
         return maxLifePointsInDuel;
     }
 
-    public void wonGame(){this.currentScoreInDuel += 1000;}
+    public void wonGame() {
+        this.currentScoreInDuel += 1000;
+    }
 
-    public void increaseUserScore(int amount){user.increaseScore(amount);}
+    public void increaseUserScore(int amount) {
+        user.increaseScore(amount);
+    }
 
     public int getCurrentScoreInDuel() {
         return currentScoreInDuel;
     }
 
-    public void destroyAllMonstersOnBoard(GameData gameData){
+    public void destroyAllMonstersOnBoard(GameData gameData) {
         for (Monster monster : getGameBoard().getMonsterCardZone().getCards()) {
             if (monster != null)
                 monster.handleDestroy(gameData);
@@ -114,10 +116,10 @@ public class Gamer {
     }
 
 
-    private Gamer(){
+    private Gamer() {
     }
 
-    public static Gamer getTestGamer(User user){
+    public static Gamer getTestGamer(User user) {
 
         Gamer gamer = new Gamer();
         gamer.user = user;
@@ -125,8 +127,7 @@ public class Gamer {
         return gamer;
     }
 
-    public static Gamer getAIGamer(User user){
-        Gamer gamer = new Gamer(user);
-        return gamer;
+    public static Gamer getAIGamer(User user) {
+        return new Gamer(user);
     }
 }

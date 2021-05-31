@@ -8,12 +8,12 @@ import view.Printer.Printer;
 
 public class FlipSummon extends Summon {
 
-    public FlipSummon(GameData gameData){
+    public FlipSummon(GameData gameData) {
         super(gameData, "flip summon");
     }
 
-    public void flipByCommand(){
-        if(checkFlipSummonErrors())
+    public void flipByCommand() {
+        if (checkFlipSummonErrors())
             flip();
     }
 
@@ -33,11 +33,11 @@ public class FlipSummon extends Summon {
             Printer.print("action not allowed in this phase");
             return false;
         }
-        if (!((Monster)summoningMonster).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
+        if (!((Monster) summoningMonster).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
             Printer.print("you can’t flip summon this card");
             return false;
         }
-        if ((((Monster)summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn())) {
+        if ((((Monster) summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn())) {
             Printer.print("you can’t flip summon this card this turn");
             return false;
         }
@@ -46,7 +46,7 @@ public class FlipSummon extends Summon {
 
     public void flip() {
 
-        if (!((Monster)summoningMonster).handleFlip(gameData,CardMod.OFFENSIVE_OCCUPIED)){
+        if (!((Monster) summoningMonster).handleFlip(gameData, CardMod.OFFENSIVE_OCCUPIED)) {
             return;
         }
 

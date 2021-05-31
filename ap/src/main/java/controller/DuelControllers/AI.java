@@ -44,7 +44,6 @@ public class AI {
 
         if (gameData.getEvent().equals(GameEvent.ASK_FOR_ACTIVATE_TRAP)) {
             GetInput.initializeAIScanner(new Scanner("1"), 1);
-            return;
         } else if (gameData.getEvent().equals(GameEvent.NORMAL)) {
             summoningMonster = null;
             settingMonster = null;
@@ -59,12 +58,12 @@ public class AI {
             GetInput.initializeAIScanner(new Scanner("2"), 1);
         } else if (gameData.getEvent().equals(GameEvent.SACRIFICE_FOR_SUMMON_SET)) {
             handleSacrifice();
-        } else if(gameData.getEvent().equals(GameEvent.MAN_EATER_BUG)){
+        } else if (gameData.getEvent().equals(GameEvent.MAN_EATER_BUG)) {
             handleManEaterBug();
-        }else{
-            if(errorCounter % 3 == 0){
+        } else {
+            if (errorCounter % 3 == 0) {
                 initScanner("cancel", 1);
-            } else if(errorCounter % 3 == 1){
+            } else if (errorCounter % 3 == 1) {
                 initScanner("2", 1);
             } else {
                 initScanner("next phase", 1);
@@ -78,15 +77,15 @@ public class AI {
         ArrayList<Card> cards = (ArrayList<Card>) new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards()).clone();
         cards.removeAll(Collections.singleton(null));
 
-        if(cards.size() == 0){
+        if (cards.size() == 0) {
             initScanner("cancel", 1);
             return;
         }
 
         Monster destroyingMonster = (Monster) cards.get(0);
 
-        for(int i = 1; i < cards.size(); i++){
-            if(getMonsterValue(destroyingMonster) < getMonsterValue((Monster)cards.get(i))){
+        for (int i = 1; i < cards.size(); i++) {
+            if (getMonsterValue(destroyingMonster) < getMonsterValue((Monster) cards.get(i))) {
                 destroyingMonster = (Monster) cards.get(i);
             }
         }
@@ -95,17 +94,17 @@ public class AI {
     }
 
 
-    private static void handleSacrifice(){
-        if(summoningMonster != null){
+    private static void handleSacrifice() {
+        if (summoningMonster != null) {
             int num = summoningMonster.numberOfSacrifices
                     (false, mtm.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
-            if(runSacrifice(num)){
+            if (runSacrifice(num)) {
                 return;
             }
-        }else if(settingMonster != null){
+        } else if (settingMonster != null) {
             int num = settingMonster.numberOfSacrifices
                     (true, mtm.getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
-            if(runSacrifice(num)){
+            if (runSacrifice(num)) {
                 return;
             }
         }
@@ -113,48 +112,48 @@ public class AI {
         initScanner("cancel\nnext phase", 2);
     }
 
-    private static boolean runSacrifice(int num){
+    private static boolean runSacrifice(int num) {
 
-        if(num > mtm.getGameBoard().getMonsterCardZone().getNumberOfCards()){
+        if (num > mtm.getGameBoard().getMonsterCardZone().getNumberOfCards()) {
             return false;
-        }else{
+        } else {
             sacrifice(getIndexForSacrifice(num));
             return true;
         }
     }
 
-    private static void sacrifice(ArrayList<Integer> indexes){
+    private static void sacrifice(ArrayList<Integer> indexes) {
         StringBuilder scanData = new StringBuilder();
-        for(int index : indexes){
-            scanData.append(" " + index);
+        for (int index : indexes) {
+            scanData.append(" ").append(index);
         }
         scanData.deleteCharAt(0);
         initScanner(scanData.toString(), 1);
     }
 
-    private static ArrayList<Integer> getIndexForSacrifice(int numSacrifice){
+    private static ArrayList<Integer> getIndexForSacrifice(int numSacrifice) {
         ArrayList<Monster> monsters = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
         monsters = deleteNulls(monsters);
         monsters.sort(new sort2());
         ArrayList<Integer> answer = new ArrayList<>();
 
-        for(int i = 0; i < numSacrifice; i++){
+        for (int i = 0; i < numSacrifice; i++) {
             answer.add(mtm.getGameBoard().getMonsterCardZone().getId(monsters.get(i)));
         }
-        
+
         return answer;
     }
 
-    private static <obj> ArrayList<obj> deleteNulls (ArrayList<obj> list){
-        for(Object object : (ArrayList<obj>)list.clone()){
-            if(object == null){
+    private static <obj> ArrayList<obj> deleteNulls(ArrayList<obj> list) {
+        for (Object object : (ArrayList<obj>) list.clone()) {
+            if (object == null) {
                 list.remove(object);
             }
         }
         return list;
     }
 
-    static class sort2 implements Comparator<Monster>{
+    static class sort2 implements Comparator<Monster> {
 
         @Override
         public int compare(Monster o1, Monster o2) {
@@ -163,13 +162,12 @@ public class AI {
     }
 
 
-
     private static void handleBotTurn() {
         if (gameData.getCurrentPhase().equals(Phase.MAIN1)) {
             handleMainPhase1();
         } else if (gameData.getCurrentPhase().equals(Phase.BATTLE)) {
             handleBattlePhase();
-        } else if (gameData.getCurrentPhase().equals(Phase.MAIN2)){
+        } else if (gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             initScanner("next phase", 1);
         }
     }
@@ -198,9 +196,7 @@ public class AI {
 
         Action action = gameData.getCurrentActions().get(gameData.getActionIndexForTriggerActivation());
 
-        ArrayList<Card> spellCards = new ArrayList<>();
-
-        spellCards.addAll(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
+        ArrayList<Card> spellCards = new ArrayList<>(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
 
 
         if (action instanceof Summon) {
@@ -254,7 +250,6 @@ public class AI {
             }
             if (trap3 != null) {
                 activateSpellFromHand(trap3);
-                return;
             }
         } else {
             initScanner("cancel", 1);
@@ -301,16 +296,14 @@ public class AI {
 
     private static void handleSpeedTrap() {
 
-        ArrayList<Card> spellCards = new ArrayList<>();
-
-        spellCards.addAll(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
+        ArrayList<Card> spellCards = new ArrayList<>(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
 
         Trap trap = (Trap) getCardInArrayListByName(spellCards, "call of the haunted");
 
         if (trap != null) {
             if (trap.canActivate(gameData)) {
                 ArrayList<Monster> monsters = new ArrayList<>();
-                for(Card card : ((CallOfTheHaunted) trap).getGraveYardMonsters(gameData)){
+                for (Card card : ((CallOfTheHaunted) trap).getGraveYardMonsters(gameData)) {
                     monsters.add((Monster) card);
                 }
 
@@ -353,7 +346,7 @@ public class AI {
 
     private static boolean handleSpell() {
 
-        if(mtm.getGameBoard().getSpellAndTrapCardZone().isZoneFull()){
+        if (mtm.getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
             return false;
         }
 
@@ -447,7 +440,7 @@ public class AI {
         return spells;
     }
 
-    private static Monster getMonsterForSummonFromHand(){
+    private static Monster getMonsterForSummonFromHand() {
 
         ArrayList<Monster> hand = getMonstersInHand();
         Monster handMonster = getMaxAttack(hand);
@@ -455,14 +448,13 @@ public class AI {
         ArrayList<Monster> myMonsters1 = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
         ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
 
-        while (true){
-            if(handMonster != null &&
+        while (true) {
+            if (handMonster != null &&
                     handMonster.numberOfSacrifices(false, myMonsters1.size(), gameData) >
-                            myMonsters1.size()){
+                            myMonsters1.size()) {
                 hand.remove(handMonster);
                 handMonster = getMaxAttack(hand);
-            }
-            else{
+            } else {
                 break;
             }
         }
@@ -633,7 +625,7 @@ public class AI {
 
     private static int getMonsterValue(Monster monster) {
 
-        if(monster == null){
+        if (monster == null) {
             return 0;
         }
 
@@ -696,7 +688,7 @@ public class AI {
         return getNumOks(myAttacks, rivalAttacks) > getNumOks(myAttacks0, rivalAttacks);
     }
 
-    private static int getNumOks(ArrayList<Integer> myAttacks, ArrayList<Integer>rivalAttacks){
+    private static int getNumOks(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
 
         int j = 0;
         int OKs = 0;
@@ -827,16 +819,16 @@ public class AI {
     }
 
 
-    private static ArrayList<Gamer> AIGamers = new ArrayList<>();
+    private static final ArrayList<Gamer> AIGamers = new ArrayList<>();
 
-    public static Gamer getGamer(int index){
+    public static Gamer getGamer(int index) {
 
-        if(AIGamers.size()  <= index){
+        if (AIGamers.size() <= index) {
             User user = new User("mtm", "mtm", "mtm");
             user.setActiveDeckName("deck");
             AIGamers.add(Gamer.getAIGamer(user));
             return getGamer(index);
-        }else{
+        } else {
             return AIGamers.get(index);
         }
 

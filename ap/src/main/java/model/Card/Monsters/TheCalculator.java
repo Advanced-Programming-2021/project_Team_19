@@ -16,22 +16,22 @@ public class TheCalculator extends Monster {
         return getCurrentAttack(gameData);
     }
 
-    private int getCurrentAttack(GameData gameData){
+    private int getCurrentAttack(GameData gameData) {
         Gamer gamer = gameData.getCurrentGamer();
-        if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().containsCard(this)){
+        if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().containsCard(this)) {
             gamer = gameData.getSecondGamer();
         }
         int attack = 0;
         MonsterCardZone attackerZone = gamer.getGameBoard().getMonsterCardZone();
         for (int i = 1; i < 6; i++) {
-            if (attackerZone.getCardById(i) != null && !((Monster)attackerZone.getCardById(i)).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
-                attack += ((Monster)attackerZone.getCardById(i)).getLevel() * 300;
+            if (attackerZone.getCardById(i) != null && !((Monster) attackerZone.getCardById(i)).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
+                attack += ((Monster) attackerZone.getCardById(i)).getLevel() * 300;
             }
         }
         return attack;
     }
 
-    public TheCalculator(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public TheCalculator(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

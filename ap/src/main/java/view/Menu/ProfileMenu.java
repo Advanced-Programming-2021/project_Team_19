@@ -7,7 +7,7 @@ import view.Utils;
 
 import java.util.regex.Matcher;
 
-public class ProfileMenu extends Menu{
+public class ProfileMenu extends Menu {
 
     private static ProfileMenu instance = null;
 
@@ -23,6 +23,7 @@ public class ProfileMenu extends Menu{
         return instance;
 
     }
+
     public void run(String username) {
         setUsername(username);
 
@@ -31,20 +32,18 @@ public class ProfileMenu extends Menu{
             command = GetInput.getString();
             if (command.matches("profile change --nickname \\S+")) {
                 changeNickName(false, command, Utils.getMatcher(command, "profile change (.+)"));
-            } else if(command.matches("profile change -n \\S+")){
+            } else if (command.matches("profile change -n \\S+")) {
                 changeNickName(true, command, Utils.getMatcher(command, "profile change (.+)"));
-            }
-            else if (command.matches("profile change" +
+            } else if (command.matches("profile change" +
                     "(?=.*?--password)(?=.*?--current \\S+)(?=.*--new \\S+)" +
                     "( --((current \\S+)|(new \\S+)|(password))){3}")) {
 
                 changePassword(false, Utils.getMatcher(command, "profile change (.+)"));
-            } else if(command.matches("profile change" +
+            } else if (command.matches("profile change" +
                     "(?=.*?-p)(?=.*?-c \\S+)(?=.*?-n \\S+)" +
-                    "(:? -((c \\S+)|(n \\S+)|(p))){3}")){
-                changePassword(true, Utils.getMatcher(command,"profile change (.+)"));
-            }
-            else if (command.matches("menu exit")) {
+                    "(:? -((c \\S+)|(n \\S+)|(p))){3}")) {
+                changePassword(true, Utils.getMatcher(command, "profile change (.+)"));
+            } else if (command.matches("menu exit")) {
                 break;
             } else if (command.startsWith("menu ")) {
                 handleMenuOrders(command);
@@ -61,46 +60,44 @@ public class ProfileMenu extends Menu{
 
         matcher.find();
         String nickname;
-        if(isAbbreviated){
-            nickname = Utils.getDataInCommandByKey(matcher.group(1),"-n");
-            command=command.replaceAll("-n","--nickname");
-        }
-        else{
+        if (isAbbreviated) {
+            nickname = Utils.getDataInCommandByKey(matcher.group(1), "-n");
+            command = command.replaceAll("-n", "--nickname");
+        } else {
             nickname = Utils.getDataInCommandByKey(matcher.group(1), "--nickname");
         }
 
-        if(!Utils.checkFormatValidity(Utils.getHashMap
-                ("nickname", nickname))){
+        if (!Utils.checkFormatValidity(Utils.getHashMap
+                ("nickname", nickname))) {
             return;
         }
 
         Printer.print(sendDataToServer(
-                new DataForServerFromClient(command ,username, menuName)).getMessage());
+                new DataForServerFromClient(command, username, menuName)).getMessage());
     }
 
     private void changePassword(boolean isAbbreviated, Matcher matcher) {
         matcher.find();
         String currentPassword;
         String newPassword;
-        if(isAbbreviated){
-            currentPassword = Utils.getDataInCommandByKey(matcher.group(1),"-c");
-            newPassword = Utils.getDataInCommandByKey(matcher.group(1),"-n");
-        }
-        else{
+        if (isAbbreviated) {
+            currentPassword = Utils.getDataInCommandByKey(matcher.group(1), "-c");
+            newPassword = Utils.getDataInCommandByKey(matcher.group(1), "-n");
+        } else {
             currentPassword = Utils.getDataInCommandByKey(matcher.group(1), "--current");
             newPassword = Utils.getDataInCommandByKey(matcher.group(1), "--new");
         }
 
-        if(!Utils.checkFormatValidity(
+        if (!Utils.checkFormatValidity(
                 Utils.getHashMap(
-                        "password", currentPassword, "newPassword", newPassword))){
+                        "password", currentPassword, "newPassword", newPassword))) {
             return;
         }
 
         Printer.print(sendDataToServer(
                 new DataForServerFromClient("profile change --password" +
                         "--current " + currentPassword + " --new " + newPassword
-                        ,username, menuName)).getMessage());
+                        , username, menuName)).getMessage());
 
     }
 

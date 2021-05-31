@@ -6,7 +6,6 @@ import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
-import view.Printer.RegisterProfilePrinter;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -82,8 +81,7 @@ public class Menu {
             ImportAndExportMenu.getInstance().run();
         } else if (menuName.matches("Main Menu")) {
             MainMenu.getInstance().run(username);
-        }
-        else if (menuName.matches("Duel Menu")){
+        } else if (menuName.matches("Duel Menu")) {
             new DuelMenuController("Duel Menu").run(username);
         }
 
@@ -118,15 +116,15 @@ public class Menu {
         Printer.print(data.getMessage());
     }
 
-    protected void sendCommandToServer2(Matcher matcher, String name) {
+    protected void sendCommandToServer2(Matcher matcher) {
         matcher.reset();
         matcher.find();
 
         String tempName = matcher.group(1);
 
 
-        if (!view.Utils.isFormatValid(tempName)) {
-            Printer.print(name + " name format is invalid");
+        if (view.Utils.isFormatInvalid(tempName)) {
+            Printer.print("deck name format is invalid");
             return;
         }
 

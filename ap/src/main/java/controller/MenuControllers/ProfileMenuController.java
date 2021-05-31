@@ -5,8 +5,6 @@ import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 import model.User;
-import view.Printer.Printer;
-import view.Printer.RegisterProfilePrinter;
 
 import java.util.regex.Matcher;
 

@@ -10,7 +10,6 @@ import model.Enums.MessageType;
 import model.User;
 import view.Printer.Printer;
 
-import java.nio.file.Files;
 import java.util.regex.Matcher;
 
 public class DeckMenuController {
@@ -47,12 +46,10 @@ public class DeckMenuController {
                     "deck rm-card --card (.+?) --deck (\\w+)( --side|)"));
         } else if (command.equals("deck show --all")) {
             return showUserDecks(user);
-        }
-        else if (command.matches("deck show --deck-name (\\w+)( --side|)")){
+        } else if (command.matches("deck show --deck-name (\\w+)( --side|)")) {
             return showSingleDeck(user,
                     Utils.getMatcher(command, "deck show --deck-name (\\S+)( --side|)"));
-        }
-        else if (command.equals("deck show --cards")){
+        } else if (command.equals("deck show --cards")) {
             return showAllCards(user);
         }
 
@@ -94,7 +91,8 @@ public class DeckMenuController {
             if (user.getActiveDeckName().equals(name)) {
                 user.setActiveDeckName(null);
             }
-        }catch(NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
 
         Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, name));
 
@@ -164,7 +162,7 @@ public class DeckMenuController {
         else if (isSideDeck) {
             Printer.print("card added to deck successfully");
             user.removeCard(cardName);
-            Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user,deckName));
+            Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, deckName));
             deck.addCardToSideDeck(cardName);
             DeckDataBaseController.changeDeck(user.getUsername(), deck);
             UserDataBaseController.saveChanges(user);
@@ -173,7 +171,7 @@ public class DeckMenuController {
         } else {
 
             user.removeCard(cardName);
-            Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user,deckName));
+            Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, deckName));
             deck.addCardToMainDeck(cardName);
             DeckDataBaseController.changeDeck(user.getUsername(), deck);
             UserDataBaseController.saveChanges(user);
@@ -268,27 +266,24 @@ public class DeckMenuController {
 
             return new DataForClientFromServer("deck with name " + name + " does not exist",
                     MessageType.ERROR);
-        }
-        else{
-            Deck deck=DeckDataBaseController.getDeckByName(getDeckPath(user,name));
-            if(isSideDeck){
-                return new DataForClientFromServer(deck.detailedToStringSide(),MessageType.DECK);
-            }
-            else{
-                return new DataForClientFromServer(deck.detailedToStringMain(),MessageType.DECK);
+        } else {
+            Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, name));
+            if (isSideDeck) {
+                return new DataForClientFromServer(deck.detailedToStringSide(), MessageType.DECK);
+            } else {
+                return new DataForClientFromServer(deck.detailedToStringMain(), MessageType.DECK);
             }
         }
 
     }
 
     private DataForClientFromServer showAllCards(User user) {
-        StringBuilder temp=new StringBuilder();
-        for(Card card:user.getCardsSorted()){
+        StringBuilder temp = new StringBuilder();
+        for (Card card : user.getCardsSorted()) {
             temp.append(card.toString()).append("\n");
         }
-        return new DataForClientFromServer(temp.toString(),MessageType.DECK);
+        return new DataForClientFromServer(temp.toString(), MessageType.DECK);
     }
-
 
 
 }

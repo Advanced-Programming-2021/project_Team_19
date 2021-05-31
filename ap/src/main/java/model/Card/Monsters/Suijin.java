@@ -7,7 +7,7 @@ import model.Enums.MonsterEnums.MonsterTypesForEffects;
 
 public class Suijin extends Monster {
 
-    public Suijin(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public Suijin(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

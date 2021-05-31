@@ -35,11 +35,11 @@ public class Activation extends Action {
 
     public ActivationData activate() {
 
-        ActivationData data = null;
+        ActivationData data;
 
-        try{
+        try {
             activatedCard.getName();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             return null;
         }
@@ -53,28 +53,27 @@ public class Activation extends Action {
         return data;
     }
 
-    public ActivationData runActivation(){
+    public ActivationData runActivation() {
 
-        if(activatedCard.hasActivationEffectCanceledInChain){
+        if (activatedCard.hasActivationEffectCanceledInChain) {
             return null;
         }
 
-        if(activatedCard.getCardFamily().equals(CardFamily.MONSTER)){
-            return ((ShouldAskForActivateEffectMonster)activatedCard).activate(gameData);
-        }
-        else{
-            return ((SpellAndTraps)activatedCard).activate(gameData);
+        if (activatedCard.getCardFamily().equals(CardFamily.MONSTER)) {
+            return ((ShouldAskForActivateEffectMonster) activatedCard).activate(gameData);
+        } else {
+            return ((SpellAndTraps) activatedCard).activate(gameData);
         }
 
     }
 
-    public ActivationData handleChain(){
+    public ActivationData handleChain() {
 
-        if(canThisCardsChainOnActivatedCard
-                (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())){
-            if(!handleChainForOtherPlayer()){
-                if(canThisCardsChainOnActivatedCard
-                        (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())){
+        if (canThisCardsChainOnActivatedCard
+                (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())) {
+            if (!handleChainForOtherPlayer()) {
+                if (canThisCardsChainOnActivatedCard
+                        (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())) {
                     handleChainForTurnPlayer();
                 }
             }
@@ -86,7 +85,7 @@ public class Activation extends Action {
     private boolean handleChainForTurnPlayer() {
 
         gameData.setEvent(GameEvent.ASK_FOR_CONFIRMATION_FOR_CHAIN);
-        if(Utils.askForConfirmation("do want to Chain ?")){
+        if (Utils.askForConfirmation("do want to Chain ?")) {
             selectCardForChain();
             return true;
         }
@@ -101,7 +100,7 @@ public class Activation extends Action {
 
         Utils.changeTurn(gameData);
 
-        if(Utils.askForConfirmation("do want to Chain")){
+        if (Utils.askForConfirmation("do want to Chain")) {
             selectCardForChain();
             doChain = true;
         }
@@ -110,11 +109,11 @@ public class Activation extends Action {
         return doChain;
     }
 
-    public boolean canThisCardsChainOnActivatedCard(ArrayList<SpellAndTraps>cardsForChain){
+    public boolean canThisCardsChainOnActivatedCard(ArrayList<SpellAndTraps> cardsForChain) {
 
-        for(SpellAndTraps card : cardsForChain){
+        for (SpellAndTraps card : cardsForChain) {
 
-            if(canThisCardChainOnActivatedCard(card) && !cardIsAlreadyInChain(card)){
+            if (canThisCardChainOnActivatedCard(card) && !cardIsAlreadyInChain(card)) {
                 return true;
             }
         }
@@ -122,31 +121,31 @@ public class Activation extends Action {
         return false;
     }
 
-    public boolean cardIsAlreadyInChain(Card card){
+    public boolean cardIsAlreadyInChain(Card card) {
         for (Action action : gameData.getCurrentActions()) {
-            if (action instanceof Activation && ((Activation) action).getActivatedCard().equals(card)){
+            if (action instanceof Activation && ((Activation) action).getActivatedCard().equals(card)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean canThisCardChainOnActivatedCard(SpellAndTraps card){
+    public boolean canThisCardChainOnActivatedCard(SpellAndTraps card) {
 
-        if(card == null){
+        if (card == null) {
             return false;
         }
 
-        if(activatedCard.getEffectSpeed() > card.getEffectSpeed())
+        if (activatedCard.getEffectSpeed() > card.getEffectSpeed())
             return false;
 
-        if(card instanceof SpeedEffectTrap){
-            if(card.canActivate(gameData)){
+        if (card instanceof SpeedEffectTrap) {
+            if (card.canActivate(gameData)) {
                 return true;
             }
-        } else if (card instanceof Trigger){
-            for(Action action : gameData.getCurrentActions()){
-                if(((Trigger)card).canActivateBecauseOfAnAction(action)){
+        } else if (card instanceof Trigger) {
+            for (Action action : gameData.getCurrentActions()) {
+                if ((card).canActivateBecauseOfAnAction(action)) {
                     return true;
                 }
             }
@@ -155,13 +154,13 @@ public class Activation extends Action {
         return false;
     }
 
-    public boolean selectCardForChain(){
+    public boolean selectCardForChain() {
 
         Printer.print("so please do that");
 
         String command;
 
-        while(true){
+        while (true) {
 
             gameData.setEvent(GameEvent.CHAIN);
             command = GetInput.getString();
@@ -169,15 +168,12 @@ public class Activation extends Action {
 
             if (checkInvalidMoves(command)) {
 
-            }
-            else if (command.equals("chain")){
-                if(chain())
+            } else if (command.equals("chain")) {
+                if (chain())
                     return true;
-            }
-            else if(Utils.handleSelect(gameData, command)){
+            } else if (Utils.handleSelect(gameData, command)) {
 
-            }
-            else if (command.matches("help")) {
+            } else if (command.matches("help")) {
                 help();
             } else if (command.equals("cancel")) {
                 return false;
@@ -189,23 +185,23 @@ public class Activation extends Action {
     }
 
 
-    private boolean chain(){
+    private boolean chain() {
 
-        if(new SelectedCardIsNotNullChecker(gameData, gameData.getSelectedCard()).check() != null){
+        if (new SelectedCardIsNotNullChecker(gameData, gameData.getSelectedCard()).check() != null) {
             Printer.print("no card selected");
             return false;
         }
 
         Card selectedCard = gameData.getSelectedCard();
 
-        if(!(gameData.getCurrentGamer().getGameBoard().getZone(selectedCard)
-                instanceof SpellAndTrapCardZone)){
+        if (!(gameData.getCurrentGamer().getGameBoard().getZone(selectedCard)
+                instanceof SpellAndTrapCardZone)) {
 
             Printer.print("you can't chain this card");
             return false;
         }
 
-        if(!canThisCardChainOnActivatedCard((SpellAndTraps) selectedCard)){
+        if (!canThisCardChainOnActivatedCard((SpellAndTraps) selectedCard)) {
             Printer.print("you can't chain this card");
             return false;
         }
@@ -218,10 +214,10 @@ public class Activation extends Action {
         return true;
     }
 
-    private boolean checkInvalidMoves(String command){
+    private boolean checkInvalidMoves(String command) {
 
-        for(String str : Utils.getCommandsExceptActivation()){
-            if(command.matches(str)){
+        for (String str : Utils.getCommandsExceptActivation()) {
+            if (command.matches(str)) {
                 Printer.print("please chain");
                 return true;
             }

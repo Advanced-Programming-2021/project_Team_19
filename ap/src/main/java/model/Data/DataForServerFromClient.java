@@ -2,9 +2,9 @@ package model.Data;
 
 public class DataForServerFromClient {
 
-    public String message = null;
-    public String username = null;
-    public String menuName = null;
+    public String message;
+    public String username;
+    public String menuName;
 
     public DataForServerFromClient(String message, String username, String menuName) {
         this.message = message;

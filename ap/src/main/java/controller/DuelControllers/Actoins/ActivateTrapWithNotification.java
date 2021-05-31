@@ -27,7 +27,7 @@ public abstract class ActivateTrapWithNotification extends Activation {
 
             if (checkInvalidMoves(command)) {
 
-            }else if(Utils.handleSelect(gameData, command)){
+            } else if (Utils.handleSelect(gameData, command)) {
 
             } else if (command.matches("activate")) {
                 ActivationData data1 = handleActivate();
@@ -43,8 +43,7 @@ public abstract class ActivateTrapWithNotification extends Activation {
                     }
                     return data1;
                 }
-            }
-            else if (command.matches("help")) {
+            } else if (command.matches("help")) {
                 help();
             } else if (command.equals("cancel")) {
                 return data;

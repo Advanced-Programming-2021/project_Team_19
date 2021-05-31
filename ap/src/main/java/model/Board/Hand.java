@@ -8,17 +8,17 @@ import java.util.ArrayList;
 public class Hand extends Zones {
     ArrayList<Card> cardsInHand = new ArrayList<>();
 
-    public ArrayList<Card> getCardsInHand(){
+    public ArrayList<Card> getCardsInHand() {
         return cardsInHand;
     }
 
     public Card getCard(int id) {
-        return cardsInHand.get(id-1);
+        return cardsInHand.get(id - 1);
     }
 
     public Card removeCard(int id) {
-        Card temp=getCard(id);
-        cardsInHand.remove(id-1);
+        Card temp = getCard(id);
+        cardsInHand.remove(id - 1);
         return temp;
     }
 
@@ -26,28 +26,27 @@ public class Hand extends Zones {
         cardsInHand.add(card);
     }
 
-    public int getId(Card card){
-        if(cardsInHand.contains(card)){
-            return cardsInHand.indexOf(card)+1;
-        }
-        else{
+    public int getId(Card card) {
+        if (cardsInHand.contains(card)) {
+            return cardsInHand.indexOf(card) + 1;
+        } else {
             return -1;
         }
     }
 
-    public String selfToString(){
+    public String selfToString() {
         return "c\t".repeat(cardsInHand.size());
     }
 
-    public String rivalToString(){
+    public String rivalToString() {
         return "\tc".repeat(cardsInHand.size());
     }
 
-    public int getSize(){
+    public int getSize() {
         return cardsInHand.size();
     }
 
-    public void showHand(){
+    public void showHand() {
         for (Card card : cardsInHand) {
             Printer.print(getId(card) + "- " + card.toString());
         }

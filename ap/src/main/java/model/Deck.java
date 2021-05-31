@@ -5,6 +5,7 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -19,10 +20,6 @@ public class Deck {
 
     public static Deck gsonToDeck(String gson) {
         return null;
-    }
-
-
-    private void setID() {
     }
 
     public void addCardToMainDeck(String cardName) {
@@ -132,13 +129,13 @@ public class Deck {
         detailedToString.append("Monsters:\n");
         for (Card card : getAllMainCardsSorted()) {
             if (card instanceof Monster) {
-                detailedToString.append(card.toString()).append("\n");
+                detailedToString.append(card).append("\n");
             }
         }
         detailedToString.append("Spell And Traps:\n");
         for (Card card : getAllMainCardsSorted()) {
             if (card instanceof SpellAndTraps) {
-                detailedToString.append(card.toString()).append("\n");
+                detailedToString.append(card).append("\n");
             }
         }
         return detailedToString.toString();
@@ -151,13 +148,13 @@ public class Deck {
         detailedToString.append("Monsters:\n");
         for (Card card : getAllSideCardsSorted()) {
             if (card instanceof Monster) {
-                detailedToString.append(card.toString()).append("\n");
+                detailedToString.append(card).append("\n");
             }
         }
         detailedToString.append("Spell And Traps:\n");
         for (Card card : getAllSideCardsSorted()) {
             if (card instanceof SpellAndTraps) {
-                detailedToString.append(card.toString()).append("\n");
+                detailedToString.append(card).append("\n");
             }
         }
         return detailedToString.toString();

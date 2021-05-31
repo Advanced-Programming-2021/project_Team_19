@@ -1,7 +1,6 @@
 package model.Card.Traps;
 
 import controller.DuelControllers.Actoins.SpecialSummon;
-import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
@@ -10,8 +9,11 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Data.ActivationData;
-import model.Enums.*;
+import model.Enums.CardFamily;
+import model.Enums.CardMod;
 import model.Enums.SpellsAndTraps.TrapTypes;
+import model.Enums.Status;
+import model.Enums.Type;
 
 import java.util.ArrayList;
 
@@ -20,14 +22,14 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
 
     Monster summonedMonster;
 
-    public CallOfTheHaunted(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public CallOfTheHaunted(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
-    public ArrayList<Card> getGraveYardMonsters(GameData gameData){
+    public ArrayList<Card> getGraveYardMonsters(GameData gameData) {
         ArrayList<Card> cards = new ArrayList<>();
-        for(Card card : gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard()){
-            if(card instanceof Monster){
+        for (Card card : gameData.getCurrentGamer().getGameBoard().getGraveYard().getCardsInGraveYard()) {
+            if (card instanceof Monster) {
                 cards.add(card);
             }
         }
@@ -40,7 +42,7 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
                 getGraveYardMonsters(gameData),
                 "enter monster id to special summon it", CardFamily.MONSTER);
 
-        if(card == null){
+        if (card == null) {
             return new ActivationData
                     (null, "activation canceled");
         }
@@ -67,15 +69,15 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
         checkers.add(new TurnChecker(gameData, this));
         checkers.add(new mirageDragonChecker(gameData, this));
 
-        if(!Checker.multipleCheck(checkers)){
-           return false;
+        if (!Checker.multipleCheck(checkers)) {
+            return false;
         }
 
         if (gameData.getCardController(this).getGameBoard().getMonsterCardZone().isZoneFull()) {
             return false;
         }
 
-        for (Card card : gameData.getCardController(this).getGameBoard().getGraveYard().getCardsInGraveYard()){
+        for (Card card : gameData.getCardController(this).getGameBoard().getGraveYard().getCardsInGraveYard()) {
             if (card instanceof Monster) {
                 return true;
             }

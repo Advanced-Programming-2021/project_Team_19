@@ -4,7 +4,6 @@ import controller.ActivateCheckers.*;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
 
 
     public ActivationData handleActivate() {
-            return activateTrapOrSpell(activatorAction);
+        return activateTrapOrSpell(activatorAction);
     }
 
 
@@ -42,23 +41,22 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
 
-        if(checkersResult != null){
+        if (checkersResult != null) {
             data.message = checkersResult;
             return data;
         }
 
-        if (!((SpellAndTraps)activatedCard).canActivateBecauseOfAnAction(action)) {
+        if (!((SpellAndTraps) activatedCard).canActivateBecauseOfAnAction(action)) {
 
             data.message = "you can't activate this card";
             return data;
         }
 
-        if (((SpellAndTraps)activatedCard).canActivateBecauseOfAnAction(action)) {
+        if (((SpellAndTraps) activatedCard).canActivateBecauseOfAnAction(action)) {
 
             return (TriggerActivationData) super.activate();
 
 //            return (TriggerActivationData) ((SpellAndTraps)activatedCard).activate(gameData);
-
 
 
         }

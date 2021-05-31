@@ -6,10 +6,8 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.Monsters.ScannerMonster;
 import model.Enums.CardMod;
-import view.GetInput;
 import view.Printer.Printer;
 
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class Select extends Action {
@@ -82,7 +80,7 @@ public class Select extends Action {
                         ((ScannerMonster) selectedCard).setValidity(gameData);
                         if (!((ScannerMonster) selectedCard).isMonsterSet()) {
                             boolean isSet = ((ScannerMonster) selectedCard).handleScannerMonster(gameData);
-                            if(!isSet){
+                            if (!isSet) {
                                 gameData.setSelectedCard(null);
                             }
                         }

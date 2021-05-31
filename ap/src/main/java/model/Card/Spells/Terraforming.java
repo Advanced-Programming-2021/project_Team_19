@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 public class Terraforming extends Spell {
     @Override
-    public ActivationData activate(GameData gameData)  {
+    public ActivationData activate(GameData gameData) {
         ArrayList<Card> deckCards = gameData.getCurrentGamer().getGameBoard().getDeckZone().getMainDeckCards();
         ArrayList<Card> fieldSpellsInDeck = getFieldSpells(deckCards);
 
-        if (fieldSpellsInDeck.isEmpty()){
+        if (fieldSpellsInDeck.isEmpty()) {
             return new ActivationData(this, "you have no field cards in your deck");
         }
 
@@ -32,8 +32,8 @@ public class Terraforming extends Spell {
     private boolean selectCardAndMoveToHand(ArrayList<Card> fieldSpellsInDeck, GameData gameData) {
         Card selectedCard = Utils.askUserToSelectCard(
                 fieldSpellsInDeck,
-                        "enter an id to move a field spell to your hand",
-                        null);
+                "enter an id to move a field spell to your hand",
+                null);
 
         if (selectedCard == null)
             return false;
@@ -57,7 +57,7 @@ public class Terraforming extends Spell {
         return toReturn;
     }
 
-    public Terraforming(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public Terraforming(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

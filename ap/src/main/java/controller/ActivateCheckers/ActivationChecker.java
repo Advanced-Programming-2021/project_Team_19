@@ -10,7 +10,7 @@ public abstract class ActivationChecker {
     protected GameData gameData;
     protected Card card;
 
-    protected ActivationChecker(GameData gameData, Card card){
+    protected ActivationChecker(GameData gameData, Card card) {
         this.gameData = gameData;
         this.card = card;
     }
@@ -18,11 +18,11 @@ public abstract class ActivationChecker {
     public abstract String check();
 
 
-    public static String multipleCheck(ArrayList<ActivationChecker> checkers){
+    public static String multipleCheck(ArrayList<ActivationChecker> checkers) {
 
-        for(ActivationChecker checker : checkers){
+        for (ActivationChecker checker : checkers) {
             String checkerResult = checker.check();
-            if(checkerResult != null){
+            if (checkerResult != null) {
                 return checkerResult;
             }
         }

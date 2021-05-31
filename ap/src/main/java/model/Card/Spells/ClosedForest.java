@@ -43,7 +43,8 @@ public class ClosedForest extends FieldSpell {
         }
         return toReturn;
     }
-    public ClosedForest(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+
+    public ClosedForest(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

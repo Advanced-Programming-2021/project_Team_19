@@ -11,11 +11,11 @@ import java.util.regex.Matcher;
 
 public class SetPosition extends Action {
 
-    public SetPosition(GameData gameData){
+    public SetPosition(GameData gameData) {
         super(gameData, "set position");
     }
 
-    public void run(Matcher matcher){
+    public void run(Matcher matcher) {
         setPosition(matcher);
     }
 
@@ -41,22 +41,21 @@ public class SetPosition extends Action {
         String modeStr = Utils.getFirstGroupInMatcher(matcher);
         CardMod newCardMode;
 
-        if(modeStr.equals("defense")){
+        if (modeStr.equals("defense")) {
             newCardMode = CardMod.DEFENSIVE_OCCUPIED;
-            if(!selectedCard.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+            if (!selectedCard.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
                 Printer.print("you can’t change this card position");
                 return;
             }
-        }
-        else{
+        } else {
             newCardMode = CardMod.OFFENSIVE_OCCUPIED;
-            if(!selectedCard.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)){
+            if (!selectedCard.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
                 Printer.print("you can’t change this card position");
                 return;
             }
         }
 
-        if(selectedCard.getLastTurnHasChangedPosition() == gameData.getTurn()){
+        if (selectedCard.getLastTurnHasChangedPosition() == gameData.getTurn()) {
             Printer.print("you already changed this card position in this turn");
             return;
         }

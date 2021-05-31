@@ -7,12 +7,12 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 
 public class GraveYard extends Zones {
-    private ArrayList<Card> cardsInGraveYard = new ArrayList<>();
+    private final ArrayList<Card> cardsInGraveYard = new ArrayList<>();
 
     public Card getCard(int id) {
         try {
             return cardsInGraveYard.get(id - 1);
-        }catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return null;
         }
     }
@@ -23,7 +23,7 @@ public class GraveYard extends Zones {
 
     public int getId(Card card) {
         if (cardsInGraveYard.contains(card)) {
-            return cardsInGraveYard.indexOf(card)+1;
+            return cardsInGraveYard.indexOf(card) + 1;
         } else {
             return -1;
         }
@@ -52,7 +52,7 @@ public class GraveYard extends Zones {
 
     //test
 
-    public static GraveYard getTestGraveYard(){
+    public static GraveYard getTestGraveYard() {
         GraveYard graveYard = new GraveYard();
         graveYard.addCard(Utils.getCardByName("baby dragon"));
         return graveYard;

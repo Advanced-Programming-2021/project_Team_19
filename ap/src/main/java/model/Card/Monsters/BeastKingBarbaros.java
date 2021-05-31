@@ -2,7 +2,6 @@ package model.Card.Monsters;
 
 import controller.DuelControllers.Actoins.Activation;
 import controller.DuelControllers.GameData;
-import model.Card.Monster;
 import model.Data.ActivationData;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
@@ -40,27 +39,31 @@ public class BeastKingBarbaros extends EffectMonster {
                 3- with 3000 ATK with 3 sacrifices and destroying all enemy monsters""");
         while (true) {
             String command = GetInput.getString();
-            if (command.equals("1")) {
-                setAttack(1900);
-                return 0;
-            } else if (command.equals("2")) {
-                if (cardsThatCanBeSacrificed >= 2) {
-                    setAttack(3000);
-                    return 2;
-                } else {
-                    printNotEnoughCards();
-                }
-            } else if (command.equals("3")) {
-                if (cardsThatCanBeSacrificed >= 3) {
-                    setAttack(3000);
-                    return 3;
-                } else {
-                    printNotEnoughCards();
-                }
-            } else if (command.equals("cancel")) {
-                return -1;
-            } else {
-                Printer.printInvalidCommand();
+            switch (command) {
+                case "1":
+                    setAttack(1900);
+                    return 0;
+                case "2":
+                    if (cardsThatCanBeSacrificed >= 2) {
+                        setAttack(3000);
+                        return 2;
+                    } else {
+                        printNotEnoughCards();
+                    }
+                    break;
+                case "3":
+                    if (cardsThatCanBeSacrificed >= 3) {
+                        setAttack(3000);
+                        return 3;
+                    } else {
+                        printNotEnoughCards();
+                    }
+                    break;
+                case "cancel":
+                    return -1;
+                default:
+                    Printer.printInvalidCommand();
+                    break;
             }
         }
     }
@@ -72,20 +75,23 @@ public class BeastKingBarbaros extends EffectMonster {
                 2- with 3000 ATK with 2 sacrifices""");
         while (true) {
             String command = GetInput.getString();
-            if (command.equals("1")) {
-                setAttack(1900);
-                return 0;
-            } else if (command.equals("2")) {
-                if (cardsThatCanBeSacrificed >= 2) {
-                    setAttack(3000);
-                    return 2;
-                } else {
-                    printNotEnoughCards();
-                }
-            } else if (command.equals("cancel")) {
-                return -1;
-            } else {
-                Printer.printInvalidCommand();
+            switch (command) {
+                case "1":
+                    setAttack(1900);
+                    return 0;
+                case "2":
+                    if (cardsThatCanBeSacrificed >= 2) {
+                        setAttack(3000);
+                        return 2;
+                    } else {
+                        printNotEnoughCards();
+                    }
+                    break;
+                case "cancel":
+                    return -1;
+                default:
+                    Printer.printInvalidCommand();
+                    break;
             }
         }
     }

@@ -6,7 +6,7 @@ import controller.DuelControllers.GameData;
 import model.Enums.*;
 import model.Enums.SpellsAndTraps.SpellTypes;
 
-public abstract class Spell extends SpellAndTraps{
+public abstract class Spell extends SpellAndTraps {
 
     @SerializedName("Icon")
     public SpellTypes spellType;
@@ -14,8 +14,8 @@ public abstract class Spell extends SpellAndTraps{
     @Expose
     private int activationTurn;
 
-    public Spell(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type,status);
+    public Spell(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, status);
 
         setSpellType(spellType);
         setCardFamily(CardFamily.SPELL);
@@ -38,7 +38,7 @@ public abstract class Spell extends SpellAndTraps{
         this.activationTurn = activationTurn;
     }
 
-    public boolean canActivate(GameData gameData){
+    public boolean canActivate(GameData gameData) {
         return true;
     }
 

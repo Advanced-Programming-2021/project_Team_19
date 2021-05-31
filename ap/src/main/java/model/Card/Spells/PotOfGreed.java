@@ -10,11 +10,10 @@ import model.Enums.Type;
 
 public class PotOfGreed extends Spell {
     @Override
-    public ActivationData activate(GameData gameData){
-        if(gameData.getCurrentGamer().getGameBoard().getDeckZone().getSize() < 2){
+    public ActivationData activate(GameData gameData) {
+        if (gameData.getCurrentGamer().getGameBoard().getDeckZone().getSize() < 2) {
             return new ActivationData(this, "There are not enough cards in the deck");
-        }
-        else{
+        } else {
             Card firstCard = gameData.getCurrentGamer().getGameBoard().getDeckZone().getCard(1);
             Card secondCard = gameData.getCurrentGamer().getGameBoard().getDeckZone().getCard(2);
             gameData.moveCardFromOneZoneToAnother(firstCard, gameData.getCurrentGamer().getGameBoard().getDeckZone(),
@@ -25,7 +24,7 @@ public class PotOfGreed extends Spell {
         }
     }
 
-    public PotOfGreed(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public PotOfGreed(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

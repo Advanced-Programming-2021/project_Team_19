@@ -13,7 +13,6 @@ import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
-import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
         return monstersWithLevel7OrAbove;
     }
 
-    public HeraldOfCreation(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public HeraldOfCreation(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

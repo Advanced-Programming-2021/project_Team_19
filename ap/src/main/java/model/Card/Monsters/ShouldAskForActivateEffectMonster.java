@@ -18,19 +18,19 @@ public class ShouldAskForActivateEffectMonster extends EffectMonster {
                 monsterTypesForEffects);
     }
 
-    public int getTurnActivated(){
+    public int getTurnActivated() {
         return turnActivated;
     }
 
-    public void setTurnActivated(int turnActivated){
+    public void setTurnActivated(int turnActivated) {
         this.turnActivated = turnActivated;
     }
 
-    public boolean canActivate(GameData gameData){
+    public boolean canActivate(GameData gameData) {
         return false;
     }
 
-    public ActivationData activate(GameData gameData){
+    public ActivationData activate(GameData gameData) {
         return null;
     }
 }

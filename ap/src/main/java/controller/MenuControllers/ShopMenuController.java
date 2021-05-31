@@ -35,7 +35,7 @@ public class ShopMenuController {
             return manageBuyCards(user, Utils.getMatcher(command, "shop buy (.+)"));
         } else if (command.matches("shop show --all")) {
             return showAllCards();
-        } else if(command.equals("increase --money \\d+")){
+        } else if (command.equals("increase --money \\d+")) {
             CheatCodes.increaseMoney(user, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --money (\\d+)")));
         }
         return Utils.getDataSendToClientForInvalidInput();

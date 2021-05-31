@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
 
-    public MirrorForce(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public MirrorForce(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
                 this);
     }
 
-    private void handleEffect(GameData gameData){
+    private void handleEffect(GameData gameData) {
 
         Attack attack = (Attack) Utils.getLastActionOfSpecifiedAction
                 (gameData.getCurrentActions(), Attack.class);
@@ -42,8 +42,8 @@ public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
         ArrayList<Monster> monsters = gameData.getCardController(attack.getAttackingMonster())//gamer
                 .getGameBoard().getMonsterCardZone().getCards();
 
-        for(Monster monster : monsters){
-            if(monster != null && monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+        for (Monster monster : monsters) {
+            if (monster != null && monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
                 monster.handleDestroy(gameData);
             }
         }

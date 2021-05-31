@@ -11,7 +11,6 @@ import model.EffectLabel;
 import model.Enums.CardFamily;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Gamer;
-import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
@@ -22,42 +21,46 @@ public abstract class Action {
     protected String actionName;
     protected Gamer actionDoer;
 
-    protected Action(GameData gameData, String actionName){
+    protected Action(GameData gameData, String actionName) {
 
         setGameData(gameData);
         setActionName(actionName);
         setActionDoer();
     }
 
-    protected void setGameData(GameData gameData){
+    protected void setGameData(GameData gameData) {
         this.gameData = gameData;
     }
 
-    public GameData getGameData(){
+    public GameData getGameData() {
         return gameData;
     }
 
-    protected void setActionName(String actionName){
+    protected void setActionName(String actionName) {
         this.actionName = actionName;
     }
 
-    public String getActionName(){
+    public String getActionName() {
         return actionName;
     }
 
-    private void setActionDoer(){actionDoer = gameData.getCurrentGamer();}
+    private void setActionDoer() {
+        actionDoer = gameData.getCurrentGamer();
+    }
 
-    public Gamer getActionDoer(){return actionDoer;}
+    public Gamer getActionDoer() {
+        return actionDoer;
+    }
 
-    protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction(){
+    protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction() {
 
-        for(SpellAndTraps spellOrTrap :
+        for (SpellAndTraps spellOrTrap :
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
 
-            if(spellOrTrap == null){
+            if (spellOrTrap == null) {
                 continue;
             }
-            if(spellOrTrap.canActivateBecauseOfAnAction(this)){
+            if (spellOrTrap.canActivateBecauseOfAnAction(this)) {
                 return true;
             }
         }
@@ -65,11 +68,11 @@ public abstract class Action {
         return false;
     }
 
-    protected boolean canTurnOwnerActivateTrapBecauseOfAnAction(){
+    protected boolean canTurnOwnerActivateTrapBecauseOfAnAction() {
 
-        for(SpellAndTraps spellOrTrap :
+        for (SpellAndTraps spellOrTrap :
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
-            if(spellOrTrap != null && spellOrTrap.canActivateBecauseOfAnAction(this)){
+            if (spellOrTrap != null && spellOrTrap.canActivateBecauseOfAnAction(this)) {
                 return true;
             }
         }
@@ -77,9 +80,9 @@ public abstract class Action {
         return false;
     }
 
-    protected TriggerActivationData handleActivateTrapOrSpeedSpellOnOtherPlayerTurn(){
+    protected TriggerActivationData handleActivateTrapOrSpeedSpellOnOtherPlayerTurn() {
 
-        TriggerActivationData data =  new TriggerActivationData
+        TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
 
         ActivationData tempData;
@@ -87,14 +90,14 @@ public abstract class Action {
         Utils.changeTurn(gameData);
         gameData.showBoard();
 
-        if(Utils.askForActivate(actionName + " has occurred just now")){
+        if (Utils.askForActivate(actionName + " has occurred just now")) {
 
             tempData = new ActivateTriggerEffectOnOtherPlayerTurn(this).run();
 
-            if(tempData.activatedCard == null){
+            if (tempData.activatedCard == null) {
                 data = new TriggerActivationData
                         (false, tempData.message, null);
-            } else{
+            } else {
                 data = (TriggerActivationData) tempData;
             }
 
@@ -107,14 +110,14 @@ public abstract class Action {
     }
 
 
-    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction(){
+    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction() {
 
 
-        if(Utils.askForActivate(actionName + " has occurred just now")){
+        if (Utils.askForActivate(actionName + " has occurred just now")) {
 
             ActivationData tempData = new ActivateTriggerEffectOnGamerTurn(this).run();
 
-            if(tempData.activatedCard == null){
+            if (tempData.activatedCard == null) {
 
                 return new TriggerActivationData
                         (false, tempData.message, null);
@@ -127,7 +130,7 @@ public abstract class Action {
     }
 
 
-    protected TriggerActivationData handleTriggerEffects(){
+    protected TriggerActivationData handleTriggerEffects() {
 
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
@@ -137,19 +140,19 @@ public abstract class Action {
 
         boolean hasTurnOwnerActivatedEffect = false;
 
-        if(canTurnOwnerActivateTrapBecauseOfAnAction()){
+        if (canTurnOwnerActivateTrapBecauseOfAnAction()) {
 
             data = handleActivateTrapOnGamerTurnBecauseOfAnAction();
 
-            if(data.activatedCard != null){
+            if (data.activatedCard != null) {
 
                 hasTurnOwnerActivatedEffect = true;
             }
         }
 
-        if(!hasTurnOwnerActivatedEffect){
+        if (!hasTurnOwnerActivatedEffect) {
 
-            if(canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()){
+            if (canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()) {
 
                 data = handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
             }
@@ -162,7 +165,7 @@ public abstract class Action {
 
     }
 
-    protected boolean canActionBeDone(){
+    protected boolean canActionBeDone() {
 
         boolean canActionBeDone = true;
 
@@ -177,7 +180,7 @@ public abstract class Action {
                 if (!data.message.equals("")) {
                     Printer.print(data.message);
                 }
-                if(data.hasActionStopped){
+                if (data.hasActionStopped) {
                     canActionBeDone = false;
                 }
             }
@@ -188,12 +191,12 @@ public abstract class Action {
         return canActionBeDone;
     }
 
-    public void activateOrSetCheckFieldSpell(Card card, GameData gameData){
+    public void activateOrSetCheckFieldSpell(Card card, GameData gameData) {
         if (!card.getCardFamily().equals(CardFamily.SPELL) || !((Spell) card).getSpellType().equals(SpellTypes.FIELD)) {
             gameData.moveCardFromOneZoneToAnother(card,
                     gameData.getCurrentGamer().getGameBoard().getHand(),
                     gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone());
-        }else {
+        } else {
             gameData.moveCardFromOneZoneToAnother(card,
                     gameData.getCurrentGamer().getGameBoard().getHand(),
                     gameData.getCurrentGamer().getGameBoard().getFieldZone());

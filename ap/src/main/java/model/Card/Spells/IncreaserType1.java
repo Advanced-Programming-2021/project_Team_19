@@ -26,7 +26,7 @@ public class IncreaserType1 extends Spell implements Undo {
 
     }
 
-    public IncreaserType1(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public IncreaserType1(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

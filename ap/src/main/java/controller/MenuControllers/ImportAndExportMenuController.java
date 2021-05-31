@@ -8,7 +8,7 @@ import model.Enums.MessageType;
 
 import java.util.regex.Matcher;
 
-public class ImportAndExportMenuController{
+public class ImportAndExportMenuController {
 
     private static ImportAndExportMenuController instance = null;
 
@@ -29,12 +29,12 @@ public class ImportAndExportMenuController{
 
         Card card = Utils.getCardByName(matcher.group(1));
 
-        if(card == null){
-             return new DataForClientFromServer
+        if (card == null) {
+            return new DataForClientFromServer
                     ("invalid card name", MessageType.ERROR);
         }
 
-         return  new DataForClientFromServer(card.toString(), MessageType.SUCCESSFUL);
+        return new DataForClientFromServer(card.toString(), MessageType.SUCCESSFUL);
 
     }
 

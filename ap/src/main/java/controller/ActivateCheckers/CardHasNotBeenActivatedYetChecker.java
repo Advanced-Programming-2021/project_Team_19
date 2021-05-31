@@ -7,26 +7,26 @@ import model.Card.SpellAndTraps;
 
 public class CardHasNotBeenActivatedYetChecker extends ActivationChecker {
 
-    public CardHasNotBeenActivatedYetChecker(GameData gameData, Card card){
+    public CardHasNotBeenActivatedYetChecker(GameData gameData, Card card) {
         super(gameData, card);
     }
 
-    public String check(){
+    public String check() {
 
-        try{
-            if (((SpellAndTraps)card).getTurnActivated() != 0) {
+        try {
+            if (((SpellAndTraps) card).getTurnActivated() != 0) {
                 return "you have already activated this card";
             }
             return null;
 
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
 
             try {
-                if(((ShouldAskForActivateEffectMonster)card).getTurnActivated() != 0){
+                if (((ShouldAskForActivateEffectMonster) card).getTurnActivated() != 0) {
                     return "you have already activated this card";
                 }
                 return null;
-            } catch (ClassCastException e1){
+            } catch (ClassCastException e1) {
                 return "ERROR";
             }
         }

@@ -9,13 +9,13 @@ import model.Enums.Type;
 public class MagnumShield extends EquipSpell {
 
 
-    public MagnumShield(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public MagnumShield(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
     @Override
     public int changeInAttack(GameData gameData) {
-        if (monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+        if (monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
             return monsterEquippedWithThisSpell.defence;
         }
         return 0;
@@ -23,7 +23,7 @@ public class MagnumShield extends EquipSpell {
 
     @Override
     public int changeInDefence(GameData gameData) {
-        if (!monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)){
+        if (!monsterEquippedWithThisSpell.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
             return monsterEquippedWithThisSpell.attack;
         }
         return 0;

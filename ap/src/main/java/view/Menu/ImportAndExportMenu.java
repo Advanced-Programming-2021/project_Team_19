@@ -67,7 +67,7 @@ public class ImportAndExportMenu extends Menu {
                  help
                 menu show-current
                 menu enter [menu name]
-                menu exit               
+                menu exit
                 """);
     }
 }

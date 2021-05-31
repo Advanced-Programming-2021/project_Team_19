@@ -15,12 +15,12 @@ import java.util.ArrayList;
 public class ActivateSpellOrTrapNormally extends Activation {
 
 
-    public ActivateSpellOrTrapNormally(GameData gameData){
+    public ActivateSpellOrTrapNormally(GameData gameData) {
         super(gameData);
         setActivatedCard(gameData.getSelectedCard());
     }
 
-    public void run(){
+    public void run() {
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
@@ -29,54 +29,50 @@ public class ActivateSpellOrTrapNormally extends Activation {
         checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
-        if(checkersResult != null){
+        if (checkersResult != null) {
             Printer.print(checkersResult);
             return;
         }
 
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
-        if(!card.canActivate(gameData)){
+        if (!card.canActivate(gameData)) {
             Printer.print("you can't activate this card");
             return;
         }
 
-        if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
+        if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
             activateFromHand(card);
-        }
-
-        else if(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone){
+        } else if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone) {
             activateSpellOrTrap();
-        }
-
-        else{
+        } else {
             Printer.print("invalid Zone");
         }
 
     }
 
-    private void activateSpellOrTrap(){
+    private void activateSpellOrTrap() {
 
         ActivationData data = super.activate();
 
-        if(!data.message.equals("")){
+        if (!data.message.equals("")) {
             Printer.print(data.message);
         }
     }
 
 
-    private void activateFromHand(SpellAndTraps card){
+    private void activateFromHand(SpellAndTraps card) {
 
-        if(card instanceof Trap){
+        if (card instanceof Trap) {
             Printer.print("you should set trap card first");
             return;
         }
 
-        if(gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()){
+        if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
             Printer.print("spell card zone is full");
             return;
         }
-        if(!card.canActivate(gameData)){
+        if (!card.canActivate(gameData)) {
             Printer.print("preparations of this spell are not done yet");
             return;
         }

@@ -12,8 +12,8 @@ import model.Enums.Type;
 
 public class MagicCylinder extends TrapsActivateBecauseOfActionAttack {
 
-    public MagicCylinder(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public MagicCylinder(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     @Override

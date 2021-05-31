@@ -17,11 +17,11 @@ public abstract class EffectMonster extends Monster {
         setEffectSpeed(1);
     }
 
-    public boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label) {
         return false;
     }
 
-    public TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label) {
         return null;
     }
 

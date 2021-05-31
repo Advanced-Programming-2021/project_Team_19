@@ -13,8 +13,8 @@ public class SupplySquad extends Spell {
         return null;
     }
 
-    public SupplySquad(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public SupplySquad(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
 }

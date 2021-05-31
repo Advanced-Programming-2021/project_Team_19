@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public abstract class SpeedEffectTrap extends Trap {
 
-    public SpeedEffectTrap(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public SpeedEffectTrap(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     public boolean canActivate(GameData gameData) {
@@ -24,10 +24,6 @@ public abstract class SpeedEffectTrap extends Trap {
         checkers.add(new TurnChecker(gameData, this));
         checkers.add(new mirageDragonChecker(gameData, this));
 
-        if(!Checker.multipleCheck(checkers)){
-            return false;
-        }
-
-        return true;
+        return Checker.multipleCheck(checkers);
     }
 }

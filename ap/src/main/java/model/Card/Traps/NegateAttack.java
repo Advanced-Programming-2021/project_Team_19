@@ -27,27 +27,25 @@ public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
 
     }
 
-    public boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label) {
 
-        if(label.gameData.getCurrentPhase().equals(Phase.BATTLE)){
-            if(label.gameData.getCurrentActions().size() == 0){
-                return true;
-            }
+        if (label.gameData.getCurrentPhase().equals(Phase.BATTLE)) {
+            return label.gameData.getCurrentActions().size() == 0;
         }
         return false;
     }
 
-    public TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label) {
 
         label.gamer.removeLabel(label);
 
         label.label = 1;
 
-        return new TriggerActivationData(true,"",
+        return new TriggerActivationData(true, "",
                 label.card);
     }
 
-    public NegateAttack(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public NegateAttack(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 }

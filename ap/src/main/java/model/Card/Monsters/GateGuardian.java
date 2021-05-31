@@ -11,7 +11,7 @@ public class GateGuardian extends Monster {
 
     @Override
     public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
-        if (isForSetting){
+        if (isForSetting) {
             Printer.print("you cannot set this monster");
             return -1;
         }
@@ -24,7 +24,7 @@ public class GateGuardian extends Monster {
         gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn() - 1);
     }
 
-    public GateGuardian(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public GateGuardian(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

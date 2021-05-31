@@ -1,22 +1,17 @@
 package model.Card.Monsters;
 
 import controller.DuelControllers.Actoins.Activation;
-import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
-import model.Card.Monster;
 import model.Data.ActivationData;
 import model.Enums.CardMod;
 import model.Enums.GameEvent;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
-import view.GetInput;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class ManEaterBug extends EffectMonster {
@@ -53,10 +48,9 @@ public class ManEaterBug extends EffectMonster {
         return null;
     }
 
-    public ManEaterBug(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public ManEaterBug(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
-
 
 
 }

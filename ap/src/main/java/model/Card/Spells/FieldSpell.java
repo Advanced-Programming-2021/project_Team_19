@@ -5,7 +5,6 @@ import controller.Utils;
 import model.Card.Spell;
 import model.Data.ActivationData;
 import model.Enums.MonsterEnums.MonsterType;
-import model.Enums.SpellCardMods;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.Status;
 import model.Enums.Type;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 
 public class FieldSpell extends Spell {
 
-    static private HashMap<String, HashMap<MonsterType, Integer[]>> spellToProperties = new HashMap<>();
+    static private final HashMap<String, HashMap<MonsterType, Integer[]>> spellToProperties = new HashMap<>();
 
     static {
         HashMap<MonsterType, Integer[]> forest = new HashMap<>();

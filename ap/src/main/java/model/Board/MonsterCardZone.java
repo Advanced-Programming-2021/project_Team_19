@@ -4,22 +4,21 @@ import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class MonsterCardZone extends Zones {
 
-    private ArrayList<Monster> cardsInMonsterZone = new ArrayList<>();
+    private final ArrayList<Monster> cardsInMonsterZone = new ArrayList<>();
 
-    public MonsterCardZone(){
+    public MonsterCardZone() {
         for (int i = 0; i < 5; i++) {
             cardsInMonsterZone.add(null);
         }
     }
 
-    public ArrayList<Monster> getCards(){
+    public ArrayList<Monster> getCards() {
         return cardsInMonsterZone;
     }
 
@@ -28,32 +27,26 @@ public class MonsterCardZone extends Zones {
     }
 
     public Card removeCard(int id) {
-        Card temp=cardsInMonsterZone.get(hashNumber(id));
-        cardsInMonsterZone.set(hashNumber(id),null);
+        Card temp = cardsInMonsterZone.get(hashNumber(id));
+        cardsInMonsterZone.set(hashNumber(id), null);
         return temp;
     }
 
-    public void removeAllCards(){
-        for(int i = 0; i < 5; i++){
-            removeCard(i);
-        }
-    }
-
     public void addCard(Card card) {
-        for(int i=1;i<=5;i++){
-            if(cardsInMonsterZone.get(hashNumber(i))==null){
-                cardsInMonsterZone.set(hashNumber(i),(Monster)card);
+        for (int i = 1; i <= 5; i++) {
+            if (cardsInMonsterZone.get(hashNumber(i)) == null) {
+                cardsInMonsterZone.set(hashNumber(i), (Monster) card);
                 break;
             }
         }
     }
 
-    public boolean containsCard(Card card){
+    public boolean containsCard(Card card) {
         return cardsInMonsterZone.contains(card);
     }
 
 
-    public int getNumberOfCards(){
+    public int getNumberOfCards() {
         int toReturn = 0;
 
         for (Monster monster : cardsInMonsterZone) {
@@ -64,20 +57,20 @@ public class MonsterCardZone extends Zones {
         return toReturn;
     }
 
-    public boolean isZoneFull(){
-        for(Card card : cardsInMonsterZone){
-            if(card == null){
+    public boolean isZoneFull() {
+        for (Card card : cardsInMonsterZone) {
+            if (card == null) {
                 return false;
             }
         }
         return true;
     }
 
-    public int getId(Card card){
-        if(cardsInMonsterZone.contains(card)){
+    public int getId(Card card) {
+        if (cardsInMonsterZone.contains(card)) {
             int index = cardsInMonsterZone.indexOf(card);
-            for(int i=1;i<=5;i++){
-                if(hashNumber(i) == index){
+            for (int i = 1; i <= 5; i++) {
+                if (hashNumber(i) == index) {
                     return i;
                 }
             }
@@ -86,23 +79,23 @@ public class MonsterCardZone extends Zones {
     }
 
 
-    public String getStringForSelf(){
+    public String getStringForSelf() {
 
-        StringBuilder answer= new StringBuilder();
+        StringBuilder answer = new StringBuilder();
 
-        for(String appendingStr : getPrintingStringsForToStringMethod()){
+        for (String appendingStr : getPrintingStringsForToStringMethod()) {
             answer.append(appendingStr);
         }
         return answer.toString();
     }
 
-    public String getStringForRival(){
-        StringBuilder answer= new StringBuilder();
+    public String getStringForRival() {
+        StringBuilder answer = new StringBuilder();
 
         ArrayList<String> printingStrings = getPrintingStringsForToStringMethod();
         Collections.reverse(printingStrings);
 
-        for(String appendingStr : printingStrings){
+        for (String appendingStr : printingStrings) {
             answer.append(appendingStr);
         }
         return answer.toString();
@@ -137,7 +130,7 @@ public class MonsterCardZone extends Zones {
     }
 
 
-    public static MonsterCardZone getTestZone(){
+    public static MonsterCardZone getTestZone() {
 
         MonsterCardZone monsterCardZone = new MonsterCardZone();
 
@@ -157,14 +150,8 @@ public class MonsterCardZone extends Zones {
         tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
         monsterCardZone.addCard(tempMonster);
 
-//        tempMonster = (Monster) Utils.getCardByName("Battle OX");
-//        tempMonster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
-//        monsterCardZone.addCard(tempMonster);
-
         return monsterCardZone;
     }
-
-
 
 
 }

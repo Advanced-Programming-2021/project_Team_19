@@ -6,14 +6,13 @@ import controller.MenuControllers.*;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.User;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 
 
 public class ClientDataController {
 
-    private final static ArrayList<String>  menusNeedUserForRequest = new ArrayList<>();
+    private final static ArrayList<String> menusNeedUserForRequest = new ArrayList<>();
 
     static {
         menusNeedUserForRequest.add("Profile Menu");
@@ -26,11 +25,10 @@ public class ClientDataController {
 
         String menuName = data.getMenuName();
 
-        User user = null;
-        user = UserDataBaseController.getUserByUsername(data.getUsername());
+        User user = UserDataBaseController.getUserByUsername(data.getUsername());
 
-        if(user == null){
-            if(menusNeedUserForRequest.contains(data.getMenuName())){
+        if (user == null) {
+            if (menusNeedUserForRequest.contains(data.getMenuName())) {
                 return Utils.getDataSendToClientForInvalidInput();
             }
         }

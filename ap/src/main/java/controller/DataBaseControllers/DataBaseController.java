@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 
-import javax.lang.model.type.NullType;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -19,7 +18,7 @@ public class DataBaseController {
         makeFolderByPath(getCardsPath());
     }
 
-    public static void makeFolderByPath(String path){
+    public static void makeFolderByPath(String path) {
         File theDir = new File(path);
         if (!theDir.exists()) {
             theDir.mkdirs();
@@ -34,13 +33,12 @@ public class DataBaseController {
         return "Resource\\Decks";
     }
 
-    protected static String getCardsPath(){
+    protected static String getCardsPath() {
         return "Resource\\Cards";
     }
 
 
-
-    public static boolean createFileByPathAndData(String path, String data){
+    public static boolean createFileByPathAndData(String path, String data) {
 
         File file = new File(path);
         try {
@@ -93,7 +91,7 @@ public class DataBaseController {
         return folder.listFiles();
     }
 
-    public static boolean rewriteFileOfObjectGson(String path, Object newObject){
+    public static boolean rewriteFileOfObjectGson(String path, Object newObject) {
         File file = new File(path);
         try {
             file.createNewFile();
@@ -106,8 +104,8 @@ public class DataBaseController {
         return true;
     }
 
-    public static void deleteFile(String path){
-        File file =new File(path);
+    public static void deleteFile(String path) {
+        File file = new File(path);
         file.delete();
     }
 
@@ -115,16 +113,16 @@ public class DataBaseController {
         return Files.exists(new File(path).toPath());
     }
 
-    public static Class getClassByClassName (String type){
+    public static Class getClassByClassName(String type) {
 
-        if(type == null){
+        if (type == null) {
             return null;
         }
 
         try {
             return Class.forName(type);
 
-        } catch (NullPointerException | ClassNotFoundException e){
+        } catch (NullPointerException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -162,7 +160,7 @@ public class DataBaseController {
 
 //no need
 
-    public static Object getInstanceOfAnObjectByClassName(String type){
+    public static Object getInstanceOfAnObjectByClassName(String type) {
 
 
         Class myClass = null;
@@ -176,13 +174,7 @@ public class DataBaseController {
         try {
             return myClass.getDeclaredConstructor().newInstance();
 
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
         return null;

@@ -11,13 +11,14 @@ import model.Phase;
 
 public class TimeSeal extends SpeedEffectTrap {
 
-    public TimeSeal(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public TimeSeal(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     private int effectTurn = 0;
+
     @Override
-    public ActivationData activate(GameData gameData)  {
+    public ActivationData activate(GameData gameData) {
 
         handleCommonsForActivate(gameData);
 
@@ -32,25 +33,22 @@ public class TimeSeal extends SpeedEffectTrap {
     }
 
     private void setEffectTurn(GameData gameData) {
-        if(gameData.getCurrentGamer().equals(gameData.getTurnOwner()))
+        if (gameData.getCurrentGamer().equals(gameData.getTurnOwner()))
             effectTurn = turnActivated + 1;
         else
             effectTurn = turnActivated + 2;
     }
 
-    public boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label) {
 
-        if(effectTurn == label.gameData.getTurn()){
-            if(label.gameData.getCurrentPhase().equals(Phase.DRAW)){
-
-                return true;
-            }
+        if (effectTurn == label.gameData.getTurn()) {
+            return label.gameData.getCurrentPhase().equals(Phase.DRAW);
         }
 
         return false;
     }
 
-    public TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label) {
 
         label.gamer.removeLabel(label);
 

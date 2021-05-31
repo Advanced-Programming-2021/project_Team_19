@@ -19,7 +19,7 @@ public class MessangerOfPeace extends Spell implements ContinuousEffect {
 
     }
 
-    public MessangerOfPeace(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public MessangerOfPeace(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

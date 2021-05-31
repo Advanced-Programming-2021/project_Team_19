@@ -19,10 +19,10 @@ import java.util.Collections;
 public class GameData {
 
 
-    private static ArrayList<GameData> gameDatas = new ArrayList<>();
+    private static final ArrayList<GameData> gameDatas = new ArrayList<>();
     private int gameStarterId = 0;
-    private ArrayList<Gamer> gamers = new ArrayList<>();
-    private ArrayList<Action> currentActions = new ArrayList<>();
+    private final ArrayList<Gamer> gamers = new ArrayList<>();
+    private final ArrayList<Action> currentActions = new ArrayList<>();
     private Card selectedCard;
     private int turn = 1;
     private Phase currentPhase = Phase.DRAW;
@@ -38,10 +38,10 @@ public class GameData {
         gameDatas.add(this);
     }
 
-    public static GameData getGameData(int index){
+    public static GameData getGameData(int index) {
         try {
             return gameDatas.get(index);
-        }catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             return null;
         }
     }
@@ -125,22 +125,22 @@ public class GameData {
         currentActions.add(action);
     }
 
-    public boolean isRitualSummoning(){
+    public boolean isRitualSummoning() {
         for (Action action : currentActions) {
-            if (action.getActionName().equals("Ritual Summon")){
+            if (action.getActionName().equals("Ritual Summon")) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removeRitualSummoning(){
-       removeActionFromCurrentActions(getRitualSummoning());
+    public void removeRitualSummoning() {
+        removeActionFromCurrentActions(getRitualSummoning());
     }
 
-    public Action getRitualSummoning(){
+    public Action getRitualSummoning() {
         for (Action action : currentActions) {
-            if (action.getActionName().equals("Ritual Summon")){
+            if (action.getActionName().equals("Ritual Summon")) {
                 return action;
             }
         }
@@ -164,14 +164,14 @@ public class GameData {
         }
     }
 
-    private Card getCardToMoveFromGraveYardToAnotherZone(Card card){
+    private Card getCardToMoveFromGraveYardToAnotherZone(Card card) {
         Card newCard = Utils.getCardByName(card.getName());
 
-        if(card instanceof SpellAndTraps){
-            ((SpellAndTraps)newCard).setSpellCardMod(((SpellAndTraps) card).getSpellCardMod());
+        if (card instanceof SpellAndTraps) {
+            ((SpellAndTraps) newCard).setSpellCardMod(((SpellAndTraps) card).getSpellCardMod());
         }
-        if(card instanceof Monster){
-            ((Monster)newCard).setCardMod(((Monster) card).getCardMod());
+        if (card instanceof Monster) {
+            ((Monster) newCard).setCardMod(((Monster) card).getCardMod());
         }
         return newCard;
     }

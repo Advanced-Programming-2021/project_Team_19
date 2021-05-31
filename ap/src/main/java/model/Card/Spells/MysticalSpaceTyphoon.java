@@ -20,7 +20,7 @@ public class MysticalSpaceTyphoon extends Spell implements Destroyer {
 
     }
 
-    public MysticalSpaceTyphoon(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public MysticalSpaceTyphoon(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

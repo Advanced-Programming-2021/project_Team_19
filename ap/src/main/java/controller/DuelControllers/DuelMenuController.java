@@ -61,7 +61,7 @@ public class DuelMenuController extends Menu {
 
         if (command.matches("duel --new --ai --rounds (\\d)")) {
             startDuelWithAi(Utils.getMatcher(command, "duel --new --ai --rounds (\\d)"));
-        } else if (command.matches("duel --new --second-player (\\S+) --rounds (\\d)")){
+        } else if (command.matches("duel --new --second-player (\\S+) --rounds (\\d)")) {
             startDuelWithTowPlayer(Utils.getMatcher(command, "duel --new --second-player (\\S+) --rounds (\\d)"));
         } else {
             Printer.printInvalidCommand();
@@ -142,10 +142,10 @@ public class DuelMenuController extends Menu {
 
         GameData.getGameData(0).setEvent(GameEvent.ASK_FOR_SIDE_DECK);
 
-        if (Utils.askForConfirmation(gameStarter.getUsername() +", do you want to swap cards between your main deck and side deck?"))
+        if (Utils.askForConfirmation(gameStarter.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(gameStarter.getUser()).run();
 
-        if (Utils.askForConfirmation(rivalGamer.getUsername() +", do you want to swap cards between your main deck and side deck?"))
+        if (Utils.askForConfirmation(rivalGamer.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(rivalGamer.getUser()).run();
 
         GameData.getGameData(0).setEvent(null);

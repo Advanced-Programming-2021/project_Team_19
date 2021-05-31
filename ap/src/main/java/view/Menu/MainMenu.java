@@ -1,11 +1,10 @@
 package view.Menu;
 
 
-
 import view.GetInput;
 import view.Printer.Printer;
 
-public class MainMenu extends Menu{
+public class MainMenu extends Menu {
 
 
     private static MainMenu instance = null;
@@ -35,16 +34,15 @@ public class MainMenu extends Menu{
                 break;
             } else if (command.startsWith("menu ")) {
                 handleMenuOrders(command);
-            }else if (command.matches("help")){
+            } else if (command.matches("help")) {
                 help();
-            }
-            else {
+            } else {
                 Printer.printInvalidCommand();
             }
         }
     }
 
-    private void help(){
+    private void help() {
 
         System.out.println("""
                 help

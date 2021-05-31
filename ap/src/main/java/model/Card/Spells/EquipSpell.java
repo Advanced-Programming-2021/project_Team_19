@@ -37,8 +37,8 @@ public class EquipSpell extends Spell {
     }
 
 
-    public EquipSpell(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public EquipSpell(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
     @Override

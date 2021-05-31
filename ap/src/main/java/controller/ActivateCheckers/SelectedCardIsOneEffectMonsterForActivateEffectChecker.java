@@ -6,17 +6,15 @@ import model.Card.Monster;
 import model.Card.Monsters.ScannerMonster;
 import model.Card.Monsters.ShouldAskForActivateEffectMonster;
 
-import java.util.Scanner;
+public class SelectedCardIsOneEffectMonsterForActivateEffectChecker extends ActivationChecker {
 
-public class SelectedCardIsOneEffectMonsterForActivateEffectChecker extends ActivationChecker{
-
-    public SelectedCardIsOneEffectMonsterForActivateEffectChecker(GameData gameData, Card card){
+    public SelectedCardIsOneEffectMonsterForActivateEffectChecker(GameData gameData, Card card) {
         super(gameData, card);
     }
 
-    public String check(){
+    public String check() {
 
-        if(card instanceof ScannerMonster){
+        if (card instanceof ScannerMonster) {
             card = ((ScannerMonster) card).getMonster();
         }
 
@@ -24,7 +22,7 @@ public class SelectedCardIsOneEffectMonsterForActivateEffectChecker extends Acti
             return "card should be a monster";
         }
 
-        if(!(card instanceof ShouldAskForActivateEffectMonster)){
+        if (!(card instanceof ShouldAskForActivateEffectMonster)) {
             return "you can't activate this card";
         }
         return null;

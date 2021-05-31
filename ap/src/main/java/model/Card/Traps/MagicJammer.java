@@ -3,16 +3,15 @@ package model.Card.Traps;
 import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.GameData;
 import model.Card.Trap;
-import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
 
-public class MagicJammer extends Trap{
+public class MagicJammer extends Trap {
 
-    public MagicJammer(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public MagicJammer(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     @Override
@@ -21,17 +20,14 @@ public class MagicJammer extends Trap{
         return null;
     }
 
-    public boolean canActivateBecauseOfAnAction(Action action){
+    public boolean canActivateBecauseOfAnAction(Action action) {
 
-        if(!action.getGameData().getCurrentGamer().equals
-                (action.getGameData().getCardController(this))){
+        if (!action.getGameData().getCurrentGamer().equals
+                (action.getGameData().getCardController(this))) {
             return false;
         }
 
-        if(action.getActionName().equals("activate spell")){
-            return true;
-        }
-        return false;
+        return action.getActionName().equals("activate spell");
     }
 
 }

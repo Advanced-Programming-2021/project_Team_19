@@ -7,7 +7,7 @@ public class DataForClientFromServer {
     private String message;
     private MessageType messageType;
 
-    public DataForClientFromServer(String data, MessageType messageType){
+    public DataForClientFromServer(String data, MessageType messageType) {
         setMessage(data);
         setMessageType(messageType);
     }

@@ -1,16 +1,13 @@
 package model.Card.Monsters;
 
-import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Card.Trap;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
-import model.Gamer;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -18,116 +15,106 @@ public class ScannerMonster extends Monster {
     private Monster tempMonster;
     private int monsterSetTurn;
 
-    public void setMonster(Monster monster,GameData gameData){
-        this.tempMonster=monster;
+    public void setMonster(Monster monster, GameData gameData) {
+        this.tempMonster = monster;
         monsterSetTurn = gameData.getTurn();
     }
 
-    public void setValidity(GameData gameData){
-        if(gameData.getTurn() == monsterSetTurn){
-        }
-        else{
+    public void setValidity(GameData gameData) {
+        if (!(gameData.getTurn() == monsterSetTurn)) {
             tempMonster = null;
         }
     }
 
-    public boolean handleScannerMonster(GameData gameData){
+    public boolean handleScannerMonster(GameData gameData) {
         boolean isThereMonster = false;
-        for(Card card : gameData.getSecondGamer().getGameBoard().getGraveYard().getCardsInGraveYard()){
+        for (Card card : gameData.getSecondGamer().getGameBoard().getGraveYard().getCardsInGraveYard()) {
             if (card instanceof Monster) {
                 isThereMonster = true;
                 break;
             }
         }
-        if(!isThereMonster){
+        if (!isThereMonster) {
             System.out.println("There is no monster card in opponents graveYard!");
             return false;
-        }
-        else{
+        } else {
             Printer.print("Grave Yard Cards:");
             gameData.getSecondGamer().getGameBoard().getGraveYard().printGraveYard();
             Printer.print("Please choose a card From GraveYard!(Just a digit telling the position)");
             Integer index = getIndex(gameData);
-            if(index == null){
+            if (index == null) {
                 return false;
-            }
-            else{
-                setMonster((Monster)gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index),gameData);
+            } else {
+                setMonster((Monster) gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index), gameData);
                 return true;
             }
         }
     }
 
-    public Integer getIndex(GameData gameData){
+    public Integer getIndex(GameData gameData) {
         String command = GetInput.getString();
-        while(!command.matches("\\d+")&&!command.equals("cancel")){
+        while (!command.matches("\\d+") && !command.equals("cancel")) {
             Printer.print("invalid format!");
             Printer.print("try of format (number)");
             command = GetInput.getString();
         }
-        if(command.equals("cancel")){
+        if (command.equals("cancel")) {
             return null;
-        }
-        else{
+        } else {
             int index = Integer.parseInt(command);
-            if(gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) != null&&gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster){
+            if (gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) != null && gameData.getSecondGamer().getGameBoard().getGraveYard().getCard(index) instanceof Monster) {
                 return index;
-            }
-            else{
+            } else {
                 Printer.print("invalid index please try again");
                 return getIndex(gameData);
             }
         }
     }
 
-    public void resetMonster(Monster monster){
+    public void resetMonster(Monster monster) {
         monster = null;
     }
 
-    public boolean isMonsterSet(){
+    public boolean isMonsterSet() {
         return tempMonster != null;
     }
 
-    public Card getMonster(){
+    public Card getMonster() {
         return tempMonster;
     }
 
     @Override
     public int getAttack(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getAttack(gameData);
-        }
-        else{
+        } else {
             return tempMonster.getAttack(gameData);
         }
     }
 
     @Override
     public MonsterTypesForEffects getEffectType() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getEffectType();
-        }
-        else{
+        } else {
             return tempMonster.getEffectType();
         }
     }
 
     @Override
     public void setAttack(int attack) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setAttack(attack);
-        }
-        else{
+        } else {
             tempMonster.setAttack(attack);
         }
     }
 
     @Override
     public int getDefence(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getDefence(gameData);
-        }
-        else{
+        } else {
             return tempMonster.getDefence(gameData);
         }
     }
@@ -136,118 +123,107 @@ public class ScannerMonster extends Monster {
     public void setDefence(int defence) {
         if (tempMonster == null) {
             super.setDefence(defence);
-        }
-        else{
+        } else {
             tempMonster.setDefence(defence);
         }
     }
 
     @Override
     public int getLevel() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getLevel();
-        }
-        else{
+        } else {
             return tempMonster.getLevel();
         }
     }
 
     @Override
     public void setLevel(int level) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setLevel(level);
-        }
-        else{
+        } else {
             tempMonster.setLevel(level);
         }
     }
 
     @Override
     public Attribute getAttribute() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getAttribute();
-        }
-        else{
+        } else {
             return tempMonster.getAttribute();
         }
     }
 
     @Override
     public void setAttribute(Attribute attribute) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setAttribute(attribute);
-        }
-        else{
+        } else {
             tempMonster.setAttribute(attribute);
         }
     }
 
     @Override
     public CardMod getCardMod() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getCardMod();
-        }
-        else{
+        } else {
             return tempMonster.getCardMod();
         }
     }
 
     @Override
     public void setCardMod(CardMod cardMod) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setCardMod(cardMod);
-        }
-        else{
+        } else {
             tempMonster.setCardMod(cardMod);
         }
     }
 
     @Override
     public boolean handleFlip(GameData gameData, CardMod cardMod) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.handleFlip(gameData, cardMod);
-        }
-        else{
+        } else {
             return tempMonster.handleFlip(gameData, cardMod);
         }
     }
 
     @Override
     public void handleAttack(GameData gameData, int enemyId) {
-        if(tempMonster == null){
-            super.handleAttack(gameData,enemyId);
-        }
-        else{
-            tempMonster.handleAttack(gameData,enemyId);
+        if (tempMonster == null) {
+            super.handleAttack(gameData, enemyId);
+        } else {
+            tempMonster.handleAttack(gameData, enemyId);
         }
 
     }
 
     @Override
-    public  void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
-        if(tempMonster == null){
+    public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
+        if (tempMonster == null) {
             super.attackDefensiveHiddenMonster(defendingMonster, gameData);
-        }
-        else{
-            tempMonster.attackDefensiveHiddenMonster(defendingMonster,gameData);
+        } else {
+            tempMonster.attackDefensiveHiddenMonster(defendingMonster, gameData);
         }
     }
 
     @Override
-    public  void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
-        if(tempMonster == null){
+    public void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+        if (tempMonster == null) {
             super.attackDefensiveMonster(defendingMonster, gameData);
-        }
-        else{
+        } else {
             tempMonster.attackDefensiveMonster(defendingMonster, gameData);
         }
     }
+
     @Override
-    public  void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
-        if(tempMonster == null){
+    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+        if (tempMonster == null) {
             super.attackOffensiveMonster(defendingMonster, gameData);
-        }
-        else{
+        } else {
             tempMonster.attackOffensiveMonster(defendingMonster, gameData);
         }
 
@@ -255,158 +231,142 @@ public class ScannerMonster extends Monster {
 
     @Override
     public void handleSet(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.handleSet(gameData);
-        }
-        else{
+        } else {
             tempMonster.handleSet(gameData);
         }
     }
 
     @Override
     public void handleChangePosition(GameData gameData, CardMod newCardMod) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.handleChangePosition(gameData, newCardMod);
-        }
-        else{
+        } else {
             tempMonster.handleChangePosition(gameData, newCardMod);
         }
     }
 
     @Override
     public void handleDirectAttack(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.handleDirectAttack(gameData);
-        }
-        else{
+        } else {
             tempMonster.handleDirectAttack(gameData);
         }
     }
 
 
-
     @Override
     public boolean attackIsNormal(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.attackIsNormal(gameData);
-        }
-        else{
+        } else {
             return tempMonster.attackIsNormal(gameData);
         }
     }
 
     @Override
     public void handleDestroy(GameData gameData) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.handleDestroy(gameData);
-        }
-        else{
+        } else {
             tempMonster.handleDestroy(gameData);
         }
     }
 
     @Override
-    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData){
-        if(tempMonster == null){
+    public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
+        if (tempMonster == null) {
             return super.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed, gameData);
-        }
-        else{
+        } else {
             return tempMonster.numberOfSacrifices(isForSetting, cardsThatCanBeSacrificed, gameData);
         }
     }
 
     @Override
     public int getPrice() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getPrice();
-        }
-        else{
+        } else {
             return tempMonster.getPrice();
         }
     }
 
     @Override
     public void setPrice(int price) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setPrice(price);
-        }
-        else{
+        } else {
             tempMonster.setPrice(price);
         }
     }
 
     @Override
     public void setName(String name) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setName(name);
-        }
-        else{
+        } else {
             tempMonster.setName(name);
         }
     }
 
     @Override
     public String getDescription() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getDescription();
-        }
-        else{
+        } else {
             return tempMonster.getName();
         }
     }
 
     @Override
     public void setDescription(String description) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setDescription(description);
-        }
-        else{
+        } else {
             tempMonster.setDescription(description);
         }
     }
 
     @Override
     public CardFamily getCardFamily() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getCardFamily();
-        }
-        else{
+        } else {
             return tempMonster.getCardFamily();
         }
     }
 
     @Override
     public void setCardFamily(CardFamily cardFamily) {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             super.setCardFamily(cardFamily);
-        }
-        else{
+        } else {
             tempMonster.setCardFamily(cardFamily);
         }
     }
 
     @Override
     public String getName() {
-        if(tempMonster == null){
+        if (tempMonster == null) {
             return super.getName();
-        }
-        else{
+        } else {
             return tempMonster.getName();
         }
     }
 
     @Override
-    public String toString(){
-        if(tempMonster == null){
+    public String toString() {
+        if (tempMonster == null) {
             return super.toString();
-        }
-        else{
+        } else {
             return tempMonster.getName();
         }
     }
 
-    public ScannerMonster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public ScannerMonster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 
 }

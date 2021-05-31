@@ -8,20 +8,20 @@ import java.util.ArrayList;
 
 public class DeckZone extends Zones {
 
-    ArrayList<Card> mainDeckCards=new ArrayList<>();
-    ArrayList<Card> sideDeckCards=new ArrayList<>();
+    ArrayList<Card> mainDeckCards = new ArrayList<>();
+    ArrayList<Card> sideDeckCards = new ArrayList<>();
 
-    public DeckZone(Deck deck){
-        for(String cardName:deck.getMainDeckCards()){
+    public DeckZone(Deck deck) {
+        for (String cardName : deck.getMainDeckCards()) {
             mainDeckCards.add(Utils.getCardByName(cardName));
         }
-        for(String cardName:deck.getSideDeckCards()){
+        for (String cardName : deck.getSideDeckCards()) {
             sideDeckCards.add(Utils.getCardByName(cardName));
         }
         shuffleDeck();
     }
 
-    public void shuffleDeck(){
+    public void shuffleDeck() {
         Utils.shuffle(this.mainDeckCards);
     }
 
@@ -32,7 +32,7 @@ public class DeckZone extends Zones {
 
 
     public Card removeCard(int id) {
-        Card temp=mainDeckCards.get(id);
+        Card temp = mainDeckCards.get(id);
         mainDeckCards.remove(temp);
         return temp;
     }
@@ -41,11 +41,10 @@ public class DeckZone extends Zones {
         mainDeckCards.add(card);
     }
 
-    public int getId(Card card){
-        if(mainDeckCards.contains(card)){
+    public int getId(Card card) {
+        if (mainDeckCards.contains(card)) {
             return mainDeckCards.indexOf(card);
-        }
-        else{
+        } else {
             return -1;
         }
     }
@@ -54,7 +53,7 @@ public class DeckZone extends Zones {
         return mainDeckCards.size();
     }
 
-    public ArrayList<Card> getMainDeckCards(){
+    public ArrayList<Card> getMainDeckCards() {
         return mainDeckCards;
     }
 }

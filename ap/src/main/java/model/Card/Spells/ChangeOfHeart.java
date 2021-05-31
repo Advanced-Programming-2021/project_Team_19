@@ -28,7 +28,7 @@ public class ChangeOfHeart extends Spell implements ContinuousEffect, Undo {
 
     }
 
-    public ChangeOfHeart(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public ChangeOfHeart(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

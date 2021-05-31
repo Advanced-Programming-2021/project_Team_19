@@ -11,29 +11,27 @@ public class FieldZone extends Zones {
     }
 
     public Card removeCard(int id) {
-        Card temp=card;
-        card=null;
+        Card temp = card;
+        card = null;
         return temp;
     }
 
-    public int getId(Card card){
-        if(card.equals(this.card)){
+    public int getId(Card card) {
+        if (card.equals(this.card)) {
             return 0;
-        }
-        else{
+        } else {
             return -1;
         }
     }
 
     public void addCard(Card card) {
-        this.card=card;
+        this.card = card;
     }
 
-    public String toString(){
-        if(card==null){
+    public String toString() {
+        if (card == null) {
             return "E";
-        }
-        else{
+        } else {
             return "O";
         }
     }

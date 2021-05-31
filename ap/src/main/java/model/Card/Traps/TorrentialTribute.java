@@ -1,13 +1,13 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.*;
+import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actoins.Summon;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
 import controller.TrapCheckers.mirageDragonChecker;
 import model.Card.Monster;
-import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.Enums.SpellsAndTraps.TrapTypes;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
 
-    public TorrentialTribute(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public TorrentialTribute(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
 
@@ -40,16 +40,16 @@ public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
     }
 
 
-    private void destroyMonsters(GameData gameData, ArrayList<Monster> monsters){
+    private void destroyMonsters(GameData gameData, ArrayList<Monster> monsters) {
 
-        for(Monster monster : monsters) {
-            if(monster != null){
+        for (Monster monster : monsters) {
+            if (monster != null) {
                 monster.handleDestroy(gameData);
             }
         }
     }
 
-    public boolean canActivateBecauseOfAnAction(Action action){
+    public boolean canActivateBecauseOfAnAction(Action action) {
 
 
         ArrayList<Checker> checkers = new ArrayList<>();
@@ -58,15 +58,11 @@ public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
         checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
         checkers.add(new mirageDragonChecker(action.getGameData(), this));
 
-        if(!Checker.multipleCheck(checkers)){
+        if (!Checker.multipleCheck(checkers)) {
             return false;
         }
 
-        if (!(action instanceof Summon)) {
-            return false;
-        }
-
-        return true;
+        return action instanceof Summon;
     }
 
 }

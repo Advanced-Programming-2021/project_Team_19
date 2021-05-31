@@ -20,7 +20,7 @@ public class TheTricky extends EffectMonster {
     @Override
     public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
 
-        if (isForSetting || !canUseEffect(gameData)){
+        if (isForSetting || !canUseEffect(gameData)) {
             return 1;
         }
 
@@ -45,8 +45,7 @@ public class TheTricky extends EffectMonster {
                 Printer.printInvalidCommand();
             }
         }
-
-        activate(gameData);
+        new Activation(gameData).activate();
         return -1;
     }
 
@@ -58,7 +57,7 @@ public class TheTricky extends EffectMonster {
         Card toDiscard = Utils.askUserToSelectCard(handWithoutThisCard, "select a card from your hand to discard", null);
 
 
-        if (toDiscard != null){
+        if (toDiscard != null) {
             discardAndSummon(gameData, toDiscard);
             Printer.print("you successfully special summoned the Tricky");
             return null;

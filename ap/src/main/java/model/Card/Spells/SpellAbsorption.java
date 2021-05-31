@@ -13,7 +13,7 @@ public class SpellAbsorption extends Spell {
         return null;
     }
 
-    public SpellAbsorption(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public SpellAbsorption(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

@@ -56,7 +56,7 @@ public class Texchanger extends Monster {
             return;
         }
 
-        if (Utils.askForConfirmation("do you want to summon a normal Cyberse monster from your graveyard or deck?")){
+        if (Utils.askForConfirmation("do you want to summon a normal Cyberse monster from your graveyard or deck?")) {
             Card selectedCard = Utils.askUserToSelectCard
                     (cyberseCards, "select a card id to summon", null);
             if (selectedCard == null)
@@ -81,7 +81,7 @@ public class Texchanger extends Monster {
         return cyberseCards;
     }
 
-    public Texchanger(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public Texchanger(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

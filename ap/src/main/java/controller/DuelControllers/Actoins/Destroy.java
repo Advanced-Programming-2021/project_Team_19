@@ -5,31 +5,20 @@ import model.Card.Card;
 
 public class Destroy extends Action {
 
-    public Destroy(GameData gameData){
+    public Destroy(GameData gameData) {
         super(gameData, "destroy");
     }
 
-    public void run(Card card, boolean discardWithoutEffect){
+    public void run(Card card, boolean discardWithoutEffect) {
 
-        if (!discardWithoutEffect) {
-            if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
-                gameData.moveCardFromOneZoneToAnother(card,
-                        gameData.getCurrentGamer().getGameBoard().getZone(card),
-                        gameData.getCurrentGamer().getGameBoard().getGraveYard());
-            else
-                gameData.moveCardFromOneZoneToAnother(card,
-                        gameData.getSecondGamer().getGameBoard().getZone(card),
-                        gameData.getSecondGamer().getGameBoard().getGraveYard());
-        } else{
-            if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
-                gameData.moveCardFromOneZoneToAnother(card,
-                        gameData.getCurrentGamer().getGameBoard().getZone(card),
-                        gameData.getCurrentGamer().getGameBoard().getGraveYard());
-            else
-                gameData.moveCardFromOneZoneToAnother(card,
-                        gameData.getSecondGamer().getGameBoard().getZone(card),
-                        gameData.getSecondGamer().getGameBoard().getGraveYard());
-        }
+        if (gameData.getCurrentGamer().getGameBoard().getZone(card) != null)
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getCurrentGamer().getGameBoard().getZone(card),
+                    gameData.getCurrentGamer().getGameBoard().getGraveYard());
+        else
+            gameData.moveCardFromOneZoneToAnother(card,
+                    gameData.getSecondGamer().getGameBoard().getZone(card),
+                    gameData.getSecondGamer().getGameBoard().getGraveYard());
     }
 
 }

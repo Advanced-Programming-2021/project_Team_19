@@ -75,11 +75,6 @@ public class AllBoards {
         this.hand = hand;
     }
 
-
-    public void sendFromOneZoneToOther(Zones firstZone, Zones secondZone, int id) {
-        secondZone.addCard(firstZone.removeCard(id));
-    }
-
     public Zones getZone(Card card) {
         if (fieldZone.getId(card) != -1) {
             return fieldZone;
@@ -117,12 +112,12 @@ public class AllBoards {
     }
 
 
-
     //test
 
-    public AllBoards(){}
+    public AllBoards() {
+    }
 
-    public static AllBoards getTestBoard(User user){
+    public static AllBoards getTestBoard(User user) {
 
         AllBoards board = new AllBoards();
 

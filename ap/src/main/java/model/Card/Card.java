@@ -26,9 +26,13 @@ public class Card {
     @Expose
     public boolean hasActivationEffectCanceledInChain = false;
 
-    public int getEffectSpeed(){ return effectSpeed; }
+    public int getEffectSpeed() {
+        return effectSpeed;
+    }
 
-    public void setEffectSpeed(int speed){ effectSpeed = speed; }
+    public void setEffectSpeed(int speed) {
+        effectSpeed = speed;
+    }
 
     public int getPrice() {
         return price;
@@ -62,11 +66,11 @@ public class Card {
         return name;
     }
 
-    public String toString(){
-        return name+" : "+description;
+    public String toString() {
+        return name + " : " + description;
     }
 
-    public Card(String name,String description, int price){
+    public Card(String name, String description, int price) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -76,15 +80,15 @@ public class Card {
 
         @Override
         public int compare(Card o1, Card o2) {
-            if(o1.getName().compareTo(o2.getName())==0){
+            if (o1.getName().compareTo(o2.getName()) == 0) {
                 return 1;
-            }
-            else{
+            } else {
                 return o1.getName().compareTo(o2.getName());
             }
         }
     }
-    public void handleDestroy(GameData gameData){
+
+    public void handleDestroy(GameData gameData) {
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(this) != null)
             gameData.moveCardFromOneZoneToAnother(this,

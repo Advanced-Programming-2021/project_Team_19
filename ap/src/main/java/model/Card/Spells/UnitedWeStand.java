@@ -16,7 +16,7 @@ public class UnitedWeStand extends EquipSpell {
     @Override
     public int changeInAttack(GameData gameData) {
         ArrayList<Monster> monstersInMonsterCardZone;
-        if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(monsterEquippedWithThisSpell)){
+        if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(monsterEquippedWithThisSpell)) {
             monstersInMonsterCardZone = gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards();
         } else {
             monstersInMonsterCardZone = gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards();
@@ -27,7 +27,7 @@ public class UnitedWeStand extends EquipSpell {
         int faceUpMonsters = 0;
 
         for (Monster monster : monstersInMonsterCardZone) {
-            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)){
+            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
                 faceUpMonsters++;
             }
         }
@@ -35,7 +35,7 @@ public class UnitedWeStand extends EquipSpell {
         return faceUpMonsters * 800;
     }
 
-    public UnitedWeStand(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public UnitedWeStand(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

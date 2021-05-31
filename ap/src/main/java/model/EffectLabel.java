@@ -13,27 +13,27 @@ public class EffectLabel {
     public Gamer gamer;
     public GameData gameData;
 
-    public EffectLabel(GameData gameData, Gamer gamer, Card card){
+    public EffectLabel(GameData gameData, Gamer gamer, Card card) {
 
         this.card = card;
         this.gameData = gameData;
         this.gamer = gamer;
     }
 
-    public boolean checkLabel(){
+    public boolean checkLabel() {
 
-        if(card instanceof EffectMonster){
+        if (card instanceof EffectMonster) {
             return ((EffectMonster) card).shouldEffectRun(this);
         }
-        return ((SpellAndTraps)card).shouldEffectRun(this);
+        return ((SpellAndTraps) card).shouldEffectRun(this);
     }
 
-    public TriggerActivationData runEffect(){
+    public TriggerActivationData runEffect() {
 
-        if(card instanceof EffectMonster){
+        if (card instanceof EffectMonster) {
             return ((EffectMonster) card).runEffect(this);
         }
-        return ((SpellAndTraps)card).runEffect(this);
+        return ((SpellAndTraps) card).runEffect(this);
     }
 
 }

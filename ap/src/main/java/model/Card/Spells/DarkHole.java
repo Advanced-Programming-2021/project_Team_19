@@ -9,8 +9,8 @@ import model.Enums.Type;
 
 public class DarkHole extends Spell {
 
-    public DarkHole(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public DarkHole(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
     @Override

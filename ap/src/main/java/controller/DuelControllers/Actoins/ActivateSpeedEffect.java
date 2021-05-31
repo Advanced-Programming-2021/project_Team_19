@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
-    public ActivateSpeedEffect(GameData gameData){
+    public ActivateSpeedEffect(GameData gameData) {
         super(gameData);
     }
 
@@ -30,26 +30,26 @@ public class ActivateSpeedEffect extends ActivateTrapWithNotification {
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
 
-        if(checkersResult != null){
+        if (checkersResult != null) {
             data.message = checkersResult;
             return data;
         }
 
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
-        if(!card.canActivate(gameData)){
+        if (!card.canActivate(gameData)) {
             data.message = "you can't activate this card";
             return data;
         }
 
-        return (TriggerActivationData) super.activate();
+        return super.activate();
 
     }
 
-    protected boolean checkInvalidMoves(String command){
+    protected boolean checkInvalidMoves(String command) {
 
-        for(String str : Utils.getCommandsExceptActivation()){
-            if(command.matches(str)){
+        for (String str : Utils.getCommandsExceptActivation()) {
+            if (command.matches(str)) {
                 Printer.print("please activate one trap or spell");
                 return true;
             }

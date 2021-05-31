@@ -1,30 +1,24 @@
 package controller.TrapCheckers;
 
 import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.GameData;
-import controller.Utils;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
-import view.Printer.Printer;
 
-public class CardOwnerIsNotActionDoerChecker extends Checker{
+public class CardOwnerIsNotActionDoerChecker extends Checker {
 
     Action action;
 
-    public CardOwnerIsNotActionDoerChecker(Action action, SpellAndTraps card){
+    public CardOwnerIsNotActionDoerChecker(Action action, SpellAndTraps card) {
         super(action.getGameData(), card);
         this.action = action;
     }
 
-    public boolean check(){
+    public boolean check() {
 
-        if (isCardOwnerActionDoer(action, card)) {
-            return false;
-        }
-        return true;
+        return !isCardOwnerActionDoer(action, card);
     }
 
-    public  boolean isCardOwnerActionDoer(Action action, Card card) {
+    public boolean isCardOwnerActionDoer(Action action, Card card) {
         return action.getGameData().getCardController(card).equals(action.getActionDoer());
     }
 }

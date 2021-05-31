@@ -8,13 +8,14 @@ import model.User;
 import view.GetInput;
 import view.Printer.Printer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 
 public class DeckModifierBetweenGames {
 
-    private Deck deck;
-    private int initialMainDeckSize;
+    private final Deck deck;
+    private final int initialMainDeckSize;
     private Gamer gamer;
 
     public DeckModifierBetweenGames(User user) {
@@ -45,24 +46,6 @@ public class DeckModifierBetweenGames {
 
     }
 
-    private boolean wantsToSaveChanges() {
-        while (true) {
-            Printer.print("""
-                    do you want to save the changes you made to your deck:
-                    1- yes
-                    2- no""");
-            String command = GetInput.getString();
-            switch (command) {
-                case "1":
-                    return true;
-                case "2":
-                    return false;
-                default:
-                    Printer.printInvalidCommand();
-            }
-        }
-    }
-
     private void moveCard(Matcher matcher) {
         matcher.find();
         if (matcher.group(1).equals("main")) {
@@ -78,16 +61,8 @@ public class DeckModifierBetweenGames {
             Printer.print("invalid id");
             return;
         }
-        Iterator<String> it = deck.getSideDeckCards().iterator();
-        int i = 0;
-        String current = null;
-        while (it.hasNext()) {
-            i++;
-            current = it.next();
-            if(i==id){
-                break;
-            }
-        }
+
+        String current = getCardOfIndexI(id, deck.getSideDeckCards());
 
         deck.getSideDeckCards().remove(current);
         deck.getMainDeckCards().add(current);
@@ -100,19 +75,24 @@ public class DeckModifierBetweenGames {
             return;
         }
 
-        Iterator<String> it = deck.getSideDeckCards().iterator();
+        String current = getCardOfIndexI(id, deck.getMainDeckCards());
+
+        deck.getMainDeckCards().remove(current);
+        deck.getSideDeckCards().add(current);
+    }
+
+    private String getCardOfIndexI(int index, ArrayList<String> cards) {
+        Iterator<String> it = cards.iterator();
         int i = 0;
         String current = null;
         while (it.hasNext()) {
             i++;
             current = it.next();
-            if(id==i){
+            if (index == i) {
                 break;
             }
         }
-
-        deck.getMainDeckCards().remove(current);
-        deck.getSideDeckCards().add(current);
+        return current;
     }
 
     private boolean canEndModification() {

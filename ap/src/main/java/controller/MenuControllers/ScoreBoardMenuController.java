@@ -35,7 +35,7 @@ public class ScoreBoardMenuController {
 
     }
 
-    private TreeSet<User> allUsers = new TreeSet<>(new UserComp());
+    private final TreeSet<User> allUsers = new TreeSet<>(new UserComp());
 
     private DataForClientFromServer showScores() {
 
@@ -48,7 +48,7 @@ public class ScoreBoardMenuController {
                 currentScore = user.getScore();
                 rank++;
             }
-            returnedStr.append(rank + "-" + user.toString() + "\n");
+            returnedStr.append(rank).append("-").append(user).append("\n");
         }
         return new DataForClientFromServer(returnedStr.toString(), MessageType.SCORE);
 

@@ -19,8 +19,8 @@ public class HarpiesFeatherDuster extends Spell {
         return new ActivationData(this, "all enemy spell and traps were destroyed");
     }
 
-    public HarpiesFeatherDuster(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public HarpiesFeatherDuster(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
 }

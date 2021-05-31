@@ -13,7 +13,7 @@ public class RingOfDefence extends Spell {
         return null;
     }
 
-    public RingOfDefence(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public RingOfDefence(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

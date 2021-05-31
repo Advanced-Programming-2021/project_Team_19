@@ -8,7 +8,7 @@ import model.User;
 
 import java.util.regex.Matcher;
 
-public class LoginMenuController{
+public class LoginMenuController {
 
     static LoginMenuController instance = null;
 
@@ -42,7 +42,7 @@ public class LoginMenuController{
 
     private DataForClientFromServer checkUserLoginErrors(String username, String password) {
 
-        DataForClientFromServer dataSendToClient = null;
+        DataForClientFromServer dataSendToClient;
 
         if (!UserDataBaseController.doesUserExistWithThisUsername(username)) {
             dataSendToClient = new DataForClientFromServer
@@ -55,13 +55,13 @@ public class LoginMenuController{
             return dataSendToClient;
         }
 
-        return dataSendToClient;
+        return null;
 
     }
 
     private DataForClientFromServer manageCreatingAccount(Matcher matcher) {
 
-        DataForClientFromServer dataSendToClient = null;
+        DataForClientFromServer dataSendToClient;
 
         matcher.find();
         String username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
@@ -79,7 +79,7 @@ public class LoginMenuController{
 
     private DataForClientFromServer manageLogin(Matcher matcher) {
 
-        DataForClientFromServer dataSendToClient = null;
+        DataForClientFromServer dataSendToClient;
 
         matcher.find();
 
@@ -97,7 +97,7 @@ public class LoginMenuController{
 
     private DataForClientFromServer login(User user) {
 
-        DataForClientFromServer dataSendToClient = null;
+        DataForClientFromServer dataSendToClient;
 
         dataSendToClient = new DataForClientFromServer
                 ("user logged in successfully!", MessageType.SUCCESSFUL);

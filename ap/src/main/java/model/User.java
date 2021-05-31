@@ -20,7 +20,7 @@ public class User {
     private int score;
     private int credit;
 
-    private ArrayList<String> cards = new ArrayList<>();
+    private final ArrayList<String> cards = new ArrayList<>();
 
     public User(String username, String nickName, String password) {
 
@@ -46,11 +46,17 @@ public class User {
         this.credit = credit;
     }
 
-    public void increaseScore(int amount){this.score += amount;}
+    public void increaseScore(int amount) {
+        this.score += amount;
+    }
 
-    public void increaseCredit(int amount){this.credit += amount;}
+    public void increaseCredit(int amount) {
+        this.credit += amount;
+    }
 
-    public void decreaseCredit(int amount){this.credit -= amount;}
+    public void decreaseCredit(int amount) {
+        this.credit -= amount;
+    }
 
     public TreeSet<String> getDeckNames() {
         return deckNames;
@@ -84,36 +90,37 @@ public class User {
         this.nickname = nickName;
     }
 
-    public void addCard(String cardName){
+    public void addCard(String cardName) {
         cards.add(cardName);
     }
-    public void removeCard(String cardName){
+
+    public void removeCard(String cardName) {
         cards.remove(cardName);
     }
 
-    public void removeDeck(String name){
+    public void removeDeck(String name) {
         deckNames.remove(name);
     }
 
-    public void addDeck(String name){
+    public void addDeck(String name) {
         deckNames.add(name);
     }
 
-    public String getActiveDeckName(){
+    public String getActiveDeckName() {
         return activeDeckName;
     }
 
-    public void setActiveDeckName(String activeDeckName){
-        this.activeDeckName=activeDeckName;
+    public void setActiveDeckName(String activeDeckName) {
+        this.activeDeckName = activeDeckName;
     }
 
-    public ArrayList<String> getCards(){
+    public ArrayList<String> getCards() {
         return cards;
     }
 
     public static User getUserByGson(String path) {
         Gson gson = new Gson();
-        JsonReader reader = null;
+        JsonReader reader;
         try {
             reader = new JsonReader(new FileReader(path));
             return gson.fromJson(reader, User.class);
@@ -122,9 +129,9 @@ public class User {
         }
     }
 
-    public TreeSet<Card> getCardsSorted(){
-        TreeSet<Card> sortedCards=new TreeSet<Card>(new Card.CardComp());
-        for(String cardName:cards){
+    public TreeSet<Card> getCardsSorted() {
+        TreeSet<Card> sortedCards = new TreeSet<>(new Card.CardComp());
+        for (String cardName : cards) {
             sortedCards.add(Utils.getCardByName(cardName));
         }
         return sortedCards;
@@ -133,8 +140,9 @@ public class User {
     public boolean isPasswordCorrect(String password) {
         return password.matches(this.password);
     }
+
     @Override
-    public String toString(){
-        return nickname+": "+score;
+    public String toString() {
+        return nickname + ": " + score;
     }
 }

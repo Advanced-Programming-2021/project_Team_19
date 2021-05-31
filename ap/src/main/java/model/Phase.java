@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public enum Phase {
     DRAW("draw phase"),
     STANDBY("stand by phase"),
@@ -13,11 +10,11 @@ public enum Phase {
 
     String phaseName;
 
-    Phase(String name){
+    Phase(String name) {
         this.phaseName = name;
     }
 
-    public String getPhaseName(){
+    public String getPhaseName() {
         return phaseName;
     }
 }

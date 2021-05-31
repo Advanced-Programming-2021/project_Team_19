@@ -1,7 +1,7 @@
 package model.Card.Monsters;
+
 import controller.DuelControllers.Actoins.Activation;
 import controller.DuelControllers.GameData;
-import model.Card.Monster;
 import model.Data.ActivationData;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.Attribute;
@@ -11,7 +11,6 @@ import model.Phase;
 import view.Printer.Printer;
 
 public class YomiShip extends EffectMonster {
-
 
 
     @Override
@@ -29,7 +28,7 @@ public class YomiShip extends EffectMonster {
         return null;
     }
 
-    public YomiShip(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects){
-        super(name,description,price,attack,defence,level,attribute,monsterType,monsterTypesForEffects);
+    public YomiShip(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
+        super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }
 }

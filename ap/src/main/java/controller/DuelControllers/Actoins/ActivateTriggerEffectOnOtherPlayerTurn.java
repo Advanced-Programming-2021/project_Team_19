@@ -6,14 +6,14 @@ import view.Printer.Printer;
 
 public class ActivateTriggerEffectOnOtherPlayerTurn extends ActivateTriggerTrapEffect {
 
-    public ActivateTriggerEffectOnOtherPlayerTurn(Action action){
+    public ActivateTriggerEffectOnOtherPlayerTurn(Action action) {
         super(action);
     }
 
-    protected boolean checkInvalidMoves(String command){
+    protected boolean checkInvalidMoves(String command) {
 
-        for(String str : Utils.getCommandsExceptActivation()){
-            if(command.matches(str)){
+        for (String str : Utils.getCommandsExceptActivation()) {
+            if (command.matches(str)) {
                 Printer.print("it’s not your turn to play this kind of moves");
                 return true;
             }

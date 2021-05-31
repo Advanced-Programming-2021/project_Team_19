@@ -5,7 +5,6 @@ import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
 import view.GetInput;
 import view.Printer.Printer;
-import view.Printer.RegisterProfilePrinter;
 import view.Utils;
 
 import java.util.regex.Matcher;
@@ -35,18 +34,16 @@ public class LoginMenu extends Menu {
             if (command.matches("user create" +
                     "(:?(:? --username \\S+)|(:? --nickname \\S+)|(:? --password \\S+)){3}")) {
                 manageCreatingAccount(false, command);
-            } else if(command.matches("user create" +
-                    "(?=.*?-u \\S+)(?=.*?-n \\S+)(?=.*?-p \\S+)(:? -(:?p|u|n) \\S+){3}")){
+            } else if (command.matches("user create" +
+                    "(?=.*?-u \\S+)(?=.*?-n \\S+)(?=.*?-p \\S+)(:? -(:?p|u|n) \\S+){3}")) {
                 manageCreatingAccount(true, command);
-            }
-            else if (command.matches("user login" +
+            } else if (command.matches("user login" +
                     "(:?(:? --username \\S+)|(:? --password \\S+)){2}")) {
                 manageLogin(false, command);
-            }else if(command.matches("user login"+
-                    "(?=.*?-u \\S+)(?=.*?-p \\S+)(:? -(:?p|u) \\S+){2}")){
+            } else if (command.matches("user login" +
+                    "(?=.*?-u \\S+)(?=.*?-p \\S+)(:? -(:?p|u) \\S+){2}")) {
                 manageLogin(true, command);
-            }
-            else if (command.matches("menu exit")) {
+            } else if (command.matches("menu exit")) {
                 break;
             } else if (command.startsWith("menu ")) {
                 handleMenuOrders(command);
@@ -59,18 +56,17 @@ public class LoginMenu extends Menu {
 
     }
 
-    private void manageLogin(boolean isAbbreviated,String command) {
+    private void manageLogin(boolean isAbbreviated, String command) {
 
         Matcher matcher = controller.Utils.getMatcher(command, "user login (.+)");
 
         matcher.find();
         String username;
         String password;
-        if(isAbbreviated){
+        if (isAbbreviated) {
             username = Utils.getDataInCommandByKey(matcher.group(1), "-u");
             password = Utils.getDataInCommandByKey(matcher.group(1), "-p");
-        }
-        else{
+        } else {
             username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
             password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
         }
@@ -103,7 +99,7 @@ public class LoginMenu extends Menu {
         MainMenu.getInstance().run(username);
     }
 
-    private void manageCreatingAccount(boolean isAbbreviated,String command) {
+    private void manageCreatingAccount(boolean isAbbreviated, String command) {
 
         Matcher matcher = Utils.getMatcher(command, "user create (.+)");
 
@@ -111,12 +107,11 @@ public class LoginMenu extends Menu {
         String username;
         String password;
         String nickname;
-        if(isAbbreviated){
+        if (isAbbreviated) {
             username = Utils.getDataInCommandByKey(matcher.group(1), "-u");
             password = Utils.getDataInCommandByKey(matcher.group(1), "-p");
             nickname = Utils.getDataInCommandByKey(matcher.group(1), "-n");
-        }
-        else {
+        } else {
             username = Utils.getDataInCommandByKey(matcher.group(1), "--username");
             password = Utils.getDataInCommandByKey(matcher.group(1), "--password");
             nickname = Utils.getDataInCommandByKey(matcher.group(1), "--nickname");

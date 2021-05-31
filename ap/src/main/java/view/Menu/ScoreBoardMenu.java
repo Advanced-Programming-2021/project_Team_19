@@ -66,9 +66,9 @@ public class ScoreBoardMenu extends Menu {
         }
     }
 
-    private void help(String command){
-        if(command.equals("help")) {
-            commandIsDone=true;
+    private void help(String command) {
+        if (command.equals("help")) {
+            commandIsDone = true;
             System.out.println("""
                     scoreboard show
                     help

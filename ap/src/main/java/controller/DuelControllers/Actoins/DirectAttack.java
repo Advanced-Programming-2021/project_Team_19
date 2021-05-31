@@ -6,15 +6,15 @@ import model.Card.Monster;
 import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
-public class DirectAttack extends Attack{
+public class DirectAttack extends Attack {
 
-    public DirectAttack(GameData gameData){
+    public DirectAttack(GameData gameData) {
         super(gameData, "direct attack");
     }
 
-    public void run(){
+    public void run() {
 
-        if(canActionBeDone()){
+        if (canActionBeDone()) {
             directAttack();
         }
 
@@ -22,7 +22,6 @@ public class DirectAttack extends Attack{
 
 
     private void directAttack() {
-
 
 
         Card selectedCard = gameData.getSelectedCard();
@@ -34,11 +33,11 @@ public class DirectAttack extends Attack{
 
                 TriggerActivationData activationData = handleTriggerEffects();
 
-                if(activationData.hasActionStopped){
+                if (activationData.hasActionStopped) {
                     return;
                 }
 
-                ((Monster)attackingMonster).handleDirectAttack(gameData);
+                ((Monster) attackingMonster).handleDirectAttack(gameData);
             }
         }
     }

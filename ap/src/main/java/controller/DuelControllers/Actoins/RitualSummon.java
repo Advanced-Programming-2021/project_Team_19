@@ -102,7 +102,7 @@ public class RitualSummon extends Summon {
                     gameData.getCurrentGamer().getGameBoard().getZone(card),
                     gameData.getCurrentGamer().getGameBoard().getGraveYard());
         }
-        
+
         gameData.moveCardFromOneZoneToAnother(advancedRitualArt,
                 gameData.getCurrentGamer().getGameBoard().getZone(advancedRitualArt),
                 gameData.getCurrentGamer().getGameBoard().getGraveYard());

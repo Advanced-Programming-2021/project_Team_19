@@ -28,8 +28,8 @@ public class AdvancedRitualArt extends Spell {
         }
 
 
-        if (!canRitualSummon(monstersToTribute, gameData)){
-            return new ActivationData(null,"there is no way you could ritual summon a monster");
+        if (!canRitualSummon(monstersToTribute, gameData)) {
+            return new ActivationData(null, "there is no way you could ritual summon a monster");
         }
 
         gameData.addActionToCurrentActions(new RitualSummon(gameData, this));
@@ -57,8 +57,7 @@ public class AdvancedRitualArt extends Spell {
     }
 
 
-
-    public AdvancedRitualArt(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public AdvancedRitualArt(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class GetInput {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     private static boolean testMod = false;
     private static Queue<String> commands = new LinkedList<>();
@@ -65,12 +65,12 @@ public class GetInput {
         return scanner.nextInt();
     }
 
-    public static boolean AIMod(){
+    public static boolean AIMod() {
         try {
             if (AI.getGamer(0).equals(GameData.getGameData(0).getCurrentGamer())) {
                 return true;
             }
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         return false;

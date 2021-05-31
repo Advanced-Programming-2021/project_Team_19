@@ -1,7 +1,6 @@
 package view;
 
 import view.Printer.Printer;
-import view.Printer.RegisterProfilePrinter;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -37,26 +36,18 @@ public class Utils {
 
     public static boolean isPasswordWeak(String password) {
 
-        if (password.length() < 5) {
-            return true;
-        }
-        if (!password.matches(".*?\\d.*")) {
-            return true;
-        }
-        if (!password.matches(".*?[a-z].*")) {
-            return true;
-        }
-        if (!password.matches(".*?[A-Z].*")) {
-            return true;
-        }
-        return false;
+        return (password.length() < 5 ||
+                !password.matches(".*?\\d.*") ||
+                !password.matches(".*?[a-z].*") ||
+                !password.matches(".*?[A-Z].*"));
+
     }
 
     public static boolean checkFormatValidity(HashMap<String, String> userData) {
 
         for (String dataKey : userData.keySet()) {
-            if (!isFormatValid(userData.get(dataKey))) {
-                Printer.print(dataKey+" format is not valid");
+            if (isFormatInvalid(userData.get(dataKey))) {
+                Printer.print(dataKey + " format is not valid");
                 return false;
             }
         }
@@ -64,8 +55,8 @@ public class Utils {
         return true;
     }
 
-    public static boolean isFormatValid(String data) {
-        return data.matches("\\w+");
+    public static boolean isFormatInvalid(String data) {
+        return !data.matches("\\w+");
     }
 
 }

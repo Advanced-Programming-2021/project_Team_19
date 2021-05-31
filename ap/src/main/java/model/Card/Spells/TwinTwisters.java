@@ -11,7 +11,7 @@ import model.Enums.Type;
 
 public class TwinTwisters extends Spell implements Destroyer {
     @Override
-    public ActivationData activate(GameData gameData)  {
+    public ActivationData activate(GameData gameData) {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class TwinTwisters extends Spell implements Destroyer {
 
     }
 
-    public TwinTwisters(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public TwinTwisters(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 }

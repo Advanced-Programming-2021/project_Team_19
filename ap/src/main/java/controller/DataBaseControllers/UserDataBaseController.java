@@ -30,19 +30,19 @@ public class UserDataBaseController extends DataBaseController {
 
         user.setCredit(1000000000);
 
-        if(createFileByPathAndData(path, makeObjectJson(user))){
+        if (createFileByPathAndData(path, makeObjectJson(user))) {
             dataSendToClient = new DataForClientFromServer
                     ("user create successfully", MessageType.SUCCESSFUL);
             return dataSendToClient;
         }
 
-        return dataSendToClient;
+        return null;
     }
 
 
     public static DataForClientFromServer checkCreatingUserErrors(User user, String userPath) {
 
-        DataForClientFromServer dataSendToClient = null;
+        DataForClientFromServer dataSendToClient;
 
         if (isThisFileExist(userPath)) {
 
@@ -61,7 +61,7 @@ public class UserDataBaseController extends DataBaseController {
             return dataSendToClient;
         }
 
-        return dataSendToClient;
+        return null;
     }
 
     public static boolean isNickNameRepetitious(String nickname) {
@@ -108,14 +108,14 @@ public class UserDataBaseController extends DataBaseController {
         return rewriteFileOfObjectGson(getUserFilePathByUsername(user.getUsername()), user);
     }
 
-    public static void saveChanges(User user){
-        rewriteFileOfObjectGson(getUserFilePathByUsername(user.getUsername()),user);
+    public static void saveChanges(User user) {
+        rewriteFileOfObjectGson(getUserFilePathByUsername(user.getUsername()), user);
     }
 
-    public static  ArrayList<User> allUsers(){
-        ArrayList<User> allUsers=new ArrayList<>();
-        for(File file:getFilesOfOneFolder("Resource\\Users")){
-            allUsers.add((User)getObjectByGsonFile(file.getPath(),User.class));
+    public static ArrayList<User> allUsers() {
+        ArrayList<User> allUsers = new ArrayList<>();
+        for (File file : getFilesOfOneFolder("Resource\\Users")) {
+            allUsers.add((User) getObjectByGsonFile(file.getPath(), User.class));
         }
         return allUsers;
     }

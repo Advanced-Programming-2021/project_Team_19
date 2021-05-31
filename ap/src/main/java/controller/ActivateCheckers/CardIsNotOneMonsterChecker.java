@@ -6,11 +6,11 @@ import model.Enums.CardFamily;
 
 public class CardIsNotOneMonsterChecker extends ActivationChecker {
 
-    public CardIsNotOneMonsterChecker(GameData gameData, Card card){
+    public CardIsNotOneMonsterChecker(GameData gameData, Card card) {
         super(gameData, card);
     }
 
-    public String check(){
+    public String check() {
 
         if (card.getCardFamily().equals(CardFamily.MONSTER)) {
             return "activate effect is only for spell and trap cards";

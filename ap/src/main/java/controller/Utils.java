@@ -5,7 +5,6 @@ import controller.DuelControllers.Actoins.Action;
 import controller.DuelControllers.Actoins.Select;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
-import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardFamily;
 import model.Enums.GameEvent;
@@ -97,10 +96,7 @@ public class Utils {
 
     public static boolean IsSelectedCardNull(GameData gameData) {
 
-        if (gameData.getSelectedCard() == null) {
-            return true;
-        }
-        return false;
+        return gameData.getSelectedCard() == null;
     }
 
     public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass) {
@@ -201,15 +197,15 @@ public class Utils {
         Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() + "’s turn");
     }
 
-    public static boolean handleSelect(GameData gameData, String command){
+    public static boolean handleSelect(GameData gameData, String command) {
 
         if (command.startsWith("select")) {
             new Select(gameData).select(command);
         } else if (command.matches("card show --selected")) {
             new Select(gameData).select(command);
-        }else if (command.equals("show board")) {
+        } else if (command.equals("show board")) {
             gameData.showBoard();
-        }else{
+        } else {
             return false;
         }
         return true;

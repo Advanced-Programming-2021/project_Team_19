@@ -16,13 +16,13 @@ public class AttackMonster extends Attack {
         super(gameData, "attack monster");
     }
 
-    public int getEnemyId(){
+    public int getEnemyId() {
         return enemyId;
     }
 
     public void run(Matcher matcher) {
 
-        if(canActionBeDone()){
+        if (canActionBeDone()) {
             attackMonster(matcher);
         }
 
@@ -45,11 +45,11 @@ public class AttackMonster extends Attack {
 
                     TriggerActivationData activationData = handleTriggerEffects();
 
-                    if(activationData.hasActionStopped){
+                    if (activationData.hasActionStopped) {
                         return;
                     }
 
-                    ((Monster)attackingMonster).handleAttack(gameData, enemyId);
+                    ((Monster) attackingMonster).handleAttack(gameData, enemyId);
 
                 }
             }

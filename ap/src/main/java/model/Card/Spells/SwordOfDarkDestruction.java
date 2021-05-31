@@ -7,8 +7,8 @@ import model.Enums.Type;
 
 public class SwordOfDarkDestruction extends EquipSpell {
 
-    public SwordOfDarkDestruction(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public SwordOfDarkDestruction(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
     @Override

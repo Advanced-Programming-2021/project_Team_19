@@ -14,8 +14,8 @@ import java.util.Random;
 
 public class MindCrush extends SpeedEffectTrap {
 
-    public MindCrush(String name, String description, int price, Type type, TrapTypes trapType, Status status){
-        super(name,description,price,type, trapType, status);
+    public MindCrush(String name, String description, int price, Type type, TrapTypes trapType, Status status) {
+        super(name, description, price, type, trapType, status);
     }
 
     @Override
@@ -24,12 +24,12 @@ public class MindCrush extends SpeedEffectTrap {
         Printer.print("declare one card name or enter cancel");
         String declaredCardName = GetInput.getString();
 
-        if(declaredCardName.equals("cancel")){
+        if (declaredCardName.equals("cancel")) {
             spellCardMod = SpellCardMods.HIDDEN;
             return new ActivationData(null, "");
         }
 
-        if(Utils.getCardByName(declaredCardName) == null){
+        if (Utils.getCardByName(declaredCardName) == null) {
             Printer.print("invalid card name");
             return activate(gameData);
         }
@@ -40,9 +40,9 @@ public class MindCrush extends SpeedEffectTrap {
 
         ActivationData activationData;
 
-        if(isCardInRivalHand){
-            activationData =  handleDisCardCardFromRivalHand(gameData, declaredCardName);
-        } else{
+        if (isCardInRivalHand) {
+            activationData = handleDisCardCardFromRivalHand(gameData, declaredCardName);
+        } else {
             activationData = handleDisCardCardFromCurrentGamerHand(gameData);
         }
 
@@ -52,33 +52,35 @@ public class MindCrush extends SpeedEffectTrap {
 
     }
 
-    private ActivationData handleDisCardCardFromCurrentGamerHand(GameData gameData){
+    private ActivationData handleDisCardCardFromCurrentGamerHand(GameData gameData) {
 
         ArrayList<Card> currentGamerHand =
                 gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand();
 
-        if(currentGamerHand.size() == 0){
+        if (currentGamerHand.size() == 0) {
             return new ActivationData(this,
-                    "trap activated successfully" + "\n" +
-                            "this card does not exist in rival rivalHand " +
-                            "but your hand is empty " + "\n" + " so nothing happened");
+                    """
+                            trap activated successfully
+                            this card does not exist in rival rivalHand but your hand is empty\s
+                             so nothing happened""");
         }
 
         int rand = Math.abs(new Random().nextInt() % currentGamerHand.size());
 
         gameData.getCurrentGamer().getGameBoard().getHand().getCard(rand).handleDestroy(gameData);
-        return new ActivationData(this, "trap activated successfully" + "\n" +
-                "this card does not exist in rival rivalHand "
-                + "\nso " + "one random card has discarded from your rivalHand");
+        return new ActivationData(this, """
+                trap activated successfully
+                this card does not exist in rival rivalHand\s
+                so one random card has discarded from your rivalHand""");
     }
 
 
-    private ActivationData handleDisCardCardFromRivalHand(GameData gameData, String declaredCardName){
+    private ActivationData handleDisCardCardFromRivalHand(GameData gameData, String declaredCardName) {
 
         ArrayList<Card> rivalHand = gameData.getSecondGamer().getGameBoard().getHand().getCardsInHand();
 
-        for(Card card : (ArrayList<Card> ) rivalHand.clone()){
-            if(card.getName().equalsIgnoreCase(declaredCardName)){
+        for (Card card : (ArrayList<Card>) rivalHand.clone()) {
+            if (card.getName().equalsIgnoreCase(declaredCardName)) {
                 card.handleDestroy(gameData);
             }
         }
@@ -88,12 +90,12 @@ public class MindCrush extends SpeedEffectTrap {
                         "rival discard cards with name " + declaredCardName);
     }
 
-    private boolean isCardInRivalHand(GameData gameData, String declaredCardName){
+    private boolean isCardInRivalHand(GameData gameData, String declaredCardName) {
 
         ArrayList<Card> rivalHand = gameData.getSecondGamer().getGameBoard().getHand().getCardsInHand();
 
-        for(Card card : rivalHand){
-            if(card.getName().equalsIgnoreCase(declaredCardName)){
+        for (Card card : rivalHand) {
+            if (card.getName().equalsIgnoreCase(declaredCardName)) {
                 return true;
             }
         }

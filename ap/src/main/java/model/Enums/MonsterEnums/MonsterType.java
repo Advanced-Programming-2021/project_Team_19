@@ -33,4 +33,4 @@ public enum MonsterType {
     PYRO,
     @SerializedName("Cyberse")
     CYBERSE,
-    }
+}

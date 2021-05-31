@@ -7,8 +7,8 @@ import model.Enums.Type;
 
 public class BlackPendant extends EquipSpell {
 
-    public BlackPendant(String name, String description, int price, Type type, SpellTypes spellType, Status status){
-        super(name,description,price,type, spellType, status);
+    public BlackPendant(String name, String description, int price, Type type, SpellTypes spellType, Status status) {
+        super(name, description, price, type, spellType, status);
     }
 
     @Override

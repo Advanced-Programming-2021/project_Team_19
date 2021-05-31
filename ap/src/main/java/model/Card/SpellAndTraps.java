@@ -25,8 +25,8 @@ public abstract class SpellAndTraps extends Card {
     @Expose
     protected int turnActivated = 0;
 
-    public SpellAndTraps(String name,String description,int price,Type type,Status status){
-        super(name,description,price);
+    public SpellAndTraps(String name, String description, int price, Type type, Status status) {
+        super(name, description, price);
         this.type = type;
         this.status = status;
     }
@@ -39,7 +39,7 @@ public abstract class SpellAndTraps extends Card {
         this.turnActivated = turnActivated;
     }
 
-    public void setSetTurn(int turn){
+    public void setSetTurn(int turn) {
         setTurn = turn;
     }
 
@@ -55,39 +55,38 @@ public abstract class SpellAndTraps extends Card {
 
     public abstract boolean canActivate(GameData gameData);
 
-    public boolean handleSet(GameData gameData){
+    public boolean handleSet(GameData gameData) {
         setSpellCardMod(SpellCardMods.HIDDEN);
         setTurn = gameData.getTurn();
         return true;
     }
 
-    public boolean canActivateThisTurn(GameData gameData){
+    public boolean canActivateThisTurn(GameData gameData) {
 
         return setTurn != gameData.getTurn();
     }
 
-    public boolean canActivateBecauseOfAnAction(Action action){
+    public boolean canActivateBecauseOfAnAction(Action action) {
         return false;
     }
 
-    public boolean shouldEffectRun(EffectLabel label){
+    public boolean shouldEffectRun(EffectLabel label) {
         return false;
     }
 
-    public TriggerActivationData runEffect(EffectLabel label){
+    public TriggerActivationData runEffect(EffectLabel label) {
         return null;
     }
 
-    public void handleCommonsForActivate(GameData gameData){
+    public void handleCommonsForActivate(GameData gameData) {
         setTurnActivated(gameData.getTurn());
         setSpellCardMod(SpellCardMods.OFFENSIVE);
     }
 
 
-
     //test
 
-    public static void changeMode(SpellAndTraps card ,SpellCardMods spellCardMod) {
+    public static void changeMode(SpellAndTraps card, SpellCardMods spellCardMod) {
         card.spellCardMod = spellCardMod;
     }
 

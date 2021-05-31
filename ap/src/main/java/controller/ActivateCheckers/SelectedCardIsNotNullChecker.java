@@ -6,11 +6,11 @@ import model.Card.Card;
 
 public class SelectedCardIsNotNullChecker extends ActivationChecker {
 
-    public SelectedCardIsNotNullChecker(GameData gameData, Card card){
+    public SelectedCardIsNotNullChecker(GameData gameData, Card card) {
         super(gameData, card);
     }
 
-    public String check(){
+    public String check() {
 
         if (Utils.IsSelectedCardNull(gameData)) {
             return "no card is selected yet";
