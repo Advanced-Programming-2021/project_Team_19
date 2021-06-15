@@ -241,11 +241,18 @@ public class CSVDataBaseController {
         return getClassByName.get(cardName);
     }
 
+
+    //TODO: remove the catch part after debugging.Two cards Axe Raider and Battle Ox are giving null pointer exception.
+
     public static String getAllCardPrices() {
         StringBuilder returnedData = new StringBuilder();
         for (String cardName : getClassByName.keySet()) {
             Card card = getCardByCardName(cardName);
-            returnedData.append(card.getName()).append(":").append(card.getPrice()).append("\n");
+            try {
+                returnedData.append(card.getName()).append(":").append(card.getPrice()).append("\n");
+            } catch (NullPointerException e){
+                System.out.println(cardName + "_______________________________________________________");
+            }
         }
         return returnedData.substring(0, returnedData.length() - 1);
     }
