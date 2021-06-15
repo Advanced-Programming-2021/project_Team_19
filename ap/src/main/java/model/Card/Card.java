@@ -3,12 +3,17 @@ package model.Card;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.GameData;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import model.Enums.CardFamily;
 import model.Enums.Status;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 
-public class Card {
+public class Card extends Rectangle {
 
     @SerializedName("Price")
     private int price;
@@ -70,10 +75,14 @@ public class Card {
         return name + " : " + description;
     }
 
+
+    //TODO: fix the image parameter
+
     public Card(String name, String description, int price) {
         this.name = name;
         this.description = description;
         this.price = price;
+        setFill(new ImagePattern(new Image("C:\\project_Team_19\\ap\\src\\main\\resources\\view\\graphic\\pictures\\Baby dragon.jpg")));
     }
 
     public static class CardComp implements Comparator<Card> {
