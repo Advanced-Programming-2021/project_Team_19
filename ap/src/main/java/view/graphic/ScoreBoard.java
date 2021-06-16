@@ -1,4 +1,4 @@
 package view.graphic;
 
-public class ScoreBoard {
+public class ScoreBoard extends GraphicMenu{
 }

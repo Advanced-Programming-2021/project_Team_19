@@ -11,32 +11,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Card.Card;
 
 import java.io.IOException;
 
-public class Shop extends Application {
+public class Shop extends GraphicMenu {
 
     @FXML
-    Label cardNameBox ;
+    public Label cardNameBox;
 
     @FXML
-    HBox cardPic;
+    public Pane cardPic;
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void run (){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Shop.fxml"));
-        BorderPane borderPane = fxmlLoader.load();
-        Scene scene = new Scene(borderPane, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        try {
+            BorderPane borderPane = fxmlLoader.load();
+            stage.getScene().setRoot(borderPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     public void getCardName(MouseEvent mouseEvent) {
         String text = cardNameBox.getText();
