@@ -12,15 +12,15 @@ import java.util.TreeSet;
 
 public class User {
 
-    private String username;
-    private String password;
-    private String nickname;
-    private TreeSet<String> deckNames = new TreeSet<>();
-    private String activeDeckName;
-    private int score;
-    private int credit;
+    protected String username;
+    protected String password;
+    protected String nickname;
+    protected TreeSet<String> deckNames = new TreeSet<>();
+    protected String activeDeckName;
+    protected int score;
+    protected int credit;
 
-    private final ArrayList<String> cards = new ArrayList<>();
+    protected final ArrayList<String> cards = new ArrayList<>();
 
     public User(String username, String nickName, String password) {
 

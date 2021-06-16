@@ -6,11 +6,12 @@ import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
+import view.graphic.GraphicMenu;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-public class Menu {
+public class Menu extends GraphicMenu {
 
     protected static final HashMap<String, Integer> menuLevels;
 
@@ -44,9 +45,9 @@ public class Menu {
     protected void handleMenuOrders(String command) {
 
         if (command.matches("menu show-current")) {
-            showCurrentMenu();
+//            showCurrentMenu();
         } else if (command.matches("menu enter (.+)")) {
-            enterOtherMenu(Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "menu enter (.+)")));
+//            enterOtherMenu(Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "menu enter (.+)")));
         } else {
             Printer.printInvalidCommand();
         }
@@ -54,50 +55,50 @@ public class Menu {
     }
 
 
-    private void enterOtherMenu(String menuName) {
+//    private void enterOtherMenu(String menuName) {
+//
+//        if (!isMenuNameValid(menuName)) {
+//            Printer.print("invalid menu name");
+//            return;
+//        }
+//        if (this.menuName.equals("Login Menu")) {
+//            Printer.print("please login first");
+//            return;
+//        }
+//        if (!canEnterTheMenu(menuName)) {
+//            Printer.print("menu navigation is not possible");
+//            return;
+//        }
+//
+//        if (menuName.matches("Profile Menu")) {
+//            ProfileMenu.getInstance().run(username);
+//        } else if (menuName.matches("Deck Menu")) {
+//            DeckMenu.getInstance().run(username);
+//        } else if (menuName.matches("Scoreboard Menu")) {
+//            ScoreBoardMenu.getInstance().run();
+//        } else if (menuName.matches("Shop Menu")) {
+//            ShopMenu.getInstance().run(username);
+//        } else if (menuName.matches("Import/Export Menu")) {
+//            ImportAndExportMenu.getInstance().run();
+//        } else if (menuName.matches("Main Menu")) {
+//            MainMenu.getInstance().run(username);
+//        } else if (menuName.matches("Duel Menu")) {
+//            new DuelMenuController("Duel Menu").run(username);
+//        }
+//
+//    }
 
-        if (!isMenuNameValid(menuName)) {
-            Printer.print("invalid menu name");
-            return;
-        }
-        if (this.menuName.equals("Login Menu")) {
-            Printer.print("please login first");
-            return;
-        }
-        if (!canEnterTheMenu(menuName)) {
-            Printer.print("menu navigation is not possible");
-            return;
-        }
+//    private boolean canEnterTheMenu(String menuName) {
+//        return menuLevels.get(menuName) - menuLevels.get(this.menuName) == 1;
+//    }
 
-        if (menuName.matches("Profile Menu")) {
-            ProfileMenu.getInstance().run(username);
-        } else if (menuName.matches("Deck Menu")) {
-            DeckMenu.getInstance().run(username);
-        } else if (menuName.matches("Scoreboard Menu")) {
-            ScoreBoardMenu.getInstance().run();
-        } else if (menuName.matches("Shop Menu")) {
-            ShopMenu.getInstance().run(username);
-        } else if (menuName.matches("Import/Export Menu")) {
-            ImportAndExportMenu.getInstance().run();
-        } else if (menuName.matches("Main Menu")) {
-            MainMenu.getInstance().run(username);
-        } else if (menuName.matches("Duel Menu")) {
-            new DuelMenuController("Duel Menu").run(username);
-        }
+//    private boolean isMenuNameValid(String menuName) {
+//        return menuLevels.containsKey(menuName);
+//    }
 
-    }
-
-    private boolean canEnterTheMenu(String menuName) {
-        return menuLevels.get(menuName) - menuLevels.get(this.menuName) == 1;
-    }
-
-    private boolean isMenuNameValid(String menuName) {
-        return menuLevels.containsKey(menuName);
-    }
-
-    private void showCurrentMenu() {
-        Printer.print(menuName);
-    }
+//    private void showCurrentMenu() {
+//        Printer.print(menuName);
+//    }
 
     protected DataForClientFromServer sendDataToServer(DataForServerFromClient data) {
 

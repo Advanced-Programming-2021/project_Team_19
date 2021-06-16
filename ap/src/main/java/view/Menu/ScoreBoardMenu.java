@@ -1,81 +1,125 @@
 package view.Menu;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import controller.DataBaseControllers.DataBaseController;
+import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.Data.DataForServerFromClient;
+import model.User;
 import view.GetInput;
 import view.Printer.Printer;
+import view.graphic.Model.Person;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class ScoreBoardMenu extends Menu {
 
-    static ScoreBoardMenu instance = null;
+    private BorderPane mainPane = new BorderPane();
+    private TableView tableView = new TableView();
+    private HBox buttonBox = new HBox(5);
 
-    private boolean commandIsDone;
-
-    private ScoreBoardMenu() {
+    public ScoreBoardMenu() {
         super("Scoreboard Menu");
-    }
-
-    static ScoreBoardMenu getInstance() {
-
-        if (instance == null) {
-            instance = new ScoreBoardMenu();
-        }
-        return instance;
     }
 
     public void run() {
 
-        String command = GetInput.getString();
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(10, 0, 0, 10));
 
-        while (!command.equals("menu exit")) {
+        Label title = new Label("Score Board");
+        title.setFont(new Font("Arial", 20));
+        setButtons();
+        setTableView();
 
-            commandIsDone = false;
+        box.getChildren().addAll(title, tableView);
+        mainPane.setCenter(box);
 
-            showScores(Utils.getMatcher(command, "scoreboard show"));
+        stage.getScene().setRoot(mainPane);
+    }
 
-            handleCommandsStartWithMenu(command);
+    private void setTableView() {
 
-            help(command);
+        TableColumn<Person, String> column0 = new TableColumn<>("rank");
+        column0.setCellValueFactory(new PropertyValueFactory<>("rank"));
+        column0.setMinWidth(100);
 
-            if (!commandIsDone) {
-                Printer.printInvalidCommand();
-            }
-            command = GetInput.getString();
+        TableColumn<Person, String> column1 = new TableColumn<>("username");
+        column1.setCellValueFactory(new PropertyValueFactory<>("username"));
+        column1.setMinWidth(100);
+
+        TableColumn<Person, String> column2 = new TableColumn<>("score");
+        column2.setCellValueFactory(new PropertyValueFactory<>("score"));
+        column2.setMinWidth(100);
+
+        tableView.getColumns().add(column0);
+        tableView.getColumns().add(column1);
+        tableView.getColumns().add(column2);
+
+        tableView.setMaxWidth(301);
+
+        ArrayList<Person> people = getPersons();
+        for (Person person : people) {
+            tableView.getItems().add(person);
         }
     }
 
-    private void showScores(Matcher matcher) {
+    private void setButtons() {
 
-        if (!matcher.matches()) {
-            return;
-        }
-
-        commandIsDone = true;
-
-        Printer.print(sendDataToServer(
-                new DataForServerFromClient(matcher.group(0), menuName)).getMessage());
-
+//        Button backButton = new Button();
+//        setBackButton(backButton);
+//        User tempUser = currentUser;
+//
+//        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if(tempUser == null){
+//                    new FirstPage().run();
+//                }else{
+//                    new MainMenu().run(currentUser);
+//                }
+//
+//            }
+//        });
+//
+//        buttonBox.getChildren().add(backButton);
+//        buttonBox.getChildren().add(Audio.getAudioButton());
+//        mainPane.setTop(buttonBox);
     }
 
-    private void handleCommandsStartWithMenu(String command) {
-        if (command.startsWith("menu ")) {
-            commandIsDone = true;
-            handleMenuOrders(command);
-        }
-    }
 
-    private void help(String command) {
-        if (command.equals("help")) {
-            commandIsDone = true;
-            System.out.println("""
-                    scoreboard show
-                    help
-                    menu show-current
-                    menu [menu name]
-                    menu exit""");
-        }
+    public ArrayList<Person> getPersons() {
+
+        Type type = new TypeToken<ArrayList<Person>>() {
+        }.getType();
+
+        Gson gson = new GsonBuilder().create();
+
+        return gson.fromJson(sendDataToServer(
+                new DataForServerFromClient
+                        ("scoreboard show", menuName)).getMessage(), type);
+
+
     }
 
 }

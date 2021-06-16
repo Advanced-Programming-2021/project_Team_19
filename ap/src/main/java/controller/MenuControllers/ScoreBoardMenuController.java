@@ -1,13 +1,19 @@
 package controller.MenuControllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 import model.User;
+import view.graphic.Model.Person;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
+
+import static view.Printer.Printer.print;
 
 
 public class ScoreBoardMenuController {
@@ -31,15 +37,13 @@ public class ScoreBoardMenuController {
             return showScores();
         }
         return Utils.getDataSendToClientForInvalidInput();
-
-
     }
 
     private final TreeSet<User> allUsers = new TreeSet<>(new UserComp());
 
     private DataForClientFromServer showScores() {
 
-        StringBuilder returnedStr = new StringBuilder();
+        ArrayList<Person> persons = new ArrayList<>();
         gatherAllUsers();
         int rank = 0;
         int currentScore = -10;
@@ -48,9 +52,13 @@ public class ScoreBoardMenuController {
                 currentScore = user.getScore();
                 rank++;
             }
-            returnedStr.append(rank).append("-").append(user).append("\n");
+            persons.add(new Person(user, rank));
         }
-        return new DataForClientFromServer(returnedStr.toString(), MessageType.SCORE);
+
+        Gson gson = new GsonBuilder().create();
+        String data = gson.toJson(persons);
+        print(data);
+        return new DataForClientFromServer(data, MessageType.SCORE);
 
     }
 
