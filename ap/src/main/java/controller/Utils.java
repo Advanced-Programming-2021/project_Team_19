@@ -15,6 +15,7 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -224,6 +225,30 @@ public class Utils {
         answer.add("next phase");
 
         return answer;
+    }
+
+    public static String getPascalCase(String string) {
+        boolean wasLastSpace = true;
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < string.length(); i++) {
+            if (wasLastSpace) {
+                stringBuilder.append(String.valueOf(string.charAt(i)).toUpperCase());
+                wasLastSpace = false;
+            }
+            else if (string.charAt(i) == ' ') {
+                wasLastSpace = true;
+            }
+            else {
+                stringBuilder.append(String.valueOf(string.charAt(i)).toLowerCase());
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        System.out.println(getPascalCase(s));
     }
 
 }

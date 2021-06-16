@@ -3,6 +3,7 @@ package model.Card;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -76,13 +77,15 @@ public class Card extends Rectangle {
     }
 
 
-    //TODO: fix the image parameter
+    // TODO : See if you have any exceptions in some cards
+
 
     public Card(String name, String description, int price) {
+        super(211.5, 307);
         this.name = name;
         this.description = description;
         this.price = price;
-        setFill(new ImagePattern(new Image("C:\\project_Team_19\\ap\\src\\main\\resources\\view\\graphic\\pictures\\Baby dragon.jpg")));
+        setFill(new ImagePattern(new Image("/view/graphic/pictures/" + Utils.getPascalCase(name) +".jpg")));
     }
 
     public static class CardComp implements Comparator<Card> {
