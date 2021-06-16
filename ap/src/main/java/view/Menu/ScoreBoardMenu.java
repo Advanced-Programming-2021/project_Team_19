@@ -3,33 +3,19 @@ package view.Menu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import controller.DataBaseControllers.DataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
-import controller.Utils;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.Data.DataForServerFromClient;
-import model.User;
-import view.GetInput;
-import view.Printer.Printer;
-import view.graphic.Model.Person;
+import model.Person;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 
 public class ScoreBoardMenu extends Menu {
 

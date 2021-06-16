@@ -1,4 +1,4 @@
-package view.graphic.Model;
+package model;
 
 import model.User;
 
