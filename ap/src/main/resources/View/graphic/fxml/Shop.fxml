@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <Button mnemonicParsing="false" text="ClickOnMe" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.Shop">
+   <children>
+      <Label fx:id="cardNameBox" layoutX="228.0" layoutY="192.0" prefHeight="17.0" prefWidth="94.0" text="card name" />
+      <Button layoutX="249.0" layoutY="222.0" mnemonicParsing="false" onMouseClicked="#getCardName" text="Button" />
+      <Pane fx:id="cardPic" layoutX="139.0" layoutY="14.0" prefHeight="177.0" prefWidth="257.0" />
+   </children>
+</AnchorPane>

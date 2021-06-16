@@ -6,6 +6,7 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import model.Enums.CardFamily;
 import model.Enums.Status;
@@ -75,6 +76,7 @@ public class Card extends Rectangle {
     public String toString() {
         return name + " : " + description;
     }
+
 
 
     // TODO : See if you have any exceptions in some cards
