@@ -18,9 +18,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.Menu.ScoreBoardMenu;
 
 public class GraphicMenu extends Application {
+
+    public static double sceneX = 800;
+    public static double sceneY = 670;
 
     public static Stage stage;
 
@@ -28,10 +30,10 @@ public class GraphicMenu extends Application {
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
 
-        Scene scene = new Scene(new Pane(), 800, 600);
+        Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new ScoreBoardMenu().run();
+        new GameGraphic().run();
         //run function of your menu for test here
         stage.show();
     }

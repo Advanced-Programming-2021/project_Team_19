@@ -26,36 +26,8 @@ public class DuelMenuController extends Menu {
 
         this.user = UserDataBaseController.getUserByUsername(username);
         String command;
-
-        while (true) {
-
-            command = GetInput.getString();
-
-            if (command.equals("menu exit")) {
-                break;
-            } else if (command.startsWith("Menu")) {
-                handleMenuOrders(command);
-            } else if (command.startsWith("duel --new")) {
-                startDuel(command);
-            } else if (command.matches("help")) {
-                help();
-            } else {
-                Printer.printInvalidCommand();
-            }
-        }
-
+        command = GetInput.getString();startDuel(command);
     }
-
-    private void help() {
-        System.out.println("""
-                duel --new --ai --rounds <1|3>
-                duel --new --second-player <second player username> --rounds <1|3>
-                help
-                menu show-current
-                menu enter [menu name]
-                menu exit""");
-    }
-
 
     public void startDuel(String command) {
 

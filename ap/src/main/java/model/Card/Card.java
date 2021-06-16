@@ -27,6 +27,11 @@ public class Card extends Rectangle {
     public Status status = Status.UNLIMITED;
 
     @Expose
+    public static double height = 614;
+    @Expose
+    public static double width = 423;
+
+    @Expose
     private CardFamily cardFamily;
     @Expose
     private int effectSpeed = 0;

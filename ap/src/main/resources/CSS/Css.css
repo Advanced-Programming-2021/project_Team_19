@@ -1,4 +1,13 @@
 
+
+#gameBackground{
+    -fx-background-image: url("Assets/Field/fie_normal.bmp");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+
 .red {
     -fx-font-size: 18px;
     -fx-text-fill: red;
