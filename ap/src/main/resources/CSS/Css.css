@@ -19,6 +19,9 @@
     -fx-text-fill: #f1a117;
 }
 
+#scroll .viewport  {
+        -fx-background-color:transparent;}
+
 #myButton {
     -fx-font-size: 20px;
     -fx-text-fill: blue;

@@ -3,7 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -11,9 +11,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import model.Card.Card;
 import model.User;
 import view.Menu.Menu;
+
+import static view.graphic.Utils.getImageByCardName;
 
 public class GameGraphic extends Menu {
 
@@ -24,7 +27,8 @@ public class GameGraphic extends Menu {
     Pane cardShowPane = new Pane();
     Pane mainPane = new Pane();
     CardView cardForShow;
-    ScrollPane cardDescription = new ScrollPane();
+    Text cardDescription = new Text();
+    ScrollPane descriptionScrollPane = new ScrollPane();
 
     public GameGraphic() {
         super("Game Menu");
@@ -38,12 +42,21 @@ public class GameGraphic extends Menu {
         cardShowPane.getChildren().add(cardForShow);
         cardForShow.setX(9);
         cardForShow.setY(110);
-        cardShowPane.getChildren().add(cardDescription);
-
+        descriptionScrollPane.setContent(cardDescription);
+        cardDescription.setWrappingWidth(CardView.width / 2.4 - 10);
+        cardShowPane.getChildren().add(descriptionScrollPane);
+        descriptionScrollPane.setMinWidth(CardView.width / 2.4);
+        descriptionScrollPane.setMaxWidth(CardView.width / 2.4);
+        descriptionScrollPane.setMaxHeight(70);
+        descriptionScrollPane.setLayoutX(10);
+        descriptionScrollPane.setLayoutY(390);
+        descriptionScrollPane.setId("scroll");
+        descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        descriptionScrollPane.setStyle("-fx-background-color:transparent;");
+        descriptionScrollPane.setPadding(new Insets(4,0,4,4));
     }
 
     public void run() {
-
 
         setCardShowPane();
 
@@ -55,7 +68,8 @@ public class GameGraphic extends Menu {
         gamePane.getChildren().add(rectangle0);
 
 
-        Rectangle monster1 = getSpellAndTrapCardView(Utils.getCardByName("battle OX"), 0,1);
+        Rectangle monster1 = getCardViewByCard(Utils.getCardByName("battle OX"), 0,1);
+
         gamePane.getChildren().add(monster1);
 
         HBox box = new HBox(cardShowPane, gamePane);
@@ -83,7 +97,7 @@ public class GameGraphic extends Menu {
         return rectangle;
     }
 
-    private CardView getSpellAndTrapCardView(Card card, int i , int j) {
+    private CardView getCardViewByCard(Card card, int i , int j) {
         CardView cardView = new CardView(card, 9);
 
         cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -98,7 +112,8 @@ public class GameGraphic extends Menu {
     }
 
     public void showCard(Card card){
-
+        cardForShow.setFill(new ImagePattern(getImageByCardName(card)));
+        cardDescription.setText(card.getDescription());
     }
 
 }
