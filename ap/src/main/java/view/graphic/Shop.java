@@ -43,7 +43,7 @@ public class Shop extends GraphicMenu {
             System.out.println("This card does not exist");
         }
         else{
-            cardPic.getChildren().add(card);
+            cardPic.getChildren().add(new CardView(card, 2));
         }
     }
 }

@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-public class Card extends Rectangle {
+public class Card{
 
     @SerializedName("Price")
     private int price;
@@ -25,11 +25,6 @@ public class Card extends Rectangle {
     private String description;
     @SerializedName("Status")
     public Status status = Status.UNLIMITED;
-
-    @Expose
-    public static double height = 614;
-    @Expose
-    public static double width = 423;
 
     @Expose
     private CardFamily cardFamily;
@@ -88,11 +83,10 @@ public class Card extends Rectangle {
 
 
     public Card(String name, String description, int price) {
-        super(211.5, 307);
+
         this.name = name;
         this.description = description;
         this.price = price;
-        setFill(new ImagePattern(new Image("/view/graphic/pictures/" + Utils.getPascalCase(name) +".jpg")));
     }
 
     public static class CardComp implements Comparator<Card> {
