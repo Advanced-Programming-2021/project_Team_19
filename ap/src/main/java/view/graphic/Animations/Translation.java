@@ -7,9 +7,10 @@ import view.graphic.CardView;
 public class Translation {
 
     public CardView cardView;
-    private TranslateTransition transition;
+    public TranslateTransition transition;
 
-    public Translation(CardView cardView, int x, int y, double time){
+    public Translation(CardView cardView, double x, double y, double time){
+
         setCardView(cardView);
         transition = new TranslateTransition();
         transition.setCycleCount(1);
@@ -18,6 +19,29 @@ public class Translation {
         transition.setByY(y);
         transition.setDuration(Duration.millis(time));
     }
+
+    public Translation(CardView cardView, double fromX, double toX, double fromY, double toY, double time){
+        setCardView(cardView);
+        transition = new TranslateTransition();
+        transition.setCycleCount(1);
+        transition.setNode(cardView);
+        transition.setFromX(fromX);
+        transition.setFromY(fromY);
+        transition.setToX(toX);
+        transition.setToY(toY);
+        transition.setDuration(Duration.millis(time));
+    }
+
+    public Translation(CardView cardView, double toY, double time){
+        setCardView(cardView);
+        transition = new TranslateTransition();
+        transition.setCycleCount(1);
+        transition.setNode(cardView);
+        transition.setToY(toY);
+        transition.setDuration(Duration.millis(time));
+    }
+
+
 
     public void start(){
         transition.play();

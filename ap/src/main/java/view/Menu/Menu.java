@@ -1,17 +1,15 @@
 package view.Menu;
 
 import controller.ClientDataController;
-import controller.DuelControllers.DuelMenuController;
-import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
-import view.graphic.GraphicMenu;
+import view.graphic.menuGraphic;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 
-public class Menu extends GraphicMenu {
+public class Menu extends menuGraphic {
 
     protected static final HashMap<String, Integer> menuLevels;
 

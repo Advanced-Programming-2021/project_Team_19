@@ -12,7 +12,7 @@ import model.Card.Monster;
 public class CardView extends Rectangle {
 
     Card card;
-    boolean isHidden = true;
+    boolean isHidden = false;
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;

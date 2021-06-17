@@ -2,6 +2,8 @@ package view.graphic;
 
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -15,7 +17,11 @@ import javafx.scene.text.Text;
 import model.Card.Card;
 import model.User;
 import view.Menu.Menu;
+import view.graphic.Animations.Translation;
 
+import java.util.ArrayList;
+
+import static view.Printer.Printer.print;
 import static view.graphic.Utils.getImageByCard;
 
 public class GameGraphic extends Menu {
@@ -26,6 +32,7 @@ public class GameGraphic extends Menu {
     Pane gamePane = new Pane();
     Pane cardShowPane = new Pane();
     Pane mainPane = new Pane();
+    ArrayList<CardView> hand = new ArrayList<>();
     CardView cardForShow;
     Text cardDescription = new Text();
     ScrollPane descriptionScrollPane = new ScrollPane();
@@ -67,34 +74,68 @@ public class GameGraphic extends Menu {
         rectangle0.setFill(new ImagePattern(image));
         gamePane.getChildren().add(rectangle0);
 
-        Rectangle monster1 = getCardViewByCard(Utils.getCardByName("battle OX"), 0,1);
+        Rectangle monster1 = getCardViewByCardForMonsterAndSpellZone(Utils.getCardByName("battle OX"), 0,1);
         gamePane.getChildren().add(monster1);
 
         HBox box = new HBox(cardShowPane, gamePane);
         mainPane.getChildren().add(box);
-        box.setLayoutY((GraphicMenu.sceneY  - 600) / 2);
+        box.setLayoutY((menuGraphic.sceneY  - 600) / 2);
 
-        mainPane.getChildren().add(hand);
-        hand.setCenterShape(true);
-        hand.setSpacing(10);
+//        hand.setLayoutX(GraphicMenu.sceneX / 2);
+//        hand.setLayoutY(GraphicMenu.sceneY - 100);
 
-        hand.getChildren().add(getRectangle());
-        hand.getChildren().add(getRectangle());
-        hand.getChildren().add(getRectangle());
 
-        hand.setLayoutX(GraphicMenu.sceneX / 2);
-        hand.setLayoutY(GraphicMenu.sceneY - 100);
+        hand.add(getCardForHand(Utils.getCardByName("Trap hole")));
+        hand.add(getCardForHand(Utils.getCardByName("suijin")));
+        hand.add(getCardForHand(Utils.getCardByName("battle ox")));
+
+        for(CardView cardView : hand){
+            cardView.setY(getCardinHandY());
+            cardView.setX(getCardInHandX(cardView));
+            mainPane.getChildren().add(cardView);
+        }
+
         stage.getScene().setRoot(mainPane);
     }
 
-    HBox hand = new HBox();
-
-    private Rectangle getRectangle(){
-        Rectangle rectangle =  new Rectangle(CardView.width / 6.3, CardView.height / 6.3, Color.YELLOW);
-        return rectangle;
+    private double getCardinHandY(){
+        return menuGraphic.sceneY - 80;
     }
 
-    private CardView getCardViewByCard(Card card, int i , int j) {
+    private double getCardInHandX(CardView cardView){
+
+        double ans = menuGraphic.sceneX / 2;
+        double index = hand.indexOf(cardView);
+        double size = ((double) hand.size()) / 2;
+        double x = (size - index) * CardView.width / 4.8;
+        return ans + x;
+    }
+
+
+    private CardView getCardForHand(Card card){
+        CardView cardView = new CardView(card, 5);
+
+
+        cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                showCard(card);
+                print(cardView.getLayoutY());
+                new Translation(cardView, cardView.getLayoutY() - 15 , 150).start();
+            }
+        });
+
+        cardView.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                new Translation(cardView, cardView.getLayoutY() , 150).start();
+            }
+        });
+
+        return cardView;
+    }
+
+    private CardView getCardViewByCardForMonsterAndSpellZone(Card card, int i , int j) {
         CardView cardView = new CardView(card, 9);
 
         cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {

@@ -1,23 +1,17 @@
 package view.graphic;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import model.Card.Card;
 
 import java.io.IOException;
 
-public class Shop extends GraphicMenu {
+public class Shop extends menuGraphic {
 
     @FXML
     public Label cardNameBox;

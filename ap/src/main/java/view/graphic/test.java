@@ -32,7 +32,6 @@ public class test extends Menu {
         cardView.setY(300);
         stage.getScene().setRoot(pane);
 
-
         new FlipTransition(cardView).start();
         new Translation(cardView, 100,100, 1000).start();
     }

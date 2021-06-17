@@ -19,10 +19,10 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GraphicMenu extends Application {
+public class menuGraphic extends Application {
 
     public static double sceneX = 800;
-    public static double sceneY = 670;
+    public static double sceneY = 600;
 
     public static Stage stage;
 
@@ -33,7 +33,7 @@ public class GraphicMenu extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new test().run();
+        new GameGraphic().run();
         //run function of your menu for test here
         stage.show();
     }

@@ -1,6 +1,7 @@
 package model;
 
 public class Pair<T, R> {
+
     T first;
     R second;
 
