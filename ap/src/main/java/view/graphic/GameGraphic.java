@@ -16,7 +16,7 @@ import model.Card.Card;
 import model.User;
 import view.Menu.Menu;
 
-import static view.graphic.Utils.getImageByCardName;
+import static view.graphic.Utils.getImageByCard;
 
 public class GameGraphic extends Menu {
 
@@ -67,15 +67,12 @@ public class GameGraphic extends Menu {
         rectangle0.setFill(new ImagePattern(image));
         gamePane.getChildren().add(rectangle0);
 
-
         Rectangle monster1 = getCardViewByCard(Utils.getCardByName("battle OX"), 0,1);
-
         gamePane.getChildren().add(monster1);
 
         HBox box = new HBox(cardShowPane, gamePane);
         mainPane.getChildren().add(box);
         box.setLayoutY((GraphicMenu.sceneY  - 600) / 2);
-
 
         mainPane.getChildren().add(hand);
         hand.setCenterShape(true);
@@ -112,7 +109,7 @@ public class GameGraphic extends Menu {
     }
 
     public void showCard(Card card){
-        cardForShow.setFill(new ImagePattern(getImageByCardName(card)));
+        cardForShow.setFill(new ImagePattern(getImageByCard(card)));
         cardDescription.setText(card.getDescription());
     }
 

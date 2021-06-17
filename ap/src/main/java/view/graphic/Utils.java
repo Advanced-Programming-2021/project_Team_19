@@ -8,7 +8,7 @@ import model.Card.Monster;
 
 public class Utils {
 
-    public static Image getImageByCardName(Card card){
+    public static Image getImageByCard(Card card){
 
         if(card != null){
             String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
