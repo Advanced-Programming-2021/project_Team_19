@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import controller.DuelControllers.Actoins.Destroy;
 import controller.DuelControllers.GameData;
+import controller.Utils;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.stage.Stage;
 import model.Card.Spells.EquipSpell;
 import model.Card.Spells.FieldSpell;
 import model.Enums.CardFamily;
@@ -16,6 +20,7 @@ import model.Gamer;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class Monster extends Card {
 
@@ -55,7 +60,6 @@ public abstract class Monster extends Card {
         this.attribute = attribute;
         this.monsterType = monsterType;
         this.monsterTypesForEffects = monsterTypesForEffects;
-
         setCardFamily(CardFamily.MONSTER);
         setEffectType(MonsterTypesForEffects.EFFECT);
     }
@@ -316,5 +320,5 @@ public abstract class Monster extends Card {
     public void addEquipSpell(EquipSpell equipSpell) {
         equippedSpells.add(equipSpell);
     }
-
 }
+
