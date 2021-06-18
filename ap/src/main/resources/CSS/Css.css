@@ -7,9 +7,9 @@
     -fx-background-size: cover;
 }
 
-#graveyard  {
-    -fx-border-color:crimson;
-    -fx-background-color: red;
+
+#graveyard > .viewport {
+    -fx-background-color: #d06720;
 }
 
 .red {

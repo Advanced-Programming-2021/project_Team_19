@@ -3,11 +3,14 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -110,6 +113,10 @@ public class GameGraphic extends Menu {
         graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
         graveyardCards.add(getCardForGraveyard(Utils.getCardByName("suijin")));
         graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
 
         for(CardView cardView : graveyardCards){
             graveYard.getChildren().add(cardView);
@@ -135,23 +142,24 @@ public class GameGraphic extends Menu {
 
     private void showGraveYard(){
 
-        Image img = new Image("OtherPic/graveyardBackground.jpg");
-        ImageView imageView = new ImageView(img);
-        mainPane.getChildren().add(imageView);
-
         ScrollPane graveyardScrollPane = new ScrollPane();
-//        graveyardScrollPane.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,
-//                BackgroundRepeat.NO_REPEAT,
-//                BackgroundPosition.DEFAULT,
-//                new BackgroundSize(1.0, 1.0, true, true, false, false))));
-//        graveyardScrollPane.setId("graveyard");
-        graveyardScrollPane.setStyle("-fx-border-color:crimson; -fx-background-color: red;");
+
+        graveyardScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton() == MouseButton.SECONDARY){
+                    mainPane.getChildren().remove(graveyardScrollPane);
+                }
+            }
+        });
+
+        graveyardScrollPane.setId("graveyard");
         mainPane.getChildren().add(graveyardScrollPane);
 
-        graveyardScrollPane.setLayoutX(300);
+        graveyardScrollPane.setLayoutX(250);
         graveyardScrollPane.setLayoutY(200);
 
-        HBox box = new HBox(20);
+        HBox box = new HBox(5);
 
         for(CardView cardView : graveyardCards){
             CardView temp = new CardView(cardView.getCard(), 4, false);
@@ -159,8 +167,9 @@ public class GameGraphic extends Menu {
         }
 
         graveyardScrollPane.setContent(box);
-        graveyardScrollPane.setMaxWidth(400);
-        graveyardScrollPane.setMinWidth(400);
+        graveyardScrollPane.setMaxWidth(450);
+        graveyardScrollPane.setMinWidth(450);
+        graveyardScrollPane.setMinHeight(170);
 
     }
 
