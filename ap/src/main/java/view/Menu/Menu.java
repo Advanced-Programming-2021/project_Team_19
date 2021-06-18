@@ -98,7 +98,7 @@ public class Menu extends menuGraphic {
 //        Printer.print(menuName);
 //    }
 
-    protected DataForClientFromServer sendDataToServer(DataForServerFromClient data) {
+    protected static DataForClientFromServer sendDataToServer(DataForServerFromClient data) {
 
         //function of server
         return ClientDataController.handleMessageOfClientAndGetFeedback(data);

@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.*;
 import view.GetInput;
-import view.Menu.LoginMenu;
+import view.Menu.WelcomeMenu;
 import view.Printer.Printer;
 
 public class LoginAndRegisterTest {
@@ -16,7 +16,7 @@ public class LoginAndRegisterTest {
         GetInput.addCommand("user create --username " + Utils.getRandomString(10) + " --password Taha1506 --nickname " + Utils.getRandomString(10));
         GetInput.addCommand("user create --password Taha1506 --username " + Utils.getRandomString(10) + " --nickname " + Utils.getRandomString(10));
         GetInput.addCommand("menu exit");
-        LoginMenu.getInstance().run();
+        WelcomeMenu.getInstance().run();
         Assertions.assertEquals("user create successfully", Printer.getResponse());
         Assertions.assertEquals("user create successfully", Printer.getResponse());
     }
@@ -26,7 +26,7 @@ public class LoginAndRegisterTest {
         GetInput.addCommand("user create -u " + Utils.getRandomString(10) + " -p Taha1506 -n " + Utils.getRandomString(10));
         GetInput.addCommand("user create -p Taha1506 -u " + Utils.getRandomString(10) + " -n " + Utils.getRandomString(10));
         GetInput.addCommand("menu exit");
-        LoginMenu.getInstance().run();
+        WelcomeMenu.getInstance().run();
         Assertions.assertEquals("user create successfully", Printer.getResponse());
         Assertions.assertEquals("user create successfully", Printer.getResponse());
     }

@@ -2,7 +2,7 @@ import controller.DataBaseControllers.UserDataBaseController;
 import model.User;
 import org.junit.jupiter.api.*;
 import view.GetInput;
-import view.Menu.LoginMenu;
+import view.Menu.WelcomeMenu;
 import view.Printer.Printer;
 
 public class LoginTest {
@@ -23,7 +23,7 @@ public class LoginTest {
         GetInput.addCommand("user login --password " + user.getPassword() + " --username " + user.getUsername());
         GetInput.addCommand("menu exit");
         GetInput.addCommand("menu exit");
-        LoginMenu.getInstance().run();
+        WelcomeMenu.getInstance().run();
         Assertions.assertEquals("user logged in successfully!", Printer.getResponse());
         Assertions.assertEquals("user logged in successfully!", Printer.getResponse());
     }
@@ -35,7 +35,7 @@ public class LoginTest {
         GetInput.addCommand("user login -p " + user.getPassword() + " -u " + user.getUsername());
         GetInput.addCommand("menu exit");
         GetInput.addCommand("menu exit");
-        LoginMenu.getInstance().run();
+        WelcomeMenu.getInstance().run();
         Assertions.assertEquals("user logged in successfully!", Printer.getResponse());
         Assertions.assertEquals("user logged in successfully!", Printer.getResponse());
     }
