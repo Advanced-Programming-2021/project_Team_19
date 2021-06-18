@@ -2,7 +2,7 @@ package view.graphic;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import view.Menu.LoginMenu;
+import view.Menu.WelcomeMenu;
 
 public class RegisterMenu extends menuGraphic {
 
@@ -11,7 +11,7 @@ public class RegisterMenu extends menuGraphic {
         Button button = new Button("start");
         BorderPane borderPane = new BorderPane();
         button.setOnAction(e -> {
-            LoginMenu.getInstance().run();
+            WelcomeMenu.getInstance().run();
         });
         borderPane.setCenter(button);
         stage.getScene().setRoot(borderPane);

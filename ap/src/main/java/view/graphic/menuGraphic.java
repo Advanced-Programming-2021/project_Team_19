@@ -11,13 +11,17 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import view.Menu.WelcomeMenu;
 
 public class menuGraphic extends Application {
 
@@ -76,22 +80,9 @@ public class menuGraphic extends Application {
 
     public static void setBackButton(Button button) {
 
-        button.setMinSize(40,40);
-        button.setMaxSize(40,40);
-
-        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                stage.getScene().setCursor(Cursor.HAND);
-            }
-        });
-
-        button.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                stage.getScene().setCursor(Cursor.DEFAULT);
-            }
-        });
+        button.setMinSize(40, 40);
+        button.setMaxSize(40, 40);
+        readyCursorForButton(button);
 
         Image img = new Image("pic/backArrow.png");
         ImageView view = new ImageView(img);
@@ -99,6 +90,54 @@ public class menuGraphic extends Application {
         view.fitHeightProperty().bind(button.heightProperty());
         view.fitWidthProperty().bind(button.widthProperty());
         button.setGraphic(view);
+    }
+
+    public static void readyCursorForButton(Button button) {
+        button.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
+
+        button.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
+
+    }
+
+    public static VBox setTwoChoiceButtons(String firstChoice, String secondChoice) {
+
+        VBox buttonBox = new VBox(15);
+        buttonBox.setLayoutX(300);
+        buttonBox.setLayoutY(150);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button button1 = new Button();
+        button1.setText(firstChoice);
+        button1.setAlignment(Pos.CENTER);
+        button1.setTextAlignment(TextAlignment.CENTER);
+        readyCursorForButton(button1);
+
+        Button button2 = new Button();
+        button2.setText(secondChoice);
+        button2.setAlignment(Pos.CENTER);
+        button2.setTextAlignment(TextAlignment.CENTER);
+        readyCursorForButton(button2);
+
+        buttonBox.getChildren().add(button1);
+        buttonBox.getChildren().add(button2);
+
+        return buttonBox;
+    }
+
+    public static HBox textFieldGridToEnterInfo(String... fieldNames) {
+        VBox fieldNamesBox = new VBox(13);
+        for (String fieldName : fieldNames) {
+            fieldNamesBox.getChildren().add(new Label(fieldName));
+        }
+        VBox textFieldsBox = new VBox(5);
+        for (int i = 0; i < fieldNames.length; i++) {
+            textFieldsBox.getChildren().add(new TextField());
+        }
+
+        HBox fieldGrid = new HBox(10);
+        fieldGrid.getChildren().addAll(fieldNamesBox, textFieldsBox);
+
+        return fieldGrid;
     }
 
     public static void main(String[] args) {

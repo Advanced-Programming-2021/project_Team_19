@@ -188,7 +188,7 @@ public class DeckMenu extends Menu {
             String deckName = cardAndDeckName[1];
 
 
-            if (!Utils.checkFormatValidity(Utils.getHashMap(
+            if (!Utils.checkFormatValidity(null, Utils.getHashMap(
                     "deckName", deckName))) {
                 return;
             }

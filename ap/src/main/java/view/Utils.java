@@ -1,5 +1,6 @@
 package view;
 
+import javafx.scene.control.Label;
 import view.Printer.Printer;
 
 import java.util.HashMap;
@@ -43,11 +44,11 @@ public class Utils {
 
     }
 
-    public static boolean checkFormatValidity(HashMap<String, String> userData) {
+    public static boolean checkFormatValidity(Label label, HashMap<String, String> userData) {
 
         for (String dataKey : userData.keySet()) {
             if (isFormatInvalid(userData.get(dataKey))) {
-                Printer.print(dataKey + " format is not valid");
+                Printer.setFailureResponseToLabel(label, dataKey + " format is not valid");
                 return false;
             }
         }

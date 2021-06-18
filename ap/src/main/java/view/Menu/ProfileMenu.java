@@ -1,15 +1,29 @@
 package view.Menu;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
-import view.GetInput;
-import view.Printer.Printer;
+import model.Enums.MessageType;
 import view.Utils;
 
-import java.util.regex.Matcher;
+import static view.Printer.Printer.setFailureResponseToLabel;
+import static view.Printer.Printer.setSuccessResponseToLabel;
 
 public class ProfileMenu extends Menu {
 
     private static ProfileMenu instance = null;
+    private Pane pane = new Pane();
+    private static TextField nicknameTextField = new TextField();
+    private static TextField currentPasswordTextField = new TextField();
+    private static TextField newPasswordTextField = new TextField();
+    private static Label changeNicknameResponse = new Label();
+    private static Label changePasswordResponse = new Label();
 
     private ProfileMenu() {
         super("Profile Menu");
@@ -25,94 +39,157 @@ public class ProfileMenu extends Menu {
     }
 
     public void run(String username) {
+        pane = new Pane();
         setUsername(username);
+        setButtons();
+        setResponseLabels();
+        stage.setTitle("Profile Menu");
+        stage.getScene().setRoot(pane);
 
-        while (true) {
-            String command;
-            command = GetInput.getString();
-            if (command.matches("profile change --nickname \\S+")) {
-                changeNickName(false, command, Utils.getMatcher(command, "profile change (.+)"));
-            } else if (command.matches("profile change -n \\S+")) {
-                changeNickName(true, command, Utils.getMatcher(command, "profile change (.+)"));
-            } else if (command.matches("profile change" +
-                    "(?=.*?--password)(?=.*?--current \\S+)(?=.*--new \\S+)" +
-                    "( --((current \\S+)|(new \\S+)|(password))){3}")) {
-
-                changePassword(false, Utils.getMatcher(command, "profile change (.+)"));
-            } else if (command.matches("profile change" +
-                    "(?=.*?-p)(?=.*?-c \\S+)(?=.*?-n \\S+)" +
-                    "(:? -((c \\S+)|(n \\S+)|(p))){3}")) {
-                changePassword(true, Utils.getMatcher(command, "profile change (.+)"));
-            } else if (command.matches("menu exit")) {
-                break;
-            } else if (command.startsWith("menu ")) {
-                handleMenuOrders(command);
-            } else if (command.matches("help")) {
-                help();
-            } else {
-                Printer.printInvalidCommand();
-            }
-        }
     }
 
+    private void setResponseLabels() {
+        changeNicknameResponse.setLayoutX(200);
+        changeNicknameResponse.setLayoutY(300);
+        changePasswordResponse.setLayoutX(200);
+        changePasswordResponse.setLayoutY(300);
 
-    private void changeNickName(boolean isAbbreviated, String command, Matcher matcher) {
+    }
 
-        matcher.find();
-        String nickname;
-        if (isAbbreviated) {
-            nickname = Utils.getDataInCommandByKey(matcher.group(1), "-n");
-            command = command.replaceAll("-n", "--nickname");
-        } else {
-            nickname = Utils.getDataInCommandByKey(matcher.group(1), "--nickname");
-        }
+    public void setButtons() {
 
-        if (!Utils.checkFormatValidity(Utils.getHashMap
-                ("nickname", nickname))) {
+        VBox buttonBox = setTwoChoiceButtons("change nickname", "change password");
+
+        buttonBox.getChildren().get(0).setOnMouseClicked(event -> setChangeNicknameMenu());
+
+        buttonBox.getChildren().get(1).setOnMouseClicked(event -> setChangePasswordMenu());
+        Button backButton = new Button();
+        setBackButton(backButton);
+
+        pane.getChildren().addAll(buttonBox, backButton);
+    }
+
+    public void setChangeNicknameMenu() {
+
+
+        HBox changeNicknameBox = textFieldGridToEnterInfo("enter your new nickname here:");
+
+        changeNicknameBox.setLayoutX(200);
+        changeNicknameBox.setLayoutY(100);
+
+        nicknameTextField = (TextField) ((VBox) changeNicknameBox.getChildren().get(1))
+                .getChildren().get(0);
+
+        Button submitNickname = new Button("submit");
+        submitNickname.setOnMouseClicked(event -> changeNickName());
+        readyCursorForButton(submitNickname);
+
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> run(username));
+
+        ((VBox) changeNicknameBox.getChildren().get(1)).getChildren().add(submitNickname);
+
+        pane = new Pane();
+        pane.getChildren().addAll(changeNicknameBox, changeNicknameResponse, backButton);
+
+        stage.getScene().setRoot(pane);
+
+    }
+
+    public void clearTextFields() {
+        nicknameTextField.clear();
+        newPasswordTextField.clear();
+        currentPasswordTextField.clear();
+    }
+
+    public void changeNickName() {
+
+        String nickname = nicknameTextField.getText();
+
+        clearTextFields();
+
+        if (nickname.equals("")) {
+            setFailureResponseToLabel(changeNicknameResponse, "please enter a new nickname!");
             return;
         }
 
-        Printer.print(sendDataToServer(
-                new DataForServerFromClient(command, username, menuName)).getMessage());
-    }
+        DataForClientFromServer data = sendDataToServer(new DataForServerFromClient(
+                "profile change --nickname " + nickname, username, menuName));
 
-    private void changePassword(boolean isAbbreviated, Matcher matcher) {
-        matcher.find();
-        String currentPassword;
-        String newPassword;
-        if (isAbbreviated) {
-            currentPassword = Utils.getDataInCommandByKey(matcher.group(1), "-c");
-            newPassword = Utils.getDataInCommandByKey(matcher.group(1), "-n");
+        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
+            setSuccessResponseToLabel(changeNicknameResponse, data.getMessage());
         } else {
-            currentPassword = Utils.getDataInCommandByKey(matcher.group(1), "--current");
-            newPassword = Utils.getDataInCommandByKey(matcher.group(1), "--new");
+            setFailureResponseToLabel(changeNicknameResponse, data.getMessage());
         }
 
-        if (!Utils.checkFormatValidity(
+    }
+
+    private void setChangePasswordMenu() {
+
+        HBox changePasswordGrid = textFieldGridToEnterInfo("enter your current password here:",
+                "enter your new password here:");
+
+        currentPasswordTextField = (TextField) ((VBox) changePasswordGrid.getChildren().get(1))
+                .getChildren().get(0);
+
+        newPasswordTextField = (TextField) ((VBox) changePasswordGrid.getChildren().get(1))
+                .getChildren().get(1);
+
+        Button submit = new Button("submit");
+        submit.setAlignment(Pos.CENTER_RIGHT);
+        submit.setOnMouseClicked(event -> changePassword());
+        readyCursorForButton(submit);
+
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> run(username));
+
+        changePasswordGrid.setLayoutX(200);
+        changePasswordGrid.setLayoutY(100);
+        ((VBox) changePasswordGrid.getChildren().get(1)).getChildren().add(submit);
+
+        pane = new Pane();
+        pane.getChildren().addAll(changePasswordGrid, changePasswordResponse, backButton);
+
+        stage.getScene().setRoot(pane);
+
+    }
+
+    public void changePassword() {
+
+        String currentPassword = currentPasswordTextField.getText();
+        String newPassword = newPasswordTextField.getText();
+
+        if (currentPassword.equals("")) {
+            setFailureResponseToLabel(changePasswordResponse, "enter your current password");
+            return;
+        }
+
+        clearTextFields();
+
+        if (newPassword.equals("")) {
+            setFailureResponseToLabel(changePasswordResponse, "enter a new password");
+            return;
+        }
+
+        if (!Utils.checkFormatValidity(changePasswordResponse,
                 Utils.getHashMap(
                         "password", currentPassword, "newPassword", newPassword))) {
             return;
         }
 
-        Printer.print(sendDataToServer(
+        DataForClientFromServer data = sendDataToServer(
                 new DataForServerFromClient("profile change --password" +
                         "--current " + currentPassword + " --new " + newPassword
-                        , username, menuName)).getMessage());
+                        , username, menuName));
 
-    }
+        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
+            setSuccessResponseToLabel(changePasswordResponse, data.getMessage());
+        } else {
+            setFailureResponseToLabel(changePasswordResponse, data.getMessage());
+        }
 
-
-    private void help() {
-        System.out.print("""
-                profile change --nickname [nickname]
-                profile change -n [nickname]
-                profile change --password --current [current password] --new [new password]
-                profile change -p -c [current password] -n [new password]
-                help
-                menu show-current
-                menu [menu name]
-                menu exit
-                """);
 
     }
 

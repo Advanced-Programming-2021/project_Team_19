@@ -1,12 +1,7 @@
 package view;
 
 import controller.DataBaseControllers.DataBaseController;
-import controller.DuelControllers.Game;
-import controller.DuelControllers.GameData;
-import view.Menu.LoginMenu;
-import view.Printer.Printer;
-
-import java.util.Random;
+import view.Menu.WelcomeMenu;
 
 
 public class Main {
@@ -24,7 +19,7 @@ public class Main {
 
         DataBaseController.makeResourceDirectory();
 
-        LoginMenu.getInstance().run();
+        WelcomeMenu.getInstance().run();
     }
 
 }
