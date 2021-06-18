@@ -16,31 +16,33 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Card.Card;
+import view.Menu.Menu;
 
 import java.io.IOException;
 
-public class Shop extends Application{
+public class Shop extends Menu {
 
     @FXML
     private HBox cardPic;
     @FXML
     private TextField cardName;
 
-    public void start (Stage primaryStage){
+    public Shop() {
+        super("shop");
+    }
+
+    public void run (){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Shop.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
-            primaryStage.setScene(new Scene(anchorPane, 800, 600));
-            primaryStage.show();
+            stage.getScene().setRoot(anchorPane);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-
     public void getCardName(MouseEvent mouseEvent) {
-        mouseEvent.getButton().name().toUppercase().lambda;
         String text = cardName.getText();
         Card card = CSVDataBaseController.getCardByCardName(text);
         CardView cardView = new CardView(card,2, false);
@@ -54,7 +56,4 @@ public class Shop extends Application{
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
