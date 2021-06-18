@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -134,8 +135,17 @@ public class GameGraphic extends Menu {
 
     private void showGraveYard(){
 
+        Image img = new Image("OtherPic/graveyardBackground.jpg");
+        ImageView imageView = new ImageView(img);
+        mainPane.getChildren().add(imageView);
+
         ScrollPane graveyardScrollPane = new ScrollPane();
-        graveyardScrollPane.setId("graveyard");
+//        graveyardScrollPane.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,
+//                BackgroundRepeat.NO_REPEAT,
+//                BackgroundPosition.DEFAULT,
+//                new BackgroundSize(1.0, 1.0, true, true, false, false))));
+//        graveyardScrollPane.setId("graveyard");
+        graveyardScrollPane.setStyle("-fx-border-color:crimson; -fx-background-color: red;");
         mainPane.getChildren().add(graveyardScrollPane);
 
         graveyardScrollPane.setLayoutX(300);
