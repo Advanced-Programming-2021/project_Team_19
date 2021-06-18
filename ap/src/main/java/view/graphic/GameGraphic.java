@@ -34,6 +34,8 @@ public class GameGraphic extends Menu {
     Pane cardShowPane = new Pane();
     Pane mainPane = new Pane();
     ArrayList<CardView> hand = new ArrayList<>();
+    ArrayList<CardView> graveyardCards = new ArrayList<>();
+    StackPane graveYard = new StackPane();
     CardView cardForShow;
     Text cardDescription = new Text();
     ScrollPane descriptionScrollPane = new ScrollPane();
@@ -96,10 +98,63 @@ public class GameGraphic extends Menu {
         }
 
         stage.getScene().setRoot(mainPane);
-        addCardFromDeckTohHnd(controller.Utils.getCardByName("battle ox"));
+        addCardFromDeckTohHand(controller.Utils.getCardByName("battle ox"));
+
+        setGraveYard();
+
     }
 
-    private void addCardFromDeckTohHnd(Card card){
+    private void setGraveYard(){
+
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("suijin")));
+        graveyardCards.add(getCardForGraveyard(Utils.getCardByName("Trap hole")));
+
+        for(CardView cardView : graveyardCards){
+            graveYard.getChildren().add(cardView);
+        }
+        gamePane.getChildren().add(graveYard);
+        graveYard.setLayoutX(530);
+        graveYard.setLayoutY(340);
+    }
+
+
+    private CardView getCardForGraveyard(Card card){
+        CardView cardView = new CardView(card, 9, false);
+
+        cardView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                showGraveYard();
+            }
+        });
+
+        return cardView;
+    }
+
+    private void showGraveYard(){
+
+        ScrollPane graveyardScrollPane = new ScrollPane();
+        graveyardScrollPane.setId("graveyard");
+        mainPane.getChildren().add(graveyardScrollPane);
+
+        graveyardScrollPane.setLayoutX(300);
+        graveyardScrollPane.setLayoutY(200);
+
+        HBox box = new HBox(20);
+
+        for(CardView cardView : graveyardCards){
+            CardView temp = new CardView(cardView.getCard(), 4, false);
+            box.getChildren().add(temp);
+        }
+
+        graveyardScrollPane.setContent(box);
+        graveyardScrollPane.setMaxWidth(400);
+        graveyardScrollPane.setMinWidth(400);
+
+    }
+
+    private void addCardFromDeckTohHand(Card card){
 
         CardView cardView = new CardView(card, 8, true);
         cardView.setX(530);

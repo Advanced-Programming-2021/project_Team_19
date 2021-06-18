@@ -7,6 +7,13 @@
     -fx-background-size: cover;
 }
 
+#graveyard .viewport  {
+    -fx-background-color:transparent;
+    -fx-background-image: url("OtherPic/graveyardBackground.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
 
 .red {
     -fx-font-size: 18px;
