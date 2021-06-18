@@ -37,7 +37,7 @@ public class Shop extends menuGraphic {
             System.out.println("This card does not exist");
         }
         else{
-            cardPic.getChildren().add(new CardView(card, 2));
+            cardPic.getChildren().add(new CardView(card, 2, false));
         }
     }
 }

@@ -12,26 +12,43 @@ import model.Card.Monster;
 public class CardView extends Rectangle {
 
     Card card;
-    boolean isHidden = false;
+    public boolean isHidden = false;
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;
 
-    public CardView(Card card, double sizeInverse){
+    public CardView(double sizeInverse){
+        super(width / sizeInverse, height / sizeInverse);
+        this.sizeInverse = sizeInverse;
+        hideCard();
+    }
+
+    public CardView(Card card, double sizeInverse, boolean isHidden){
         super(width / sizeInverse, height / sizeInverse);
         this.sizeInverse = sizeInverse;
         this.card = card;
-        if(isHidden || card == null){
+        this.isHidden = isHidden;
+        if(isHidden){
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         } else{
             setCardImage();
         }
     }
 
+    public void setHidden(){
+        isHidden = true;
+    }
+
+    public void hideCard(){
+        setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
+        isHidden = true;
+    }
+
     public void setCardImage(){
         String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
         setFill(new ImagePattern(new Image("/Assets/Cards/" + model +
                 Utils.getPascalCase(card.getName()) +".jpg")));
+        isHidden = false;
     }
 
     public Card getCard(){

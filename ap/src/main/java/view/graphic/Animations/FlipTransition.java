@@ -17,32 +17,42 @@ import static view.Printer.Printer.print;
 public class FlipTransition {
 
     private CardView cardView;
-    boolean hasImageSet = false;
+    RotateTransition rotate = new RotateTransition();
 
-    public FlipTransition(CardView cardView){
+    boolean hasFliped = false;
+
+    public FlipTransition(CardView cardView, double time){
+
         setCardView(cardView);
-    }
-
-    public void start(){
-        RotateTransition rotate = new RotateTransition();
         rotate.setByAngle(90);
         rotate.setAxis(Rotate.Y_AXIS);
         rotate.setNode(cardView);
-        rotate.setDuration(Duration.millis(500));
-        rotate.play();
+
+        rotate.setDuration(Duration.millis(time / 2));
+
 
         rotate.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(!hasImageSet){
-                    cardView.setCardImage();
-                    hasImageSet = true;
-                    rotate.setByAngle(-90);
-                    rotate.play();
+
+                if(hasFliped){
+                    return;
                 }
+                if(cardView.isHidden){
+                    cardView.setCardImage();
+                } else{
+                    cardView.hideCard();
+                }
+
+                rotate.setByAngle(-90);
+                rotate.play();
+                hasFliped = true;
             }
         });
+    }
 
+    public void start(){
+        rotate.play();
     }
 
     public void setCardView(CardView cardView) {

@@ -22,6 +22,14 @@ public class Translation {
 
     public Translation(CardView cardView, double fromX, double toX, double fromY, double toY, double time){
         setCardView(cardView);
+        double XZero = cardView.getLayoutX();
+        double YZero = cardView.getLayoutY();
+
+        toX -= fromX - XZero;
+        toY -= fromY - YZero;
+        fromX = XZero;
+        fromY = YZero;
+
         transition = new TranslateTransition();
         transition.setCycleCount(1);
         transition.setNode(cardView);
@@ -38,6 +46,16 @@ public class Translation {
         transition.setCycleCount(1);
         transition.setNode(cardView);
         transition.setToY(toY);
+        transition.setDuration(Duration.millis(time));
+    }
+
+    public Translation(CardView cardView, double toX, double time, boolean bool){
+        setCardView(cardView);
+        transition = new TranslateTransition();
+        transition.setCycleCount(1);
+        transition.setNode(cardView);
+//        transition.setToY(toY);
+        transition.setToX(toX);
         transition.setDuration(Duration.millis(time));
     }
 

@@ -2,8 +2,6 @@ package view.graphic;
 
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -17,6 +15,8 @@ import javafx.scene.text.Text;
 import model.Card.Card;
 import model.User;
 import view.Menu.Menu;
+import view.graphic.Animations.FlipTransition;
+import view.graphic.Animations.ScaleAnimation;
 import view.graphic.Animations.Translation;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class GameGraphic extends Menu {
     User user1 = UserDataBaseController.getUserByUsername("mohammad");
     User user2 = UserDataBaseController.getUserByUsername("reza");
 
+    public CardView deck;
     Pane gamePane = new Pane();
     Pane cardShowPane = new Pane();
     Pane mainPane = new Pane();
@@ -45,7 +46,7 @@ public class GameGraphic extends Menu {
 
         Rectangle rectangle = new Rectangle(200, 600, Color.rgb(230, 180, 40));
         cardShowPane.getChildren().add(rectangle);
-        cardForShow = new CardView(null, 2.3);
+        cardForShow = new CardView(2.3);
         cardShowPane.getChildren().add(cardForShow);
         cardForShow.setX(9);
         cardForShow.setY(110);
@@ -76,27 +77,57 @@ public class GameGraphic extends Menu {
 
         Rectangle monster1 = getCardViewByCardForMonsterAndSpellZone(Utils.getCardByName("battle OX"), 0,1);
         gamePane.getChildren().add(monster1);
+        setDeck();
+        gamePane.getChildren().add(deck);
 
         HBox box = new HBox(cardShowPane, gamePane);
         mainPane.getChildren().add(box);
         box.setLayoutY((menuGraphic.sceneY  - 600) / 2);
 
-//        hand.setLayoutX(GraphicMenu.sceneX / 2);
-//        hand.setLayoutY(GraphicMenu.sceneY - 100);
-
-
         hand.add(getCardForHand(Utils.getCardByName("Trap hole")));
         hand.add(getCardForHand(Utils.getCardByName("suijin")));
+        hand.add(getCardForHand(Utils.getCardByName("baby dragon")));
         hand.add(getCardForHand(Utils.getCardByName("battle ox")));
 
         for(CardView cardView : hand){
             cardView.setY(getCardinHandY());
             cardView.setX(getCardInHandX(cardView));
-            mainPane.getChildren().add(cardView);
+            gamePane.getChildren().add(cardView);
         }
 
         stage.getScene().setRoot(mainPane);
+        addCardFromDeckTohHnd(controller.Utils.getCardByName("battle ox"));
     }
+
+    private void addCardFromDeckTohHnd(Card card){
+
+        CardView cardView = new CardView(card, 8, true);
+        cardView.setX(530);
+        cardView.setY(425);
+        gamePane.getChildren().add(cardView);
+        hand.add(cardView);
+
+        new ScaleAnimation(cardView, 0.6, 700).start();
+
+        new Translation(cardView, cardView.getX() , getCardInHandX(cardView) + 15,
+                cardView.getY(), getCardinHandY() + 23, 700).start();
+
+        new FlipTransition(cardView, 700).start();
+
+        for(CardView cardView1 : hand){
+            if(cardView1 != cardView){
+                new Translation(cardView1, cardView1.getX() , getCardInHandX(cardView1),
+                        cardView1.getY(), getCardinHandY(), 700).start();
+            }
+        }
+    }
+
+    private void setDeck(){
+        deck = new CardView(8);
+        deck.setX(530);
+        deck.setY(425);
+    }
+
 
     private double getCardinHandY(){
         return menuGraphic.sceneY - 80;
@@ -104,17 +135,16 @@ public class GameGraphic extends Menu {
 
     private double getCardInHandX(CardView cardView){
 
-        double ans = menuGraphic.sceneX / 2;
+        double ans = menuGraphic.sceneX / 2 - 100;
         double index = hand.indexOf(cardView);
         double size = ((double) hand.size()) / 2;
         double x = (size - index) * CardView.width / 4.8;
-        return ans + x;
+        return ans - x;
     }
 
 
     private CardView getCardForHand(Card card){
-        CardView cardView = new CardView(card, 5);
-
+        CardView cardView = new CardView(card, 5, false);
 
         cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -136,7 +166,7 @@ public class GameGraphic extends Menu {
     }
 
     private CardView getCardViewByCardForMonsterAndSpellZone(Card card, int i , int j) {
-        CardView cardView = new CardView(card, 9);
+        CardView cardView = new CardView(card, 9, false);
 
         cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
