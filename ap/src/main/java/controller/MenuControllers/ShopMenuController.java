@@ -31,6 +31,7 @@ public class  ShopMenuController {
 
     public DataForClientFromServer run(User user, String command) {
 
+
         if (command.matches("shop buy (.+)")) {
             return manageBuyCards(user, Utils.getMatcher(command, "shop buy (.+)"));
         } else if (command.matches("shop show --all")) {

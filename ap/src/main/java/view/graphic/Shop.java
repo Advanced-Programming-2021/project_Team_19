@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataBaseControllers.CSVDataBaseController;
+import controller.MenuControllers.ShopMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,15 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
+import model.Enums.MessageType;
+import model.User;
 import view.Menu.Menu;
 
 import java.io.IOException;
@@ -40,11 +40,14 @@ public class Shop extends Menu {
 
     private Card currentCard;
 
+    private static User user;
+
     public Shop() {
         super("Shop Menu");
     }
 
-    public void run (){
+    public void run (User user){
+        Shop.user = user;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Shop.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
@@ -61,16 +64,18 @@ public class Shop extends Menu {
         DataForClientFromServer data = sendDataToServer(new DataForServerFromClient("shop show --all", "Taha1506", menuName));
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
+        VBox vBox = new VBox();
         for(String card : cards) {
             String tempCardName = card.split(":")[0].trim();
             Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
             try {
-                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 4, false);
-                cardsScrolling.setContent(cardViewToAddToScroll);
+                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false);
+                vBox.getChildren().add(cardViewToAddToScroll);
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
             }
         }
+        cardsScrolling.setContent(vBox);
     }
 
     public void getCardName(MouseEvent mouseEvent) {
@@ -79,6 +84,7 @@ public class Shop extends Menu {
         if(card == null){
             messageBox.setText("This card does not exist");
             messageBox.setTextFill(Color.GREEN);
+            currentCard = null;
         }
         else{
             messageBox.setText(null);
@@ -105,10 +111,18 @@ public class Shop extends Menu {
     public void buyCard(MouseEvent mouseEvent) {
         if(currentCard == null) {
             messageBox.setText("No card is chosen yet!");
-            messageBox.setTextFill(Color.GREEN);
+            messageBox.setTextFill(Color.RED);
         }
         else{
-
+            DataForClientFromServer data =
+                    ShopMenuController.getInstance().run(user, "shop buy " + currentCard.getName() );
+            messageBox.setText(data.getMessage());
+            if (data.getMessageType().equals(MessageType.ERROR)){
+                messageBox.setTextFill(Color.RED);
+            }
+            else{
+                messageBox.setTextFill(Color.GREEN);
+            }
         }
     }
 }

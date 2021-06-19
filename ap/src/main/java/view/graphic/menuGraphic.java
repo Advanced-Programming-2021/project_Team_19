@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataBaseControllers.DataBaseController;
+import controller.DataBaseControllers.UserDataBaseController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -38,14 +39,13 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new Shop().run();
+        new Shop().run(UserDataBaseController.getUserByUsername("Taha1506"));
         //run function of your menu for test here
         stage.show();
     }
 
 
     public static Popup createPopup(final String message) {
-
         final Popup popup = new Popup();
         popup.setX(stage.getX() + 15);
         popup.setY(stage.getY() + stage.getHeight() - 65);
