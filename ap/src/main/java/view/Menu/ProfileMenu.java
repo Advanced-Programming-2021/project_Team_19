@@ -9,11 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
-import model.Enums.MessageType;
+import view.Printer.Printer;
 import view.Utils;
 
 import static view.Printer.Printer.setFailureResponseToLabel;
-import static view.Printer.Printer.setSuccessResponseToLabel;
 
 public class ProfileMenu extends Menu {
 
@@ -128,11 +127,7 @@ public class ProfileMenu extends Menu {
         DataForClientFromServer data = sendDataToServer(new DataForServerFromClient(
                 "profile change --nickname " + nickname, username, menuName));
 
-        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-            setSuccessResponseToLabel(changeNicknameResponse, data.getMessage());
-        } else {
-            setFailureResponseToLabel(changeNicknameResponse, data.getMessage());
-        }
+        Printer.setAppropriateResponseToLabelFromData(data, changeNicknameResponse);
 
     }
 
@@ -195,13 +190,7 @@ public class ProfileMenu extends Menu {
                         "--current " + currentPassword + " --new " + newPassword
                         , username, menuName));
 
-        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-            setSuccessResponseToLabel(changePasswordResponse, data.getMessage());
-        } else {
-            setFailureResponseToLabel(changePasswordResponse, data.getMessage());
-        }
-
-
+        Printer.setAppropriateResponseToLabelFromData(data, changePasswordResponse);
     }
 
 

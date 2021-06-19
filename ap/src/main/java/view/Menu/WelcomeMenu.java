@@ -140,11 +140,7 @@ public class WelcomeMenu extends Menu {
             DataForClientFromServer data = sendDataToServer
                     (new DataForServerFromClient(commandToSendToServer, username, WelcomeMenu.getInstance().menuName));
 
-            if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-                Printer.setSuccessResponseToLabel(responseLabel, data.getMessage());
-            } else {
-                Printer.setFailureResponseToLabel(responseLabel, data.getMessage());
-            }
+            Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
         }
 
         private static void clearTextFields() {
