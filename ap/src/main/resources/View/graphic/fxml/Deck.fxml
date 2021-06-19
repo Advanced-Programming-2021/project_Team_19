@@ -12,12 +12,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="303.0" layoutY="67.0" prefHeight="29.0" prefWidth="106.0">
+      <Label fx:id="activeDeckName" layoutX="269.0" layoutY="67.0" prefHeight="41.0" prefWidth="247.0" textFill="#15bf12">
          <font>
-            <Font size="16.0" />
+            <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="356.0" layoutY="131.0" prefHeight="29.0" prefWidth="79.0" text="All Decks:">
+      <Label layoutX="356.0" layoutY="131.0" prefHeight="29.0" prefWidth="79.0" text="All Decks:" textFill="#c7d316">
          <font>
             <Font size="18.0" />
          </font>
@@ -28,8 +28,9 @@
          </font>
       </Label>
       <Button fx:id="deckCreateButton" layoutX="289.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#createDeck" prefHeight="25.0" prefWidth="63.0" text="Create!" />
-      <Button fx:id="deckRemoveButton" layoutX="422.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#removeDeck" text="Remove!" />
+      <Button fx:id="deckRemoveButton" layoutX="444.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#removeDeck" text="Remove!" />
       <Label fx:id="result" layoutX="290.0" layoutY="508.0" prefHeight="41.0" prefWidth="196.0" />
-      <TextField fx:id="deckNameTextField" layoutX="288.0" layoutY="411.0" prefHeight="25.0" prefWidth="196.0" />
+      <TextField fx:id="deckNameTextField" layoutX="288.0" layoutY="411.0" prefHeight="25.0" prefWidth="223.0" />
+      <Button layoutX="361.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#setAsActiveDeck" prefHeight="25.0" prefWidth="73.0" text="Activate!" />
    </children>
 </AnchorPane>

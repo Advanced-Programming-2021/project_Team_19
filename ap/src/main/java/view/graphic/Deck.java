@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataBaseControllers.DeckDataBaseController;
+import controller.DuelControllers.DuelMenuController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,8 @@ public class Deck extends Menu {
     private TextField deckNameTextField;
     @FXML
     private Label result;
+    @FXML
+    private Label activeDeckName;
 
 
     public Deck() {
@@ -57,6 +60,7 @@ public class Deck extends Menu {
 
     public void initialize() {
         updateDeckScroll();
+        activeDeckName.setText(user.getActiveDeckName());
     }
 
     public void createDeck() {
@@ -101,10 +105,25 @@ public class Deck extends Menu {
                 }
             }
             deckFullDescription.setCenter(hBox);
-            deckFullDescription.setTop(new Label(deck.getName()));
+            deckFullDescription.setTop(new Label(deck.getName() + " :"));
             allDecks.getChildren().add(deckFullDescription);
         }
         allDecks.setSpacing(10);
         deckBar.setContent(allDecks);
+    }
+
+    public void setAsActiveDeck() {
+        String activeDeckText = deckNameTextField.getText();
+        DataForClientFromServer data = DeckMenuController.getInstance().run(user, "deck set-active " + activeDeckText);
+        result.setText(data.getMessage());
+        result.setFont(new Font(16));
+        if (data.getMessageType().equals(MessageType.ERROR)) {
+            result.setTextFill(Color.RED);
+        }
+        else{
+            result.setTextFill(Color.GREEN);
+            activeDeckName.setText(user.getActiveDeckName());
+            updateDeckScroll();
+        }
     }
 }
