@@ -66,6 +66,7 @@ public class Shop extends Menu {
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
         VBox vBox = new VBox();
+        vBox.setSpacing(10);
         for(String card : cards) {
             String tempCardName = card.split(":")[0].trim();
             Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
@@ -94,6 +95,7 @@ public class Shop extends Menu {
                 System.out.println(card.getName()+ "-----------------------------------------------");
             }
         }
+        hBox.setSpacing(10);
         userCards.setContent(hBox);
     }
 
