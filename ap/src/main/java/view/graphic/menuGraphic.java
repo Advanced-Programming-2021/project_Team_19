@@ -1,7 +1,6 @@
 package view.graphic;
 
 import controller.DataBaseControllers.DataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -9,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,8 +22,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.Menu.ProfileMenu;
 import view.Menu.WelcomeMenu;
+
+import java.util.ArrayList;
 
 public class menuGraphic extends Application {
 
@@ -39,7 +40,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new Deck().run(UserDataBaseController.getUserByUsername("Taha1506"));
+        WelcomeMenu.getInstance().run();
         //run function of your menu for test here
         stage.show();
     }
@@ -97,8 +98,15 @@ public class menuGraphic extends Application {
         button.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
 
         button.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
-
     }
+
+    public void readyFxmlButtonsForCursor(Pane pane) {
+        for (Node child : pane.getChildren()) {
+            if (child instanceof Button)
+                readyCursorForButton((Button) child);
+        }
+    }
+
 
     public static VBox setSeveralChoiceButtons(String... choices) {
 

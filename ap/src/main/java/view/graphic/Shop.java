@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DataBaseControllers.UserDataBaseController;
 import controller.MenuControllers.ShopMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
 import model.User;
+import view.Menu.MainMenu;
 import view.Menu.Menu;
 
 import java.io.IOException;
@@ -28,8 +30,6 @@ public class Shop extends Menu {
     private HBox cardPic;
     @FXML
     private TextField cardName;
-    @FXML
-    private Button backButton;
     @FXML
     private Label messageBox;
     @FXML
@@ -43,15 +43,19 @@ public class Shop extends Menu {
 
     private static User user;
 
+
     public Shop() {
         super("Shop Menu");
     }
 
-    public void run (User user){
-        Shop.user = user;
+
+    public void run(String username) {
+        Shop.username = username;
+        user = UserDataBaseController.getUserByUsername(username);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Shop.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
+            readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
             stage.show();
         } catch (IOException e) {
@@ -67,7 +71,7 @@ public class Shop extends Menu {
         String[] cards = data.getMessage().split("\n");
         VBox vBox = new VBox();
         vBox.setSpacing(10);
-        for(String card : cards) {
+        for (String card : cards) {
             String tempCardName = card.split(":")[0].trim();
             Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
             try {
@@ -92,25 +96,24 @@ public class Shop extends Menu {
                 CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
                 hBox.getChildren().add(cardViewToAddToScroll);
             } catch (Exception e) {
-                System.out.println(card.getName()+ "-----------------------------------------------");
+                System.out.println(card.getName() + "-----------------------------------------------");
             }
         }
         hBox.setSpacing(10);
         userCards.setContent(hBox);
     }
 
-    public void getCardName(MouseEvent mouseEvent) {
+    public void getCardName() {
         String text = cardName.getText();
         Card card = controller.Utils.getCardByName(text);
-        if(card == null){
+        if (card == null) {
             messageBox.setText("This card does not exist");
             messageBox.setTextFill(Color.RED);
             messageBox.setFont(new Font(16));
             currentCard = null;
-        }
-        else{
+        } else {
             messageBox.setText(null);
-            CardView cardView = new CardView(card,2, false);
+            CardView cardView = new CardView(card, 2, false);
             currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
@@ -118,11 +121,11 @@ public class Shop extends Menu {
         }
     }
 
-    public void getBack(MouseEvent mouseEvent) {
-        System.out.println("Hello world");
+    public void getBack() {
+        MainMenu.getInstance().run(username);
     }
 
-    public void clearChoice(MouseEvent mouseEvent) {
+    public void clearChoice() {
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
         currentCard = null;
@@ -130,21 +133,19 @@ public class Shop extends Menu {
         messageBox.setText(null);
     }
 
-    public void buyCard(MouseEvent mouseEvent) {
-        if(currentCard == null) {
+    public void buyCard() {
+        if (currentCard == null) {
             messageBox.setText("No card is chosen yet!");
             messageBox.setTextFill(Color.RED);
             messageBox.setFont(new Font(16));
-        }
-        else{
+        } else {
             DataForClientFromServer data =
-                    ShopMenuController.getInstance().run(user, "shop buy " + currentCard.getName() );
+                    ShopMenuController.getInstance().run(user, "shop buy " + currentCard.getName());
             messageBox.setText(data.getMessage());
-            if (data.getMessageType().equals(MessageType.ERROR)){
+            if (data.getMessageType().equals(MessageType.ERROR)) {
                 messageBox.setTextFill(Color.RED);
                 messageBox.setFont(new Font(16));
-            }
-            else{
+            } else {
                 messageBox.setTextFill(Color.GREEN);
                 coinShower.setText(String.valueOf(user.getCredit()));
                 coinShower.setTextFill(Color.WHITE);
@@ -155,7 +156,7 @@ public class Shop extends Menu {
                         CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
                         hBox.getChildren().add(cardViewToAddToScroll);
                     } catch (Exception e) {
-                        System.out.println(card.getName()+ "-----------------------------------------------");
+                        System.out.println(card.getName() + "-----------------------------------------------");
                     }
                 }
                 userCards.setContent(hBox);

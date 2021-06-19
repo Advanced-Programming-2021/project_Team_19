@@ -5,8 +5,7 @@ import controller.DuelControllers.DuelMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import view.GetInput;
-import view.Printer.Printer;
+import view.graphic.Shop;
 
 public class MainMenu extends Menu {
 
@@ -49,7 +48,7 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController("Duel Menu").run(username));
 
-        buttonBox.getChildren().get(3).setOnMouseClicked(event -> ShopMenu.getInstance().run(username));
+        buttonBox.getChildren().get(3).setOnMouseClicked(event -> new Shop().run(username));
 
         buttonBox.getChildren().get(4).setOnMouseClicked(event -> new ScoreBoardMenu().run());
 
