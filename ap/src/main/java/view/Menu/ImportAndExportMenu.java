@@ -34,8 +34,6 @@ public class ImportAndExportMenu extends Menu {
                 exportCard(command);
             } else if (command.matches("menu exit")) {
                 break;
-            } else if (command.startsWith("menu ")) {
-                handleMenuOrders(command);
             } else if (command.matches("help")) {
                 help();
             } else {

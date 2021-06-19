@@ -56,15 +56,26 @@ public class ProfileMenu extends Menu {
 
     }
 
+    private void clearResponseLabels(){
+        changeNicknameResponse.setText("");
+        changePasswordResponse.setText("");
+    }
+
     public void setButtons() {
 
-        VBox buttonBox = setTwoChoiceButtons("change nickname", "change password");
+        VBox buttonBox = setSeveralChoiceButtons("change nickname", "change password");
 
-        buttonBox.getChildren().get(0).setOnMouseClicked(event -> setChangeNicknameMenu());
+        buttonBox.getChildren().get(0).setOnMouseClicked(event -> {clearResponseLabels();
+            setChangeNicknameMenu();
+        });
 
-        buttonBox.getChildren().get(1).setOnMouseClicked(event -> setChangePasswordMenu());
+        buttonBox.getChildren().get(1).setOnMouseClicked(event -> {clearResponseLabels();
+            setChangePasswordMenu();
+        });
+
         Button backButton = new Button();
         setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
 
         pane.getChildren().addAll(buttonBox, backButton);
     }
