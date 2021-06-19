@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -26,6 +27,8 @@ public class Shop extends Menu {
     private HBox cardPic;
     @FXML
     private TextField cardName;
+    @FXML
+    private Button backButton;
 
     public Shop() {
         super("shop");
@@ -44,16 +47,18 @@ public class Shop extends Menu {
 
     public void getCardName(MouseEvent mouseEvent) {
         String text = cardName.getText();
-        Card card = CSVDataBaseController.getCardByCardName(text);
-        CardView cardView = new CardView(card,2, false);
+        Card card = controller.Utils.getCardByName(text);
         if(card == null){
             System.out.println("This card does not exist");
         }
         else{
+            CardView cardView = new CardView(card,2, false);
             cardPic.getChildren().clear();
-            System.out.println(cardView);
             cardPic.getChildren().add(cardView);
         }
     }
 
+    public void getBack(MouseEvent mouseEvent) {
+        System.out.println("Hello world");
+    }
 }

@@ -37,7 +37,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new GameGraphic().run();
+        new Shop().run();
         //run function of your menu for test here
         stage.show();
     }
