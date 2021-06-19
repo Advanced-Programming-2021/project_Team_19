@@ -12,7 +12,7 @@ import model.User;
 
 import java.util.regex.Matcher;
 
-public class ShopMenuController {
+public class  ShopMenuController {
 
 
     private ShopMenuController() {

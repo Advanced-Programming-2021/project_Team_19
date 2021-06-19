@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Card.Card;
+import model.Data.DataForClientFromServer;
+import model.Data.DataForServerFromClient;
 import view.Menu.Menu;
 
 import java.io.IOException;
@@ -32,11 +35,13 @@ public class Shop extends Menu {
     private Button backButton;
     @FXML
     private Label messageBox;
+    @FXML
+    private ScrollPane cardsScrolling;
 
     private Card currentCard;
 
     public Shop() {
-        super("shop");
+        super("Shop Menu");
     }
 
     public void run (){
@@ -53,6 +58,19 @@ public class Shop extends Menu {
     public void initialize() {
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+        DataForClientFromServer data = sendDataToServer(new DataForServerFromClient("shop show --all", "Taha1506", menuName));
+        System.out.println(data.getMessage());
+        String[] cards = data.getMessage().split("\n");
+        for(String card : cards) {
+            String tempCardName = card.split(":")[0].trim();
+            Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
+            try {
+                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 4, false);
+                cardsScrolling.setContent(cardViewToAddToScroll);
+            } catch (Exception e) {
+                System.out.println(tempCardName + "-----------------------------------------------");
+            }
+        }
     }
 
     public void getCardName(MouseEvent mouseEvent) {
@@ -90,7 +108,7 @@ public class Shop extends Menu {
             messageBox.setTextFill(Color.GREEN);
         }
         else{
-            messageBox.setText(null);
+
         }
     }
 }

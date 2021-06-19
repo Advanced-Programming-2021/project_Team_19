@@ -21,6 +21,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import view.Menu.ProfileMenu;
 import view.Menu.WelcomeMenu;
 
 public class menuGraphic extends Application {
@@ -37,7 +38,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        WelcomeMenu.getInstance().run();
+        new Shop().run();
         //run function of your menu for test here
         stage.show();
     }

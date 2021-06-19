@@ -228,6 +228,8 @@ public class Utils {
     }
 
     public static String getPascalCase(String string) {
+        string = string.split(",")[0];
+        string = string.replaceAll("-", " ");
         boolean wasLastSpace = true;
         StringBuilder stringBuilder = new StringBuilder();
         for(int i = 0; i < string.length(); i++) {
