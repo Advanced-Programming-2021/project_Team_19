@@ -37,7 +37,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new Shop().run();
+        WelcomeMenu.getInstance().run();
         //run function of your menu for test here
         stage.show();
     }
@@ -84,7 +84,7 @@ public class menuGraphic extends Application {
         button.setMaxSize(40, 40);
         readyCursorForButton(button);
 
-        Image img = new Image("pic/backArrow.png");
+        Image img = new Image("Pictures/backArrow.png");
         ImageView view = new ImageView(img);
 
         view.fitHeightProperty().bind(button.heightProperty());
@@ -99,27 +99,22 @@ public class menuGraphic extends Application {
 
     }
 
-    public static VBox setTwoChoiceButtons(String firstChoice, String secondChoice) {
+    public static VBox setSeveralChoiceButtons(String... choices) {
 
         VBox buttonBox = new VBox(15);
         buttonBox.setLayoutX(300);
         buttonBox.setLayoutY(150);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button button1 = new Button();
-        button1.setText(firstChoice);
-        button1.setAlignment(Pos.CENTER);
-        button1.setTextAlignment(TextAlignment.CENTER);
-        readyCursorForButton(button1);
+        for (String choice : choices) {
+            Button button = new Button();
+            button.setText(choice);
+            button.setAlignment(Pos.CENTER);
+            button.setTextAlignment(TextAlignment.CENTER);
+            readyCursorForButton(button);
 
-        Button button2 = new Button();
-        button2.setText(secondChoice);
-        button2.setAlignment(Pos.CENTER);
-        button2.setTextAlignment(TextAlignment.CENTER);
-        readyCursorForButton(button2);
-
-        buttonBox.getChildren().add(button1);
-        buttonBox.getChildren().add(button2);
+            buttonBox.getChildren().add(button);
+        }
 
         return buttonBox;
     }

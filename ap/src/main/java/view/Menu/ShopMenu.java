@@ -42,8 +42,6 @@ public class ShopMenu extends Menu {
                 showAllCards(Utils.getMatcher("shop show --all", "shop show --all"));
             } else if (command.equals("menu exit")) {
                 break;
-            } else if (command.startsWith("menu ")) {
-                handleMenuOrders(command);
             } else if (command.equals("help")) {
                 help();
             } else {

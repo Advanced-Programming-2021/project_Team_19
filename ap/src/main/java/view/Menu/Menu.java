@@ -1,9 +1,11 @@
 package view.Menu;
 
 import controller.ClientDataController;
+import controller.DuelControllers.DuelMenuController;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
+import view.Utils;
 import view.graphic.menuGraphic;
 
 import java.util.HashMap;
@@ -39,64 +41,6 @@ public class Menu extends menuGraphic {
     protected void setUsername(String username) {
         this.username = username;
     }
-
-    protected void handleMenuOrders(String command) {
-
-        if (command.matches("menu show-current")) {
-//            showCurrentMenu();
-        } else if (command.matches("menu enter (.+)")) {
-//            enterOtherMenu(Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "menu enter (.+)")));
-        } else {
-            Printer.printInvalidCommand();
-        }
-
-    }
-
-
-//    private void enterOtherMenu(String menuName) {
-//
-//        if (!isMenuNameValid(menuName)) {
-//            Printer.print("invalid menu name");
-//            return;
-//        }
-//        if (this.menuName.equals("Login Menu")) {
-//            Printer.print("please login first");
-//            return;
-//        }
-//        if (!canEnterTheMenu(menuName)) {
-//            Printer.print("menu navigation is not possible");
-//            return;
-//        }
-//
-//        if (menuName.matches("Profile Menu")) {
-//            ProfileMenu.getInstance().run(username);
-//        } else if (menuName.matches("Deck Menu")) {
-//            DeckMenu.getInstance().run(username);
-//        } else if (menuName.matches("Scoreboard Menu")) {
-//            ScoreBoardMenu.getInstance().run();
-//        } else if (menuName.matches("Shop Menu")) {
-//            ShopMenu.getInstance().run(username);
-//        } else if (menuName.matches("Import/Export Menu")) {
-//            ImportAndExportMenu.getInstance().run();
-//        } else if (menuName.matches("Main Menu")) {
-//            MainMenu.getInstance().run(username);
-//        } else if (menuName.matches("Duel Menu")) {
-//            new DuelMenuController("Duel Menu").run(username);
-//        }
-//
-//    }
-
-//    private boolean canEnterTheMenu(String menuName) {
-//        return menuLevels.get(menuName) - menuLevels.get(this.menuName) == 1;
-//    }
-
-//    private boolean isMenuNameValid(String menuName) {
-//        return menuLevels.containsKey(menuName);
-//    }
-
-//    private void showCurrentMenu() {
-//        Printer.print(menuName);
-//    }
 
     protected static DataForClientFromServer sendDataToServer(DataForServerFromClient data) {
 
