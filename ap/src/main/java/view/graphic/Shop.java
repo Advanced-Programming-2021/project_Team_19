@@ -1,21 +1,17 @@
 package view.graphic;
 
-import controller.DataBaseControllers.CSVDataBaseController;
 import controller.MenuControllers.ShopMenuController;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -37,6 +33,10 @@ public class Shop extends Menu {
     private Label messageBox;
     @FXML
     private ScrollPane cardsScrolling;
+    @FXML
+    private Label coinShower;
+    @FXML
+    private ScrollPane userCards;
 
     private Card currentCard;
 
@@ -71,11 +71,28 @@ public class Shop extends Menu {
             try {
                 CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false);
                 vBox.getChildren().add(cardViewToAddToScroll);
+                cardViewToAddToScroll.setOnMouseClicked(e -> {
+                    cardPic.getChildren().clear();
+                    cardPic.getChildren().add(new CardView(cardToAddToScroll, 2, false));
+                    currentCard = cardToAddToScroll;
+                });
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
             }
         }
         cardsScrolling.setContent(vBox);
+        coinShower.setText(String.valueOf(user.getCredit()));
+        coinShower.setTextFill(Color.WHITE);
+        HBox hBox = new HBox();
+        for (Card card : user.getCardsSorted()) {
+            try {
+                CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
+                hBox.getChildren().add(cardViewToAddToScroll);
+            } catch (Exception e) {
+                System.out.println(card.getName()+ "-----------------------------------------------");
+            }
+        }
+        userCards.setContent(hBox);
     }
 
     public void getCardName(MouseEvent mouseEvent) {
@@ -122,6 +139,18 @@ public class Shop extends Menu {
             }
             else{
                 messageBox.setTextFill(Color.GREEN);
+                coinShower.setText(String.valueOf(user.getCredit()));
+                coinShower.setTextFill(Color.WHITE);
+                HBox hBox = new HBox();
+                for (Card card : user.getCardsSorted()) {
+                    try {
+                        CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
+                        hBox.getChildren().add(cardViewToAddToScroll);
+                    } catch (Exception e) {
+                        System.out.println(card.getName()+ "-----------------------------------------------");
+                    }
+                }
+                userCards.setContent(hBox);
             }
         }
     }

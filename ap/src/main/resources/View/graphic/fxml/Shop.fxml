@@ -21,6 +21,18 @@
       <Button layoutX="293.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#clearChoice" prefHeight="25.0" prefWidth="54.0" text="clear!" />
       <Button layoutX="213.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="25.0" prefWidth="54.0" text="buy!" />
       <Label fx:id="messageBox" layoutX="131.0" layoutY="403.0" prefHeight="45.0" prefWidth="214.0" />
-      <ScrollPane fx:id="cardsScrolling" layoutX="461.0" layoutY="28.0" prefHeight="303.0" prefWidth="200.0" />
+      <ScrollPane fx:id="cardsScrolling" layoutX="441.0" layoutY="28.0" prefHeight="303.0" prefWidth="200.0" />
+      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="653.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Assets/Items/Coins/Gold/Gold_2.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="coinShower" layoutX="714.0" layoutY="11.0" prefHeight="35.0" prefWidth="54.0" />
+      <ScrollPane fx:id="userCards" layoutX="379.0" layoutY="394.0" prefHeight="192.0" prefWidth="373.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <Label layoutX="379.0" layoutY="346.0" prefHeight="45.0" prefWidth="214.0" text="User cards:" textFill="WHITE" />
    </children>
 </AnchorPane>
