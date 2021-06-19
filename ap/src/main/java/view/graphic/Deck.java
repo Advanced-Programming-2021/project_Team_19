@@ -10,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -87,22 +88,23 @@ public class Deck extends Menu {
     }
 
     private void updateDeckScroll() {
-        VBox allDecks = new VBox();
+        HBox allDecks = new HBox();
         for (String deckName : user.getDeckNames()) {
             model.Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + deckName);
             BorderPane deckFullDescription = new BorderPane();
-            VBox vBox = new VBox();
+            HBox hBox = new HBox();
             int cnt = 0;
             for(Card card : deck.getAllCardsSorted()) {
                 if(cnt < 5) {
-                    vBox.getChildren().add(new CardView(card, 3, false));
+                    hBox.getChildren().add(new CardView(card, 3, false));
                     cnt++;
                 }
             }
-            deckFullDescription.setCenter(vBox);
+            deckFullDescription.setCenter(hBox);
             deckFullDescription.setTop(new Label(deck.getName()));
             allDecks.getChildren().add(deckFullDescription);
         }
+        allDecks.setSpacing(10);
         deckBar.setContent(allDecks);
     }
 }
