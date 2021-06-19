@@ -6,8 +6,8 @@
 
 <AnchorPane id="shopBackGround" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.Shop">
    <children>
-      <Button layoutX="373.0" layoutY="359.0" mnemonicParsing="false" onMouseClicked="#getCardName" text="search!" />
-      <TextField fx:id="cardName" layoutX="326.0" layoutY="321.0" promptText="cardName" />
+      <Button layoutX="310.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#getCardName" text="search!" />
+      <TextField fx:id="cardName" layoutX="308.0" layoutY="328.0" prefHeight="25.0" prefWidth="185.0" promptText="cardName" />
       <HBox fx:id="cardPic" layoutX="300.0" layoutY="14.0" prefHeight="165.0" prefWidth="200.0" />
       <Button id="myButton" fx:id="backButton" mnemonicParsing="false" onMouseClicked="#getBack" stylesheets="@../../../CSS/Css.css">
          <graphic>
@@ -18,5 +18,8 @@
             </ImageView>
          </graphic>
       </Button>
+      <Button layoutX="438.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#clearChoice" prefHeight="25.0" prefWidth="54.0" text="clear!" />
+      <Button layoutX="374.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="25.0" prefWidth="54.0" text="buy!" />
+      <Label fx:id="messageBox" layoutX="312.0" layoutY="406.0" prefHeight="32.0" prefWidth="179.0" />
    </children>
 </AnchorPane>

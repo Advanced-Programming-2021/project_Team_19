@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Card.Card;
 import view.Menu.Menu;
@@ -29,6 +30,10 @@ public class Shop extends Menu {
     private TextField cardName;
     @FXML
     private Button backButton;
+    @FXML
+    private Label messageBox;
+
+    private Card currentCard;
 
     public Shop() {
         super("shop");
@@ -45,20 +50,47 @@ public class Shop extends Menu {
         }
     }
 
+    public void initialize() {
+        cardPic.getChildren().clear();
+        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+    }
+
     public void getCardName(MouseEvent mouseEvent) {
         String text = cardName.getText();
         Card card = controller.Utils.getCardByName(text);
         if(card == null){
-            System.out.println("This card does not exist");
+            messageBox.setText("This card does not exist");
+            messageBox.setTextFill(Color.GREEN);
         }
         else{
+            messageBox.setText(null);
             CardView cardView = new CardView(card,2, false);
+            currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
+            cardName.clear();
         }
     }
 
     public void getBack(MouseEvent mouseEvent) {
         System.out.println("Hello world");
+    }
+
+    public void clearChoice(MouseEvent mouseEvent) {
+        cardPic.getChildren().clear();
+        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+        currentCard = null;
+        cardName.clear();
+        messageBox.setText(null);
+    }
+
+    public void buyCard(MouseEvent mouseEvent) {
+        if(currentCard == null) {
+            messageBox.setText("No card is chosen yet!");
+            messageBox.setTextFill(Color.GREEN);
+        }
+        else{
+            messageBox.setText(null);
+        }
     }
 }
