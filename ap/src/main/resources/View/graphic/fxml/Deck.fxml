@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="View.graphic.fxml.Deck"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.Deck">
+   <children>
+      <ScrollPane layoutX="138.0" layoutY="61.0" prefHeight="158.0" prefWidth="223.0" />
+      <ScrollPane layoutX="138.0" layoutY="287.0" prefHeight="158.0" prefWidth="223.0" />
+      <Label layoutX="407.0" layoutY="61.0" prefHeight="41.0" prefWidth="106.0" text="Active Deck:" textFill="#3bc942">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="407.0" layoutY="102.0" prefHeight="29.0" prefWidth="106.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="25.0" text="All Decks:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="247.0" text="All Cards:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

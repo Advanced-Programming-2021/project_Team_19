@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -83,6 +84,7 @@ public class Shop extends Menu {
         cardsScrolling.setContent(vBox);
         coinShower.setText(String.valueOf(user.getCredit()));
         coinShower.setTextFill(Color.WHITE);
+        coinShower.setFont(new Font(16));
         HBox hBox = new HBox();
         for (Card card : user.getCardsSorted()) {
             try {
@@ -100,7 +102,8 @@ public class Shop extends Menu {
         Card card = controller.Utils.getCardByName(text);
         if(card == null){
             messageBox.setText("This card does not exist");
-            messageBox.setTextFill(Color.GREEN);
+            messageBox.setTextFill(Color.RED);
+            messageBox.setFont(new Font(16));
             currentCard = null;
         }
         else{
@@ -129,6 +132,7 @@ public class Shop extends Menu {
         if(currentCard == null) {
             messageBox.setText("No card is chosen yet!");
             messageBox.setTextFill(Color.RED);
+            messageBox.setFont(new Font(16));
         }
         else{
             DataForClientFromServer data =
@@ -136,11 +140,13 @@ public class Shop extends Menu {
             messageBox.setText(data.getMessage());
             if (data.getMessageType().equals(MessageType.ERROR)){
                 messageBox.setTextFill(Color.RED);
+                messageBox.setFont(new Font(16));
             }
             else{
                 messageBox.setTextFill(Color.GREEN);
                 coinShower.setText(String.valueOf(user.getCredit()));
                 coinShower.setTextFill(Color.WHITE);
+                coinShower.setFont(new Font(16));
                 HBox hBox = new HBox();
                 for (Card card : user.getCardsSorted()) {
                     try {
