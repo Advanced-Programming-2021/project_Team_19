@@ -2,8 +2,8 @@ import controller.DataBaseControllers.UserDataBaseController;
 import model.User;
 import org.junit.jupiter.api.*;
 import view.GetInput;
-import view.Menu.ShopMenu;
 import view.Printer.Printer;
+import view.graphic.Shop;
 
 public class ShopTest {
     static User user;
@@ -20,7 +20,7 @@ public class ShopTest {
     public void buyCard() {
         GetInput.addCommand("shop buy Battle OX");
         GetInput.addCommand("menu exit");
-        ShopMenu.getInstance().run(user.getUsername());
+        new Shop().run(user.getUsername());
         user = UserDataBaseController.getUserByUsername(user.getUsername());
         Assertions.assertEquals("you successfully bought the card", Printer.getResponse());
         Assertions.assertEquals(user.getCards().size(), 1);
