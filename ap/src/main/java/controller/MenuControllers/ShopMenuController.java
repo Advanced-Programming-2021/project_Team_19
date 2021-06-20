@@ -12,7 +12,7 @@ import model.User;
 
 import java.util.regex.Matcher;
 
-public class ShopMenuController {
+public class  ShopMenuController {
 
 
     private ShopMenuController() {
@@ -30,6 +30,7 @@ public class ShopMenuController {
 
 
     public DataForClientFromServer run(User user, String command) {
+
 
         if (command.matches("shop buy (.+)")) {
             return manageBuyCards(user, Utils.getMatcher(command, "shop buy (.+)"));

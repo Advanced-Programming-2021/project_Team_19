@@ -9,11 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
-import model.Enums.MessageType;
+import view.Printer.Printer;
 import view.Utils;
 
 import static view.Printer.Printer.setFailureResponseToLabel;
-import static view.Printer.Printer.setSuccessResponseToLabel;
 
 public class ProfileMenu extends Menu {
 
@@ -56,15 +55,26 @@ public class ProfileMenu extends Menu {
 
     }
 
+    private void clearResponseLabels(){
+        changeNicknameResponse.setText("");
+        changePasswordResponse.setText("");
+    }
+
     public void setButtons() {
 
-        VBox buttonBox = setTwoChoiceButtons("change nickname", "change password");
+        VBox buttonBox = setSeveralChoiceButtons("change nickname", "change password");
 
-        buttonBox.getChildren().get(0).setOnMouseClicked(event -> setChangeNicknameMenu());
+        buttonBox.getChildren().get(0).setOnMouseClicked(event -> {clearResponseLabels();
+            setChangeNicknameMenu();
+        });
 
-        buttonBox.getChildren().get(1).setOnMouseClicked(event -> setChangePasswordMenu());
+        buttonBox.getChildren().get(1).setOnMouseClicked(event -> {clearResponseLabels();
+            setChangePasswordMenu();
+        });
+
         Button backButton = new Button();
         setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
 
         pane.getChildren().addAll(buttonBox, backButton);
     }
@@ -117,11 +127,7 @@ public class ProfileMenu extends Menu {
         DataForClientFromServer data = sendDataToServer(new DataForServerFromClient(
                 "profile change --nickname " + nickname, username, menuName));
 
-        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-            setSuccessResponseToLabel(changeNicknameResponse, data.getMessage());
-        } else {
-            setFailureResponseToLabel(changeNicknameResponse, data.getMessage());
-        }
+        Printer.setAppropriateResponseToLabelFromData(data, changeNicknameResponse);
 
     }
 
@@ -184,13 +190,7 @@ public class ProfileMenu extends Menu {
                         "--current " + currentPassword + " --new " + newPassword
                         , username, menuName));
 
-        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-            setSuccessResponseToLabel(changePasswordResponse, data.getMessage());
-        } else {
-            setFailureResponseToLabel(changePasswordResponse, data.getMessage());
-        }
-
-
+        Printer.setAppropriateResponseToLabelFromData(data, changePasswordResponse);
     }
 
 

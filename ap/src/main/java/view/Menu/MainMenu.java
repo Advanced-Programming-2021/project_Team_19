@@ -1,13 +1,18 @@
 package view.Menu;
 
 
-import view.GetInput;
-import view.Printer.Printer;
+import controller.DuelControllers.DuelMenuController;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import view.graphic.Shop;
 
 public class MainMenu extends Menu {
 
 
     private static MainMenu instance = null;
+    private static String username;
+    private Pane pane = new Pane();
 
 
     private MainMenu() {
@@ -16,7 +21,7 @@ public class MainMenu extends Menu {
 
     public static MainMenu getInstance() {
         if (instance == null) {
-            return new MainMenu();
+            instance =  new MainMenu();
         }
         return instance;
     }
@@ -24,32 +29,36 @@ public class MainMenu extends Menu {
 
     public void run(String username) {
 
-        setUsername(username);
+        MainMenu.username = username;
 
-        String command;
-        while (true) {
-            command = GetInput.getString();
+        setMainMenu();
+        stage.setTitle("Main Menu");
+        stage.getScene().setRoot(pane);
 
-            if (command.matches("menu exit")) {
-                break;
-            } else if (command.startsWith("menu ")) {
-                handleMenuOrders(command);
-            } else if (command.matches("help")) {
-                help();
-            } else {
-                Printer.printInvalidCommand();
-            }
-        }
     }
 
-    private void help() {
+    private void setMainMenu() {
 
-        System.out.println("""
-                help
-                menu show-current
-                menu enter [menu name]
-                menu exit""");
+        VBox buttonBox = setSeveralChoiceButtons("Profile Menu", "Deck Menu",
+                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Import/Export Menu");
 
+        buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username));
+
+        buttonBox.getChildren().get(1).setOnMouseClicked(event -> DeckMenu.getInstance().run(username));
+
+        buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController("Duel Menu").run(username));
+
+        buttonBox.getChildren().get(3).setOnMouseClicked(event -> new Shop().run(username));
+
+        buttonBox.getChildren().get(4).setOnMouseClicked(event -> new ScoreBoardMenu().run());
+
+        buttonBox.getChildren().get(5).setOnMouseClicked(event -> ImportAndExportMenu.getInstance().run());
+
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> WelcomeMenu.getInstance().run());
+
+        pane.getChildren().addAll(buttonBox, backButton);
     }
 
 }

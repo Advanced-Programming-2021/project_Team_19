@@ -3,6 +3,8 @@ package view.Printer;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import model.Data.DataForClientFromServer;
+import model.Enums.MessageType;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -45,6 +47,14 @@ public class Printer {
     public static void setFailureResponseToLabel(Label label, String text){
         label.setText(text);
         label.setTextFill(Color.RED);
+    }
+
+    public static void setAppropriateResponseToLabelFromData(DataForClientFromServer data, Label label){
+        if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
+            Printer.setSuccessResponseToLabel(label, data.getMessage());
+        } else {
+            Printer.setFailureResponseToLabel(label, data.getMessage());
+        }
     }
 
 }

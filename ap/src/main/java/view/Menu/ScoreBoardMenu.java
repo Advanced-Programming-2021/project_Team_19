@@ -38,7 +38,11 @@ public class ScoreBoardMenu extends Menu {
         setButtons();
         setTableView();
 
-        box.getChildren().addAll(title, tableView);
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
+
+        box.getChildren().addAll(title, tableView, backButton);
         mainPane.setCenter(box);
 
         stage.getScene().setRoot(mainPane);

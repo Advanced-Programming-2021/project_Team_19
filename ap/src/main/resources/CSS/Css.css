@@ -7,6 +7,13 @@
     -fx-background-size: cover;
 }
 
+#shopBackGround{
+    -fx-background-image: url("../Pictures/download.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
 
 #graveyard > .viewport {
     -fx-background-color: #d06720;

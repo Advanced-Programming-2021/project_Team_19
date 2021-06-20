@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.Shop">
+<AnchorPane id="shopBackGround" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.Shop">
    <children>
-      <Button layoutX="249.0" layoutY="222.0" mnemonicParsing="false" onMouseClicked="#getCardName" text="Button" />
-      <TextField fx:id="cardName" layoutX="208.0" layoutY="188.0" promptText="cardName" />
-      <HBox fx:id="cardPic" layoutX="183.0" layoutY="8.0" prefHeight="165.0" prefWidth="200.0" />
+      <Button layoutX="133.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#getCardName" text="search!" />
+      <TextField fx:id="cardName" layoutX="133.0" layoutY="343.0" prefHeight="25.0" prefWidth="214.0" promptText="cardName" />
+      <HBox fx:id="cardPic" layoutX="134.0" layoutY="28.0" prefHeight="165.0" prefWidth="200.0" />
+      <Button id="myButton" fx:id="backButton" mnemonicParsing="false" onMouseClicked="#getBack" stylesheets="@../../../CSS/Css.css">
+         <graphic>
+            <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Pictures/backArrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="293.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#clearChoice" prefHeight="25.0" prefWidth="54.0" text="clear!" />
+      <Button layoutX="213.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="25.0" prefWidth="54.0" text="buy!" />
+      <Label fx:id="messageBox" layoutX="131.0" layoutY="403.0" prefHeight="45.0" prefWidth="214.0" />
+      <ScrollPane fx:id="cardsScrolling" layoutX="441.0" layoutY="28.0" prefHeight="303.0" prefWidth="200.0" />
+      <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="653.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Assets/Items/Coins/Gold/Gold_2.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="coinShower" layoutX="714.0" layoutY="11.0" prefHeight="35.0" prefWidth="54.0" />
+      <ScrollPane fx:id="userCards" layoutX="379.0" layoutY="394.0" prefHeight="192.0" prefWidth="373.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <Label layoutX="379.0" layoutY="346.0" prefHeight="45.0" prefWidth="214.0" text="User cards:" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>

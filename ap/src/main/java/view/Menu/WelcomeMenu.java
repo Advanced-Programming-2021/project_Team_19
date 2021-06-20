@@ -38,17 +38,18 @@ public class WelcomeMenu extends Menu {
 
     public void setButtons() {
 
-        VBox buttonBox = setTwoChoiceButtons("signup", "login");
+        VBox buttonBox = setSeveralChoiceButtons("signup", "login");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> Signup.run());
 
         buttonBox.getChildren().get(1).setOnMouseClicked(event -> Login.run());
+
         Button backButton = new Button();
         setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> System.exit(0));
 
         pane.getChildren().addAll(buttonBox, backButton);
     }
-
 
     private static class Signup {
         private static TextField usernameField = new TextField();
@@ -80,7 +81,10 @@ public class WelcomeMenu extends Menu {
 
             Button backButton = new Button();
             setBackButton(backButton);
-            backButton.setOnMouseClicked(event -> WelcomeMenu.getInstance().run());
+            backButton.setOnMouseClicked(event -> {
+                responseLabel.setText("");
+                WelcomeMenu.getInstance().run();
+            });
 
             responseLabel.setLayoutX(200);
             responseLabel.setLayoutY(300);
@@ -134,11 +138,7 @@ public class WelcomeMenu extends Menu {
             DataForClientFromServer data = sendDataToServer
                     (new DataForServerFromClient(commandToSendToServer, username, WelcomeMenu.getInstance().menuName));
 
-            if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
-                Printer.setSuccessResponseToLabel(responseLabel, data.getMessage());
-            } else {
-                Printer.setFailureResponseToLabel(responseLabel, data.getMessage());
-            }
+            Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
         }
 
         private static void clearTextFields() {
@@ -169,7 +169,10 @@ public class WelcomeMenu extends Menu {
                     .getChildren().get(1);
 
             Button submit = new Button("submit");
-            submit.setOnMouseClicked(event -> login());
+            submit.setOnMouseClicked(event -> {
+                responseLabel.setText("");
+                login();
+            });
             readyCursorForButton(submit);
             ((VBox) box.getChildren().get(1)).getChildren().add(submit);
 

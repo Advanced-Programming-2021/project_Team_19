@@ -99,7 +99,6 @@ public class DeckMenu extends Menu {
 
             showAllCards(Utils.getMatcher(command, "deck show -c"));
 
-            handleCommandsStartWithMenu(command);
 
             help(command);
 
@@ -284,12 +283,6 @@ public class DeckMenu extends Menu {
 
     }
 
-    private void handleCommandsStartWithMenu(String command) {
-        if (command.startsWith("menu ")) {
-            commandIsDone = true;
-            handleMenuOrders(command);
-        }
-    }
 
     private void help(String command) {
         if (command.equals("help")) {
