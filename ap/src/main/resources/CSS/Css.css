@@ -71,3 +71,13 @@
 .test{
     -fx-background-color: #f5a507;
 }
+
+.LP{
+    -fx-font-size: 25px;
+    -fx-text-fill: red;
+}
+
+.username{
+    -fx-font-size: 28px;
+    -fx-text-fill: #85f604;
+}

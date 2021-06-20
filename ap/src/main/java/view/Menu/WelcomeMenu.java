@@ -34,8 +34,6 @@ public class WelcomeMenu extends Menu {
         setButtons();
         stage.setTitle("Welcome Menu");
         stage.getScene().setRoot(pane);
-
-
     }
 
     public void setButtons() {

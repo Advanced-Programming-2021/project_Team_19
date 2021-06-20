@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -21,7 +19,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.Menu.WelcomeMenu;
 
 public class menuGraphic extends Application {
 
@@ -37,7 +34,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new GameGraphic().run();
+        new GameGraphicControllerForTest().run();
         //run function of your menu for test here
         stage.show();
     }
@@ -84,12 +81,12 @@ public class menuGraphic extends Application {
         button.setMaxSize(40, 40);
         readyCursorForButton(button);
 
-        Image img = new Image("pic/backArrow.png");
-        ImageView view = new ImageView(img);
+//        Image img = new Image("pic/backArrow.png");
+//        ImageView view = new ImageView(img);
 
-        view.fitHeightProperty().bind(button.heightProperty());
-        view.fitWidthProperty().bind(button.widthProperty());
-        button.setGraphic(view);
+//        view.fitHeightProperty().bind(button.heightProperty());
+//        view.fitWidthProperty().bind(button.widthProperty());
+//        button.setGraphic(view);
     }
 
     public static void readyCursorForButton(Button button) {

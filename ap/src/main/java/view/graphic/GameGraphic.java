@@ -102,6 +102,8 @@ public class GameGraphic extends Menu {
         }
 
         stage.getScene().setRoot(mainPane);
+
+
         addCardFromDeckTohHand(controller.Utils.getCardByName("battle ox"));
 
         setGraveYard();
@@ -183,17 +185,17 @@ public class GameGraphic extends Menu {
 
         new ScaleAnimation(cardView, 0.6, 700).start();
 
-        new Translation(cardView, cardView.getX() , getCardInHandX(cardView) + 15,
-                cardView.getY(), getCardinHandY() + 23, 700).start();
+        new Translation(true, cardView, cardView.getX() - (getCardInHandX(cardView) + 15),
+                cardView.getY() - (getCardinHandY() + 23), 700).start();
 
         new FlipTransition(cardView, 700).start();
 
-        for(CardView cardView1 : hand){
-            if(cardView1 != cardView){
-                new Translation(cardView1, cardView1.getX() , getCardInHandX(cardView1),
-                        cardView1.getY(), getCardinHandY(), 700).start();
-            }
-        }
+//        for(CardView cardView1 : hand){
+//            if(cardView1 != cardView){
+//                new Translation(cardView1, cardView1.getX() , getCardInHandX(cardView1),
+//                        cardView1.getY(), getCardinHandY(), 700).start();
+//            }
+//        }
     }
 
     private void setDeck(){

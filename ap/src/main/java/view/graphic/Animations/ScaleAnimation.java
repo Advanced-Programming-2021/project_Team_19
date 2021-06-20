@@ -7,15 +7,15 @@ import view.graphic.CardView;
 public class ScaleAnimation {
 
     CardView cardView;
-    ScaleTransition transition;
+    ScaleTransition animation;
 
     public ScaleAnimation(CardView cardView, double size, double time){
         this.cardView = cardView;
-        transition = new ScaleTransition();
-        transition.setNode(cardView);
-        transition.setDuration(Duration.millis(time));
-        transition.setByY(size);
-        transition.setByX(size);
+        animation = new ScaleTransition();
+        animation.setNode(cardView);
+        animation.setDuration(Duration.millis(time));
+        animation.setByY(size);
+        animation.setByX(size);
 //        transition.setDelay(Duration.millis(1000));
 //        transition.setFromX(1);
 //        transition.setFromY(1);
@@ -24,6 +24,10 @@ public class ScaleAnimation {
     }
 
     public void start(){
-        transition.play();
+        animation.play();
+    }
+
+    public ScaleTransition getAnimation(){
+        return animation;
     }
 }
