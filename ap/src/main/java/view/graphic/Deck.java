@@ -5,6 +5,8 @@ import controller.DuelControllers.DuelMenuController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -92,7 +94,7 @@ public class Deck extends Menu {
     }
 
     private void updateDeckScroll() {
-        HBox allDecks = new HBox();
+        VBox allDecks = new VBox();
         for (String deckName : user.getDeckNames()) {
             model.Deck deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + deckName);
             BorderPane deckFullDescription = new BorderPane();
@@ -100,12 +102,20 @@ public class Deck extends Menu {
             int cnt = 0;
             for(Card card : deck.getAllCardsSorted()) {
                 if(cnt < 5) {
-                    hBox.getChildren().add(new CardView(card, 3, false));
+                    hBox.getChildren().add(new CardView(card, 4, false));
                     cnt++;
                 }
             }
+            hBox.setSpacing(-60);
             deckFullDescription.setCenter(hBox);
-            deckFullDescription.setTop(new Label(deck.getName() + " :"));
+            Label currentDeckName = new Label(deck.getName() + " :");
+            currentDeckName.setFont(new Font(16));
+            deckFullDescription.setTop(currentDeckName);
+            hBox.setMinWidth(150);
+            hBox.setMinHeight(150);
+            hBox.setOnMouseClicked(e -> {
+                OneDeck.getInstance().run(deck, user);
+            });
             allDecks.getChildren().add(deckFullDescription);
         }
         allDecks.setSpacing(10);

@@ -62,11 +62,11 @@ public class Shop extends Menu {
     public void initialize() {
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
-        DataForClientFromServer data = sendDataToServer(new DataForServerFromClient("shop show --all", "Taha1506", menuName));
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);DataForClientFromServer data = sendDataToServer(new DataForServerFromClient("shop show --all", "Taha1506", menuName));
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
-        VBox vBox = new VBox();
-        vBox.setSpacing(10);
         for(String card : cards) {
             String tempCardName = card.split(":")[0].trim();
             Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);

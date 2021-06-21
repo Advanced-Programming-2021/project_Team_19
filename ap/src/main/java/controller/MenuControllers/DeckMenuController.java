@@ -8,7 +8,6 @@ import model.Data.DataForClientFromServer;
 import model.Deck;
 import model.Enums.MessageType;
 import model.User;
-import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
@@ -147,7 +146,7 @@ public class DeckMenuController {
 
         else if (isSideDeck && DeckDataBaseController.getDeckByName(getDeckPath(user, deckName)).
                 isSideDeckFull())
-            return new DataForClientFromServer("side deck is full", MessageType.SUCCESSFUL);
+            return new DataForClientFromServer("side deck is full", MessageType.ERROR);
 
         else if (!isSideDeck && DeckDataBaseController.getDeckByName(getDeckPath(user, deckName)).
                 isMainDeckFull())
@@ -160,7 +159,6 @@ public class DeckMenuController {
                     MessageType.ERROR);
 
         else if (isSideDeck) {
-            Printer.print("card added to deck successfully");
             user.removeCard(cardName);
             Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, deckName));
             deck.addCardToSideDeck(cardName);
@@ -215,7 +213,6 @@ public class DeckMenuController {
             return new DataForClientFromServer("card removed form deck successfully",
                     MessageType.SUCCESSFUL);
         } else {
-            Printer.print("card removed form deck successfully");
             user.addCard(cardName);
             Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, deckName));
             deck.removeCardFromSideDeck(cardName);
