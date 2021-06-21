@@ -13,7 +13,12 @@ import static view.Printer.Printer.print;
 
 public class SetPosition extends Action {
 
-    public String checkErrorsForDoThisAction(boolean toDefensiveMode){
+
+    public SetPosition(GameData gameData) {
+        super(gameData, "set position");
+    }
+
+    public String checkErrors(boolean toDefensiveMode){
 
         Card card =  gameData.getSelectedCard();
 
@@ -52,10 +57,6 @@ public class SetPosition extends Action {
         return "";
     }
 
-    public SetPosition(GameData gameData) {
-        super(gameData, "set position");
-    }
-
     public void run(Matcher matcher) {
         setPosition(matcher);
     }
@@ -65,7 +66,7 @@ public class SetPosition extends Action {
         Card selectedCard =  gameData.getSelectedCard();
         String newModeStr = Utils.getFirstGroupInMatcher(matcher);
         boolean toDefensiveMode = newModeStr.equals("defense");
-        String error = checkErrorsForDoThisAction(toDefensiveMode);
+        String error = checkErrors(toDefensiveMode);
 
         if(!error.equals("")){
             print(error);
