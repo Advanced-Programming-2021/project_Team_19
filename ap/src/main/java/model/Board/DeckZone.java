@@ -12,6 +12,7 @@ public class DeckZone extends Zones {
     ArrayList<Card> sideDeckCards = new ArrayList<>();
 
     public DeckZone(Deck deck) {
+
         for (String cardName : deck.getMainDeckCards()) {
             mainDeckCards.add(Utils.getCardByName(cardName));
         }

@@ -39,12 +39,11 @@ public class Game {
 
 
     @Deprecated
-    public Gamer Dprun(GameData gameData) {
+    public Gamer DeprecatedRun(GameData gameData) {
 
         String command;
 
         while (true) {
-
 
             if (checkLabels(gameData)) {
                 continue;

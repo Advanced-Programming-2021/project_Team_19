@@ -5,6 +5,8 @@ import controller.Utils;
 import model.Board.*;
 import model.Card.Card;
 
+import static view.Printer.Printer.print;
+
 public class AllBoards {
 
     private DeckZone deckZone;
@@ -121,13 +123,12 @@ public class AllBoards {
 
         AllBoards board = new AllBoards();
 
-        Deck deck = DeckDataBaseController.getDeckByName(user.getActiveDeckName());
+        Deck deck = DeckDataBaseController.getDeckByName( user.getUsername() + "_" + user.getActiveDeckName());
         board.deckZone = new DeckZone(deck);
-
         board.initializeHand();
 
-        Card card = Utils.getCardByName("call of the haunted");
-        board.getHand().getCardsInHand().set(0, card);
+//        Card card = Utils.getCardByName("call of the haunted");
+//        board.getHand().getCardsInHand().set(0, card);
 
         board.setSpellAndTrapCardZone(SpellAndTrapCardZone.getTestZone());
         board.setMonsterCardZone(MonsterCardZone.getTestZone());

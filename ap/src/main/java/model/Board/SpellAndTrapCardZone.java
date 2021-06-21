@@ -113,12 +113,12 @@ public class SpellAndTrapCardZone extends Zones {
 
         SpellAndTrapCardZone test = new SpellAndTrapCardZone();
 
-        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("call of the haunted"));
-
-        card.setSetTurn(0);
-        SpellAndTraps.changeMode(card, SpellCardMods.HIDDEN);
-
-        test.addCard(card);
+//        SpellAndTraps card = ((SpellAndTraps) Utils.getCardByName("call of the haunted"));
+//
+//        card.setSetTurn(0);
+//        SpellAndTraps.changeMode(card, SpellCardMods.HIDDEN);
+//
+//        test.addCard(card);
         return test;
     }
 }

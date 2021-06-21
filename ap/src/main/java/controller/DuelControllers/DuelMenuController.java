@@ -91,12 +91,12 @@ public class DuelMenuController extends Menu {
 
     private void handleDuel(GameData gameData, int rounds) {
         if (rounds == 1) {
-            finishDuel(new Game(gameData).Dprun(gameData), gameData, 1);
+            finishDuel(new Game(gameData).DeprecatedRun(gameData), gameData, 1);
         } else {
             int userWins = 0;
             int rivalWins = 0;
             while (userWins != 2 && rivalWins != 2) {
-                if ((new Game(gameData).Dprun(gameData)).equals(gameStarter))
+                if ((new Game(gameData).DeprecatedRun(gameData)).equals(gameStarter))
                     userWins++;
                 else
                     rivalWins++;

@@ -2,14 +2,53 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import controller.Utils;
+import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
-import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
+import static view.Printer.Printer.print;
+
 public class SetPosition extends Action {
+
+    public static String checkErrorsForDoThisAction(GameData gameData, Card card, boolean toDefensiveMode){
+
+        if (card == null) {
+            return "no card is selected yet";
+        }
+
+        if(!(card instanceof Monster)){
+            return "you can’t change this card position";
+        }
+
+        Monster monster = (Monster) card;
+
+        if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(monster)) {
+            return "you can’t change this card position";
+        }
+
+        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
+            return "action not allowed in this phase";
+        }
+
+        if (toDefensiveMode) {
+            if (!monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
+                return "invalid change position";
+            }
+        } else {
+            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
+                return "you can’t change this card position";
+            }
+        }
+
+        if (monster.getLastTurnHasChangedPosition() == gameData.getTurn()) {
+            return "you already changed this card position in this turn";
+        }
+
+        return "";
+    }
 
     public SetPosition(GameData gameData) {
         super(gameData, "set position");
@@ -21,47 +60,20 @@ public class SetPosition extends Action {
 
     private void setPosition(Matcher matcher) {
 
-        Monster selectedCard = (Monster) gameData.getSelectedCard();
+        Card selectedCard =  gameData.getSelectedCard();
+        String newModeStr = Utils.getFirstGroupInMatcher(matcher);
+        boolean toDefensiveMode = newModeStr.equals("defense");
+        String error = checkErrorsForDoThisAction(gameData, selectedCard, toDefensiveMode);
 
-        if (selectedCard == null) {
-            Printer.print("no card is selected yet");
+        if(!error.equals("")){
+            print(error);
             return;
         }
 
-        if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(selectedCard)) {
-            Printer.print("you can’t change this card position");
-            return;
-        }
+        CardMod newCardMode = toDefensiveMode ? CardMod.DEFENSIVE_OCCUPIED : CardMod.OFFENSIVE_OCCUPIED;
 
-        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
-            Printer.print("action not allowed in this phase");
-            return;
-        }
-
-        String modeStr = Utils.getFirstGroupInMatcher(matcher);
-        CardMod newCardMode;
-
-        if (modeStr.equals("defense")) {
-            newCardMode = CardMod.DEFENSIVE_OCCUPIED;
-            if (!selectedCard.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
-                Printer.print("you can’t change this card position");
-                return;
-            }
-        } else {
-            newCardMode = CardMod.OFFENSIVE_OCCUPIED;
-            if (!selectedCard.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
-                Printer.print("you can’t change this card position");
-                return;
-            }
-        }
-
-        if (selectedCard.getLastTurnHasChangedPosition() == gameData.getTurn()) {
-            Printer.print("you already changed this card position in this turn");
-            return;
-        }
-
-        selectedCard.handleChangePosition(gameData, newCardMode);
-        Printer.print("monster card position changed successfully");
+        ((Monster)selectedCard).handleChangePosition(gameData, newCardMode);
+        print("monster card position changed successfully");
     }
 
 }

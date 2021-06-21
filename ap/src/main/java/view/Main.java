@@ -1,7 +1,11 @@
 package view;
 
-import controller.DataBaseControllers.DataBaseController;
-import view.Menu.WelcomeMenu;
+import controller.DuelControllers.Game;
+import controller.DuelControllers.GameData;
+import controller.Utils;
+import jdk.jshell.execution.Util;
+
+import static view.Printer.Printer.print;
 
 
 public class Main {
@@ -15,11 +19,11 @@ public class Main {
 
     public static void main(String[] arg) {
 
-//        new Game().run(GameData.getTestGameData());
+        new Game(GameData.getTestGameData()).DeprecatedRun(GameData.getTestGameData());
 
-        DataBaseController.makeResourceDirectory();
-
-        WelcomeMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        WelcomeMenu.getInstance().run();
     }
 
 }

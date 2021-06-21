@@ -20,7 +20,7 @@ public class ShopTest {
     public void buyCard() {
         GetInput.addCommand("shop buy Battle OX");
         GetInput.addCommand("menu exit");
-        new Shop().run(user.getUsername());
+        new Shop().run(user);
         user = UserDataBaseController.getUserByUsername(user.getUsername());
         Assertions.assertEquals("you successfully bought the card", Printer.getResponse());
         Assertions.assertEquals(user.getCards().size(), 1);

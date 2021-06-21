@@ -1,5 +1,6 @@
 package controller.DuelControllers;
 
+import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.Actoins.Action;
 import controller.Utils;
 import model.Board.GraveYard;
@@ -252,12 +253,9 @@ public class GameData {
 
     public static GameData getTestGameData() {
 
-        User user1 = new User("mohammad", "mohammad", "123");
+        User user1 = UserDataBaseController.getUserByUsername("mohammad");
 
-        User user2 = new User("taha", "taha", "123");
-
-        user1.setActiveDeckName("deck");
-        user2.setActiveDeckName("deck");
+        User user2 = UserDataBaseController.getUserByUsername("reza");
 
         GameData gameData = new GameData(Gamer.getTestGamer(user1), Gamer.getTestGamer(user2));
 
