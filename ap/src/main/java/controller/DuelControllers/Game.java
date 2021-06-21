@@ -20,11 +20,31 @@ import java.util.Locale;
 
 public class Game {
 
-    public Gamer run(GameData gameData) {
+    public GameData gameData;
+
+    public Game(GameData gameData){
+        this.gameData = gameData;
+    }
+
+
+    public String run(String command){
+        return "";
+    }
+
+    public ArrayList<String> getValidCommadsForCard(Card card){
+        return null;
+    }
+
+
+
+
+    @Deprecated
+    public Gamer Dprun(GameData gameData) {
 
         String command;
 
         while (true) {
+
 
             if (checkLabels(gameData)) {
                 continue;
@@ -67,7 +87,9 @@ public class Game {
             }
 
             gameData.setEvent(GameEvent.NORMAL);
-            command = GetInput.getString();
+
+
+            command = GetInput.getString();///////////////////////////////////////////////////////
             gameData.setEvent(null);
 
             if (gameData.isRitualSummoning() &&
@@ -138,7 +160,6 @@ public class Game {
             } else {
                 Printer.printInvalidCommand();
             }
-
         }
     }
 

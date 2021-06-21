@@ -1,61 +1,49 @@
 package view.graphic.Animations;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import view.graphic.CardView;
-import view.graphic.Utils;
-
-import static view.Printer.Printer.print;
 
 public class FlipTransition {
 
-    private CardView cardView;
-    RotateTransition rotate = new RotateTransition();
-
-    boolean hasFliped = false;
+    private SequentialTransition animation;
 
     public FlipTransition(CardView cardView, double time){
 
-        setCardView(cardView);
-        rotate.setByAngle(90);
-        rotate.setAxis(Rotate.Y_AXIS);
-        rotate.setNode(cardView);
+        RotateTransition rotate1 = new RotateTransition();
 
-        rotate.setDuration(Duration.millis(time / 2));
-
-
-        rotate.setOnFinished(new EventHandler<ActionEvent>() {
+        rotate1.setByAngle(90);
+        rotate1.setAxis(Rotate.Y_AXIS);
+        rotate1.setNode(cardView);
+        rotate1.setDuration(Duration.millis(time / 2));
+        rotate1.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
-                if(hasFliped){
-                    return;
-                }
-                if(cardView.isHidden){
-                    cardView.setCardImage();
-                } else{
-                    cardView.hideCard();
-                }
-
-                rotate.setByAngle(-90);
-                rotate.play();
-                hasFliped = true;
+                cardView.setCardImage();
             }
         });
+
+        RotateTransition rotate2 = new RotateTransition();
+
+        rotate2.setByAngle(-90);
+        rotate2.setAxis(Rotate.Y_AXIS);
+        rotate2.setNode(cardView);
+        rotate2.setDuration(Duration.millis(time / 2));
+
+        animation = new SequentialTransition(rotate1, rotate2);
+
+    }
+
+    public SequentialTransition getAnimation(){
+        return animation;
     }
 
     public void start(){
-        rotate.play();
-    }
-
-    public void setCardView(CardView cardView) {
-        this.cardView = cardView;
+        animation.play();
     }
 }
