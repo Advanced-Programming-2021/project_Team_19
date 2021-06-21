@@ -7,6 +7,8 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 
+import static view.Printer.Printer.print;
+
 public class ActivateEffectMonster extends Activation {
 
     public ActivateEffectMonster(GameData gameData) {
@@ -14,7 +16,7 @@ public class ActivateEffectMonster extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
-    public void run() {
+    public String checkErrors(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
@@ -26,17 +28,28 @@ public class ActivateEffectMonster extends Activation {
         String checkersResult = ActivationChecker.multipleCheck(checkers);
 
         if (checkersResult != null) {
-            Printer.print(checkersResult);
-            return;
+            return checkersResult;
         }
 
         ShouldAskForActivateEffectMonster card = (ShouldAskForActivateEffectMonster) activatedCard;
 
         if (!card.canActivate(gameData)) {
-            Printer.print("you can't activate this card");
-            return;
+            return "you can't activate this card";
         }
 
-        super.activate();
+        return "";
+    }
+
+    public void run() {
+
+        String error = checkErrors();
+
+        if(error.equals("")){
+            super.activate();
+        } else {
+            print(error);
+        }
+
+
     }
 }

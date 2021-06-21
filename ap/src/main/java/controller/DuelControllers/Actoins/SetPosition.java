@@ -13,7 +13,9 @@ import static view.Printer.Printer.print;
 
 public class SetPosition extends Action {
 
-    public static String checkErrorsForDoThisAction(GameData gameData, Card card, boolean toDefensiveMode){
+    public String checkErrorsForDoThisAction(boolean toDefensiveMode){
+
+        Card card =  gameData.getSelectedCard();
 
         if (card == null) {
             return "no card is selected yet";
@@ -63,7 +65,7 @@ public class SetPosition extends Action {
         Card selectedCard =  gameData.getSelectedCard();
         String newModeStr = Utils.getFirstGroupInMatcher(matcher);
         boolean toDefensiveMode = newModeStr.equals("defense");
-        String error = checkErrorsForDoThisAction(gameData, selectedCard, toDefensiveMode);
+        String error = checkErrorsForDoThisAction(toDefensiveMode);
 
         if(!error.equals("")){
             print(error);

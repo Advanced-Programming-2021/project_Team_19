@@ -4,6 +4,7 @@ import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
+import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
 import model.Data.ActivationData;
@@ -11,6 +12,8 @@ import model.Enums.SpellCardMods;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+
+import static view.Printer.Printer.print;
 
 public class ActivateSpellOrTrapNormally extends Activation {
 
@@ -20,7 +23,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
-    public void run() {
+    public String checkErrors(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
@@ -30,25 +33,39 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
         if (checkersResult != null) {
-            Printer.print(checkersResult);
-            return;
+            return checkersResult;
         }
 
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if (!card.canActivate(gameData)) {
-            Printer.print("you can't activate this card");
+            return "you can't activate this card";
+        }
+
+        if (!(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) &&
+                !(gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone)) {
+            return "invalid zone";
+        }
+
+        return "";
+    }
+
+    public void run() {
+
+        String error = checkErrors();
+
+        if(!error.equals("")){
+            print(error);
             return;
         }
+
+        SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
             activateFromHand(card);
         } else if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone) {
             activateSpellOrTrap();
-        } else {
-            Printer.print("invalid Zone");
         }
-
     }
 
     private void activateSpellOrTrap() {
@@ -56,7 +73,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         ActivationData data = super.activate();
 
         if (!data.message.equals("")) {
-            Printer.print(data.message);
+            print(data.message);
         }
     }
 
@@ -64,16 +81,16 @@ public class ActivateSpellOrTrapNormally extends Activation {
     private void activateFromHand(SpellAndTraps card) {
 
         if (card instanceof Trap) {
-            Printer.print("you should set trap card first");
+            print("you should set trap card first");
             return;
         }
 
         if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
-            Printer.print("spell card zone is full");
+            print("spell card zone is full");
             return;
         }
         if (!card.canActivate(gameData)) {
-            Printer.print("preparations of this spell are not done yet");
+            print("preparations of this spell are not done yet");
             return;
         }
 
