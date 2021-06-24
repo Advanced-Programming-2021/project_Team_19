@@ -6,7 +6,7 @@ import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 
-public class ShouldAskForActivateEffectMonster extends EffectMonster {
+public abstract class ShouldAskForActivateEffectMonster extends EffectMonster {
 
     protected int turnActivated = 0;
 
@@ -26,11 +26,7 @@ public class ShouldAskForActivateEffectMonster extends EffectMonster {
         this.turnActivated = turnActivated;
     }
 
-    public boolean canActivate(GameData gameData) {
-        return false;
-    }
+    public abstract boolean canActivate(GameData gameData);
 
-    public ActivationData activate(GameData gameData) {
-        return null;
-    }
+    public abstract ActivationData activate(GameData gameData);
 }

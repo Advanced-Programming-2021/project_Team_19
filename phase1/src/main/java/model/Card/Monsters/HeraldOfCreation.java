@@ -9,6 +9,7 @@ import model.Board.GraveYard;
 import model.Board.Hand;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.ActivationData;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
@@ -22,9 +23,9 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
     @Expose
     private int lastTurnEffectUsed;
 
-    public void useEffect(GameData gameData) {
-        if (!canUseEffect(gameData))
-            return;
+    public ActivationData activate(GameData gameData) {
+        if (!canActivate(gameData))
+            return null;
 
         Hand hand = gameData.getCurrentGamer().getGameBoard().getHand();
         GraveYard graveYard = gameData.getCurrentGamer().getGameBoard().getGraveYard();
@@ -33,7 +34,7 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
                 "select a card id to discard:", null);
 
         if (selectedCardFromHand == null)
-            return;
+            return null;
 
         Card selectedCardFromGraveyard = Utils.askUserToSelectCard(
                 monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()),
@@ -41,13 +42,14 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
                 null);
 
         if (selectedCardFromGraveyard == null)
-            return;
+            return null;
 
         discardAndRevive(gameData,
                 selectedCardFromHand,
                 selectedCardFromGraveyard);
         lastTurnEffectUsed = gameData.getTurn();
 
+        return new ActivationData(this, "");
     }
 
     private void discardAndRevive(GameData gameData, Card toDiscard, Card toRevive) {
@@ -55,16 +57,16 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
         new SpecialSummon(gameData).run(toRevive);
     }
 
-    private boolean canUseEffect(GameData gameData) {
+    public boolean canActivate(GameData gameData) {
         Gamer gamer = gameData.getCurrentGamer();
         if (gameData.getTurn() == lastTurnEffectUsed) {
-            Printer.print("you already used this card's effect this turn");
+//            Printer.print("you already used this card's effect this turn");
             return false;
         } else if (gamer.getGameBoard().getHand().getCardsInHand().size() == 0) {
-            Printer.print("you have no cards in your hand to discard");
+//            Printer.print("you have no cards in your hand to discard");
             return false;
         } else if (monstersInGraveyardWithLevelAtLeast7(gamer.getGameBoard().getGraveYard().getCardsInGraveYard()).size() == 0) {
-            Printer.print("you have no cards with level 7 or above in graveyard");
+//            Printer.print("you have no cards with level 7 or above in graveyard");
             return false;
         }
         return true;
