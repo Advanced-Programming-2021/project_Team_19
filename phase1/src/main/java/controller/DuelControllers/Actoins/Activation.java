@@ -5,6 +5,7 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
+import model.Card.Monsters.EffectMonster;
 import model.Card.Monsters.ShouldAskForActivateEffectMonster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
@@ -23,6 +24,11 @@ public class Activation extends Action {
 
     public Activation(GameData gameData) {
         super(gameData, "Activate");
+    }
+
+    public Activation(GameData gameData, Card card){
+        super(gameData, "Activate");
+        setActivatedCard(card);
     }
 
     public Card getActivatedCard() {
@@ -60,7 +66,7 @@ public class Activation extends Action {
         }
 
         if (activatedCard.getCardFamily().equals(CardFamily.MONSTER)) {
-            return ((ShouldAskForActivateEffectMonster) activatedCard).activate(gameData);
+            return ((EffectMonster) activatedCard).activate(gameData);
         } else {
             return ((SpellAndTraps) activatedCard).activate(gameData);
         }

@@ -2,6 +2,7 @@ package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
 import controller.Utils;
+import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
@@ -21,12 +22,20 @@ public class SetPosition extends Action {
 
     private void setPosition(Matcher matcher) {
 
-        Monster selectedCard = (Monster) gameData.getSelectedCard();
+        Card card = gameData.getSelectedCard();
 
-        if (selectedCard == null) {
+        if (card == null) {
             Printer.print("no card is selected yet");
             return;
         }
+
+        if(!(card instanceof Monster)){
+            Printer.print("you can’t change this card position");
+            return;
+        }
+
+
+        Monster selectedCard = (Monster) gameData.getSelectedCard();
 
         if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(selectedCard)) {
             Printer.print("you can’t change this card position");

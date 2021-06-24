@@ -39,13 +39,13 @@ public class TheTricky extends EffectMonster {
                 Printer.print("you successfully cancelled the summon");
                 return -1;
             } else if (command.matches("2")) {
-                new Activation(gameData).activate();
+                new Activation(gameData, this).activate();
                 break;
             } else {
                 Printer.printInvalidCommand();
             }
         }
-        new Activation(gameData).activate();
+        new Activation(gameData, this).activate();
         return -1;
     }
 

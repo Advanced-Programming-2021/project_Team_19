@@ -17,7 +17,7 @@ public class YomiShip extends EffectMonster {
     public void handleDestroy(GameData gameData) {
         super.handleDestroy(gameData);
         if (gameData.getCurrentPhase().equals(Phase.BATTLE) && !gameData.getSelectedCard().equals(this) && gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
-            new Activation(gameData).activate();
+            new Activation(gameData, this).activate();
         }
     }
 

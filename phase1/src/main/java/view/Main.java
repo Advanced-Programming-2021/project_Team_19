@@ -13,9 +13,11 @@ public class Main {
 
     public static void main(String[] arg) {
 
-        DataBaseController.makeResourceDirectory();
+        new Game().run(GameData.getTestGameData());
 
-        LoginMenu.getInstance().run();
+//        DataBaseController.makeResourceDirectory();
+//
+//        LoginMenu.getInstance().run();
     }
 
 }

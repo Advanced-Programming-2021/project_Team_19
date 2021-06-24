@@ -26,7 +26,7 @@ public class ManEaterBug extends EffectMonster {
         }
         gameData.setEvent(GameEvent.MAN_EATER_BUG);
 
-        new Activation(gameData).activate();
+        new Activation(gameData, this).activate();
         return true;
     }
 

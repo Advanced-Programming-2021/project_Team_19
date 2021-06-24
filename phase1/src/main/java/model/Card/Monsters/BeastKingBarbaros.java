@@ -21,7 +21,7 @@ public class BeastKingBarbaros extends EffectMonster {
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
         super.handleSummon(gameData, numberOfSacrifices);
         if (numberOfSacrifices == 3) {
-            new Activation(gameData).activate();
+            new Activation(gameData, this).activate();
         }
     }
 

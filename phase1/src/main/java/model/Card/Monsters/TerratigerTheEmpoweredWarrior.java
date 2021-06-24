@@ -28,7 +28,7 @@ public class TerratigerTheEmpoweredWarrior extends EffectMonster {
         level4OrLessMonstersInHand = getLevel4OrLessMonstersInHand(hand);
 
         if (level4OrLessMonstersInHand.size() != 0 && !gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
-            new Activation(gameData).activate();
+            new Activation(gameData, this).activate();
         } else {
             Printer.print("your monster zone is full and you cannot special summon a monster");
         }
