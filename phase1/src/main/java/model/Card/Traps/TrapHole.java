@@ -1,14 +1,12 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.FlipSummon;
-import controller.DuelControllers.Actoins.NormalSummon;
-import controller.DuelControllers.Actoins.Summon;
+import controller.DuelControllers.Actoins.*;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
 import controller.TrapCheckers.mirageDragonChecker;
+import controller.Utils;
 import model.Card.Monster;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -27,10 +25,11 @@ public class TrapHole extends TrapsActivateBecauseOfActionSummon {
 
     public ActivationData activate(GameData gameData) {
 
-        Action action = gameData.getCurrentActions().get(
-                (gameData.getCurrentActions().size() - 1));
 
-        ((Summon) action).getSummoningMonster().handleDestroy(gameData);
+        Summon action = (Summon) Utils.getLastActionOfSpecifiedAction
+                (gameData.getCurrentActions(), Summon.class);
+
+        action.getSummoningMonster().handleDestroy(gameData);
 
         handleDestroy(gameData);
 
