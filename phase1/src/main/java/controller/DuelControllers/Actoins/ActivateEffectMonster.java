@@ -21,7 +21,6 @@ public class ActivateEffectMonster extends Activation {
         checkers.add(new CardIsInCorrectMonsterZoneChecker(gameData, activatedCard));
         checkers.add(new SelectedCardIsOneEffectMonsterForActivateEffectChecker(gameData, activatedCard));
         checkers.add(new CurrentPhaseIsMainPhaseChecker(gameData, activatedCard));
-        checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
 
