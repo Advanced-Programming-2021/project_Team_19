@@ -2,6 +2,7 @@ package controller.DuelControllers;
 
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
+import model.Card.Card;
 import model.Deck;
 import model.User;
 import view.GetInput;
@@ -9,12 +10,13 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 public class DeckModifierBetweenGames {
 
     private final Deck deck;
-    private final int initialMainDeckSize;
     private int cardsToMove = 0;
     private final User user;
 
@@ -22,7 +24,6 @@ public class DeckModifierBetweenGames {
     public DeckModifierBetweenGames(User user) {
         deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
         this.user = user;
-        initialMainDeckSize = deck.getMainDeckCards().size();
     }
 
 
@@ -65,13 +66,13 @@ public class DeckModifierBetweenGames {
             return;
         }
 
-        String current = getCardOfIndexI(id, deck.getSideDeckCards());
+        Card current = getCardOfIndexI(id, deck.getAllSideCardsSorted());
+        String cardName = current.getName().toLowerCase(Locale.ROOT);
 
         cardsToMove += 1;
 
-        deck.getSideDeckCards().remove(current);
-        deck.getMainDeckCards().add(current);
-
+        deck.removeCardFromSideDeck(cardName);
+        deck.addCardToMainDeck(cardName);
     }
 
     private void moveFromMainDeckToSideDeckCommand(int id) {
@@ -80,30 +81,28 @@ public class DeckModifierBetweenGames {
             return;
         }
 
-        String current = getCardOfIndexI(id, deck.getMainDeckCards());
+        Card current = getCardOfIndexI(id, deck.getAllMainCardsSorted());
+        String cardName = current.getName().toLowerCase(Locale.ROOT);
 
         cardsToMove -= 1;
 
-        deck.getMainDeckCards().remove(current);
-        deck.getSideDeckCards().add(current);
+        deck.removeCardFromMainDeck(cardName);
+        deck.addCardToSideDeck(cardName);
     }
 
-    private String getCardOfIndexI(int index, ArrayList<String> cards) {
-        Iterator<String> it = cards.iterator();
+    private Card getCardOfIndexI(int index, TreeSet<Card> cards) {
+        Iterator<Card> it = cards.iterator();
         int i = 0;
-        String current = null;
-        while (it.hasNext()) {
-            i++;
+        Card current = null;
+        while (it.hasNext() && i < index){
             current = it.next();
-            if (index == i) {
-                break;
-            }
+            i++;
         }
         return current;
     }
 
     private boolean canEndModification() {
-        if (deck.getMainDeckCards().size() == initialMainDeckSize)
+        if (cardsToMove == 0)
             return true;
 
         if (cardsToMove > 0) {
