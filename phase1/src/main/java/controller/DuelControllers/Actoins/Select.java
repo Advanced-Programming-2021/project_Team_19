@@ -41,7 +41,7 @@ public class Select extends Action {
         selectOpponentSpell(Utils.getMatcher(command, "select (?=.*?--spell)(?=.*?--opponent)--\\S+ --\\S+ (\\d)"));
         selectField(Utils.getMatcher(command, "select --field"));
         selectOpponentField(Utils.getMatcher(command, "select (?=.*?--field)(?=.*?--opponent)--\\S+ --\\S+"));
-        selectHand(Utils.getMatcher(command, "select --hand (\\d)"));
+        selectHand(Utils.getMatcher(command, "select --hand (\\d+)"));
         removeSelect(Utils.getMatcher(command, "select -d"));
         if (!commandIsDone) {
             Printer.print("invalid selection");
