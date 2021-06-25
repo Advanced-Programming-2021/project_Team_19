@@ -1,15 +1,10 @@
 package view;
 
+
 import controller.DataBaseControllers.DataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
-import controller.DuelControllers.DeckModifierBetweenGames;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import view.Menu.LoginMenu;
-import view.Printer.Printer;
-
-import java.util.Random;
-
 
 public class Main {
 
