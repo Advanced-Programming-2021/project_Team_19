@@ -143,7 +143,7 @@ public class DuelMenuController extends Menu {
 
     private void changeDecks(Gamer gameStarter, Gamer rivalGamer) {
 
-        GameData.getGameData(0).setEvent(GameEvent.ASK_FOR_SIDE_DECK);
+        GameData.getGameData().setEvent(GameEvent.ASK_FOR_SIDE_DECK);
 
         if (Utils.askForConfirmation(gameStarter.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(gameStarter.getUser()).run();
@@ -151,7 +151,7 @@ public class DuelMenuController extends Menu {
         if (Utils.askForConfirmation(rivalGamer.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(rivalGamer.getUser()).run();
 
-        GameData.getGameData(0).setEvent(null);
+        GameData.getGameData().setEvent(null);
     }
 
     private void finishDuel(Gamer winner, GameData gameData, int rounds) {

@@ -19,7 +19,7 @@ import java.util.Collections;
 public class GameData {
 
 
-    private static final ArrayList<GameData> gameDatas = new ArrayList<>();
+    public static GameData instance;
     private int gameStarterId = 0;
     private final ArrayList<Gamer> gamers = new ArrayList<>();
     private final ArrayList<Action> currentActions = new ArrayList<>();
@@ -35,15 +35,11 @@ public class GameData {
         gamers.add(firstGamer);
         gamers.add(secondGamer);
         turnOwner = firstGamer;
-        gameDatas.add(this);
+        instance = this;
     }
 
-    public static GameData getGameData(int index) {
-        try {
-            return gameDatas.get(index);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+    public static GameData getGameData() {
+        return instance;
     }
 
     public boolean isGameOver() {

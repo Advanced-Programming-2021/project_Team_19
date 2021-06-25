@@ -46,7 +46,7 @@ public class GetInput {
 //                    e.printStackTrace();
 //                }
 
-                AI.run(GameData.getGameData(0));
+                AI.run(GameData.getGameData());
                 return getString();
             }
         }
@@ -67,7 +67,7 @@ public class GetInput {
 
     public static boolean AIMod() {
         try {
-            if (AI.getGamer(0).equals(GameData.getGameData(0).getCurrentGamer())) {
+            if (AI.getGamer(0).equals(GameData.getGameData().getCurrentGamer())) {
                 return true;
             }
         } catch (NullPointerException e) {
