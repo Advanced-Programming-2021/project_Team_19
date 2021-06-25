@@ -695,7 +695,7 @@ public class AI {
 
     private static void summon(Monster monster) {
         summoningMonster = monster;
-        initScanner("select --monster " + mtm.getGameBoard().getHand().getId(monster) + "\n"
+        initScanner("select --hand " + mtm.getGameBoard().getHand().getId(monster) + "\n"
                 + "summon", 2);
     }
 
