@@ -17,6 +17,7 @@ public class DuelMenuController extends Menu {
     private User user;
     private Gamer gameStarter;
     private Gamer rivalGamer;
+    private static boolean gameIsHappening = false;
 
     public DuelMenuController() {
         super("Duel Menu");
@@ -116,6 +117,7 @@ public class DuelMenuController extends Menu {
 
 
     private void handleDuel(int rounds) {
+        gameIsHappening = true;
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
             finishDuel(new Game().run(gameData), gameData, 1);
@@ -128,9 +130,9 @@ public class DuelMenuController extends Menu {
                     userWins++;
                 else
                     rivalWins++;
-                if(userWins == 2 || rivalWins == 2)
+                if (userWins == 2 || rivalWins == 2)
                     break;
-                changeDecks(gameStarter, rivalGamer);
+                changeDecks();
                 gameData = new GameData(gameStarter, rivalGamer);
             }
             if (userWins == 2) {
@@ -141,20 +143,30 @@ public class DuelMenuController extends Menu {
         }
     }
 
-    private void changeDecks(Gamer gameStarter, Gamer rivalGamer) {
+    private void changeDecks() {
 
-        GameData.getGameData().setEvent(GameEvent.ASK_FOR_SIDE_DECK);
+        GameData gameData = GameData.getGameData();
+
+        gameData.setEvent(GameEvent.ASK_FOR_SIDE_DECK);
+
+        if (!gameData.getCurrentGamer().equals(gameStarter)){
+            gameData.changeTurn();
+        }
 
         if (Utils.askForConfirmation(gameStarter.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(gameStarter.getUser()).run();
 
+        gameData.changeTurn();
+
         if (Utils.askForConfirmation(rivalGamer.getUsername() + ", do you want to swap cards between your main deck and side deck?"))
             new DeckModifierBetweenGames(rivalGamer.getUser()).run();
+
 
         GameData.getGameData().setEvent(null);
     }
 
     private void finishDuel(Gamer winner, GameData gameData, int rounds) {
+        gameIsHappening = false;
         Gamer loser = gameData.getCurrentGamer();
         if (loser.equals(winner))
             loser = gameData.getSecondGamer();
@@ -163,6 +175,10 @@ public class DuelMenuController extends Menu {
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
         increaseCreditAndScoreAfterGame(winner, loser, rounds);
+    }
+
+    public static boolean isGameIsHappening() {
+        return gameIsHappening;
     }
 
     private void increaseCreditAndScoreAfterGame(Gamer winner, Gamer loser, int rounds) {

@@ -2,6 +2,7 @@ package view;
 
 
 import controller.DuelControllers.AI;
+import controller.DuelControllers.DuelMenuController;
 import controller.DuelControllers.GameData;
 import view.Printer.Printer;
 
@@ -30,7 +31,7 @@ public class GetInput {
 
 
     public static String getString() {
-        if (AIMod()) {
+        if (DuelMenuController.isGameIsHappening() && AIMod()) {
             if (scannerCounter > 0) {
                 scannerCounter--;
                 String ans = AIScanner.nextLine();
@@ -43,6 +44,7 @@ public class GetInput {
                 return getString();
             }
         }
+
         if (testMod) {
             return commands.poll();
         } else {

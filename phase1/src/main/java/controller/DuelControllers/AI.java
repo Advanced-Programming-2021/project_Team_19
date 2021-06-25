@@ -449,7 +449,7 @@ public class AI {
         ArrayList<Monster> hand = getMonstersInHand();
         Monster handMonster = getMaxAttack(hand);
 
-        int size =  mtm.getGameBoard().getMonsterCardZone().getNumberOfCards();
+        int size = mtm.getGameBoard().getMonsterCardZone().getNumberOfCards();
 
         while (true) {
 
@@ -474,15 +474,14 @@ public class AI {
 
         Monster handMonster = getMonsterForSummonFromHand();
 
-        if(isSummonGood()){
+        if (isSummonGood()) {
             summon(handMonster);
-        }
-        else {
+        } else {
             handleSet();
         }
     }
 
-    private static boolean isSummonGood(){
+    private static boolean isSummonGood() {
 
         ArrayList<Monster> myMonsters1 =
                 (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
@@ -663,7 +662,7 @@ public class AI {
 
         for (int attack : myAttacks) {
 
-            if(rivalAttacks.size() - 1 < i ){
+            if (rivalAttacks.size() - 1 < i) {
                 i++;
                 continue;
             }

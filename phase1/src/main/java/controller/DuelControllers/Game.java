@@ -111,7 +111,7 @@ public class Game {
                 CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
             } else if (command.matches("duel set-winner \\w+")) {
                 if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))) {
-                    handleSurrender(gameData);
+                    return handleSurrender(gameData);
                 }
             } else if (command.matches("show hand")) {
                 gameData.getCurrentGamer().getGameBoard().getHand().showHand();
