@@ -659,11 +659,9 @@ public class AI {
 
     private static int getNumberOfGoodAttacks(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
 
-        Collections.sort(myAttacks);
-        Collections.reverse(myAttacks);
+        myAttacks.sort((o1, o2) -> -Integer.compare(o1, o2));
 
-        Collections.sort(rivalAttacks);
-        Collections.reverse(rivalAttacks);
+        rivalAttacks.sort((o1, o2) -> -Integer.compare(o1, o2));
 
         int i = 0;
 
