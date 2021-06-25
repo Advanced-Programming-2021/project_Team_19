@@ -25,5 +25,5 @@ public abstract class EffectMonster extends Monster {
         return null;
     }
 
-    public abstract ActivationData activate(GameData gameData);
+    public ActivationData activate(GameData gameData){return null;}
 }

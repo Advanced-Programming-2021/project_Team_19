@@ -14,7 +14,6 @@ public class EffectLabel {
     public GameData gameData;
 
     public EffectLabel(GameData gameData, Gamer gamer, Card card) {
-
         this.card = card;
         this.gameData = gameData;
         this.gamer = gamer;

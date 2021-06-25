@@ -45,7 +45,7 @@ public abstract class Monster extends Card {
     @Expose
     private Trap callOfTheHauntedTrap = null;
     @Expose
-    private final ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
+    private ArrayList<EquipSpell> equippedSpells = new ArrayList<>();
 
     public Monster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
         super(name, description, price);
@@ -317,4 +317,8 @@ public abstract class Monster extends Card {
         equippedSpells.add(equipSpell);
     }
 
+    public void removeEquipSpellsAndCallOfTheHaunted(){
+        equippedSpells = new ArrayList<>();
+        callOfTheHauntedTrap = null;
+    }
 }

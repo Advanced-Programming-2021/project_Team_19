@@ -4,6 +4,8 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.TriggerActivationData;
+import model.EffectLabel;
 import model.Enums.CardMod;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
@@ -12,7 +14,9 @@ import model.Gamer;
 
 import java.util.ArrayList;
 
-public class ScannerMonster extends Monster {
+import static view.Printer.Printer.print;
+
+public class ScannerMonster extends EffectMonster {
 
     private Monster scannedMonster;
 
@@ -26,7 +30,7 @@ public class ScannerMonster extends Monster {
         this.scannedMonster = monster;
     }
 
-    public ArrayList<Card> getMonstersForScan (GameData gameData){
+    public ArrayList<Card> getMonstersForScan(GameData gameData) {
 
         ArrayList<Card> monsters = new ArrayList<>();
 
@@ -47,22 +51,43 @@ public class ScannerMonster extends Monster {
         monsters = getMonstersForScan(gameData);
 
         if (monsters.size() == 0) {
-            if(scannedMonster == null){
-                System.out.println("There is no monster card in opponent graveYard!");
+            if (scannedMonster == null) {
+                print("There is no monster card in opponent graveYard!");
             }
             return false;
         } else {
-            Monster monster = (Monster)Utils.askUserToSelectCard(monsters
-                    , "Please choose a card From GraveYard!(Just a digit telling the position)",
-                    null);
+            Monster monster = getChosenMonster(gameData,
+                    "Please choose a card From GraveYard!(Just a digit telling the position)");
+            setScannedMonster(monster, gameData);
+            return true;
+        }
+    }
 
-            if (monster == null) {
-                return false;
-            } else {
-                setScannedMonster(monster, gameData);
-                return true;
+    public Monster getChosenMonster(GameData gameData, String message) {
+
+        ArrayList<Card> monsters = getMonstersForScan(gameData);
+
+        Monster monster = (Monster) Utils.askUserToSelectCard(monsters
+                , message,
+                null);
+
+        if (monster == null) {
+            return getChosenMonster(gameData, "you should chose one monster");
+        } else {
+            return getSuitableMonster(monster);
+        }
+    }
+
+    private Monster getSuitableMonster(Monster monster) {
+        if(monster.getCardMod() == null){
+            if(getCardMod() == null){
+                monster.setCardMod(CardMod.OFFENSIVE_OCCUPIED);
+            } else{
+                monster.setCardMod(getCardMod());
             }
         }
+        monster.removeEquipSpellsAndCallOfTheHaunted();
+        return monster;
     }
 
     public void resetMonster(Monster monster) {
@@ -225,14 +250,33 @@ public class ScannerMonster extends Monster {
 
     @Override
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
-        if(scanMonster(gameData)){
-            super.handleSummon(gameData, numberOfSacrifices);
+
+        if(getMonstersForScan(gameData).size() == 0){
+            print("there is no monster in your opponent graveyard to scan");
+            return;
         }
+
+        super.handleSummon(gameData, numberOfSacrifices);
+
+        gameData.getCurrentGamer().addEffectLabel
+                (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
+    }
+
+    @Override
+    public TriggerActivationData runEffect(EffectLabel label) {
+        label.gamer.removeLabel(label);
+        scanMonster(label.gameData);
+        return new TriggerActivationData(false, "card has been scanned", this);
+    }
+
+    @Override
+    public boolean shouldEffectRun(EffectLabel label) {
+        return true;
     }
 
     @Override
     public void handleSet(GameData gameData) {
-        if(scanMonster(gameData)){
+        if (scanMonster(gameData)) {
             super.handleSet(gameData);
         }
     }

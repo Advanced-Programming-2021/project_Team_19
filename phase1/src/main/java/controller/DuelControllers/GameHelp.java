@@ -17,7 +17,7 @@ public class GameHelp {
                 System.out.println("""
                         summon
                         set
-                        set position attack|defence
+                        set --position attack|defence
                         flip-summon""");
                 Select.help();
             }
