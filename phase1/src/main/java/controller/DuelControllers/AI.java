@@ -17,9 +17,10 @@ import model.Gamer;
 import model.Phase;
 import model.User;
 import view.GetInput;
-import view.Printer.Printer;
 
 import java.util.*;
+
+import static view.Printer.Printer.print;
 
 public class AI {
 
@@ -40,7 +41,10 @@ public class AI {
         AI.rival = gameData.getSecondGamer();
 
         gameData.showBoard();
-        Printer.print(mtm.getGameBoard().getHand().getCardsInHand());
+
+        mtm.getGameBoard().getHand().getCardsInHand().forEach(card -> {
+            print(card);
+        });
 
         if (gameData.getEvent().equals(GameEvent.ASK_FOR_ACTIVATE_TRAP)) {
             GetInput.initializeAIScanner(new Scanner("1"), 1);
@@ -74,7 +78,8 @@ public class AI {
 
     private static void handleManEaterBug() {
 
-        ArrayList<Card> cards = (ArrayList<Card>) new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards()).clone();
+        ArrayList<Card> cards =
+                (ArrayList<Card>) new ArrayList<>(rival.getGameBoard().getMonsterCardZone().getCards()).clone();
         cards.removeAll(Collections.singleton(null));
 
         if (cards.size() == 0) {
@@ -469,36 +474,41 @@ public class AI {
             return;
         }
 
-        ArrayList<Monster> myMonsters1 = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
-        ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
+        Monster handMonster = getMonsterForSummonFromHand();
+
+        if(isSummonGood()){
+            summon(handMonster);
+        }
+        else {
+            handleSet();
+        }
+    }
+
+    private static boolean isSummonGood(){
+
+        ArrayList<Monster> myMonsters1 =
+                (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
+        ArrayList<Monster> myMonsters2 =
+                (ArrayList<Monster>) myMonsters1.clone();
 
         Monster handMonster = getMonsterForSummonFromHand();
         myMonsters2.add(handMonster);
 
-        ArrayList<Monster> rivalMonsters = (ArrayList<Monster>) rival.getGameBoard().getMonsterCardZone().getCards().clone();
+        ArrayList<Monster> rivalMonsters =
+                (ArrayList<Monster>) rival.getGameBoard().getMonsterCardZone().getCards().clone();
 
-        if (new Random().nextInt() % 2 == 1) {
+        int index1 = getNumberOfGoodAttacks(getAttacks(myMonsters1), getAttacks(rivalMonsters));
 
-            int index1 = getMaxMaxIReturnedTrue(getAttacks(myMonsters1), getAttacks(rivalMonsters));
+        int index2 = getNumberOfGoodAttacks(getAttacks(myMonsters2), getAttacks(rivalMonsters));
 
-            int index2 = getMaxMaxIReturnedTrue(getAttacks(myMonsters2), getAttacks(rivalMonsters));
-
-            if (index2 > index1) {
-                summon(handMonster);
-            } else {
-                handleSet();
-            }
-
-        } else {
-
-            if (isAttacksGood2(getAttacks(myMonsters1), getAttacks(myMonsters2), getAttacks(rivalMonsters))) {
-                summon(handMonster);
-            } else {
-                handleSet();
-            }
-
+        if (index2 > index1) {
+            return true;
         }
+        return getNumberOfGoodAttacks2(getAttacks(myMonsters1), getAttacks(rivalMonsters)) >
+                getNumberOfGoodAttacks2(getAttacks(myMonsters2), getAttacks(rivalMonsters));
+
     }
+
 
     private static void handleBattlePhase() {
 
@@ -646,18 +656,8 @@ public class AI {
         return value;
     }
 
-    private static int getMaxMaxIReturnedTrue(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
 
-        for (int i = 1; i <= 5; i++) {
-            if (!isAttacksGood1(myAttacks, rivalAttacks, i)) {
-                return i - 1;
-            }
-        }
-        return 5;
-    }
-
-
-    private static boolean isAttacksGood1(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks, int maxI) {
+    private static int getNumberOfGoodAttacks(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
 
         Collections.sort(myAttacks);
         Collections.reverse(myAttacks);
@@ -668,41 +668,32 @@ public class AI {
         int i = 0;
 
         for (int attack : myAttacks) {
+
+            if (rivalAttacks.size() - 1 < i && attack < rivalAttacks.get(i)) {
+                break;
+            }
             i++;
-            if (i > maxI) {
-                break;
-            }
-            if (rivalAttacks.size() - 1 < i) {
-                break;
-            }
-            if (attack < rivalAttacks.get(i)) {
-                return false;
-            }
         }
-        return true;
+
+        return i;
     }
 
-    private static boolean isAttacksGood2(ArrayList<Integer> myAttacks0,
-                                          ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
-
-        return getNumOks(myAttacks, rivalAttacks) > getNumOks(myAttacks0, rivalAttacks);
-    }
-
-    private static int getNumOks(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
+    private static int getNumberOfGoodAttacks2(ArrayList<Integer> myAttacks, ArrayList<Integer> rivalAttacks) {
 
         int j = 0;
-        int OKs = 0;
+        int ans = 0;
+
         for (int attack : myAttacks) {
             for (; j < rivalAttacks.size(); j++) {
                 if (attack > rivalAttacks.get(j)) {
                     j++;
-                    OKs++;
+                    ans++;
                     break;
                 }
             }
         }
 
-        return OKs;
+        return ans;
     }
 
     private static void summon(Monster monster) {
