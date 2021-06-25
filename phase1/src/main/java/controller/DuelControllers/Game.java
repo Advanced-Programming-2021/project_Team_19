@@ -134,7 +134,7 @@ public class Game {
             } else if (command.equals("show AD")) {//attack and defense
                 showAtkDef(gameData);
             } else if (command.equals("activate effect")) {
-                new ActivateEffectMonster(gameData);
+                new ActivateEffectMonster(gameData).run();
             } else {
                 Printer.printInvalidCommand();
             }

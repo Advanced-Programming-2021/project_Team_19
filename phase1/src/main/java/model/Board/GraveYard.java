@@ -21,6 +21,10 @@ public class GraveYard extends Zones {
         return cardsInGraveYard.remove(id - 1);
     }
 
+    public void removeCard(Card toRemove) {
+        cardsInGraveYard.remove(toRemove);
+    }
+
     public int getId(Card card) {
         if (cardsInGraveYard.contains(card)) {
             return cardsInGraveYard.indexOf(card) + 1;

@@ -38,7 +38,7 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
 
         Card selectedCardFromGraveyard = Utils.askUserToSelectCard(
                 monstersInGraveyardWithLevelAtLeast7(graveYard.getCardsInGraveYard()),
-                "select a card id to revive from graveyard:",
+                "select a card id to move to your hand from graveyard:",
                 null);
 
         if (selectedCardFromGraveyard == null)
@@ -49,24 +49,26 @@ public class HeraldOfCreation extends ShouldAskForActivateEffectMonster {
                 selectedCardFromGraveyard);
         lastTurnEffectUsed = gameData.getTurn();
 
-        return new ActivationData(this, "");
+        return new ActivationData(this, "you successfully added the card to your hand");
     }
 
     private void discardAndRevive(GameData gameData, Card toDiscard, Card toRevive) {
         new Destroy(gameData).run(toDiscard, true);
-        new SpecialSummon(gameData).run(toRevive);
+        Gamer currentPlayer = gameData.getCurrentGamer();
+        currentPlayer.getGameBoard().getGraveYard().removeCard(toRevive);
+        currentPlayer.getGameBoard().getHand().addCard(toRevive);
     }
 
     public boolean canActivate(GameData gameData) {
         Gamer gamer = gameData.getCurrentGamer();
         if (gameData.getTurn() == lastTurnEffectUsed) {
-//            Printer.print("you already used this card's effect this turn");
+//            you already used this card's effect this turn
             return false;
         } else if (gamer.getGameBoard().getHand().getCardsInHand().size() == 0) {
-//            Printer.print("you have no cards in your hand to discard");
+//            you have no cards in your hand to discard
             return false;
         } else if (monstersInGraveyardWithLevelAtLeast7(gamer.getGameBoard().getGraveYard().getCardsInGraveYard()).size() == 0) {
-//            Printer.print("you have no cards with level 7 or above in graveyard");
+//            you have no cards with level 7 or above in graveyard
             return false;
         }
         return true;
