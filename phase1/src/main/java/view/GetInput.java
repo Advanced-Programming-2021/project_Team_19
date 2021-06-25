@@ -30,7 +30,6 @@ public class GetInput {
 
 
     public static String getString() {
-
         if (AIMod()) {
             if (scannerCounter > 0) {
                 scannerCounter--;
@@ -40,12 +39,6 @@ public class GetInput {
             } else {
                 Printer.print("enter hehe for see AI power");
                 scanner.nextLine();
-//                try {
-//                    Thread.sleep(1500);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
                 AI.run(GameData.getGameData());
                 return getString();
             }

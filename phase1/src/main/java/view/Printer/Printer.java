@@ -17,7 +17,9 @@ public class Printer {
     public static void print(Object object) {
         if (isInTestingMod) {
             responses.add(object.toString());
-        } else {
+        } else if (object == null){
+            System.err.println("this card is null and we don't know what");
+        } else{
             System.out.println(object.toString());
         }
     }

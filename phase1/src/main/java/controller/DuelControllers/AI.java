@@ -408,7 +408,7 @@ public class AI {
 
         int ans = 0;
 
-        for (Monster monster : zone.getCards()) {
+        for (Monster monster : deleteNulls(zone.getCards())) {
 
             if (monster.getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
                 ans += 75;
@@ -530,29 +530,27 @@ public class AI {
             } else {
                 attack(getMaxAttackOfMyMonsterZone(), getOneHOMonsterOfRival());
             }
+        } else {
+            handleAttackMonster(getMaxAttackOfMyMonsterZone());
         }
 
-        handleAttackMonster(getMaxAttackOfMyMonsterZone());
     }
 
     private static void handleDirectAttack() {
+        initScanner("hoho", 1);
         directAttack(getMaxAttackOfMyMonsterZone());
     }
 
     private static void directAttack(Monster monster) {
-        initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster) + "\n"
-                + "attack direct", 2);
+        initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster) +
+                "\n" + "attack direct", 2);
     }
 
     private static Monster getOneHOMonsterOfRival() {
 
         ArrayList<Monster> monsters = (ArrayList<Monster>) rival.getGameBoard().getMonsterCardZone().getCards().clone();
 
-        for (Monster monster : (ArrayList<Monster>) monsters.clone()) {
-            if (monster == null) {
-                monsters.remove(monster);
-            }
-        }
+        monsters = deleteNulls(monsters);
 
         if (monsters.size() == 0) {
             return null;
@@ -598,7 +596,7 @@ public class AI {
 
     private static void attack(Monster monster1, Monster monster2) {
         initScanner("select --monster " + mtm.getGameBoard().getMonsterCardZone().getId(monster1) +
-                " \n" + "attack " + rival.getGameBoard().getMonsterCardZone().getId(monster2), 2);
+                "\n" + "attack " + rival.getGameBoard().getMonsterCardZone().getId(monster2), 2);
     }
 
     private static void handleSet() {
