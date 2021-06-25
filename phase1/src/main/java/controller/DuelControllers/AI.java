@@ -669,7 +669,7 @@ public class AI {
 
         for (int attack : myAttacks) {
 
-            if (rivalAttacks.size() - 1 < i && attack < rivalAttacks.get(i)) {
+            if (rivalAttacks.size() - 1 < i || attack < rivalAttacks.get(i)) {
                 break;
             }
             i++;
