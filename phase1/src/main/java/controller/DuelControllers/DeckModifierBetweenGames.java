@@ -3,7 +3,6 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.Utils;
 import model.Deck;
-import model.Gamer;
 import model.User;
 import view.GetInput;
 import view.Printer.Printer;
@@ -16,12 +15,16 @@ public class DeckModifierBetweenGames {
 
     private final Deck deck;
     private final int initialMainDeckSize;
-    private Gamer gamer;
+    private int cardsToMove = 0;
+    private final User user;
+
 
     public DeckModifierBetweenGames(User user) {
-        deck = DeckDataBaseController.getDeckByName(user.getActiveDeckName());
+        deck = DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName());
+        this.user = user;
         initialMainDeckSize = deck.getMainDeckCards().size();
     }
+
 
     public void run() {
         String command;
@@ -33,8 +36,9 @@ public class DeckModifierBetweenGames {
                     enter finish when you are done""");
             command = GetInput.getString();
 
-            if (command.matches("finish") && canEndModification()) {
-                break;
+            if (command.matches("finish")) {
+                if (canEndModification())
+                    break;
             } else if (command.matches("--(main|side) \\d+")) {
                 moveCard(Utils.getMatcher(command, "--(.+) (\\d+)"));
             } else {
@@ -42,7 +46,7 @@ public class DeckModifierBetweenGames {
             }
         }
 
-        DeckDataBaseController.changeDeck(gamer.getUsername(), deck);
+        DeckDataBaseController.changeDeck(user.getUsername(), deck);
 
     }
 
@@ -53,7 +57,6 @@ public class DeckModifierBetweenGames {
             return;
         }
         moveFromSideDeckToMainDeckCommand(Integer.parseInt(matcher.group(2)));
-        Printer.print("card successfully moved");
     }
 
     private void moveFromSideDeckToMainDeckCommand(int id) {
@@ -63,6 +66,8 @@ public class DeckModifierBetweenGames {
         }
 
         String current = getCardOfIndexI(id, deck.getSideDeckCards());
+
+        cardsToMove += 1;
 
         deck.getSideDeckCards().remove(current);
         deck.getMainDeckCards().add(current);
@@ -76,6 +81,8 @@ public class DeckModifierBetweenGames {
         }
 
         String current = getCardOfIndexI(id, deck.getMainDeckCards());
+
+        cardsToMove -= 1;
 
         deck.getMainDeckCards().remove(current);
         deck.getSideDeckCards().add(current);
@@ -98,12 +105,11 @@ public class DeckModifierBetweenGames {
     private boolean canEndModification() {
         if (deck.getMainDeckCards().size() == initialMainDeckSize)
             return true;
-        int difference = deck.getMainDeckCards().size() - initialMainDeckSize;
 
-        if (difference > 0) {
-            Printer.print("you have to move " + difference / 2 + " more cards from your main deck to your side deck");
+        if (cardsToMove > 0) {
+            Printer.print("you have to move " + cardsToMove + " more cards from your main deck to your side deck");
         } else {
-            Printer.print("you have to move " + -difference / 2 + " more cards from your side deck to your main deck");
+            Printer.print("you have to move " + -cardsToMove + " more cards from your side deck to your main deck");
         }
         return false;
     }

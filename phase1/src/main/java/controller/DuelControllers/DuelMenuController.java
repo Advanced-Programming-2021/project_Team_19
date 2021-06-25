@@ -83,8 +83,7 @@ public class DuelMenuController extends Menu {
         } else {
             gameStarter = new Gamer(user);
             rivalGamer = AI.getGamer(0);
-            GameData gameData = new GameData(gameStarter, rivalGamer);
-            handleDuel(gameData, rounds);
+            handleDuel(rounds);
         }
 
     }
@@ -110,25 +109,29 @@ public class DuelMenuController extends Menu {
         } else {
             gameStarter = new Gamer(user);
             rivalGamer = new Gamer(rival);
-            GameData gameData = new GameData(gameStarter, rivalGamer);
-            handleDuel(gameData, rounds);
+            handleDuel(rounds);
         }
 
     }
 
 
-    private void handleDuel(GameData gameData, int rounds) {
+    private void handleDuel(int rounds) {
         if (rounds == 1) {
+            GameData gameData = new GameData(gameStarter, rivalGamer);
             finishDuel(new Game().run(gameData), gameData, 1);
         } else {
             int userWins = 0;
             int rivalWins = 0;
-            while (userWins != 2 && rivalWins != 2) {
+            GameData gameData = new GameData(gameStarter, rivalGamer);
+            while (true) {
                 if ((new Game().run(gameData)).equals(gameStarter))
                     userWins++;
                 else
                     rivalWins++;
+                if(userWins == 2 || rivalWins == 2)
+                    break;
                 changeDecks(gameStarter, rivalGamer);
+                gameData = new GameData(gameStarter, rivalGamer);
             }
             if (userWins == 2) {
                 finishDuel(gameStarter, gameData, 3);
