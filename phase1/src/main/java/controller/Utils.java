@@ -125,6 +125,8 @@ public class Utils {
         Printer.print(stringBuilder.toString().trim());
     }
 
+
+    //card family can be null
     public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message, CardFamily cardFamily) {
         String command;
         while (true) {
