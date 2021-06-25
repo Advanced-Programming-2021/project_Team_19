@@ -76,15 +76,6 @@ public class Select extends Action {
                 } else {
                     gameData.setSelectedCard(selectedCard);
                     printSelectedCard();
-                    if (selectedCard.getClass() == ScannerMonster.class) {
-                        ((ScannerMonster) selectedCard).setValidity(gameData);
-                        if (!((ScannerMonster) selectedCard).isMonsterSet()) {
-                            boolean isSet = ((ScannerMonster) selectedCard).handleScannerMonster(gameData);
-                            if (!isSet) {
-                                gameData.setSelectedCard(null);
-                            }
-                        }
-                    }
                 }
             }
         }
