@@ -159,7 +159,7 @@ public abstract class Action {
         }
 
         gameData.removeActionFromCurrentActions(this);
-        gameData.setActionIndexForTriggerActivation(0);
+        gameData.setActionIndexForTriggerActivation(-1);
 
         return data;
 

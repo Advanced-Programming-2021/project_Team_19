@@ -203,7 +203,6 @@ public class AI {
 
         ArrayList<Card> spellCards = new ArrayList<>(mtm.getGameBoard().getSpellAndTrapCardZone().getAllCards());
 
-
         if (action instanceof Summon) {
             handleSummonTraps(action, spellCards);
         } else if (action instanceof Attack) {
