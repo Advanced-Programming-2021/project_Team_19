@@ -449,13 +449,12 @@ public class AI {
         ArrayList<Monster> hand = getMonstersInHand();
         Monster handMonster = getMaxAttack(hand);
 
-        ArrayList<Monster> myMonsters1 = (ArrayList<Monster>) mtm.getGameBoard().getMonsterCardZone().getCards().clone();
-        ArrayList<Monster> myMonsters2 = (ArrayList<Monster>) myMonsters1.clone();
+        int size =  mtm.getGameBoard().getMonsterCardZone().getNumberOfCards();
 
         while (true) {
+
             if (handMonster != null &&
-                    handMonster.numberOfSacrifices(false, myMonsters1.size(), gameData) >
-                            myMonsters1.size()) {
+                    handMonster.numberOfSacrifices(false, size, gameData) > size) {
                 hand.remove(handMonster);
                 handMonster = getMaxAttack(hand);
             } else {
@@ -666,7 +665,12 @@ public class AI {
 
         for (int attack : myAttacks) {
 
-            if (rivalAttacks.size() - 1 < i || attack < rivalAttacks.get(i)) {
+            if(rivalAttacks.size() - 1 < i ){
+                i++;
+                continue;
+            }
+
+            if (attack < rivalAttacks.get(i)) {
                 break;
             }
             i++;
