@@ -21,11 +21,6 @@ public class RitualMonster extends Monster {
         setTurnWasPutInMonsterZone(gameData.getTurn());
     }
 
-    @Override
-    public void handleSet(GameData gameData) {
-        Printer.print("you can only ritual summon this card");
-    }
-
     public RitualMonster(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {
         super(name, description, price, attack, defence, level, attribute, monsterType, monsterTypesForEffects);
     }

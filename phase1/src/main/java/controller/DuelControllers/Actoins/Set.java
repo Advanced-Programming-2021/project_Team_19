@@ -6,6 +6,7 @@ import model.Card.Monster;
 import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Enums.CardFamily;
+import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Phase;
 import view.Printer.Printer;
@@ -27,7 +28,8 @@ public class Set extends SummonAndSet {
         if (selectedCard == null) {
             Printer.print("no card is selected yet");
         } else if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand().contains(selectedCard) ||
-                (selectedCard.getCardFamily().equals(CardFamily.SPELL) && ((Spell) selectedCard).getSpellType().equals(SpellTypes.FIELD))) {
+                (selectedCard.getCardFamily().equals(CardFamily.SPELL) && ((Spell) selectedCard).getSpellType().equals(SpellTypes.FIELD)) ||
+                (selectedCard.getCardFamily().equals(CardFamily.MONSTER) && ((Monster) selectedCard).getEffectType().equals(MonsterTypesForEffects.RITUAL))) {
             Printer.print("you can’t set this card");
         } else if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             Printer.print("action not allowed in this phase");

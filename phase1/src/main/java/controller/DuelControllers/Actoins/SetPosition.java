@@ -4,6 +4,7 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Phase;
 import view.Printer.Printer;
@@ -29,13 +30,13 @@ public class SetPosition extends Action {
             return;
         }
 
-        if(!(card instanceof Monster)){
+        if(!(card.getCardFamily().equals(CardFamily.MONSTER))){
             Printer.print("you can’t change this card position");
             return;
         }
 
 
-        Monster selectedCard = (Monster) gameData.getSelectedCard();
+        Monster selectedCard = (Monster) card;
 
         if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(selectedCard)) {
             Printer.print("you can’t change this card position");
@@ -50,7 +51,7 @@ public class SetPosition extends Action {
         String modeStr = Utils.getFirstGroupInMatcher(matcher);
         CardMod newCardMode;
 
-        if (modeStr.equals("defense")) {
+        if (modeStr.equals("defence")) {
             newCardMode = CardMod.DEFENSIVE_OCCUPIED;
             if (!selectedCard.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
                 Printer.print("you can’t change this card position");

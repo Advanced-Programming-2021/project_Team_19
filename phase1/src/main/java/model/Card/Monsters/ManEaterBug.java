@@ -36,9 +36,16 @@ public class ManEaterBug extends EffectMonster {
 
         cards.removeAll(Collections.singleton(null));
 
+        if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(this)){
+            Utils.changeTurn(gameData);
+        }
         Card monsterToDestroy = Utils.askUserToSelectCard
                 (cards, "select an enemy id to destroy:", null);
         gameData.setEvent(null);
+
+        if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(this)){
+            Utils.changeTurn(gameData);
+        }
 
         if (monsterToDestroy == null)
             return null;
