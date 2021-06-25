@@ -83,7 +83,7 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
             }
         }
 
-        return true;
+        return false;
     }
 
     public void handleDestroy(GameData gameData) {
