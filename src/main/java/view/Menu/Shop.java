@@ -1,4 +1,4 @@
-package view.graphic;
+package view.Menu;
 
 import controller.MenuControllers.ShopMenuController;
 import javafx.fxml.FXML;
@@ -18,8 +18,9 @@ import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
 import model.User;
-import view.Menu.Menu;
+import view.graphic.CardView;
 
+import javax.print.DocFlavor;
 import java.io.IOException;
 
 public class Shop extends Menu {
@@ -49,8 +50,8 @@ public class Shop extends Menu {
 
     public void run (User user){
         Shop.user = user;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Shop.fxml"));
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/Shop.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
             stage.getScene().setRoot(anchorPane);
             stage.show();
@@ -122,7 +123,7 @@ public class Shop extends Menu {
     }
 
     public void getBack(MouseEvent mouseEvent) {
-        System.out.println("Hello world");
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
     }
 
     public void clearChoice(MouseEvent mouseEvent) {

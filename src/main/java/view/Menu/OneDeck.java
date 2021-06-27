@@ -1,27 +1,22 @@
-package view.graphic;
+package view.Menu;
 
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
-import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
 import model.User;
-import view.Menu.DeckMenu;
-import view.Menu.Menu;
-import view.Menu.WelcomeMenu;
+import view.graphic.CardView;
 
 import java.io.IOException;
 
@@ -65,7 +60,7 @@ public class OneDeck extends Menu {
         pane = new Pane();
         OneDeck.user = user;
         OneDeck.deck = deck;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/OneDeck.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/OneDeck.fxml"));
         try {
             pane = fxmlLoader.load();
             stage.getScene().setRoot(pane);
@@ -159,6 +154,6 @@ public class OneDeck extends Menu {
     }
 
     public void getBack(MouseEvent mouseEvent) {
-        new view.graphic.Deck().run(user);
+        new Deck().run(user);
     }
 }

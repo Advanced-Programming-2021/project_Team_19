@@ -23,9 +23,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import view.Menu.Deck;
+import view.Menu.Shop;
 import view.Menu.WelcomeMenu;
-
-import java.util.ArrayList;
 
 public class menuGraphic extends Application {
 
@@ -37,11 +37,10 @@ public class menuGraphic extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
-
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        new GameGraphicControllerForTest().run();
+        WelcomeMenu.getInstance().run();
         //run function of your menu for test here
         stage.show();
     }

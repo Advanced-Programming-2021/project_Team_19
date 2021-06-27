@@ -3,7 +3,7 @@ import model.User;
 import org.junit.jupiter.api.*;
 import view.GetInput;
 import view.Printer.Printer;
-import view.graphic.Shop;
+import view.Menu.Shop;
 
 public class ShopTest {
     static User user;

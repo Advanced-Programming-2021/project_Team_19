@@ -1,16 +1,14 @@
-package view.graphic;
+package view.Menu;
 
 import controller.DataBaseControllers.DeckDataBaseController;
-import controller.DuelControllers.DuelMenuController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -21,7 +19,7 @@ import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 import model.User;
-import view.Menu.Menu;
+import view.graphic.CardView;
 
 import java.io.IOException;
 
@@ -40,6 +38,8 @@ public class Deck extends Menu {
     private Label result;
     @FXML
     private Label activeDeckName;
+    @FXML
+    private Button backButton;
 
 
     public Deck() {
@@ -50,7 +50,7 @@ public class Deck extends Menu {
 
     public void run (User user){
         Deck.user = user;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Deck.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/Deck.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
             stage.getScene().setRoot(anchorPane);
@@ -135,5 +135,9 @@ public class Deck extends Menu {
             activeDeckName.setText(user.getActiveDeckName());
             updateDeckScroll();
         }
+    }
+
+    public void getBack(MouseEvent mouseEvent) {
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
     }
 }

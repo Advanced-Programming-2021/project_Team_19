@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.graphic.OneDeck">
+<AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Menu.OneDeck">
    <children>
       <ScrollPane fx:id="cardsInMainDeck" layoutX="125.0" layoutY="50.0" prefHeight="171.0" prefWidth="254.0" />
       <ScrollPane fx:id="availableCards" layoutX="126.0" layoutY="267.0" prefHeight="200.0" prefWidth="548.0" />
