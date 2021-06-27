@@ -15,11 +15,12 @@ public class NormalSummon extends Summon {
     }
 
     public void run() {
-        if (checkErrors().equals(""))
+        if (actionIsValid().equals("normal summon"))
             summonMonster();
     }
 
-    public String checkErrors() {
+    @Override
+    public String actionIsValid() {
 
         Card card = gameData.getSelectedCard();
 
@@ -39,7 +40,7 @@ public class NormalSummon extends Summon {
                 !summoningMonster.getName().equals("Gate Guardian")) {
             return "you already summoned/set on this turn";
         }
-        return "";
+        return "normal summon";
     }
 
     private void summonMonster() {

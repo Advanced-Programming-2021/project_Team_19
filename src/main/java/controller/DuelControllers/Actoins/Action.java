@@ -202,4 +202,8 @@ public abstract class Action {
                     gameData.getCurrentGamer().getGameBoard().getFieldZone());
         }
     }
+
+    public String actionIsValid(){
+        return "";
+    }
 }

@@ -1,10 +1,8 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Card.Card;
 import model.Card.Monster;
 import model.Data.TriggerActivationData;
-import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
@@ -28,7 +26,8 @@ public class AttackMonster extends Attack {
 
     }
 
-    public String checkErrors() {
+    @Override
+    public String actionIsValid() {
 
         String attackErrors = checkMutualAttackErrors();
 
@@ -40,7 +39,7 @@ public class AttackMonster extends Attack {
             return "there is no card to attack here";
         }
 
-        return "";
+        return "attack monster";
     }
 
     public void attackMonster(Matcher matcher) {
@@ -49,7 +48,7 @@ public class AttackMonster extends Attack {
         enemyId = Integer.parseInt(matcher.group(1));
 
 
-        if (!checkErrors().equals("")) {
+        if (!actionIsValid().equals("attack monster")) {
             return;
         }
 

@@ -1,7 +1,10 @@
 package view.graphic;
 
 import controller.DuelControllers.Game;
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -28,7 +31,6 @@ import view.graphic.Animations.Translation;
 
 import java.util.ArrayList;
 
-import static view.Printer.Printer.print;
 import static view.graphic.Utils.getImageByCard;
 
 public class GameView {
@@ -228,12 +230,7 @@ public class GameView {
     private CardView getCardForGraveyard(Card card, boolean isSelf) {
         CardView cardView = new CardView(card, 9, false);
 
-        cardView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                showGraveYard(isSelf);
-            }
-        });
+        cardView.setOnMouseClicked(mouseEvent -> showGraveYard(isSelf));
 
         return cardView;
     }
@@ -242,12 +239,9 @@ public class GameView {
 
         ScrollPane graveyardScrollPane = new ScrollPane();
 
-        graveyardScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                    mainPane.getChildren().remove(graveyardScrollPane);
-                }
+        graveyardScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                mainPane.getChildren().remove(graveyardScrollPane);
             }
         });
 
@@ -298,12 +292,9 @@ public class GameView {
 
         Animation tr = getTransitionForAddCardFromDeckToHand(cardView);
 
-        tr.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if(index < 4){
-                    getHandAnimation(cardViews, index + 1).play();
-                }
+        tr.setOnFinished(actionEvent -> {
+            if(index < 4){
+                getHandAnimation(cardViews, index + 1).play();
             }
         });
 
@@ -327,12 +318,9 @@ public class GameView {
         newCardView.setVisible(false);
         gamePane.getChildren().add(newCardView);
 
-        KeyFrame createNewCardAnimation = new KeyFrame(Duration.millis(700), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                newCardView.setVisible(true);
-                gamePane.getChildren().remove(cardView);
-            }
+        KeyFrame createNewCardAnimation = new KeyFrame(Duration.millis(700), actionEvent -> {
+            newCardView.setVisible(true);
+            gamePane.getChildren().remove(cardView);
         });
 
         Timeline timeline = new Timeline(createNewCardAnimation);
@@ -369,20 +357,13 @@ public class GameView {
         newCardView.setVisible(false);
         gamePane.getChildren().add(newCardView);
 
-        KeyFrame createNewCardAnimation = new KeyFrame(new Duration(700), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                newCardView.setVisible(true);
-                gamePane.getChildren().remove(cardView);
-            }
+        KeyFrame createNewCardAnimation = new KeyFrame(new Duration(700), actionEvent -> {
+            newCardView.setVisible(true);
+            gamePane.getChildren().remove(cardView);
         });
 
-        KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                rivalGameView.addCardToRivalHand(cardView.card);
-            }
-        });
+        KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
+                rivalGameView.addCardToRivalHand(cardView.card));
 
         Timeline createCardTimeline = new Timeline(createNewCardAnimation);
 
@@ -435,18 +416,22 @@ public class GameView {
     private CardView getCardForHand(Card card) {
         CardView cardView = new CardView(card, 5, false);
 
-        cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                showCard(card);
-                new Translation(cardView, cardView.getLayoutY() - 15, 150).start();
-            }
+        cardView.setOnMouseEntered(mouseEvent -> {
+            showCard(card);
+            new Translation(cardView, cardView.getLayoutY() - 15, 150).start();
+            gamePane.getChildren().add(cardView.showLabel());
         });
 
-        cardView.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                new Translation(cardView, cardView.getLayoutY(), 150).start();
+        cardView.setOnMouseExited(mouseEvent -> {
+            new Translation(cardView, cardView.getLayoutY(), 150).start();
+            gamePane.getChildren().remove(cardView.clearLabel());
+        });
+
+        cardView.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.SECONDARY))
+                cardView.setNextValidAction();
+            else {
+//                    startAction(cardView.getCurrentAction());
             }
         });
 
@@ -454,19 +439,13 @@ public class GameView {
     }
 
     private CardView getCardForRivalHand(Card card) {
-        CardView cardView = new CardView(card, 5, true);
-        return cardView;
+        return new CardView(card, 5, true);
     }
 
     private CardView getCardViewByCardForMonsterAndSpellZone(Card card, int i, int j) {
         CardView cardView = new CardView(card, 9, false);
 
-        cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                showCard(card);
-            }
-        });
+        cardView.setOnMouseEntered(mouseEvent -> showCard(card));
 
         cardView.setX(122 + i * 82);
         cardView.setY(101 + 100 * j);
@@ -479,12 +458,7 @@ public class GameView {
     }
 
     private void setShowCardOnMouseEntered(CardView cardView){
-        cardView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                showCard(cardView.card);
-            }
-        });
+        cardView.setOnMouseEntered(mouseEvent -> showCard(cardView.card));
     }
 
 }

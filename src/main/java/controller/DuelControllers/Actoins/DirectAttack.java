@@ -1,10 +1,8 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
-import model.Card.Card;
 import model.Card.Monster;
 import model.Data.TriggerActivationData;
-import view.Printer.Printer;
 
 public class DirectAttack extends Attack {
 
@@ -15,14 +13,15 @@ public class DirectAttack extends Attack {
     public void run() {
 
         if (canActionBeDone()) {
-            if (checkErrors().equals("")) {
+            if (actionIsValid().equals("direct attack")) {
                 directAttack();
             }
         }
 
     }
 
-    public String checkErrors() {
+    @Override
+    public String actionIsValid() {
 
         String attackErrors = checkMutualAttackErrors();
 
@@ -34,7 +33,7 @@ public class DirectAttack extends Attack {
             return "you can’t attack the opponent directly";
         }
 
-        return "";
+        return "direct attack";
     }
 
 

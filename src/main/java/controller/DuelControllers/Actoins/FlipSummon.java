@@ -13,11 +13,12 @@ public class FlipSummon extends Summon {
     }
 
     public void flipByCommand() {
-        if (checkFlipSummonErrors().equals(""))
+        if (actionIsValid().equals("flip summon"))
             flip();
     }
 
-    public String checkFlipSummonErrors() {
+    @Override
+    public String actionIsValid() {
 
         if (summoningMonster == null) {
             return "no car is selected yet";
@@ -36,7 +37,7 @@ public class FlipSummon extends Summon {
         if ((((Monster) summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn())) {
             return "you can’t flip summon this card this turn";
         }
-        return "";
+        return "flip summon";
     }
 
     public void flip() {

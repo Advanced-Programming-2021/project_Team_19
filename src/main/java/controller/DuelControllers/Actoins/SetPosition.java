@@ -20,7 +20,8 @@ public class SetPosition extends Action {
         super(gameData, "set position");
     }
 
-    public String checkErrors(boolean toDefensiveMode){
+    @Override
+    public String actionIsValid(){
 
         Card card =  gameData.getSelectedCard();
 
@@ -43,21 +44,21 @@ public class SetPosition extends Action {
             return "action not allowed in this phase";
         }
 
-        if (toDefensiveMode) {
-            if (!monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
-                return "invalid change position";
-            }
-        } else {
-            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
-                return "you can’t change this card position";
-            }
-        }
+//        if (toDefensiveMode) {
+//            if (!monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
+//                return "invalid change position";
+//            }
+//        } else {
+//            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
+//                return "you can’t change this card position";
+//            }
+//        }
 
         if (monster.getLastTurnHasChangedPosition() == gameData.getTurn()) {
             return "you already changed this card position in this turn";
         }
 
-        return "";
+        return "set position";
     }
 
     public void run(Matcher matcher) {
@@ -69,9 +70,9 @@ public class SetPosition extends Action {
         Card selectedCard =  gameData.getSelectedCard();
         String newModeStr = Utils.getFirstGroupInMatcher(matcher);
         boolean toDefensiveMode = newModeStr.equals("defense");
-        String error = checkErrors(toDefensiveMode);
+        String error = actionIsValid();
 
-        if(!error.equals("")){
+        if(!error.equals("set position")){
             print(error);
             return;
         }

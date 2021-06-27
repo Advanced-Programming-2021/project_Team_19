@@ -23,7 +23,8 @@ public class Set extends SummonAndSet {
         manageSetCard();
     }
 
-    public String checkErrors(){
+    @Override
+    public String actionIsValid() {
 
         Card card = gameData.getSelectedCard();
 
@@ -46,16 +47,16 @@ public class Set extends SummonAndSet {
                 return "spell card zone is full";
             }
         }
-        return "";
+        return "set";
     }
 
     private void manageSetCard() {
 
         Card selectedCard = gameData.getSelectedCard();
 
-        String error = checkErrors();
+        String error = actionIsValid();
 
-        if(!error.equals("")){
+        if(!error.equals("set")){
             print(error);
             return;
         }

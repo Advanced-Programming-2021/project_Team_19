@@ -1,13 +1,16 @@
 package view.graphic;
 
+import controller.DuelControllers.CardActionManager;
 import controller.Utils;
-import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import model.Card.Card;
 import model.Card.Monster;
+
+import java.util.ArrayList;
 
 public class CardView extends Rectangle {
 
@@ -16,6 +19,9 @@ public class CardView extends Rectangle {
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;
+    private Label actionDisplay = new Label();
+    private ArrayList<String> validActions;
+    private int validActionIndex = 0;
 
     public CardView(double sizeInverse){
         super(width / sizeInverse, height / sizeInverse);
@@ -53,6 +59,47 @@ public class CardView extends Rectangle {
 
     public Card getCard(){
         return card;
+    }
+
+    public Label showLabel(){
+        actionDisplay.setLayoutX(getLayoutX() + 100);
+        actionDisplay.setLayoutY(getLayoutY() + 200);
+        actionDisplay.setTextFill(Color.GREEN);
+
+        String validActionsInStringForm = new CardActionManager(card).getValidActions();
+
+        validActionsInStringForm = "attack monster attack monster attack direct no normal summon normal summon";
+
+        String[] actionNames = {"attack monster", "attack direct", "normal summon", "set", "set position"};
+
+        validActions = new ArrayList<>();
+
+        for (String actionName : actionNames) {
+            if (validActionsInStringForm.matches(".*" + actionName + " " + actionName + ".*")){
+                validActions.add(actionName);
+            }
+        }
+
+        validActionIndex = 0;
+
+        actionDisplay.setText(validActions.get(validActionIndex));
+
+        return actionDisplay;
+    }
+
+    public void setNextValidAction(){
+        actionDisplay.setText(validActions.get(++validActionIndex % validActions.size()));
+    }
+
+    public String getCurrentAction(){
+        return validActions.get(validActionIndex);
+    }
+
+
+    public Label clearLabel(){
+        validActionIndex = 0;
+        actionDisplay.setText("");
+        return actionDisplay;
     }
 }
 
