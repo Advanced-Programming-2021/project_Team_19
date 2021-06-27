@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Card.Card;
 import model.Gamer;
 import view.graphic.Animations.FlipTransition;
@@ -326,7 +327,7 @@ public class GameView {
         newCardView.setVisible(false);
         gamePane.getChildren().add(newCardView);
 
-        KeyFrame createNewCardAnimation = new KeyFrame(new Duration(700), new EventHandler<ActionEvent>() {
+        KeyFrame createNewCardAnimation = new KeyFrame(Duration.millis(700), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 newCardView.setVisible(true);
