@@ -48,10 +48,12 @@ public class GameGraphicControllerForTest extends Menu {
         Gamer gamer1 =  new Gamer(user1);
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
-        gameView1 = new GameView(stage,gamer1, gamer2, game);
 
-        System.out.println(user2);
+        gameView1 = new GameView(stage,gamer1, gamer2, game);
         gameView2 = new GameView(stage2, gamer2, gamer1, game);
+
+        gameView2.setRivalGameView(gameView1);
+        gameView1.setRivalGameView(gameView2);
     }
 
     public void startGame(){
