@@ -1,6 +1,7 @@
 package controller.DuelControllers.Actoins;
 
 import controller.DuelControllers.GameData;
+import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
@@ -14,41 +15,31 @@ public class NormalSummon extends Summon {
     }
 
     public void run() {
-        if (checkSummonErrors())
+        if (checkErrors().equals(""))
             summonMonster();
     }
 
-    private boolean checkSummonErrors() {
+    public String checkErrors() {
 
-        if (summoningMonster == null) {
-            Printer.print("no card is selected yet");
-            return false;
-        }
+        Card card = gameData.getSelectedCard();
 
-        if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
+        if (card == null) {
+            return "no card is selected yet";
+        } else if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
                 .contains(summoningMonster) ||
                 !summoningMonster.getCardFamily().equals(CardFamily.MONSTER) ||
                 ((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL) ^
                         gameData.isRitualSummoning()) {
-            Printer.print("you can’t summon this card");
-            return false;
-        }
-
-        if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.
-                getCurrentPhase().equals(Phase.MAIN2)) {
-            Printer.print("action not allowed in this phase");
-            return false;
-        }
-        if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
-            Printer.print("monster card zone is full");
-            return false;
-        }
-        if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
+            return "you can’t summon this card";
+        } else if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
+            return "action not allowed in this phase";
+        } else if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
+            return "monster card zone is full";
+        } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
                 !summoningMonster.getName().equals("Gate Guardian")) {
-            Printer.print("you already summoned/set on this turn");
-            return false;
+            return "you already summoned/set on this turn";
         }
-        return true;
+        return "";
     }
 
     private void summonMonster() {

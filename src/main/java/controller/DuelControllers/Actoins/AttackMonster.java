@@ -28,31 +28,42 @@ public class AttackMonster extends Attack {
 
     }
 
+    public String checkErrors() {
+
+        String attackErrors = checkMutualAttackErrors();
+
+        if (!attackErrors.equals("")) {
+            return attackErrors;
+        }
+
+        if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getNumberOfCards() == 0) {
+            return "there is no card to attack here";
+        }
+
+        return "";
+    }
+
     public void attackMonster(Matcher matcher) {
 
-        Card selectedCard = gameData.getSelectedCard();
         matcher.find();
         enemyId = Integer.parseInt(matcher.group(1));
 
-        if (checkMutualAttackErrors(selectedCard, gameData)) {
 
-            if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(enemyId) == null)
-                Printer.print("there is no card to attack here");
-            else {
+        if (!checkErrors().equals("")) {
+            return;
+        }
 
-                if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
-                        .getCardById(enemyId)).attackIsNormal(gameData)) {
+        if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
+                .getCardById(enemyId)).attackIsNormal(gameData)) {
 
-                    TriggerActivationData activationData = handleTriggerEffects();
+            TriggerActivationData activationData = handleTriggerEffects();
 
-                    if (activationData.hasActionStopped) {
-                        return;
-                    }
-
-                    ((Monster) attackingMonster).handleAttack(gameData, enemyId);
-
-                }
+            if (activationData.hasActionStopped) {
+                return;
             }
+
+            ((Monster) attackingMonster).handleAttack(gameData, enemyId);
+
         }
 
     }

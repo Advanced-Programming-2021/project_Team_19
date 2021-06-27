@@ -13,35 +13,30 @@ public class FlipSummon extends Summon {
     }
 
     public void flipByCommand() {
-        if (checkFlipSummonErrors())
+        if (checkFlipSummonErrors().equals(""))
             flip();
     }
 
-    private boolean checkFlipSummonErrors() {
+    public String checkFlipSummonErrors() {
 
         if (summoningMonster == null) {
-            Printer.print("no card is selected yet");
-            return false;
+            return "no car is selected yet";
         }
         if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone()
                 .containsCard(summoningMonster)) {
-            Printer.print("you can’t change this card position");
-            return false;
+            return "you can’t change this card position";
         }
         if (!gameData.getCurrentPhase().equals(Phase.MAIN1) &&
                 !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
-            Printer.print("action not allowed in this phase");
-            return false;
+            return "action not allowed in this phase";
         }
         if (!((Monster) summoningMonster).getCardMod().equals(CardMod.DEFENSIVE_HIDDEN)) {
-            Printer.print("you can’t flip summon this card");
-            return false;
+            return "you can’t flip summon this card";
         }
         if ((((Monster) summoningMonster).getTurnWasPutInMonsterZone() == gameData.getTurn())) {
-            Printer.print("you can’t flip summon this card this turn");
-            return false;
+            return "you can’t flip summon this card this turn";
         }
-        return true;
+        return "";
     }
 
     public void flip() {

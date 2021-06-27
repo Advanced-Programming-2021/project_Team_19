@@ -20,25 +20,22 @@ public abstract class Attack extends Action {
         return attackingMonster;
     }
 
-    public boolean checkMutualAttackErrors(Card selectedCard, GameData gameData) {
+    public String checkMutualAttackErrors() {
+
+        Card selectedCard = gameData.getSelectedCard();
 
         if (selectedCard == null) {
-            Printer.print("no card is selected yet");
-            return false;
+            return "no card is selected yet";
         } else if (!gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(selectedCard)) {
-            Printer.print("you can’t attack with this card");
-            return false;
+            return "you can’t attack with this card";
         } else if (!((Monster) selectedCard).getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
-            Printer.print("you cannot attack with a defensive monster");
-            return false;
+            return "you cannot attack with a defensive monster";
         } else if (!gameData.getCurrentPhase().equals(Phase.BATTLE)) {
-            Printer.print("action not allowed in this phase");
-            return false;
+            return "action not allowed in this phase";
         } else if (gameData.getTurn() == ((Monster) selectedCard).getLastTurnAttacked()) {
-            Printer.print("this card already attacked");
-            return false;
+            return "this card already attacked";
         }
-        return true;
+        return "";
     }
 
 }

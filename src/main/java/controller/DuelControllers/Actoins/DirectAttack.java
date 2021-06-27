@@ -15,35 +15,42 @@ public class DirectAttack extends Attack {
     public void run() {
 
         if (canActionBeDone()) {
-            directAttack();
+            if (checkErrors().equals("")) {
+                directAttack();
+            }
         }
 
+    }
+
+    public String checkErrors() {
+
+        String attackErrors = checkMutualAttackErrors();
+
+        if (!attackErrors.equals("")) {
+            return attackErrors;
+        }
+
+        if (currentPlayerCannotDirectAttack()) {
+            return "you can’t attack the opponent directly";
+        }
+
+        return "";
     }
 
 
     private void directAttack() {
 
+        TriggerActivationData activationData = handleTriggerEffects();
 
-        Card selectedCard = gameData.getSelectedCard();
-
-        if (checkMutualAttackErrors(selectedCard, gameData)) {
-            if (currentPlayerCannotDirectAttack(gameData)) {
-                Printer.print("you can’t attack the opponent directly");
-            } else {
-
-                TriggerActivationData activationData = handleTriggerEffects();
-
-                if (activationData.hasActionStopped) {
-                    return;
-                }
-
-                ((Monster) attackingMonster).handleDirectAttack(gameData);
-            }
+        if (activationData.hasActionStopped) {
+            return;
         }
+
+        ((Monster) attackingMonster).handleDirectAttack(gameData);
     }
 
 
-    private static boolean currentPlayerCannotDirectAttack(GameData gameData) {
+    private boolean currentPlayerCannotDirectAttack() {
         for (int i = 0; i < 5; i++) {
             if (gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCardById(i) != null)
                 return true;
