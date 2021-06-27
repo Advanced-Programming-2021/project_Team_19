@@ -44,9 +44,9 @@ public class GameGraphic extends Menu {
 //    Text cardDescription = new Text();
 //    ScrollPane descriptionScrollPane = new ScrollPane();
 //
-//    public GameGraphic() {
-//        super("Game Menu");
-//    }
+    public GameGraphic() {
+        super("Game Menu");
+    }
 //
 //    public void setCardShowPane(){
 //
