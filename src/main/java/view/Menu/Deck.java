@@ -4,6 +4,7 @@ import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -62,6 +63,9 @@ public class Deck extends Menu {
 
     public void initialize() {
         updateDeckScroll();
+        backButton.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
+
+        backButton.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
         activeDeckName.setText(user.getActiveDeckName());
     }
 

@@ -3,6 +3,7 @@ package view.Menu;
 import controller.MenuControllers.ShopMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -64,6 +65,8 @@ public class Shop extends Menu {
 
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+        backButton.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
+        backButton.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
