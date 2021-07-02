@@ -88,3 +88,10 @@
     -fx-font-size: 28px;
     -fx-text-fill: #85f604;
 }
+
+
+.actions {
+    -fx-font-size: 22px;
+    -fx-fill: #ee3d11;
+    -fx-font-family: "Britannic Bold";
+}

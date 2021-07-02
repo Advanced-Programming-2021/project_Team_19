@@ -4,12 +4,10 @@ import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Board.Hand;
 import model.Board.SpellAndTrapCardZone;
-import model.Card.Card;
 import model.Card.SpellAndTraps;
 import model.Card.Trap;
 import model.Data.ActivationData;
 import model.Enums.SpellCardMods;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -23,7 +21,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
-    public String checkErrors(){
+    public String actionIsValid(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
@@ -47,12 +45,12 @@ public class ActivateSpellOrTrapNormally extends Activation {
             return "invalid zone";
         }
 
-        return "";
+        return "activate normally";
     }
 
     public void run() {
 
-        String error = checkErrors();
+        String error = actionIsValid();
 
         if(!error.equals("")){
             print(error);

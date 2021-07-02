@@ -7,7 +7,6 @@ import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.CardMod;
 import model.Phase;
-import view.Printer.Printer;
 
 import java.util.regex.Matcher;
 
@@ -20,11 +19,10 @@ public class SetPosition extends Action {
         super(gameData, "set position");
     }
 
-    @Override
-    public String actionIsValid(){
+
+    public String actionIsValid(boolean toDefensiveMode){
 
         Card card =  gameData.getSelectedCard();
-
 
         if (card == null) {
             return "no card is selected yet";
@@ -44,21 +42,22 @@ public class SetPosition extends Action {
             return "action not allowed in this phase";
         }
 
-//        if (toDefensiveMode) {
-//            if (!monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
-//                return "invalid change position";
-//            }
-//        } else {
-//            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
-//                return "you can’t change this card position";
-//            }
-//        }
+        if (toDefensiveMode) {
+            if (!monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
+                return "invalid change position";
+            }
+        } else {
+            if (!monster.getCardMod().equals(CardMod.DEFENSIVE_OCCUPIED)) {
+                return "you can’t change this card position";
+            }
+        }
 
         if (monster.getLastTurnHasChangedPosition() == gameData.getTurn()) {
             return "you already changed this card position in this turn";
         }
 
-        return "set position";
+        String mode = toDefensiveMode ? "defense" : "attack";
+        return "set position " + mode;
     }
 
     public void run(Matcher matcher) {
@@ -70,10 +69,10 @@ public class SetPosition extends Action {
         Card selectedCard =  gameData.getSelectedCard();
         String newModeStr = Utils.getFirstGroupInMatcher(matcher);
         boolean toDefensiveMode = newModeStr.equals("defense");
-        String error = actionIsValid();
+        String result = actionIsValid(toDefensiveMode);
 
-        if(!error.equals("set position")){
-            print(error);
+        if(!result.startsWith("set position")){
+            print(result);
             return;
         }
 

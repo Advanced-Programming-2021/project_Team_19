@@ -19,7 +19,7 @@ public class CardView extends Rectangle {
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;
-    private Label actionDisplay = new Label();
+    private Label actionDisplayLabel = new Label();
     private ArrayList<String> validActions;
     private int validActionIndex = 0;
 
@@ -41,10 +41,6 @@ public class CardView extends Rectangle {
         }
     }
 
-    public void setHidden(){
-        isHidden = true;
-    }
-
     public void hideCard(){
         setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         isHidden = true;
@@ -62,13 +58,15 @@ public class CardView extends Rectangle {
     }
 
     public Label showLabel(){
-        actionDisplay.setLayoutX(getLayoutX() + 100);
-        actionDisplay.setLayoutY(getLayoutY() + 200);
-        actionDisplay.setTextFill(Color.GREEN);
+        actionDisplayLabel.setMaxWidth(100);
+        actionDisplayLabel.setMinWidth(100);
+        actionDisplayLabel.setLayoutX(getX() + getWidth() / 2 - 50);
+        actionDisplayLabel.setLayoutY(getY() + getHeight() /2 - 50);
+        actionDisplayLabel.getStyleClass().add("actions");
 
-        String validActionsInStringForm = new CardActionManager(card).getValidActions();
+//        String validActionsInStringForm = new CardActionManager(card).getValidActions();
 
-        validActionsInStringForm = "attack monster attack monster attack direct no normal summon normal summon";
+        String validActionsInStringForm = "attack monster attack monster attack direct no normal summon normal summon";
 
         String[] actionNames = {"attack monster", "attack direct", "normal summon", "set", "set position"};
 
@@ -82,13 +80,13 @@ public class CardView extends Rectangle {
 
         validActionIndex = 0;
 
-        actionDisplay.setText(validActions.get(validActionIndex));
+        actionDisplayLabel.setText(validActions.get(validActionIndex));
 
-        return actionDisplay;
+        return actionDisplayLabel;
     }
 
     public void setNextValidAction(){
-        actionDisplay.setText(validActions.get(++validActionIndex % validActions.size()));
+        actionDisplayLabel.setText(validActions.get(++validActionIndex % validActions.size()));
     }
 
     public String getCurrentAction(){
@@ -98,8 +96,8 @@ public class CardView extends Rectangle {
 
     public Label clearLabel(){
         validActionIndex = 0;
-        actionDisplay.setText("");
-        return actionDisplay;
+        actionDisplayLabel.setText("");
+        return actionDisplayLabel;
     }
 }
 

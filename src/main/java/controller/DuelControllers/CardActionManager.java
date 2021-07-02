@@ -3,9 +3,7 @@ package controller.DuelControllers;
 import controller.DuelControllers.Actoins.*;
 import model.Card.Card;
 
-import javax.naming.ldap.HasControls;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CardActionManager {
     public Card card;
@@ -14,17 +12,36 @@ public class CardActionManager {
         this.card = card;
     }
 
-    public String getValidActions(){
+    public ArrayList<String> getValidActions() {
 
-        StringBuilder validActions = new StringBuilder();
+        String result;
+        ArrayList<String> validActions = new ArrayList<>();
 
-        validActions.append("attack monster ").append(new AttackMonster(GameData.getGameData()).actionIsValid());
-        validActions.append(" attack direct ").append(new DirectAttack(GameData.getGameData()).actionIsValid());
-        validActions.append(" normal summon ").append(new NormalSummon(GameData.getGameData()).actionIsValid());
-        validActions.append(" set ").append(new Set(GameData.getGameData()).actionIsValid());
-        validActions.append(" set position ").append(new SetPosition(GameData.getGameData()).actionIsValid());
+        result = new AttackMonster(GameData.getGameData()).actionIsValid();
+        if (result == "attack monster")
+            validActions.add(result);
 
-        return new String(validActions);
+        result = new DirectAttack(GameData.getGameData()).actionIsValid();
+        if (result == "attack direct")
+            validActions.add(result);
+
+        result = new NormalSummon(GameData.getGameData()).actionIsValid();
+        if (result == "normal summon")
+            validActions.add(result);
+
+        result = new Set(GameData.getGameData()).actionIsValid();
+        if (result == "set")
+            validActions.add("set");
+
+
+        result = new SetPosition(GameData.getGameData()).actionIsValid();
+        if (result.startsWith("set position")) {
+            validActions.add(result);
+        }
+
+        result = new ActivateSpellOrTrapNormally(GameData.getGameData()).actionIsValid();
+
+        return validActions;
 
     }
 }
