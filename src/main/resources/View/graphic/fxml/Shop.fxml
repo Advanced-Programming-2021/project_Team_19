@@ -20,7 +20,7 @@
          </graphic>
       </Button>
       <Button layoutX="293.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#clearChoice" prefHeight="25.0" prefWidth="54.0" text="clear!" />
-      <Button layoutX="213.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="25.0" prefWidth="54.0" text="buy!" />
+      <Button fx:id="buyButton" layoutX="213.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="25.0" prefWidth="54.0" text="buy!" />
       <Label fx:id="messageBox" layoutX="131.0" layoutY="403.0" prefHeight="45.0" prefWidth="214.0" />
       <ScrollPane fx:id="cardsScrolling" layoutX="441.0" layoutY="28.0" prefHeight="303.0" prefWidth="200.0" />
       <ImageView fitHeight="35.0" fitWidth="42.0" layoutX="653.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">

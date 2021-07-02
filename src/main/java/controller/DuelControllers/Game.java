@@ -28,11 +28,20 @@ public class Game {
 
 
     public String run(String command){
-        return "";
+        return switch (command) {
+            case "set" -> new Set(gameData).run();
+            case "normal summon" -> new NormalSummon(gameData).run();
+            case "attack direct" -> new DirectAttack(gameData).run();
+            case "flip summon" -> new FlipSummon(gameData).run();
+            default -> "";
+        };
     }
 
+
+
     public ArrayList<String> getValidCommadsForCard(Card card){
-        return null;
+
+        return new CardActionManager(card).getValidActions();
     }
 
 
@@ -118,42 +127,22 @@ public class Game {
             } else if (command.matches("attack ([1-5])")) {
                 new AttackMonster(gameData).run
                         (Utils.getMatcher(command, "attack ([1-5])"));
-            } else if (command.matches("attack direct")) {
-                new DirectAttack(gameData).run();
-            } else if (command.startsWith("select")) {
-                new Select(gameData).select(command);
-            } else if (command.matches("card show --selected")) {
-                new Select(gameData).select(command);
-            } else if (command.matches("summon")) {
-                new NormalSummon(gameData).run();
-            } else if (command.matches("set")) {
-                normalSetCommand(gameData);
             } else if (command.matches("increase --LP \\d+")) {
                 CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
             } else if (command.matches("duel set-winner \\w+")) {
                 if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))) {
                     return handleSurrender(gameData);
                 }
-            } else if (command.matches("show hand")) {
-                gameData.getCurrentGamer().getGameBoard().getHand().showHand();
             } else if (command.matches("set --position (attack|defence)")) {
                 new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
             } else if (command.matches("flip-summon")) {
-                new FlipSummon(gameData).flipByCommand();
+                new FlipSummon(gameData).run();
             } else if (command.matches("next phase")) {
                 goToNextPhase(gameData);
             } else if (command.matches("multiply --attack \\d+")) {
                 CheatCodes.multiplyAttack(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "multiply --attack (\\d+)")));
-            } else if (command.matches("show graveyard")) {
-                gameData.getCurrentGamer().getGameBoard().getGraveYard().printGraveYard();
             } else if (command.matches("activate")) {
                 new ActivateSpellOrTrapNormally(gameData).run();
-            } else if (command.matches("help")) {
-                help(gameData);
-            } else if (command.equals("show board")) {
-                gameData.showBoard();
-            } else if (command.equals("show AD")) {//attack and defense
-                showAtkDef(gameData);
             } else if (command.equals("activate effect")) {
                 new ActivateEffectMonster(gameData).run();
             } else {
@@ -170,10 +159,6 @@ public class Game {
         }
 
         new Set(gameData).run();
-    }
-
-    private void help(GameData gameData) {
-        GameHelp.run(gameData.getCurrentPhase());
     }
 
     private boolean askForSurrender() {

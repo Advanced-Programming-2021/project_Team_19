@@ -19,8 +19,8 @@ public class Set extends SummonAndSet {
         super(gameData, "set");
     }
 
-    public void run() {
-        manageSetCard();
+    public String run() {
+        return manageSetCard();
     }
 
     @Override
@@ -38,6 +38,8 @@ public class Set extends SummonAndSet {
         } else if (card.getCardFamily().equals(CardFamily.MONSTER)) {
             if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
                 return "monster card zone is full";
+            } else if (card.getName().equals("Gate Guardian")) {
+                return "you cannot set gate guardian";
             } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn()) {
                 return "you already summoned/set on this turn";
             }
@@ -50,47 +52,54 @@ public class Set extends SummonAndSet {
         return "set";
     }
 
-    private void manageSetCard() {
+    private String manageSetCard() {
 
         Card selectedCard = gameData.getSelectedCard();
 
-        String error = actionIsValid();
-
-        if(!error.equals("set")){
-            print(error);
-            return;
-        }
+//        String error = actionIsValid();
+//
+//        if(!error.equals("set")){
+//            print(error);
+//            return;
+//        }
 
         if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
-            setMonster(selectedCard);
-        } else if (selectedCard.getCardFamily().equals(CardFamily.TRAP) ||
-                selectedCard.getCardFamily().equals(CardFamily.SPELL)) {
-            setSpellOrTrap(selectedCard);
+            return setMonster(selectedCard);
+        } else {
+            return setSpellOrTrap(selectedCard);
         }
     }
 
-    private void setSpellOrTrap(Card card) {
+    private String setSpellOrTrap(Card card) {
 
         if (((SpellAndTraps) card).handleSet(gameData)) {
 
             activateOrSetCheckFieldSpell(card, gameData);
 
-            print("set successfully");
+            return "set successfully";
         }
+
+        return "set not successful";
 
     }
 
 
-    private void setMonster(Card card) {
+    private String setMonster(Card card) {
 
         Monster monster = (Monster) card;
 
-        if (sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData))) {
+        int numberOfSacrifices = monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+
+        if (numberOfSacrifices == 0) {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             monster.handleSet(gameData);
-            print("set successfully");
             handleTriggerEffects();
+            return "set successfully";
         }
+
+//        sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData));
+
+        return "sacrifice " + numberOfSacrifices + " monsters";
 
     }
 }

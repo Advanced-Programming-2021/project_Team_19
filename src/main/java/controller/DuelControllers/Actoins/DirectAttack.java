@@ -10,13 +10,9 @@ public class DirectAttack extends Attack {
         super(gameData, "direct attack");
     }
 
-    public void run() {
+    public String run() {
 
-        if (canActionBeDone()) {
-            if (actionIsValid().equals("direct attack")) {
-                directAttack();
-            }
-        }
+        return directAttack();
 
     }
 
@@ -24,6 +20,10 @@ public class DirectAttack extends Attack {
     public String actionIsValid() {
 
         String attackErrors = checkMutualAttackErrors();
+
+        if (!canActionBeDone()){
+            return "action cannot be done";
+        }
 
         if (!attackErrors.equals("")) {
             return attackErrors;
@@ -37,15 +37,16 @@ public class DirectAttack extends Attack {
     }
 
 
-    private void directAttack() {
+    private String directAttack() {
 
         TriggerActivationData activationData = handleTriggerEffects();
 
         if (activationData.hasActionStopped) {
-            return;
+            return "direct attack not successful";
         }
 
         ((Monster) attackingMonster).handleDirectAttack(gameData);
+        return "direct attack successful";
     }
 
 
