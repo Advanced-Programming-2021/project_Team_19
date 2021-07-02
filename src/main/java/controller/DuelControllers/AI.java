@@ -1,9 +1,9 @@
 package controller.DuelControllers;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.Attack;
-import controller.DuelControllers.Actoins.AttackMonster;
-import controller.DuelControllers.Actoins.Summon;
+import controller.DuelControllers.Actions.Action;
+import controller.DuelControllers.Actions.Attack;
+import controller.DuelControllers.Actions.AttackMonster;
+import controller.DuelControllers.Actions.Summon;
 import model.Board.MonsterCardZone;
 import model.Card.*;
 import model.Card.Monsters.EffectMonster;

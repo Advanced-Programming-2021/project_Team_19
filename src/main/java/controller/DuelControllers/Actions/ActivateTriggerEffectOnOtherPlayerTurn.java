@@ -1,12 +1,12 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.Utils;
 import view.Printer.Printer;
 
-public class ActivateTriggerEffectOnGamerTurn extends ActivateTriggerTrapEffect {
 
+public class ActivateTriggerEffectOnOtherPlayerTurn extends ActivateTriggerTrapEffect {
 
-    public ActivateTriggerEffectOnGamerTurn(Action action) {
+    public ActivateTriggerEffectOnOtherPlayerTurn(Action action) {
         super(action);
     }
 
@@ -14,7 +14,7 @@ public class ActivateTriggerEffectOnGamerTurn extends ActivateTriggerTrapEffect 
 
         for (String str : Utils.getCommandsExceptActivation()) {
             if (command.matches(str)) {
-                Printer.print("please activate one trap or spell");
+                Printer.print("it’s not your turn to play this kind of moves");
                 return true;
             }
         }

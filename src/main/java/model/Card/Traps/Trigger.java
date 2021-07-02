@@ -1,6 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actions.Action;
 import model.Card.Trap;
 import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;

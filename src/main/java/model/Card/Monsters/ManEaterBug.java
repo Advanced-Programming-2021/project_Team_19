@@ -1,6 +1,6 @@
 package model.Card.Monsters;
 
-import controller.DuelControllers.Actoins.Activation;
+import controller.DuelControllers.Actions.Activation;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;

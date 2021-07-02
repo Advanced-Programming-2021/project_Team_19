@@ -1,4 +1,4 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.ActivateCheckers.*;
 import model.Card.SpellAndTraps;

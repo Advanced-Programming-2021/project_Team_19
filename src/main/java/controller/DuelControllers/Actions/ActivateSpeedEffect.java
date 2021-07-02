@@ -1,11 +1,10 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.SpellAndTraps;
 import model.Data.ActivationData;
-import model.Data.TriggerActivationData;
 import view.Printer.Printer;
 
 import java.util.ArrayList;

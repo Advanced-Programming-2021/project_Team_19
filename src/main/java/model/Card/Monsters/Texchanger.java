@@ -1,7 +1,7 @@
 package model.Card.Monsters;
 
 import com.google.gson.annotations.Expose;
-import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Actions.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.AllBoards;

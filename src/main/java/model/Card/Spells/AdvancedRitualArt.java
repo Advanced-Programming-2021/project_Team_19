@@ -1,6 +1,6 @@
 package model.Card.Spells;
 
-import controller.DuelControllers.Actoins.RitualSummon;
+import controller.DuelControllers.Actions.RitualSummon;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
@@ -15,7 +15,7 @@ import model.Gamer;
 
 import java.util.ArrayList;
 
-import static controller.DuelControllers.Actoins.RitualSummon.getLevelSum;
+import static controller.DuelControllers.Actions.RitualSummon.getLevelSum;
 
 public class AdvancedRitualArt extends Spell {
     @Override

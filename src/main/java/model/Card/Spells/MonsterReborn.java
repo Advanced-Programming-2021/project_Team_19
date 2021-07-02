@@ -1,6 +1,6 @@
 package model.Card.Spells;
 
-import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Actions.SpecialSummon;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Spell;

@@ -1,6 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Actions.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;

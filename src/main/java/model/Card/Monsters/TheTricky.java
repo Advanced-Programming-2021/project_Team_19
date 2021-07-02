@@ -1,8 +1,8 @@
 package model.Card.Monsters;
 
-import controller.DuelControllers.Actoins.Activation;
-import controller.DuelControllers.Actoins.Destroy;
-import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Actions.Activation;
+import controller.DuelControllers.Actions.Destroy;
+import controller.DuelControllers.Actions.SpecialSummon;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;

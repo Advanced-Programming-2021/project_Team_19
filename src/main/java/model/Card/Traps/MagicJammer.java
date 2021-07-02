@@ -1,6 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actions.Action;
 import controller.DuelControllers.GameData;
 import model.Card.Trap;
 import model.Data.TriggerActivationData;

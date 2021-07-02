@@ -1,6 +1,6 @@
 package controller.TrapCheckers;
 
-import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actions.Action;
 import model.Card.Card;
 import model.Card.SpellAndTraps;
 

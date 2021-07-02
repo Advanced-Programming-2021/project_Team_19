@@ -1,4 +1,4 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.DuelControllers.GameData;
 import model.Card.Card;
@@ -6,12 +6,8 @@ import model.Card.Monster;
 import model.Card.Spell;
 import model.Card.SpellAndTraps;
 import model.Enums.CardFamily;
-import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Phase;
-import view.Printer.Printer;
-
-import static view.Printer.Printer.print;
 
 public class Set extends SummonAndSet {
 

@@ -1,6 +1,6 @@
 package controller.DuelControllers;
 
-import controller.DuelControllers.Actoins.*;
+import controller.DuelControllers.Actions.*;
 import model.Card.Card;
 
 import java.util.ArrayList;

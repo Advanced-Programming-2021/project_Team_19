@@ -1,4 +1,4 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.ActivateCheckers.SelectedCardIsNotNullChecker;
 import controller.DuelControllers.GameData;
@@ -6,7 +6,6 @@ import controller.Utils;
 import model.Board.SpellAndTrapCardZone;
 import model.Card.Card;
 import model.Card.Monsters.EffectMonster;
-import model.Card.Monsters.ShouldAskForActivateEffectMonster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
 import model.Card.Traps.Trigger;

@@ -2,11 +2,8 @@ package model.Card;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actions.Action;
 import controller.DuelControllers.GameData;
-import controller.Utils;
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;

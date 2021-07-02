@@ -1,8 +1,7 @@
 package model.Card.Monsters;
 
 import com.google.gson.annotations.Expose;
-import controller.DuelControllers.Actoins.Destroy;
-import controller.DuelControllers.Actoins.SpecialSummon;
+import controller.DuelControllers.Actions.Destroy;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Board.GraveYard;
@@ -14,7 +13,6 @@ import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Gamer;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 

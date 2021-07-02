@@ -1,8 +1,8 @@
 package controller;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.Select;
+import controller.DuelControllers.Actions.Action;
+import controller.DuelControllers.Actions.Select;
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;

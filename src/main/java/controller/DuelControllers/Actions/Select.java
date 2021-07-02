@@ -1,10 +1,9 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Card.Monsters.ScannerMonster;
 import model.Enums.CardMod;
 import view.Printer.Printer;
 

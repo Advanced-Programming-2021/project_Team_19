@@ -1,6 +1,6 @@
 package controller.DuelControllers;
 
-import controller.DuelControllers.Actoins.*;
+import controller.DuelControllers.Actions.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
@@ -22,6 +22,7 @@ public class Game {
 
     public GameData gameData;
 
+
     public Game(GameData gameData){
         this.gameData = gameData;
     }
@@ -39,7 +40,7 @@ public class Game {
 
 
 
-    public ArrayList<String> getValidCommadsForCard(Card card){
+    public ArrayList<String> getValidCommandsForCard(Card card){
 
         return new CardActionManager(card).getValidActions();
     }
@@ -135,8 +136,6 @@ public class Game {
                 }
             } else if (command.matches("set --position (attack|defence)")) {
                 new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
-            } else if (command.matches("flip-summon")) {
-                new FlipSummon(gameData).run();
             } else if (command.matches("next phase")) {
                 goToNextPhase(gameData);
             } else if (command.matches("multiply --attack \\d+")) {
@@ -152,14 +151,6 @@ public class Game {
         }
     }
 
-    private void normalSetCommand(GameData gameData) {
-        if (gameData.getSelectedCard().getName().equals("Gate Guardian")) {
-            Printer.print("you cannot set Gate Guardian");
-            return;
-        }
-
-        new Set(gameData).run();
-    }
 
     private boolean askForSurrender() {
         while (true) {

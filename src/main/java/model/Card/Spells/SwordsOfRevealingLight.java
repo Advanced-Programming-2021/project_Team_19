@@ -1,6 +1,6 @@
 package model.Card.Spells;
 
-import controller.DuelControllers.Actoins.Attack;
+import controller.DuelControllers.Actions.Attack;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Monster;

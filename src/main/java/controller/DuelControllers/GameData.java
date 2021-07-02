@@ -1,7 +1,6 @@
 package controller.DuelControllers;
 
-import controller.DataBaseControllers.UserDataBaseController;
-import controller.DuelControllers.Actoins.Action;
+import controller.DuelControllers.Actions.Action;
 import controller.Utils;
 import model.Board.GraveYard;
 import model.Board.Zones;

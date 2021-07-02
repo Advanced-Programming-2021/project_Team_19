@@ -1,4 +1,4 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.DuelControllers.GameData;
 import model.Card.Card;
@@ -6,7 +6,6 @@ import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Phase;
-import view.Printer.Printer;
 
 public class NormalSummon extends Summon {
 

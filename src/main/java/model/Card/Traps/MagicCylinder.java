@@ -1,6 +1,6 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.*;
+import controller.DuelControllers.Actions.*;
 import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Monster;

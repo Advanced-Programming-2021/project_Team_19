@@ -1,11 +1,10 @@
-package controller.DuelControllers.Actoins;
+package controller.DuelControllers.Actions;
 
 import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
-import view.Printer.Printer;
 
 public abstract class Attack extends Action {
 

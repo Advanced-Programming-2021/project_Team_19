@@ -1,7 +1,7 @@
 package model.Card.Traps;
 
-import controller.DuelControllers.Actoins.Action;
-import controller.DuelControllers.Actoins.Attack;
+import controller.DuelControllers.Actions.Action;
+import controller.DuelControllers.Actions.Attack;
 import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;

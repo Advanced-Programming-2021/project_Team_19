@@ -1,6 +1,6 @@
 package controller.DuelControllers;
 
-import controller.DuelControllers.Actoins.Select;
+import controller.DuelControllers.Actions.Select;
 import model.Phase;
 
 public class GameHelp {
