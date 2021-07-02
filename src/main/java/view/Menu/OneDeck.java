@@ -122,7 +122,7 @@ public class OneDeck extends Menu {
         HBox hBox = new HBox();
         for (Card card : user.getCardsSorted()) {
             try {
-                CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
+                CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                 hBox.getChildren().add(cardViewToAddToScroll);
                 cardViewToAddToScroll.setOnMouseClicked(e -> {
                     cardName.setText(card.getName());
@@ -135,7 +135,7 @@ public class OneDeck extends Menu {
         availableCards.setContent(hBox);
         HBox mainMenuCards = new HBox();
         for (Card card : deck.getAllMainCardsSorted()) {
-            CardView cardView = new CardView(card, 2, false);
+            CardView cardView = new CardView(card, 2, false, true);
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
             });
@@ -144,7 +144,7 @@ public class OneDeck extends Menu {
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
         for (Card card : deck.getAllSideCardsSorted()) {
-            CardView cardView = new CardView(card, 2, false);
+            CardView cardView = new CardView(card, 2, false, true);
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
             });

@@ -18,7 +18,7 @@ public class test extends Menu {
     Pane pane = new Pane();
 
     public static CardView cardView = new CardView(controller.Utils.getCardByName
-            ("battle ox"), 2, true);
+            ("battle ox"), 2, true, true);
 
     public test() {
         super("test");

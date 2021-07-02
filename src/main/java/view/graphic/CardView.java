@@ -4,8 +4,10 @@ import controller.DuelControllers.CardActionManager;
 import controller.Utils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -24,6 +26,7 @@ public class CardView extends Rectangle {
 
     Card card;
     public boolean isHidden = false;
+    public boolean isVertical = true;
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;
@@ -39,11 +42,16 @@ public class CardView extends Rectangle {
         hideCard();
     }
 
-    public CardView(Card card, double sizeInverse, boolean isHidden){
-        super(width / sizeInverse, height / sizeInverse);
+    public CardView(Card card, double sizeInverse, boolean isHidden, boolean isVertical){
+
+        setWidth(isVertical ? width / sizeInverse : height / sizeInverse);
+        setHeight(isVertical ? height / sizeInverse : width / sizeInverse);
+
         this.sizeInverse = sizeInverse;
         this.card = card;
         this.isHidden = isHidden;
+        this.isVertical = isVertical;
+
         if(isHidden){
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         } else{
@@ -61,24 +69,41 @@ public class CardView extends Rectangle {
     }
 
     public void setCardImage(){
-        String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
-        setFill(new ImagePattern(new Image("/Assets/Cards/" + model +
-                Utils.getPascalCase(card.getName()) +".jpg")));
+        if(isVertical){
+            String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
+            ImagePattern imagePattern = new ImagePattern(new Image("/Assets/Cards/" + model +
+                    Utils.getPascalCase(card.getName()) +".jpg"));
+            setFill(imagePattern);
+        } else{
+            setCardImage2();
+        }
         isHidden = false;
+    }
+
+    public void setCardImage2(){
+        String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
+        ImageView imageView = new ImageView(new Image("/Assets/Cards/" + model +
+                Utils.getPascalCase(card.getName()) +".jpg"));
+
+        imageView.setRotate(90);
+
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image rotatedImage = imageView.snapshot(params, null);
+
+        setFill(new ImagePattern(rotatedImage));
     }
 
     public Card getCard(){
         return card;
     }
 
-    public boolean wasShow = false;
-
-    public Label getShowLabel(){
+    public Label getShowLabel(String cls){
 
         actionDisplayLabel.setLayoutX(getX() + 10);
         actionDisplayLabel.setLayoutY(getY() - 35);
         actionDisplayLabel.setTextAlignment(TextAlignment.CENTER);
-        actionDisplayLabel.getStyleClass().add("actions");
+        actionDisplayLabel.getStyleClass().add(cls);
 
         validActionNamesForShow = new ArrayList<>();
         validActionNames = new CardActionManager(card).getValidActions();

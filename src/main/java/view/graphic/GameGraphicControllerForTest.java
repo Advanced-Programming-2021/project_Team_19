@@ -49,6 +49,10 @@ public class GameGraphicControllerForTest extends Menu {
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
 
+
+        GameData gameData = new GameData(gamer1, gamer2);
+        game = new Game(gameData);
+
         gameView1 = new GameView(stage,gamer1, gamer2, game);
         gameView2 = new GameView(stage2, gamer2, gamer1, game);
 
@@ -57,10 +61,6 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     public void startGame(){
-
-        GameData gameData = new GameData(gameView1.self, gameView2.self);
-        game = new Game(gameData);
-
         gameView1.run();
         gameView2.run();
     }

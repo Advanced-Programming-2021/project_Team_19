@@ -66,7 +66,7 @@ public class Shop extends Menu {
     public void initialize() {
 
         cardPic.getChildren().clear();
-        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true, true));
         backButton.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
         backButton.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
 
@@ -80,11 +80,11 @@ public class Shop extends Menu {
             String tempCardName = card.split(":")[0].trim();
             Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
             try {
-                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false);
+                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
                 vBox.getChildren().add(cardViewToAddToScroll);
                 cardViewToAddToScroll.setOnMouseClicked(e -> {
                     cardPic.getChildren().clear();
-                    cardPic.getChildren().add(new CardView(cardToAddToScroll, 2, false));
+                    cardPic.getChildren().add(new CardView(cardToAddToScroll, 2, false, true));
                     currentCard = cardToAddToScroll;
                     buyButton.setDisable(user.getCredit() < cardToAddToScroll.getPrice());
                 });
@@ -99,7 +99,7 @@ public class Shop extends Menu {
         HBox hBox = new HBox();
         for (Card card : user.getCardsSorted()) {
             try {
-                CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
+                CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                 hBox.getChildren().add(cardViewToAddToScroll);
             } catch (Exception e) {
                 System.out.println(card.getName()+ "-----------------------------------------------");
@@ -122,7 +122,7 @@ public class Shop extends Menu {
         }
         else{
             messageBox.setText(null);
-            CardView cardView = new CardView(card,2, false);
+            CardView cardView = new CardView(card,2, false, true);
             currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
@@ -139,7 +139,8 @@ public class Shop extends Menu {
 
     public void clearChoice(MouseEvent mouseEvent) {
         cardPic.getChildren().clear();
-        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
+        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName
+                ("Battle OX"), 2, true, true));
         currentCard = null;
         buyButton.setDisable(true);
         cardName.clear();
@@ -168,7 +169,7 @@ public class Shop extends Menu {
                 HBox hBox = new HBox();
                 for (Card card : user.getCardsSorted()) {
                     try {
-                        CardView cardViewToAddToScroll = new CardView(card, 2.5, false);
+                        CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                         hBox.getChildren().add(cardViewToAddToScroll);
                     } catch (Exception e) {
                         System.out.println(card.getName()+ "-----------------------------------------------");

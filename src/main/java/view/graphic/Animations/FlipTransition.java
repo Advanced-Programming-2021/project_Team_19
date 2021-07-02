@@ -24,7 +24,12 @@ public class FlipTransition {
         rotate1.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                cardView.setCardImage();
+                if(cardView.isHidden){
+                    cardView.setCardImage();
+                } else{
+                    cardView.hideCard();
+                }
+
             }
         });
 
