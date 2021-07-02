@@ -5,10 +5,9 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -64,6 +63,7 @@ public class GameView {
 
     Label selfLpLabel = new Label();
     Label rivalLpLabel = new Label();
+    public VBox phaseBox = new VBox();
 
     int selfLp;
     int rivalLp;
@@ -89,6 +89,9 @@ public class GameView {
         box.setLayoutY((menuGraphic.sceneY - 600) / 2);
 
         mainPane.getChildren().add(descriptionScrollPane);
+
+        addPhaseBox();
+        addPhaseChangeButton();//TODO
 
     }
 
@@ -182,7 +185,55 @@ public class GameView {
         descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         descriptionScrollPane.setStyle("-fx-background-color:transparent;");
         descriptionScrollPane.setPadding(new Insets(4, 0, 4, 4));
+    }
 
+    private void addPhaseChangeButton(){
+        Button phaseButton = new Button("change phase");
+
+        phaseButton.setOnMouseClicked(event -> {
+//            game.run("next phase");
+            changePhase();
+        });
+
+        gamePane.getChildren().add(phaseButton);
+    }
+
+    private void addPhaseBox(){
+        phaseBox.setSpacing(25);
+
+        phaseBox.setLayoutY(87);
+        phaseBox.setLayoutX(1);
+
+        phaseBox.getChildren().add(getPhaseLabel(" D\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" S\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" M\n 1"));
+        phaseBox.getChildren().add(getPhaseLabel(" B\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" M\n 2"));
+        phaseBox.getChildren().add(getPhaseLabel(" E\n P"));
+
+        gamePane.getChildren().add(phaseBox);
+    }
+
+    private Label getPhaseLabel(String text){
+        Label phaseLabel = new Label(text);
+        if (text.equals(" D\n P")){
+            phaseLabel.getStyleClass().addAll("phaseLabel", "activePhase");
+            return phaseLabel;
+        }
+        phaseLabel.getStyleClass().addAll("phaseLabel", "inactivePhase");
+        return phaseLabel;
+    }
+
+    private void changePhase(){
+        for (int i = 0; i < 6; i++) {
+            if(phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")){
+
+                phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
+                phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
+                phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
+                break;
+            }
+        }
     }
 
     private void setDeck() {
@@ -419,7 +470,7 @@ public class GameView {
         cardView.setOnMouseEntered(mouseEvent -> {
             showCard(card);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).start();
-            gamePane.getChildren().add(cardView.showLabel());
+//            gamePane.getChildren().add(cardView.showLabel());
         });
 
         cardView.setOnMouseExited(mouseEvent -> {

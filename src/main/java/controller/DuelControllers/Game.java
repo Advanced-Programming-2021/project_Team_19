@@ -23,29 +23,40 @@ public class Game {
     public GameData gameData;
 
 
-    public Game(GameData gameData){
+    public Game(GameData gameData) {
         this.gameData = gameData;
     }
 
 
-    public String run(String command){
-        return switch (command) {
-            case "set" -> new Set(gameData).run();
-            case "normal summon" -> new NormalSummon(gameData).run();
-            case "attack direct" -> new DirectAttack(gameData).run();
-            case "flip summon" -> new FlipSummon(gameData).run();
-            default -> "";
-        };
+    public String run(String command) {
+        switch (command) {
+            case "set" -> {
+                return new Set(gameData).run();
+            }
+            case "normal summon" -> {
+                return new NormalSummon(gameData).run();
+            }
+            case "attack direct" -> {
+                return new DirectAttack(gameData).run();
+            }
+            case "flip summon" -> {
+                return new FlipSummon(gameData).run();
+            }
+            case "next phase" -> {
+                goToNextPhase(gameData);
+                return "phase changed successfully";
+            }
+            default -> {
+                return "";
+            }
+        }
     }
 
 
-
-    public ArrayList<String> getValidCommandsForCard(Card card){
+    public ArrayList<String> getValidCommandsForCard(Card card) {
 
         return new CardActionManager(card).getValidActions();
     }
-
-
 
 
     @Deprecated
