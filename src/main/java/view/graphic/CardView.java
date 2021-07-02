@@ -68,7 +68,8 @@ public class CardView extends Rectangle {
 
         String validActionsInStringForm = "attack monster attack monster attack direct no normal summon normal summon";
 
-        String[] actionNames = {"attack monster", "attack direct", "normal summon", "set", "set position"};
+        String[] actionNames = {"attack monster", "attack direct",
+                "normal summon", "set", "set position"};
 
         validActions = new ArrayList<>();
 

@@ -12,9 +12,8 @@ public class FlipSummon extends Summon {
         super(gameData, "flip summon");
     }
 
-    public void flipByCommand() {
-        if (actionIsValid().equals("flip summon"))
-            flip();
+    public String run() {
+            return flip();
     }
 
     @Override
@@ -40,15 +39,16 @@ public class FlipSummon extends Summon {
         return "flip summon";
     }
 
-    public void flip() {
+    public String flip() {
 
         if (!((Monster) summoningMonster).handleFlip(gameData, CardMod.OFFENSIVE_OCCUPIED)) {
-            return;
+            return "";
         }
 
-        Printer.print("flip summoned successfully");
-
         handleTriggerEffects();
+
+        return "flip summoned successfully";
+
     }
 
 }

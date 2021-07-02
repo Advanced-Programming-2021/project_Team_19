@@ -14,9 +14,10 @@ public class NormalSummon extends Summon {
         super(gameData, "normal summon");
     }
 
-    public void run() {
-        if (actionIsValid().equals("normal summon"))
-            summonMonster();
+    public String run() {
+//        if (actionIsValid().equals("normal summon"))
+        return summonMonster();
+
     }
 
     @Override
@@ -43,36 +44,42 @@ public class NormalSummon extends Summon {
         return "normal summon";
     }
 
-    private void summonMonster() {
+    private String summonMonster() {
 
-        if (summoningMonster.getName().equals("Gate Guardian")) {
-            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
-                new SpecialSummon(gameData).run(gameData.getSelectedCard());
-                Printer.print("summoned successfully");
-            }
-            return;
-        }
+//        if (summoningMonster.getName().equals("Gate Guardian")) {
+//            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
+//                new SpecialSummon(gameData).run(gameData.getSelectedCard());
+//                Printer.print("summoned successfully");
+//            }
+//            return "summoned successfully";
+//        }
 
-        if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
-            ((RitualSummon) gameData.getRitualSummoning()).run((Monster) summoningMonster);
-            handleTriggerEffects();
-            return;
-        }
+//        if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
+//            ((RitualSummon) gameData.getRitualSummoning()).run((Monster) summoningMonster);
+//            handleTriggerEffects();
+//            return "summoned successfully";
+//        }
 
         int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
                 (false, gameData.getCurrentGamer().
                         getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
 
-        if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
-
-            if (!gameData.getSelectedCard().getName().equals("Gate Guardian"))
-                gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
-
+        if (numberOfSacrifices == 0){
             ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
-            Printer.print("summoned successfully");
-
             handleTriggerEffects();
+            return "summoned successfully";
         }
+
+        return "sacrifice " + numberOfSacrifices + " monsters";
+
+//        if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
+//            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+//
+//            ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
+//
+//            handleTriggerEffects();
+//            return "summoned successfully";
+//        }
 
     }
 }

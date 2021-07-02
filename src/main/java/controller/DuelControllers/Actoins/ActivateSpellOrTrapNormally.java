@@ -52,7 +52,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
         String error = actionIsValid();
 
-        if(!error.equals("")){
+        if(!error.equals("activate normally")){
             print(error);
             return;
         }
