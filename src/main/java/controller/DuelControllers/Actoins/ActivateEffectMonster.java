@@ -3,7 +3,6 @@ package controller.DuelControllers.Actoins;
 import controller.ActivateCheckers.*;
 import controller.DuelControllers.GameData;
 import model.Card.Monsters.ShouldAskForActivateEffectMonster;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,8 @@ public class ActivateEffectMonster extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
-    public String checkErrors(){
+    @Override
+    public String actionIsValid(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
         checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
@@ -37,14 +37,14 @@ public class ActivateEffectMonster extends Activation {
             return "you can't activate this card";
         }
 
-        return "";
+        return "activate effect monster";
     }
 
     public void run() {
 
-        String error = checkErrors();
+        String error = actionIsValid();
 
-        if(error.equals("")){
+        if(error.equals("activate effect monster")){
             super.activate();
         } else {
             print(error);

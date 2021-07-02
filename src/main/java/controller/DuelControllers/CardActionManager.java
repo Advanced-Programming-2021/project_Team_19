@@ -34,14 +34,26 @@ public class CardActionManager {
             validActions.add("set");
 
 
-        result = new SetPosition(GameData.getGameData()).actionIsValid();
+        result = new SetPosition(GameData.getGameData()).actionIsValid(true);
+        if (result.startsWith("set position")) {
+            validActions.add(result);
+        }
+
+        result = new SetPosition(GameData.getGameData()).actionIsValid(false);
         if (result.startsWith("set position")) {
             validActions.add(result);
         }
 
         result = new ActivateSpellOrTrapNormally(GameData.getGameData()).actionIsValid();
+        if(result.equals("activate spell normally")){
+            validActions.add(result);
+        }
+
+        result = new ActivateEffectMonster(GameData.getGameData()).actionIsValid();
+        if(result.equals("activate effect monster")){
+            validActions.add(result);
+        }
 
         return validActions;
-
     }
 }

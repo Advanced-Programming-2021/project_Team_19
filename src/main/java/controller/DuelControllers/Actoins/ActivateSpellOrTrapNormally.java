@@ -21,6 +21,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         setActivatedCard(gameData.getSelectedCard());
     }
 
+    @Override
     public String actionIsValid(){
 
         ArrayList<ActivationChecker> checkers = new ArrayList<>();
@@ -45,15 +46,15 @@ public class ActivateSpellOrTrapNormally extends Activation {
             return "invalid zone";
         }
 
-        return "activate normally";
+        return "activate spell normally";
     }
 
     public void run() {
 
-        String error = actionIsValid();
+        String result = actionIsValid();
 
-        if(!error.equals("")){
-            print(error);
+        if(!result.equals("activate spell normally")){
+            print(result);
             return;
         }
 

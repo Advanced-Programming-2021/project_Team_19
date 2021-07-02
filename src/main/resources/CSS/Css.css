@@ -91,7 +91,7 @@
 
 
 .actions {
-    -fx-font-size: 22px;
-    -fx-fill: #ee3d11;
+    -fx-font-size: 18px;
+    -fx-text-fill: #ef3506;
     -fx-font-family: "Britannic Bold";
 }
