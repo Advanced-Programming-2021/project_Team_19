@@ -40,6 +40,8 @@ public class Shop extends Menu {
     private Label coinShower;
     @FXML
     private ScrollPane userCards;
+    @FXML
+    private Button buyButton;
 
     private Card currentCard;
 
@@ -84,6 +86,7 @@ public class Shop extends Menu {
                     cardPic.getChildren().clear();
                     cardPic.getChildren().add(new CardView(cardToAddToScroll, 2, false));
                     currentCard = cardToAddToScroll;
+                    buyButton.setDisable(user.getCredit() < cardToAddToScroll.getPrice());
                 });
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
@@ -104,6 +107,7 @@ public class Shop extends Menu {
         }
         hBox.setSpacing(10);
         userCards.setContent(hBox);
+        buyButton.setDisable(true);
     }
 
     public void getCardName(MouseEvent mouseEvent) {
@@ -114,6 +118,7 @@ public class Shop extends Menu {
             messageBox.setTextFill(Color.RED);
             messageBox.setFont(new Font(16));
             currentCard = null;
+            buyButton.setDisable(true);
         }
         else{
             messageBox.setText(null);
@@ -121,6 +126,9 @@ public class Shop extends Menu {
             currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
+            if (user.getCredit() >= card.getPrice()) {
+                buyButton.setDisable(false);
+            }
             cardName.clear();
         }
     }
@@ -133,6 +141,7 @@ public class Shop extends Menu {
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true));
         currentCard = null;
+        buyButton.setDisable(true);
         cardName.clear();
         messageBox.setText(null);
     }
@@ -166,6 +175,9 @@ public class Shop extends Menu {
                     }
                 }
                 userCards.setContent(hBox);
+                if (user.getCredit() < currentCard.getPrice()) {
+                    buyButton.setDisable(true);
+                }
             }
         }
     }
