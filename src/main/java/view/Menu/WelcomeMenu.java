@@ -233,7 +233,7 @@ public class WelcomeMenu extends Menu {
         }
 
         private static void goToMainMenu(String username) {
-            MainMenu.getInstance().run(username);
+            MainMenu.getInstance(username).run();
         }
     }
 

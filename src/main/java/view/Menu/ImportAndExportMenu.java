@@ -45,7 +45,7 @@ public class ImportAndExportMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
         Button importButton = new Button("import card");
         readyCursorForButton(importButton);

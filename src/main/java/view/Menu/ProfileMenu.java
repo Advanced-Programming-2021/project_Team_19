@@ -74,7 +74,7 @@ public class ProfileMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
         pane.getChildren().addAll(buttonBox, backButton);
     }

@@ -72,7 +72,7 @@ public class DuelMenuController extends Menu {
         setBackButton(backButton);
         backButton.setOnMouseClicked(event -> {
             responseLabel.setText("");
-            MainMenu.getInstance().run(user.getUsername());
+            MainMenu.getInstance(null).run();
         });
 
 

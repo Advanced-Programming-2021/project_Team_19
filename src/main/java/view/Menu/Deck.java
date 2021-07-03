@@ -141,6 +141,6 @@ public class Deck extends Menu {
     }
 
     public void getBack(MouseEvent mouseEvent) {
-        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(user.getUsername()));
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
     }
 }
