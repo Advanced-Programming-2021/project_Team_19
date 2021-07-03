@@ -46,7 +46,7 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(1).setOnMouseClicked(event -> new Deck().run(UserDataBaseController.getUserByUsername(username)));
 
-        buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController().run(username));
+        buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController().graphicRun(username));
 
         buttonBox.getChildren().get(3).setOnMouseClicked(event -> new Shop().run(UserDataBaseController.getUserByUsername(username)));
 
