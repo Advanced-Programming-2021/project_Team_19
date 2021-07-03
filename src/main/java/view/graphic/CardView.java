@@ -81,7 +81,7 @@ public class CardView extends Rectangle {
         actionDisplayLabel.getStyleClass().add("actions");
 
         validActionNamesForShow = new ArrayList<>();
-        validActionNames = new CardActionManager(card).getValidActions();
+        validActionNames = CardActionManager.getInstance(card).getValidActions();
 
         for(String validAction : validActionNames){
             if(validAction.startsWith("summon")){
@@ -96,6 +96,8 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("activate");
             } else if (validAction.equals("activate effect monster")){
                 validActionNamesForShow.add("activate");
+            } else if (validAction.equals("select")){
+                validActionNamesForShow.add("select");
             } else {
                 validActionNamesForShow.add(validAction);
             }
