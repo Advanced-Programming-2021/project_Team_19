@@ -8,6 +8,7 @@ public class DirectAttack extends Attack {
 
     public DirectAttack(GameData gameData) {
         super(gameData, "direct attack");
+        attackingMonster = gameData.getSelectedCard();
     }
 
     public String run() {

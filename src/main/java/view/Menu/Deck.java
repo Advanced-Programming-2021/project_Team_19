@@ -54,6 +54,7 @@ public class Deck extends Menu {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/Deck.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
+            readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
             stage.show();
         } catch (IOException e) {
@@ -63,9 +64,7 @@ public class Deck extends Menu {
 
     public void initialize() {
         updateDeckScroll();
-        backButton.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
 
-        backButton.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
         activeDeckName.setText(user.getActiveDeckName());
     }
 
@@ -142,6 +141,6 @@ public class Deck extends Menu {
     }
 
     public void getBack(MouseEvent mouseEvent) {
-        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
     }
 }

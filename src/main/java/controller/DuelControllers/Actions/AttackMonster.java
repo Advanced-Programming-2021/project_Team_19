@@ -3,6 +3,7 @@ package controller.DuelControllers.Actions;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Data.TriggerActivationData;
+import controller.DuelControllers.CardActionManager;
 
 import java.util.regex.Matcher;
 
@@ -18,10 +19,10 @@ public class AttackMonster extends Attack {
         return enemyId;
     }
 
-    public void run(Matcher matcher) {
+    public void run() {
 
         if (canActionBeDone()) {
-            attackMonster(matcher);
+            attackMonster();
         }
 
     }
@@ -42,28 +43,24 @@ public class AttackMonster extends Attack {
         return "attack monster";
     }
 
-    public void attackMonster(Matcher matcher) {
+    public void attackMonster() {
 
-        matcher.find();
-        enemyId = Integer.parseInt(matcher.group(1));
+//        ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
+//                .getCardById(enemyId)).attackIsNormal(gameData)
 
+        if (!CardActionManager.getInstance(null).isShouldSelectCardForMultiCardAction()){
+            CardActionManager.getInstance(null).setMultiCardAction("attack monster");
+        }
 
-        if (!actionIsValid().equals("attack monster")) {
+        TriggerActivationData activationData = handleTriggerEffects();
+
+        if (activationData.hasActionStopped) {
             return;
         }
 
-        if (((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
-                .getCardById(enemyId)).attackIsNormal(gameData)) {
+        ((Monster) CardActionManager.getInstance(null).card).handleAttack(gameData,
+                (Monster) CardActionManager.getInstance(null).getSelectedCardsForMultiCardAction().get(0));
 
-            TriggerActivationData activationData = handleTriggerEffects();
-
-            if (activationData.hasActionStopped) {
-                return;
-            }
-
-            ((Monster) attackingMonster).handleAttack(gameData, enemyId);
-
-        }
 
     }
 

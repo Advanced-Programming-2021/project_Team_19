@@ -56,6 +56,7 @@ public class Shop extends Menu {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/Shop.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
+            readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
             stage.show();
         } catch (IOException e) {
@@ -67,8 +68,6 @@ public class Shop extends Menu {
 
         cardPic.getChildren().clear();
         cardPic.getChildren().add(new CardView(controller.Utils.getCardByName("Battle OX"), 2, true, true));
-        backButton.setOnMouseEntered(mouseEvent -> stage.getScene().setCursor(Cursor.HAND));
-        backButton.setOnMouseExited(mouseEvent -> stage.getScene().setCursor(Cursor.DEFAULT));
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);

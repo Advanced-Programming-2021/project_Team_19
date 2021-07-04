@@ -3,87 +3,188 @@ package controller.DuelControllers;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import model.Enums.GameEvent;
 import model.Gamer;
 import model.User;
-import view.GetInput;
+import view.Menu.MainMenu;
 import view.Menu.Menu;
 import view.Printer.Printer;
 
-import java.util.regex.Matcher;
-
 public class DuelMenuController extends Menu {
 
-    private User user;
-    private Gamer gameStarter;
-    private Gamer rivalGamer;
+    private static User user;
+    private static Gamer gameStarter;
+    private static Gamer rivalGamer;
+    private Pane pane = new Pane();
+    private ChoiceBox numberOfRounds;
+    private ChoiceBox rivalChoiceBox;
+    private HBox rivalNameField;
+    private Label responseLabel = new Label();
+    private TextField rivalUserNameTextField = new TextField();
     private static boolean gameIsHappening = false;
 
     public DuelMenuController() {
         super("Duel Menu");
     }
 
-    public void run(String username) {
 
-        this.user = UserDataBaseController.getUserByUsername(username);
-        String command;
-        command = GetInput.getString();startDuel(command);
+    public void graphicRun(String username) {
+        user = UserDataBaseController.getUserByUsername(username);
+        setRivalChoosingMenu();
+
     }
 
-    public void startDuel(String command) {
+    private void setRivalChoosingMenu() {
 
-        if (command.matches("duel --new --ai --rounds (\\d)")) {
-            startDuelWithAi(Utils.getMatcher(command, "duel --new --ai --rounds (\\d)"));
-        } else if (command.matches("duel --new --second-player (\\S+) --rounds (\\d)")) {
-            startDuelWithTowPlayer(Utils.getMatcher(command, "duel --new --second-player (\\S+) --rounds (\\d)"));
+        rivalNameField = textFieldGridToEnterInfo("enter user's name:");
+
+        rivalNameField.setLayoutX(200);
+        rivalNameField.setLayoutY(250);
+        rivalNameField.setVisible(false);
+
+        rivalUserNameTextField = (TextField) ((VBox) rivalNameField.getChildren().get(1)).getChildren().get(0);
+
+        initializeButtons();
+
+        initChoiceBoxes();
+
+        responseLabel.setLayoutX(200);
+        responseLabel.setLayoutY(300);
+
+        pane.getChildren().addAll(responseLabel, numberOfRounds, rivalChoiceBox, rivalNameField);
+
+        stage.setTitle("duel menu");
+        readyFxmlButtonsForCursor(pane);
+        stage.getScene().setRoot(pane);
+    }
+
+    private void initializeButtons() {
+
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> {
+            responseLabel.setText("");
+            MainMenu.getInstance(null).run();
+        });
+
+
+        Button duelStartButton = new Button("start duel");
+
+        duelStartButton.setOnMouseClicked(event -> {
+            if (canStartDuel()) {
+                startDuel();
+            }
+        });
+
+        duelStartButton.setLayoutX(300);
+        duelStartButton.setLayoutY(200);
+
+
+        pane.getChildren().addAll(backButton, duelStartButton);
+
+    }
+
+    private void initChoiceBoxes() {
+        numberOfRounds = new ChoiceBox(FXCollections.observableArrayList("1 round", "3 rounds"));
+
+        numberOfRounds.setLayoutX(400);
+        numberOfRounds.setLayoutY(100);
+
+        rivalChoiceBox = new ChoiceBox(FXCollections.observableArrayList("duel with AI", "duel with another player"));
+
+        rivalChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            rivalNameField.setVisible(newValue.intValue() == 1);
+            rivalUserNameTextField.setText("");
+        });
+
+        rivalChoiceBox.setLayoutX(200);
+        rivalChoiceBox.setLayoutY(100);
+
+    }
+
+    private void startDuel() {
+        if (rivalChoiceBox.getSelectionModel().getSelectedItem().equals("duel with AI")) {
+            startDuelWithAi();
         } else {
-            Printer.printInvalidCommand();
+            startDuelWithAnotherPlayer();
         }
     }
 
-    private void startDuelWithAi(Matcher matcher) {
-
-        matcher.matches();
-
-        int rounds = Integer.parseInt(matcher.group(1));
-
+    private boolean userIsOkForDuel(User user, boolean isSelf) {
         if (user.getActiveDeckName() == null) {
-            Printer.print(user.getUsername() + " has no active deck");
+            String userName = isSelf ? "you have" : user.getUsername() + " has";
+            Printer.setFailureResponseToLabel(responseLabel, userName + " no active deck");
+            return false;
         } else if (!DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName()).isDeckValid()) {
-            Printer.print(user.getUsername() + "’s deck is invalid");
-        } else if (rounds != 1 && rounds != 3) {
-            Printer.print("number of rounds is not supported");
-        } else {
-            gameStarter = new Gamer(user);
-            rivalGamer = AI.getGamer(0);
-            handleDuel(rounds);
+            String userName = isSelf ? "your" : user.getUsername() + "’s";
+            Printer.setFailureResponseToLabel(responseLabel, userName + " deck is invalid");
+            return false;
         }
+        return true;
+    }
+
+    public boolean canStartDuel() {
+        if (!userIsOkForDuel(user, true)) {
+            return false;
+        }
+
+        if (rivalChoiceBox.getSelectionModel().getSelectedItem() == null) {
+            Printer.setFailureResponseToLabel(responseLabel, "select a rival");
+            return false;
+        }
+
+        if (numberOfRounds.getSelectionModel().getSelectedItem() == null) {
+            Printer.setFailureResponseToLabel(responseLabel, "choose a number of rounds");
+            return false;
+        }
+
+        if (rivalChoiceBox.getSelectionModel().getSelectedItem().equals("duel with AI")) {
+            return true;
+        } else {
+            return canStartDuelWithTwoPlayers();
+        }
+    }
+
+    private void startDuelWithAi() {
+
+        gameStarter = new Gamer(user);
+        rivalGamer = AI.getGamer(0);
+        handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
 
     }
 
-    private void startDuelWithTowPlayer(Matcher matcher) {
+    private boolean canStartDuelWithTwoPlayers() {
 
-        matcher.find();
+        String rivalUserName = rivalUserNameTextField.getText();
 
-        User rival = UserDataBaseController.getUserByUsername(matcher.group(1));
-        int rounds = Integer.parseInt(matcher.group(2));
-        if (rival == null) {
-            Printer.print("there is no player with this username");
-        } else if (user.getActiveDeckName() == null) {
-            Printer.print(user.getUsername() + " has no active deck");
-        } else if (rival.getActiveDeckName() == null) {
-            Printer.print(rival.getUsername() + " has no active deck");
-        } else if (!DeckDataBaseController.getDeckByName(user.getUsername() + "_" + user.getActiveDeckName()).isDeckValid()) {
-            Printer.print(user.getUsername() + "’s deck is invalid");
-        } else if (!DeckDataBaseController.getDeckByName(rival.getUsername() + "_" + rival.getActiveDeckName()).isDeckValid()) {
-            Printer.print(rival.getUsername() + "’s deck is invalid");
-        } else if (rounds != 1 && rounds != 3) {
-            Printer.print("number of rounds is not supported");
-        } else {
-            gameStarter = new Gamer(user);
-            rivalGamer = new Gamer(rival);
-            handleDuel(rounds);
+        if (rivalUserName.equals("")) {
+            Printer.setFailureResponseToLabel(responseLabel, "enter a user's name");
+            return false;
         }
+
+        User rival = UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText());
+
+        if (rival == null) {
+            Printer.setFailureResponseToLabel(responseLabel, "no such user exists");
+            return false;
+        }
+
+        return userIsOkForDuel(rival, false);
+    }
+
+    private void startDuelWithAnotherPlayer() {
+
+        gameStarter = new Gamer(user);
+        rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
+        handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
 
     }
 
@@ -121,7 +222,7 @@ public class DuelMenuController extends Menu {
 
         gameData.setEvent(GameEvent.ASK_FOR_SIDE_DECK);
 
-        if (!gameData.getCurrentGamer().equals(gameStarter)){
+        if (!gameData.getCurrentGamer().equals(gameStarter)) {
             gameData.changeTurn();
         }
 

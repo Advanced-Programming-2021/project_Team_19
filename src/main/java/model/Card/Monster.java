@@ -188,10 +188,7 @@ public abstract class Monster extends Card {
         return true;
     }
 
-    public void handleAttack(GameData gameData, int enemyId) {
-
-        Monster defendingMonster = (Monster) gameData.getSecondGamer()
-                .getGameBoard().getMonsterCardZone().getCardById(enemyId);
+    public void handleAttack(GameData gameData, Monster defendingMonster) {
 
         setLastTurnAttacked(gameData);
 

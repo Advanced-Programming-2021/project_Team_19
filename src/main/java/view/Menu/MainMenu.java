@@ -15,21 +15,20 @@ public class MainMenu extends Menu {
     private Pane pane = new Pane();
 
 
-    private MainMenu() {
+    private MainMenu(String username) {
         super("Main Menu");
+        MainMenu.username = username;
     }
 
-    public static MainMenu getInstance() {
+    public static MainMenu getInstance(String username) {
         if (instance == null) {
-            instance =  new MainMenu();
+            instance =  new MainMenu(username);
         }
         return instance;
     }
 
 
-    public void run(String username) {
-
-        MainMenu.username = username;
+    public void run() {
 
         setMainMenu();
         stage.setTitle("Main Menu");
@@ -46,7 +45,7 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(1).setOnMouseClicked(event -> new Deck().run(UserDataBaseController.getUserByUsername(username)));
 
-        buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController().run(username));
+        buttonBox.getChildren().get(2).setOnMouseClicked(event -> new DuelMenuController().graphicRun(username));
 
         buttonBox.getChildren().get(3).setOnMouseClicked(event -> new Shop().run(UserDataBaseController.getUserByUsername(username)));
 

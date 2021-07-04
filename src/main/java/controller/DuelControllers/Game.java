@@ -18,34 +18,55 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static controller.DuelControllers.CardActionManager.destroyCurrentActionManager;
+
 public class Game {
 
     public GameData gameData;
 
 
-    public Game(GameData gameData){
+    public Game(GameData gameData) {
         this.gameData = gameData;
     }
 
 
-    public String run(String command){
-        return switch (command) {
-            case "set" -> new Set(gameData).run();
-            case "normal summon" -> new NormalSummon(gameData).run();
-            case "attack direct" -> new DirectAttack(gameData).run();
-            case "flip summon" -> new FlipSummon(gameData).run();
-            default -> "";
-        };
+    public String run(String command) {
+        switch (command) {
+            case "set" -> {
+                destroyCurrentActionManager();
+                return new Set(gameData).run();
+            }
+            case "normal summon" -> {
+                destroyCurrentActionManager();
+                return new NormalSummon(gameData).run();
+            }
+            case "attack direct" -> {
+                destroyCurrentActionManager();
+                return new DirectAttack(gameData).run();
+            }
+            case "flip summon" -> {
+                destroyCurrentActionManager();
+                return new FlipSummon(gameData).run();
+            }
+            case "next phase" -> {
+                destroyCurrentActionManager();
+                goToNextPhase(gameData);
+                return "phase changed successfully";
+            }
+            case "select" -> {
+                return CardActionManager.getInstance(null).addCardForMultiCardAction();
+            }
+            default -> {
+                return "";
+            }
+        }
     }
 
 
+    public ArrayList<String> getValidCommandsForCard(Card card) {
 
-    public ArrayList<String> getValidCommandsForCard(Card card){
-
-        return new CardActionManager(card).getValidActions();
+        return CardActionManager.getInstance(card).getValidActions();
     }
-
-
 
 
     @Deprecated
@@ -125,9 +146,6 @@ public class Game {
             if (command.matches("surrender")) {
                 if (askForSurrender())
                     return handleSurrender(gameData);
-            } else if (command.matches("attack ([1-5])")) {
-                new AttackMonster(gameData).run
-                        (Utils.getMatcher(command, "attack ([1-5])"));
             } else if (command.matches("increase --LP \\d+")) {
                 CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
             } else if (command.matches("duel set-winner \\w+")) {
@@ -136,8 +154,6 @@ public class Game {
                 }
             } else if (command.matches("set --position (attack|defence)")) {
                 new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
-            } else if (command.matches("next phase")) {
-                goToNextPhase(gameData);
             } else if (command.matches("multiply --attack \\d+")) {
                 CheatCodes.multiplyAttack(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "multiply --attack (\\d+)")));
             } else if (command.matches("activate")) {

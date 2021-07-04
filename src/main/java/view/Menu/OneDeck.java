@@ -63,6 +63,7 @@ public class OneDeck extends Menu {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/OneDeck.fxml"));
         try {
             pane = fxmlLoader.load();
+            readyFxmlButtonsForCursor(pane);
             stage.getScene().setRoot(pane);
         } catch(IOException e) {
             e.printStackTrace();
