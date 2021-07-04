@@ -47,6 +47,7 @@ public class menuGraphic extends Application {
 
 
     public static Popup createPopup(final String message) {
+
         final Popup popup = new Popup();
         popup.setX(stage.getX() + 15);
         popup.setY(stage.getY() + stage.getHeight() - 65);
@@ -61,6 +62,24 @@ public class menuGraphic extends Application {
 
         popup.getContent().add(label);
 
+        return popup;
+    }
+
+    public static Popup showPopupMessage(Stage stage, String message, double x, double y){
+
+        final Popup popup = new Popup();
+        popup.setX(x);
+        popup.setY(y);
+
+        Label label = new Label(" " + message + " ");
+        label.setAlignment(Pos.CENTER);
+
+        label.setMinWidth(80);
+        label.setMinHeight(50);
+        label.getStyleClass().add("popup1");
+
+        popup.getContent().add(label);
+        popup.show(stage);
         return popup;
     }
 

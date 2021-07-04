@@ -17,6 +17,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
 import model.Card.Card;
 import model.Card.Monster;
 
@@ -30,11 +31,12 @@ public class CardView extends Rectangle {
     public static double height = 614;
     public static double width = 423;
     public double sizeInverse;
-    public Label actionDisplayLabel = new Label();
     private ArrayList<String> validActionNamesForShow;
     private ArrayList<String> validActionNames;
     private int validActionIndex = 0;
     public boolean myBool = true;
+    public Popup tempPopup;
+    public EventHandler filter;
 
     public CardView(double sizeInverse){
         super(width / sizeInverse, height / sizeInverse);
@@ -80,7 +82,7 @@ public class CardView extends Rectangle {
         isHidden = false;
     }
 
-    public void setCardImage2(){
+    private void setCardImage2(){
         String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
         ImageView imageView = new ImageView(new Image("/Assets/Cards/" + model +
                 Utils.getPascalCase(card.getName()) +".jpg"));
@@ -98,12 +100,7 @@ public class CardView extends Rectangle {
         return card;
     }
 
-    public Label getShowLabel(String cls){
-
-        actionDisplayLabel.setLayoutX(getX() + 10);
-        actionDisplayLabel.setLayoutY(getY() - 35);
-        actionDisplayLabel.setTextAlignment(TextAlignment.CENTER);
-        actionDisplayLabel.getStyleClass().add(cls);
+    public String getFirstValidAction(){
 
         validActionNamesForShow = new ArrayList<>();
         validActionNames = new CardActionManager(card).getValidActions();
@@ -126,35 +123,33 @@ public class CardView extends Rectangle {
             }
         }
 
+        //test
         validActionNames.add("summon");
         validActionNamesForShow.add("summon");
         validActionNames.add("attack");
         validActionNamesForShow.add("attack");
+        //test
 
         validActionIndex = 0;
 
         if(validActionNamesForShow.size() > 0){
-            actionDisplayLabel.setText(validActionNamesForShow.get(validActionIndex));
-            return actionDisplayLabel;
+            return validActionNamesForShow.get(0);
         } else {
             return null;
         }
     }
 
-    public void setNextValidAction(){
-        actionDisplayLabel.setText(validActionNamesForShow.get
-                (++validActionIndex % validActionNamesForShow.size()));
+    public String getNextValidAction(){
+        if(validActionNamesForShow.size() == 0){
+            return null;
+        }
+        return validActionNamesForShow.get
+                (++validActionIndex % validActionNamesForShow.size());
     }
+
 
     public String getCurrentAction(){
         return validActionNamesForShow.get(validActionIndex);
-    }
-
-
-    public Label clearLabel(){
-        validActionIndex = 0;
-        actionDisplayLabel.setText("");
-        return actionDisplayLabel;
     }
 }
 

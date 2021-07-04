@@ -18,7 +18,7 @@ public class FlipTransition {
         RotateTransition rotate1 = new RotateTransition();
 
         rotate1.setByAngle(90);
-        rotate1.setAxis(Rotate.Y_AXIS);
+        setRotateAxis(cardView, rotate1);
         rotate1.setNode(cardView);
         rotate1.setDuration(Duration.millis(time / 2));
         rotate1.setOnFinished(new EventHandler<ActionEvent>() {
@@ -36,12 +36,20 @@ public class FlipTransition {
         RotateTransition rotate2 = new RotateTransition();
 
         rotate2.setByAngle(-90);
-        rotate2.setAxis(Rotate.Y_AXIS);
+        setRotateAxis(cardView, rotate2);
         rotate2.setNode(cardView);
         rotate2.setDuration(Duration.millis(time / 2));
 
         animation = new SequentialTransition(rotate1, rotate2);
 
+    }
+
+    private void setRotateAxis(CardView cardView, RotateTransition tr){
+        if(cardView.isVertical){
+            tr.setAxis(Rotate.Y_AXIS);
+        } else {
+            tr.setAxis(Rotate.X_AXIS);
+        }
     }
 
     public SequentialTransition getAnimation(){
