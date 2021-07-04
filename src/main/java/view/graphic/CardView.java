@@ -3,20 +3,12 @@ package view.graphic;
 import controller.DuelControllers.CardActionManager;
 import controller.Utils;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import model.Card.Card;
 import model.Card.Monster;
@@ -34,7 +26,7 @@ public class CardView extends Rectangle {
     private ArrayList<String> validActionNamesForShow;
     private ArrayList<String> validActionNames;
     private int validActionIndex = 0;
-    public boolean myBool = true;
+    public boolean canShowValidActions = true;
     public Popup tempPopup;
     public EventHandler filter;
 
@@ -61,8 +53,8 @@ public class CardView extends Rectangle {
         }
     }
 
-    public void setMyBool(boolean myBool){
-        this.myBool = myBool;
+    public void setCanShowValidActions(boolean canShowValidActions){
+        this.canShowValidActions = canShowValidActions;
     }
 
     public void hideCard(){

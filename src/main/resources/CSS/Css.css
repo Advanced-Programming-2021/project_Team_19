@@ -95,3 +95,20 @@
     -fx-text-fill: #ef3506;
     -fx-font-family: "Britannic Bold";
 }
+
+.phaseLabel{
+    -fx-background-color: #37e7dc;
+    -fx-min-height: 50px;
+    -fx-min-width: 20px;
+    -fx-text-alignment: center center;
+    -fx-font-family: "Droid Sans";
+    -fx-font-weight: bold;
+}
+
+.inactivePhase{
+    -fx-text-fill: #1157ad;
+}
+
+.activePhase{
+    -fx-text-fill: #e36930;
+}

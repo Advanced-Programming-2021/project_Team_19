@@ -7,10 +7,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -29,6 +31,7 @@ import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
 import view.graphic.Animations.*;
+
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,6 +54,8 @@ public class GameView {
 
     public CardView selfDeck;
     public CardView rivalDeck;
+
+    public VBox phaseBox = new VBox();
 
     ArrayList<CardView> selfHand = new ArrayList<>();
     ArrayList<CardView> selfGraveyardCards = new ArrayList<>();
@@ -116,6 +121,110 @@ public class GameView {
         Rectangle field = new Rectangle(600, 600);
         field.setFill(new ImagePattern(image));
         gamePane.getChildren().add(field);
+
+        addPhaseBox();
+        addPhaseChangeButton();
+        gamePane.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.C) && event.isAltDown() && event.isShiftDown()) {
+                Stage cheatSheet = new Stage();
+                cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
+                cheatSheet.show();
+            }
+        });
+    }
+
+    Popup nextPhasePopup;
+
+    private void addPhaseChangeButton() {
+
+        Button phaseButton = new Button("N\nP");
+        phaseButton.setLayoutX(0);
+        phaseButton.setLayoutY(5);
+        phaseButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+               nextPhasePopup =  menuGraphic.showPopupMessage(stage, "next phase",
+                       stage.getX() + 235,
+                        stage.getY() + 20);
+            }
+        });
+
+        phaseButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                nextPhasePopup.hide();
+            }
+        });
+
+        phaseButton.setOnMouseClicked(event -> {
+//            game.run("next phase");
+            changePhase();
+        });
+
+        gamePane.getChildren().add(phaseButton);
+    }
+
+
+    private void addPhaseBox() {
+        phaseBox.setSpacing(25);
+
+        phaseBox.setLayoutY(87);
+        phaseBox.setLayoutX(1);
+
+        phaseBox.getChildren().add(getPhaseLabel(" D\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" S\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" M\n 1"));
+        phaseBox.getChildren().add(getPhaseLabel(" B\n P"));
+        phaseBox.getChildren().add(getPhaseLabel(" M\n 2"));
+        phaseBox.getChildren().add(getPhaseLabel(" E\n P"));
+
+        gamePane.getChildren().add(phaseBox);
+    }
+
+    private Label getPhaseLabel(String text) {
+        Label phaseLabel = new Label(text);
+        if (text.equals(" D\n P")) {
+            phaseLabel.getStyleClass().addAll("phaseLabel", "activePhase");
+            return phaseLabel;
+        }
+        phaseLabel.getStyleClass().addAll("phaseLabel", "inactivePhase");
+        return phaseLabel;
+    }
+
+
+    private void changePhase() {
+        for (int i = 0; i < 6; i++) {
+            if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
+
+                phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
+                phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
+                phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
+                break;
+            }
+        }
+    }
+
+    private Pane getCheatPane(Stage stage) {
+        VBox cheatButtonBox = new VBox();
+
+        Pane cheatPane = new Pane();
+        Button lpIncreaseButton = new Button("increase LP");
+        lpIncreaseButton.setOnMouseClicked(event -> {
+            selfLpLabel.setText(String.valueOf(selfLp += 1000));
+            stage.close();
+        });
+
+        Button winGameButton = new Button("win game");
+        winGameButton.setOnMouseClicked(event -> {
+            //TODO
+            stage.close();
+        });
+
+        cheatButtonBox.getChildren().addAll(lpIncreaseButton, winGameButton);
+
+        cheatPane.getChildren().add(cheatButtonBox);
+
+        return cheatPane;
     }
 
 
@@ -303,15 +412,15 @@ public class GameView {
         runHandAnimation(tempHand);
     }
 
-    private void setMyBool(ArrayList<CardView> cardViews, boolean myBool) {
+    private void setBooleanForShowActions(ArrayList<CardView> cardViews, boolean bool) {
         for (CardView cardView : cardViews) {
-            cardView.setMyBool(myBool);
+            cardView.setCanShowValidActions(bool);
         }
     }
 
     private void runHandAnimation(ArrayList<CardView> cardViews) {
 
-        setMyBool(selfHand, false);
+        setBooleanForShowActions(selfHand, false);
         getHandAnimation(cardViews, 0).play();
     }
 
@@ -323,10 +432,10 @@ public class GameView {
 
         tr.setOnFinished(actionEvent -> {
             if (index < cardViews.size() - 1) {
-                setMyBool(selfHand, false);
+                setBooleanForShowActions(selfHand, false);
                 getHandAnimation(cardViews, index + 1).play();
             } else {
-                setMyBool(selfHand, true);
+                setBooleanForShowActions(selfHand, true);
             }
         });
 
@@ -465,7 +574,7 @@ public class GameView {
         cardView.setOnMouseEntered(mouseEvent -> {
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).start();
-            if (cardView.myBool) {
+            if (cardView.canShowValidActions) {
                 showValidActionForCard(cardView.getFirstValidAction(), cardView);
             }
         });
@@ -530,6 +639,9 @@ public class GameView {
 
         if(cardView.tempPopup != null){
             cardView.tempPopup.hide();
+        }
+        if(cardView.filter != null){
+            stage.getScene().removeEventFilter(MouseEvent.MOUSE_MOVED, cardView.filter);
         }
 
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
@@ -885,7 +997,7 @@ public class GameView {
 
     //lp animations
 
-    private void runIncreaseLPGraphic(int lp){
+    private void runIncreaseLpGraphic(int lp){
         getIncreaseLpTransition(lp, true).play();
         rivalGameView.runIncreaseRivalLpGraphic(lp);
     }
