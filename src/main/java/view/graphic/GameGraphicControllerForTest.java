@@ -49,7 +49,6 @@ public class GameGraphicControllerForTest extends Menu {
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
 
-
         GameData gameData = new GameData(gamer1, gamer2);
         game = new Game(gameData);
 

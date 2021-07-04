@@ -11,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -70,6 +72,8 @@ public class GameView {
     Text cardDescription = new Text();
     ScrollPane descriptionScrollPane = new ScrollPane();
 
+    ScrollPane cardViewsScrollPane = new ScrollPane();
+
     Label selfLpLabel = new Label();
     Label rivalLpLabel = new Label();
 
@@ -111,6 +115,7 @@ public class GameView {
         box.setLayoutY((menuGraphic.sceneY - 600) / 2);
 
         mainPane.getChildren().add(descriptionScrollPane);
+        setTestButton();
     }
 
     public void setRivalGameView(GameView gameView) {
@@ -349,7 +354,6 @@ public class GameView {
         rivalGraveYard.getChildren().add(cardView);
     }
 
-
     private CardView getCardForGraveyard(Card card, boolean isSelf) {
         CardView cardView = new CardView(card, 9, false, true);
 
@@ -358,44 +362,62 @@ public class GameView {
         return cardView;
     }
 
-    private void showGraveYard(boolean isSelf) {
+    private ArrayList<CardView> showCardsInScrollPane(ArrayList<Card> cards, boolean canCloseByRightClick){
 
-        ScrollPane graveyardScrollPane = new ScrollPane();
+        ArrayList<CardView> cardViews = new ArrayList<>();
 
-        graveyardScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                mainPane.getChildren().remove(graveyardScrollPane);
-            }
-        });
+        if(canCloseByRightClick){
+            cardViewsScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                    mainPane.getChildren().remove(cardViewsScrollPane);
+                }
+            });
+        }
 
-        graveyardScrollPane.setId("graveyard");
-        mainPane.getChildren().add(graveyardScrollPane);
+        cardViewsScrollPane.setId("cardViewsScrollPane");
+        mainPane.getChildren().add(cardViewsScrollPane);
 
-        graveyardScrollPane.setLayoutX(250);
-        graveyardScrollPane.setLayoutY(200);
+        cardViewsScrollPane.setLayoutX(250);
+        cardViewsScrollPane.setLayoutY(200);
 
         HBox box = new HBox(5);
 
-        ArrayList<CardView> cards = isSelf ? selfGraveyardCards : rivalGraveyardCards;
-
-        for (CardView cardView : cards) {
-            CardView temp = new CardView(cardView.getCard(), 4, false, true);
+        for (Card card : cards) {
+            CardView temp = new CardView(card, 4, false, true);
             setShowCardOnMouseEntered(temp);
             box.getChildren().add(temp);
+            cardViews.add(temp);
         }
 
-        graveyardScrollPane.setContent(box);
-        graveyardScrollPane.setMaxWidth(450);
-        graveyardScrollPane.setMinWidth(450);
-        graveyardScrollPane.setMinHeight(170);
+        cardViewsScrollPane.setContent(box);
+        cardViewsScrollPane.setMaxWidth(450);
+        cardViewsScrollPane.setMinWidth(450);
+        cardViewsScrollPane.setMinHeight(170);
 
+        return cardViews;
     }
 
+    private void showGraveYard(boolean isSelf) {
+
+        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<CardView> cardViews = isSelf ? selfGraveyardCards : rivalGraveyardCards;
+        for(CardView cardView : cardViews){
+            cards.add(cardView.getCard());
+        }
+        showCardsInScrollPane(cards, true);
+    }
 
     public void run() {
         stage.getScene().setRoot(mainPane);
         stage.show();
-        initHand();
+
+        new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                initHand();
+            }
+        })).play();
+
         addCardToSelfGraveYard(controller.Utils.getCardByName("trap hole"));
     }
 
@@ -442,7 +464,7 @@ public class GameView {
     }
 
 
-    public void addCardToRivalHand(Card card) {
+    public void addCardToRivalHandFromDeck(Card card) {
         getTransitionForAddCardFromRivalDeckToRivalHand(
                 new CardView(card, 8, true, true)).play();
     }
@@ -504,7 +526,7 @@ public class GameView {
         });
 
         KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
-                rivalGameView.addCardToRivalHand(cardView.card));
+                rivalGameView.addCardToRivalHandFromDeck(cardView.card));
 
         Timeline createCardTimeline = new Timeline(createNewCardAnimation);
 
@@ -678,6 +700,8 @@ public class GameView {
             cardView = new CardView(card, 9, true, false);
         } else if (mode == 3){
             cardView = new CardView(card, 9, true, true);
+        } else if (mode == 4){
+            cardView = new CardView(card, 9, false, false);
         }
         setShowCardOnMouseEntered(cardView);
         return cardView;
@@ -687,7 +711,7 @@ public class GameView {
         if (mode == 0) {
             int i = monsterZoneCards.indexOf(cardView);
             return 122 + i * 82;
-        } else if (mode == 1) {
+        } else if (mode == 1 || mode == 4) {
             int i = monsterZoneCards.indexOf(cardView);
             return 122 + i * 82 - 10;
         } else if (mode == 2 || mode == 3) {
@@ -702,7 +726,7 @@ public class GameView {
         if (mode == 0) {
             int i = rivalMonsterZoneCards.indexOf(cardView);
             return 122 + i * 82;
-        } else if (mode == 1) {
+        } else if (mode == 1 || mode == 4) {
             int i = rivalMonsterZoneCards.indexOf(cardView);
             return 122 + i * 82 - 10;
         } else if (mode == 2 || mode == 3) {
@@ -715,7 +739,7 @@ public class GameView {
     private double getCardInFieldY(int mode) {
         if (mode == 0) {
             return 101 + 220;
-        } else if (mode == 1) {
+        } else if (mode == 1 || mode == 4) {
             return 111 + 220;
         } else if (mode == 2 || mode == 3) {
             return 101 + 220 + 110;
@@ -727,7 +751,7 @@ public class GameView {
     private double getCardInRivalFieldY(int mode) {
         if (mode == 0) {
             return 101 + 100;
-        } else if (mode == 1) {
+        } else if (mode == 1 || mode == 4) {
             return 111 + 100;
         } else if (mode == 2 || mode == 3) {
             return 101 + 100 - 100;
@@ -763,14 +787,19 @@ public class GameView {
     //zone -> 0 for monsterZone and 1 for spellZone
     //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
 
+    private void addCardToCorrectZone(CardView cardView, int zone, int index){
+        if (zone == 0) {
+            monsterZoneCards.set(index, cardView);
+        } else if (zone == 1) {
+            spellZoneCards.set(index, cardView);
+        }
+    }
+
     private void runMovingCardFromHandToFieldGraphic(CardView cardView, int mode, int zone, int index) {
 
         CardView newCardView = getCardViewForField(cardView.getCard(), mode);
-        if (zone == 0) {
-            monsterZoneCards.set(index, newCardView);
-        } else if (zone == 1) {
-            spellZoneCards.set(index, newCardView);
-        }
+
+        addCardToCorrectZone(newCardView, zone, index);
 
         newCardView.setVisible(false);
         gamePane.getChildren().add(newCardView);
@@ -910,6 +939,119 @@ public class GameView {
         }
     }
 
+    private void runRemoveCardFromHandGraphic(CardView cardView){
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 1, 0).getAnimation());
+        selfHand.remove(cardView);
+        transition.getChildren().add(getHandAnimationForCardsWasInHand());
+        transition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gamePane.getChildren().remove(cardView);
+            }
+        });
+        transition.play();
+        rivalGameView.runRemoveCardFromRivalHandGraphic(cardView.getCard());
+    }
+
+    private void runRemoveCardFromRivalHandGraphic(Card card){
+        CardView cardView = searchCardInRivalHand(card);
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 1, 0).getAnimation());
+        rivalHand.remove(cardView);
+        transition.getChildren().add(getHandAnimationForCardsWasInRivalHand());
+        transition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gamePane.getChildren().remove(cardView);
+            }
+        });
+        transition.play();;
+    }
+
+    private void addCardToHand(Card card){
+        CardView cardView = getCardForHand(card);
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
+                new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        gamePane.getChildren().add(cardView);
+                    }
+                })));
+
+        selfHand.add(cardView);
+        cardView.setX(getCardInHandX(cardView));
+        cardView.setY(getCardinHandY());
+        transition.getChildren().add(getHandAnimationForCardsWasInHand());
+        transition.play();
+        rivalGameView.addCardToRivalHand(card);
+    }
+
+    private void addCardToRivalHand(Card card){
+        CardView cardView = getCardForRivalHand(card);
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
+                new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        gamePane.getChildren().add(cardView);
+                    }
+                })));
+
+        rivalHand.add(cardView);
+        cardView.setX(getCardInRivalHandX(cardView));
+        cardView.setY(getCardinRivalHandY());
+
+        transition.getChildren().add(getHandAnimationForCardsWasInRivalHand());
+        transition.play();
+    }
+
+    private ParallelTransition getHandAnimationForCardsWasInHand(){
+        ParallelTransition transition = new ParallelTransition();
+        for (CardView cardView : selfHand) {
+            transition.getChildren().add(new TimelineTranslate
+                    (cardView, getCardInHandX(cardView), getCardinHandY(), 500)
+                    .getAnimation());
+        }
+        return transition;
+    }
+
+    private ParallelTransition getHandAnimationForCardsWasInRivalHand(){
+        ParallelTransition transition = new ParallelTransition();
+        for (CardView cardView : rivalHand) {
+            transition.getChildren().add(new TimelineTranslate
+                    (cardView, getCardInRivalHandX(cardView), getCardinRivalHandY(), 500)
+                    .getAnimation());
+        }
+        return transition;
+    }
+    //field animations
+
+    //zone -> 0 for monsterZone and 1 for spellZone
+    //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
+    //mode -> 4 for DO monster
+
+    private void putCardIntoFiled(Card card, int mode, int zone, int index){
+        CardView cardView = getCardViewForField(card, mode);
+        addCardToCorrectZone(cardView, zone, index);
+        cardView.setX(getCardInFieldX(cardView, mode));
+        cardView.setY(getCardInFieldY(mode));
+        new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
+        gamePane.getChildren().add(cardView);
+        rivalGameView.putCardIntoRivalFiled(card, mode, zone, 4 - index);
+
+    }
+
+    private void putCardIntoRivalFiled(Card card, int mode, int zone, int index){
+        CardView cardView = getCardViewForField(card, mode);
+        addNewCardViewToCorrectRivalZone(cardView, zone, index);
+        cardView.setX(getCardInRivalFieldX(cardView, mode));
+        cardView.setY(getCardInRivalFieldY(mode));
+        new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
+        gamePane.getChildren().add(cardView);
+    }
+
     //flip animations
 
     private void runFlipSummonGraphic(CardView cardView){
@@ -1039,4 +1181,93 @@ public class GameView {
         }
         return transition;
     }
+
+    // MindCrush data collector
+    private void getCardNameForMindCrush(){
+        VBox vBox = new VBox(10);
+        vBox.setMinWidth(200);
+        vBox.setMaxWidth(200);
+        vBox.setLayoutX(200);
+        vBox.setLayoutY(270);
+        vBox.setCenterShape(true);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setBackground(new Background(
+                new BackgroundFill(Color.rgb(243,89,17), new CornerRadii(0), new Insets(-12,0,0,0))));
+
+        Label messageLabel = new Label("sadfds saldfjl lsadjf ljsdf aslkdjf lasdkjfl jasdf ljsdf lksjdflja l jlsdf");
+        messageLabel.setWrapText(true);
+        messageLabel.setMaxWidth(150);
+        messageLabel.setAlignment(Pos.CENTER);
+
+        TextField textField = new TextField();
+        textField.setMaxWidth(150);
+        vBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(keyEvent.getCode().getName().equals("Enter")){
+                    String data = textField.getText();
+                    String result = sendMindCrushDataToServer(data);
+                    if(result.equals("invalid card name")){
+                        showPopupForMindCrush("invalid card name");
+                    } else {
+                        gamePane.getChildren().remove(vBox);
+                        showPopupForMindCrush("hehe");
+                        //TODO : do what should to do
+                    }
+                    System.out.println(textField.getText());
+                }
+            }
+        });
+
+        vBox.getChildren().addAll(messageLabel, textField);
+        gamePane.getChildren().add(vBox);
+    }
+
+    private void showPopupForMindCrush(String message){
+        Popup popup = menuGraphic.showPopupMessage
+                (stage, message, stage.getX() + 200 + 220,
+                        stage.getY() + 400);
+        popup.setAutoHide(true);
+    }
+
+    private String sendMindCrushDataToServer(String data){
+        String ans = " name";
+        //TODO
+        return ans;
+    }
+
+    //end Mind Crush
+    static int counter = 0;
+    public Button testButton = new Button("test");
+
+    private void f() {
+
+        getCardNameForMindCrush();
+//        addCardToHand(controller.Utils.getCardByName("Battle ox"));
+
+//        addCardToSelfGraveYard(controller.Utils.getCardByName("Battle ox"));
+//        runRemoveCardFromHandGraphic(selfHand.get(0));
+//        fadeCard(selfHand.get(0));
+
+//        runIncreaseLPGraphic(125);
+
+//        counter++;
+//        if(counter == 1)
+//        summon(selfHand.get(0));
+//        else
+//        runFlipCardGraphic(monsterZoneCards.get(3));
+    }
+
+    private void setTestButton() {
+        testButton.setLayoutX(100);
+        testButton.setLayoutY(100);
+        mainPane.getChildren().add(testButton);
+        testButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                f();
+            }
+        });
+    }
+
 }
