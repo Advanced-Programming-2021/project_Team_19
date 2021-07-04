@@ -117,12 +117,12 @@ public class CardView extends Rectangle {
             }
         }
 
-        //test
-        validActionNames.add("summon");
-        validActionNamesForShow.add("summon");
-        validActionNames.add("attack");
-        validActionNamesForShow.add("attack");
-        //test
+//        //test
+//        validActionNames.add("summon");
+//        validActionNamesForShow.add("summon");
+//        validActionNames.add("attack");
+//        validActionNamesForShow.add("attack");
+//        //test
 
         validActionIndex = 0;
 
@@ -143,7 +143,7 @@ public class CardView extends Rectangle {
 
 
     public String getCurrentAction(){
-        return validActionNamesForShow.get(validActionIndex);
+        return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 }
 

@@ -57,8 +57,9 @@ public class GameView {
     public CardView selfDeck;
     public CardView rivalDeck;
 
-    public VBox phaseBox = new VBox();
+    public VBox phaseBox;
     private Popup nextPhasePopup;
+    public static ArrayList<VBox> phaseBoxes = new ArrayList<>();
 
     ArrayList<CardView> selfHand = new ArrayList<>();
     ArrayList<CardView> selfGraveyardCards = new ArrayList<>();
@@ -161,7 +162,7 @@ public class GameView {
         });
 
         phaseButton.setOnMouseClicked(event -> {
-//            game.run("next phase");
+            game.run("next phase");
             changePhase();
         });
 
@@ -170,6 +171,9 @@ public class GameView {
 
 
     private void addPhaseBox() {
+
+        phaseBox = new VBox();
+
         phaseBox.setSpacing(25);
 
         phaseBox.setLayoutY(87);
@@ -183,6 +187,8 @@ public class GameView {
         phaseBox.getChildren().add(getPhaseLabel(" E\n P"));
 
         gamePane.getChildren().add(phaseBox);
+
+        phaseBoxes.add(phaseBox);
     }
 
     private Label getPhaseLabel(String text) {
@@ -197,13 +203,15 @@ public class GameView {
 
 
     private void changePhase() {
-        for (int i = 0; i < 6; i++) {
-            if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
+        for (VBox phaseBox : phaseBoxes) {
+            for (int i = 0; i < 6; i++) {
+                if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
 
-                phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
-                phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
-                phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
-                break;
+                    phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
+                    phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
+                    phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
+                    break;
+                }
             }
         }
     }
@@ -593,6 +601,7 @@ public class GameView {
         CardView cardView = new CardView(card, 5, false, true);
 
         cardView.setOnMouseEntered(mouseEvent -> {
+            game.gameData.setSelectedCard(card);
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).start();
             if (cardView.canShowValidActions) {
@@ -616,11 +625,22 @@ public class GameView {
                 showValidActionForCard(cardView.getNextValidAction(), cardView);
             }
             else {
-//                    startAction(cardView.getCurrentAction());
+                cardOnLeftClick(cardView);
             }
         });
 
         return cardView;
+    }
+
+    private void cardOnLeftClick(CardView cardView){
+        String response = game.run(cardView.getCurrentAction());
+        if (response.equals("summoned successfully")){
+            runMovingCardFromHandToFieldGraphic(cardView, 0, 0, 1);
+        }else if (response.equals("set successfully")){
+            //put set animation here
+        }else if (response.equals("flip summoned successfully")){
+            //put flip summon animation here
+        }
     }
 
     private CardView getCardForRivalHand(Card card) {

@@ -53,9 +53,6 @@ public class Game {
                 goToNextPhase(gameData);
                 return "phase changed successfully";
             }
-            case "select" -> {
-                return CardActionManager.getInstance(null).addCardForMultiCardAction();
-            }
             default -> {
                 return "";
             }

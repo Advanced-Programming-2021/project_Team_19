@@ -9,10 +9,6 @@ public class CardActionManager {
 
     private static CardActionManager instance;
     public Card card;
-    private boolean shouldSelectCardForMultiCardAction = false;
-    private String multiCardActionName;
-    private ArrayList<Card> selectedCardsForMultiCardAction = new ArrayList<>();
-
 
     public static CardActionManager getInstance(Card card){
         if (instance == null){
@@ -25,51 +21,17 @@ public class CardActionManager {
         this.card = card;
     }
 
-    public boolean isShouldSelectCardForMultiCardAction() {
-        return shouldSelectCardForMultiCardAction;
-    }
-
     public static void destroyCurrentActionManager(){
         instance = null;
     }
 
-    public void setMultiCardAction(String actionName){
-        shouldSelectCardForMultiCardAction = true;
-        multiCardActionName = actionName;
-    }
 
-    public ArrayList<Card> getSelectedCardsForMultiCardAction(){
-        return selectedCardsForMultiCardAction;
-    }
-
-    public void finishMultiCardAction(){
-        shouldSelectCardForMultiCardAction = false;
-        multiCardActionName = "";
-        selectedCardsForMultiCardAction = new ArrayList<>();
-    }
-
-    public String addCardForMultiCardAction(){
-        selectedCardsForMultiCardAction.add(GameData.getGameData().getSelectedCard());
-        switch (multiCardActionName){
-            case "attack monster":{
-                new AttackMonster(GameData.getGameData()).run();
-                finishMultiCardAction();
-                destroyCurrentActionManager();
-                return "attack successful";
-            }
-            default: return "";
-        }
-    }
 
     public ArrayList<String> getValidActions() {
 
         String result;
         ArrayList<String> validActions = new ArrayList<>();
 
-        if (shouldSelectCardForMultiCardAction){
-            validActions.add("select");
-            return validActions;
-        }
 
         result = new AttackMonster(GameData.getGameData()).actionIsValid();
         if (result.equals("attack monster"))
