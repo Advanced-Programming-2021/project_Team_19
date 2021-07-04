@@ -56,6 +56,7 @@ public class GameView {
     public CardView rivalDeck;
 
     public VBox phaseBox = new VBox();
+    private Popup nextPhasePopup;
 
     ArrayList<CardView> selfHand = new ArrayList<>();
     ArrayList<CardView> selfGraveyardCards = new ArrayList<>();
@@ -132,8 +133,6 @@ public class GameView {
             }
         });
     }
-
-    Popup nextPhasePopup;
 
     private void addPhaseChangeButton() {
 
