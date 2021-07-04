@@ -133,7 +133,7 @@ public class Shop extends Menu {
     }
 
     public void getBack(MouseEvent mouseEvent) {
-        backButton.setOnMouseClicked(event -> MainMenu.getInstance().run(username));
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
     }
 
     public void clearChoice(MouseEvent mouseEvent) {
