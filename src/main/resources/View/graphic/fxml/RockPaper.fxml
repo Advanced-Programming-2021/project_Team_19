@@ -27,5 +27,10 @@
             <Font size="36.0" />
          </font>
       </Label>
+      <Label fx:id="playerNumber" layoutX="587.0" layoutY="26.0" prefHeight="82.0" prefWidth="155.0" text="Player" textFill="#fc4433">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
