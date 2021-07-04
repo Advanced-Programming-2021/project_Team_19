@@ -41,7 +41,9 @@ public class RockPaper extends Application {
                 for (Object obj : anchorPane.getChildren()) {
                     if (obj instanceof Label) {
                         Label label = (Label) obj;
-                        label.setText("First player");
+                        if (label.getText().equals("Player")) {
+                            label.setText("First player");
+                        }
                     }
                 }
                 Stage stage = new Stage();
@@ -59,7 +61,9 @@ public class RockPaper extends Application {
                 for (Object obj : anchorPane.getChildren()) {
                     if (obj instanceof Label) {
                         Label label = (Label) obj;
-                        label.setText("Second player");
+                        if (label.getText().equals("Player")) {
+                            label.setText("Second player");
+                        }
                     }
                 }
                 Stage stage = new Stage();
@@ -89,12 +93,10 @@ public class RockPaper extends Application {
     }
 
     public void choosePaper(MouseEvent mouseEvent) {
-        if (playerNumber.getText().equals("First player")) {
+        if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.PAPER;
-            firstPlayerStage.close();
-        } else {
+        } else if (secondPlayerChoice == null){
             secondPlayerChoice = RockPaperScissorResult.PAPER;
-            secondPlayerStage.close();
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
@@ -102,12 +104,10 @@ public class RockPaper extends Application {
     }
 
     public void chooseScissor(MouseEvent mouseEvent) {
-        if (playerNumber.getText().equals("First player")) {
+        if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.SCISSOR;
-            firstPlayerStage.close();
-        } else {
+        } else if (secondPlayerChoice == null) {
             secondPlayerChoice = RockPaperScissorResult.SCISSOR;
-            secondPlayerStage.close();
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
@@ -115,12 +115,10 @@ public class RockPaper extends Application {
     }
 
     public void chooseRock(MouseEvent mouseEvent) {
-        if (playerNumber.getText().equals("First player")) {
+        if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.ROCK;
-            firstPlayerStage.close();
-        } else {
+        } else if (secondPlayerChoice == null){
             secondPlayerChoice = RockPaperScissorResult.ROCK;
-            secondPlayerStage.close();
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
@@ -129,7 +127,8 @@ public class RockPaper extends Application {
 
     private void finishGame() {
         if (firstPlayerChoice.equals(secondPlayerChoice)) {
-            start(new Stage());
+            firstPlayerChoice = null;
+            secondPlayerChoice = null;
         } else {
             if (firstPlayerChoice.equals(RockPaperScissorResult.PAPER) &&
             secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
