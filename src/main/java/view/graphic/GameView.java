@@ -5,12 +5,16 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -95,15 +99,48 @@ public class GameView {
 
     }
 
-    public void setRivalGameView(GameView gameView){
+    public void setRivalGameView(GameView gameView) {
         rivalGameView = gameView;
     }
 
-    private void setGamePane(){
+    private void setGamePane() {
         Image image = new Image("Assets/Field/fie_normal.bmp");
         Rectangle field = new Rectangle(600, 600);
         field.setFill(new ImagePattern(image));
+
         gamePane.getChildren().add(field);
+
+        gamePane.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.C) && event.isAltDown() && event.isShiftDown()) {
+                Stage cheatSheet = new Stage();
+                cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
+                cheatSheet.show();
+            }
+        });
+    }
+
+    private Pane getCheatPane(Stage stage) {
+        VBox cheatButtonBox = new VBox();
+
+
+        Pane cheatPane = new Pane();
+        Button lpIncreaseButton = new Button("increase LP");
+        lpIncreaseButton.setOnMouseClicked(event -> {
+            selfLpLabel.setText(String.valueOf(selfLp += 1000));
+            stage.close();
+        });
+
+        Button winGameButton = new Button("win game");
+        winGameButton.setOnMouseClicked(event -> {
+            //TODO
+            stage.close();
+        });
+
+        cheatButtonBox.getChildren().addAll(lpIncreaseButton, winGameButton);
+
+        cheatPane.getChildren().add(cheatButtonBox);
+
+        return cheatPane;
     }
 
 
@@ -163,7 +200,7 @@ public class GameView {
 
         cardShowPane.setBackground(new Background(new BackgroundFill(Color.rgb(230, 180, 40)
                 , new CornerRadii(0),
-                new Insets(0,0,0,0))));
+                new Insets(0, 0, 0, 0))));
 
         cardForShow = new CardView(2.3);
 
@@ -187,7 +224,7 @@ public class GameView {
         descriptionScrollPane.setPadding(new Insets(4, 0, 4, 4));
     }
 
-    private void addPhaseChangeButton(){
+    private void addPhaseChangeButton() {
         Button phaseButton = new Button("change phase");
 
         phaseButton.setOnMouseClicked(event -> {
@@ -198,7 +235,7 @@ public class GameView {
         gamePane.getChildren().add(phaseButton);
     }
 
-    private void addPhaseBox(){
+    private void addPhaseBox() {
         phaseBox.setSpacing(25);
 
         phaseBox.setLayoutY(87);
@@ -214,9 +251,9 @@ public class GameView {
         gamePane.getChildren().add(phaseBox);
     }
 
-    private Label getPhaseLabel(String text){
+    private Label getPhaseLabel(String text) {
         Label phaseLabel = new Label(text);
-        if (text.equals(" D\n P")){
+        if (text.equals(" D\n P")) {
             phaseLabel.getStyleClass().addAll("phaseLabel", "activePhase");
             return phaseLabel;
         }
@@ -224,9 +261,9 @@ public class GameView {
         return phaseLabel;
     }
 
-    private void changePhase(){
+    private void changePhase() {
         for (int i = 0; i < 6; i++) {
-            if(phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")){
+            if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
 
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
@@ -248,7 +285,7 @@ public class GameView {
         gamePane.getChildren().add(rivalDeck);
     }
 
-    private void setSelfDeck(){
+    private void setSelfDeck() {
         selfDeck = new CardView(8);
         selfDeck.setX(530);
         selfDeck.setY(425);
@@ -264,14 +301,14 @@ public class GameView {
         rivalGraveYard.setLayoutY(177);
     }
 
-    private void addCardToSelfGraveYard(Card card){
+    private void addCardToSelfGraveYard(Card card) {
         CardView cardView = getCardForGraveyard(card, true);
         selfGraveyardCards.add(cardView);
         selfGraveYard.getChildren().add(cardView);
         rivalGameView.addCardToRivalGraveYard(card);
     }
 
-    public void addCardToRivalGraveYard(Card card){
+    public void addCardToRivalGraveYard(Card card) {
         CardView cardView = getCardForGraveyard(card, false);
         rivalGraveyardCards.add(cardView);
         rivalGraveYard.getChildren().add(cardView);
@@ -330,21 +367,21 @@ public class GameView {
     public void initHand() {
 
         ArrayList<Card> tempHand = new ArrayList<>();
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             tempHand.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
 
         getHandAnimation(tempHand, 0).play();
     }
 
-    private Animation getHandAnimation(ArrayList<Card> cardViews, int index){
+    private Animation getHandAnimation(ArrayList<Card> cardViews, int index) {
 
         CardView cardView = new CardView(cardViews.get(index), 8, true);
 
         Animation tr = getTransitionForAddCardFromDeckToHand(cardView);
 
         tr.setOnFinished(actionEvent -> {
-            if(index < 4){
+            if (index < 4) {
                 getHandAnimation(cardViews, index + 1).play();
             }
         });
@@ -353,7 +390,7 @@ public class GameView {
     }
 
 
-    public void addCardToRivalHand(Card card){
+    public void addCardToRivalHand(Card card) {
         getTransitionForAddCardFromRivalDeckToRivalHand(new CardView(card, 8, true)).play();
     }
 
@@ -384,8 +421,8 @@ public class GameView {
         );
 
 
-        for(CardView cardView1 : rivalHand){
-            if(cardView1 != newCardView){
+        for (CardView cardView1 : rivalHand) {
+            if (cardView1 != newCardView) {
                 transitions.getChildren().add(new TimelineTranslate
                         (cardView1, getCardInRivalHandX(cardView1), getCardinRivalHandY(), 700)
                         .getAnimation());
@@ -428,8 +465,8 @@ public class GameView {
         );
 
 
-        for(CardView cardView1 : selfHand){
-            if(cardView1 != newCardView){
+        for (CardView cardView1 : selfHand) {
+            if (cardView1 != newCardView) {
                 transitions.getChildren().add(new TimelineTranslate
                         (cardView1, getCardInHandX(cardView1), getCardinHandY(), 700)
                         .getAnimation());
@@ -443,7 +480,7 @@ public class GameView {
         return menuGraphic.sceneY - 80;
     }
 
-    private double getCardinRivalHandY(){
+    private double getCardinRivalHandY() {
         return -44;
     }
 
@@ -456,7 +493,7 @@ public class GameView {
         return ans - x;
     }
 
-    private double getCardInRivalHandX(CardView cardView){
+    private double getCardInRivalHandX(CardView cardView) {
         double ans = menuGraphic.sceneX / 2 - 190;
         double index = rivalHand.indexOf(cardView);
         double size = ((double) rivalHand.size()) / 2;
@@ -508,7 +545,7 @@ public class GameView {
         cardDescription.setText(card.getDescription());
     }
 
-    private void setShowCardOnMouseEntered(CardView cardView){
+    private void setShowCardOnMouseEntered(CardView cardView) {
         cardView.setOnMouseEntered(mouseEvent -> showCard(cardView.card));
     }
 
