@@ -584,19 +584,6 @@ public class GameView {
         return ans + x;
     }
 
-    //just use for cards in hand
-    private boolean isCursorOut(CardView cardView, double mouseX, double mouseY) {
-
-        double minX = cardView.getBoundsInParent().getMinX();
-        double maxX = cardView.getBoundsInParent().getMaxX();
-
-
-        double minY = cardView.getBoundsInParent().getMinY() + 15;
-        double maxY = cardView.getBoundsInParent().getMaxY();
-
-        return (mouseY > maxY || mouseY < minY) || (mouseX > maxX || mouseX < minX);
-    }
-
     private CardView getCardForHand(Card card) {
         CardView cardView = new CardView(card, 5, false, true);
 
@@ -637,9 +624,9 @@ public class GameView {
         if (response.equals("summoned successfully")){
             runMovingCardFromHandToFieldGraphic(cardView, 0, 0, 1);
         }else if (response.equals("set successfully")){
-            //put set animation here
+            runMovingCardFromHandToFieldGraphic(cardView, 1, 0, 1);
         }else if (response.equals("flip summoned successfully")){
-            //put flip summon animation here
+            runFlipSummonGraphic(cardView);
         }
     }
 
@@ -807,14 +794,6 @@ public class GameView {
     //zone -> 0 for monsterZone and 1 for spellZone
     //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
 
-    private void addCardToCorrectZone(CardView cardView, int zone, int index){
-        if (zone == 0) {
-            monsterZoneCards.set(index, cardView);
-        } else if (zone == 1) {
-            spellZoneCards.set(index, cardView);
-        }
-    }
-
     private void runMovingCardFromHandToFieldGraphic(CardView cardView, int mode, int zone, int index) {
 
         CardView newCardView = getCardViewForField(cardView.getCard(), mode);
@@ -881,6 +860,14 @@ public class GameView {
         }
 
         transitions.play();
+    }
+
+    private void addCardToCorrectZone(CardView cardView, int zone, int index){
+        if (zone == 0) {
+            monsterZoneCards.set(index, cardView);
+        } else if (zone == 1) {
+            spellZoneCards.set(index, cardView);
+        }
     }
 
 
