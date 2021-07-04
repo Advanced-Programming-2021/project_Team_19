@@ -48,18 +48,14 @@ public class AttackMonster extends Attack {
 //        ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
 //                .getCardById(enemyId)).attackIsNormal(gameData)
 
-        if (!CardActionManager.getInstance(null).isShouldSelectCardForMultiCardAction()){
-            CardActionManager.getInstance(null).setMultiCardAction("attack monster");
-        }
-
         TriggerActivationData activationData = handleTriggerEffects();
 
         if (activationData.hasActionStopped) {
             return;
         }
 
-        ((Monster) CardActionManager.getInstance(null).card).handleAttack(gameData,
-                (Monster) CardActionManager.getInstance(null).getSelectedCardsForMultiCardAction().get(0));
+//        ((Monster) CardActionManager.getInstance(null).card).handleAttack(gameData,
+//                (Monster) CardActionManager.getInstance(null).getSelectedCardsForMultiCardAction().get(0));
 
 
     }
