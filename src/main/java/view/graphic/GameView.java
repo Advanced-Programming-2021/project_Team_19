@@ -620,15 +620,18 @@ public class GameView {
     }
 
     private void cardOnLeftClick(CardView cardView){
-        String response = game.run(cardView.getCurrentAction());
-        if (response.matches("summon \\d")){
-            runMovingCardFromHandToFieldGraphic(cardView, 0, 0, Integer.parseInt(response.substring(7)));
-        }else if (response.matches("set spell \\d")){
-            runMovingCardFromHandToFieldGraphic(cardView, 2, 1, Integer.parseInt(response.substring(10)));
-        }else if (response.matches("set monster \\d")){
-            runMovingCardFromHandToFieldGraphic(cardView, 1, 0, Integer.parseInt(response.substring(12)));
-        }else if (response.equals("flip summoned successfully")){
-            runFlipSummonGraphic(cardView);
+        ArrayList<String> dataFromGameRun = game.run(cardView.getCurrentAction()).getEvents();
+        if (dataFromGameRun.size() == 1){
+            String response = dataFromGameRun.get(0);
+            if (response.matches("summon \\d")) {
+                runMovingCardFromHandToFieldGraphic(cardView, 0, 0, Integer.parseInt(response.substring(7)));
+            } else if (response.matches("set spell \\d")) {
+                runMovingCardFromHandToFieldGraphic(cardView, 2, 1, Integer.parseInt(response.substring(10)));
+            } else if (response.matches("set monster \\d")) {
+                runMovingCardFromHandToFieldGraphic(cardView, 1, 0, Integer.parseInt(response.substring(12)));
+            } else if (response.equals("flip summoned successfully")) {
+                runFlipSummonGraphic(cardView);
+            }
         }
     }
 
