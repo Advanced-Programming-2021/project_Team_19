@@ -29,6 +29,7 @@ import javafx.util.Duration;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
+import model.Data.graphicDataForServerToNotifyOtherClient;
 import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
