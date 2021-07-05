@@ -35,33 +35,45 @@ public class Game {
         switch (command) {
             case "set" -> {
                 destroyCurrentActionManager();
-                return new DataFromGameRun(new Set(gameData).run());
+                DataFromGameRun data = new DataFromGameRun(new Set(gameData).run());
+                data.addEvents(runServerSideGameEvents());
+                return data;
             }
             case "normal summon" -> {
                 destroyCurrentActionManager();
-                return new DataFromGameRun(new NormalSummon(gameData).run());
+                DataFromGameRun data = new DataFromGameRun(new NormalSummon(gameData).run());
+                data.addEvents(runServerSideGameEvents());
+                return data;
             }
             case "attack direct" -> {
                 destroyCurrentActionManager();
-                return new DataFromGameRun(new DirectAttack(gameData).run());
+                DataFromGameRun data = new DataFromGameRun(new DirectAttack(gameData).run());
+                data.addEvents(runServerSideGameEvents());
+                return data;
             }
             case "flip summon" -> {
                 destroyCurrentActionManager();
-                return new DataFromGameRun(new FlipSummon(gameData).run());
-            }
-            case "next phase" -> {
-                destroyCurrentActionManager();
-                goToNextPhase(gameData);
-                return new DataFromGameRun("phase changed successfully");
+                DataFromGameRun data = new DataFromGameRun(new FlipSummon(gameData).run());
+                data.addEvents(runServerSideGameEvents());
+                return data;
             }
             case "get Atk|Def" -> {
                 return new DataFromGameRun(getAtkDef(gameData));
             }
+            case "next phase" -> {
+                destroyCurrentActionManager();
+                String nextPhaseName = goToNextPhase(gameData);
+                DataFromGameRun data = new DataFromGameRun(nextPhaseName);
+                data.addEvents(runServerSideGameEvents());
+                return data;
+            }
             default -> {
-                return new DataFromGameRun("");
+                return new DataFromGameRun(runServerSideGameEvents());
             }
         }
     }
+
+
 
 
     public ArrayList<String> getValidCommandsForCard(Card card) {
@@ -96,28 +108,34 @@ public class Game {
 
 
             if (gameData.isGameOver()) {
+                events.add("game finished" + finishGame(gameData).getUsername());
 //                return finishGame(gameData);
             }
 
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
                 new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
+                events.add("draw phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
                 new StandbyPhase().run(gameData);
                 goToNextPhase(gameData);
+                events.add("stand by phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.END)) {
                 gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
+                events.add("end phase");
                 continue;
             }
 
             gameData.setEvent(GameEvent.NORMAL);
+            break;
         }
+        return events;
     }
 
 
@@ -265,11 +283,12 @@ public class Game {
         }
     }
 
-    public void goToNextPhase(GameData gameData) {
+    public String goToNextPhase(GameData gameData) {
 
         gameData.goToNextPhase();
         Printer.print(gameData.getCurrentPhase().getPhaseName());
         gameData.hasAskedForSpellsThisPhase = false;
+        return gameData.getCurrentPhase().getPhaseName();
     }
 
     private boolean checkLabels(GameData gameData) {

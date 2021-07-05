@@ -24,6 +24,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import controller.DataBaseControllers.CSVDataBaseController;
 import view.Menu.Deck;
 import view.Menu.Shop;
 import view.Menu.WelcomeMenu;
@@ -67,7 +68,7 @@ public class menuGraphic extends Application {
         return popup;
     }
 
-    public static Popup showPopupMessage(Stage stage, String message, double x, double y){
+    public static Popup showPopupMessage(Stage stage, String message, double x, double y) {
 
         final Popup popup = new Popup();
         popup.setX(x);

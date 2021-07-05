@@ -59,7 +59,7 @@ public class GameGraphicControllerForTest extends Menu {
         gameView1.setRivalGameView(gameView2);
     }
 
-    public void startGame() {
+    public void startGame(){
         gameView1.run();
         gameView2.run();
     }

@@ -30,13 +30,13 @@ public class CardView extends Rectangle {
     public Popup tempPopup;
     public EventHandler filter;
 
-    public CardView(double sizeInverse){
+    public CardView(double sizeInverse) {
         super(width / sizeInverse, height / sizeInverse);
         this.sizeInverse = sizeInverse;
         hideCard();
     }
 
-    public CardView(Card card, double sizeInverse, boolean isHidden, boolean isVertical){
+    public CardView(Card card, double sizeInverse, boolean isHidden, boolean isVertical) {
 
         setWidth(isVertical ? width / sizeInverse : height / sizeInverse);
         setHeight(isVertical ? height / sizeInverse : width / sizeInverse);
@@ -46,9 +46,9 @@ public class CardView extends Rectangle {
         this.isHidden = isHidden;
         this.isVertical = isVertical;
 
-        if(isHidden){
+        if (isHidden) {
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
-        } else{
+        } else {
             setCardImage();
         }
     }
@@ -64,29 +64,27 @@ public class CardView extends Rectangle {
         return new Image("/Assets/Cards/Monsters/Unknown.jpg");
     }
 
-    public void setCanShowValidActions(boolean canShowValidActions){
+    public void setCanShowValidActions(boolean canShowValidActions) {
         this.canShowValidActions = canShowValidActions;
     }
 
-    public void hideCard(){
+    public void hideCard() {
         setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         isHidden = true;
     }
 
-    public void setCardImage(){
-        if(isVertical){
+    public void setCardImage() {
+        if (isVertical) {
             ImagePattern imagePattern = new ImagePattern(getImageByCard(card));
             setFill(imagePattern);
-        } else{
+        } else {
             setCardImage2();
         }
         isHidden = false;
     }
 
-    private void setCardImage2(){
-
+    private void setCardImage2() {
         ImageView imageView = new ImageView(getImageByCard(card));
-
         imageView.setRotate(90);
 
         SnapshotParameters params = new SnapshotParameters();
@@ -96,29 +94,29 @@ public class CardView extends Rectangle {
         setFill(new ImagePattern(rotatedImage));
     }
 
-    public Card getCard(){
+    public Card getCard() {
         return card;
     }
 
-    public String getFirstValidAction(){
+    public String getFirstValidAction() throws Exception {
 
         validActionNamesForShow = new ArrayList<>();
         validActionNames = CardActionManager.getInstance(card).getValidActions();
 
-        for(String validAction : validActionNames){
-            if(validAction.startsWith("summon")){
+        for (String validAction : validActionNames) {
+            if (validAction.startsWith("summon")) {
                 validActionNamesForShow.add("summon");
-            } else if (validAction.startsWith("attack")){
+            } else if (validAction.startsWith("attack")) {
                 validActionNamesForShow.add("attack");
-            } else if (validAction.startsWith("set position")){
+            } else if (validAction.startsWith("set position")) {
                 validActionNamesForShow.add("change position");
-            } else if (validAction.equals("set")){
+            } else if (validAction.equals("set")) {
                 validActionNamesForShow.add("set");
-            } else if (validAction.equals("activate spell normally")){
+            } else if (validAction.equals("activate spell normally")) {
                 validActionNamesForShow.add("activate");
-            } else if (validAction.equals("activate effect monster")){
+            } else if (validAction.equals("activate effect monster")) {
                 validActionNamesForShow.add("activate");
-            } else if (validAction.equals("select")){
+            } else if (validAction.equals("select")) {
                 validActionNamesForShow.add("select");
             } else {
                 validActionNamesForShow.add(validAction);
@@ -127,15 +125,15 @@ public class CardView extends Rectangle {
 
         validActionIndex = 0;
 
-        if(validActionNamesForShow.size() > 0){
+        if (validActionNamesForShow.size() > 0) {
             return validActionNamesForShow.get(0);
-        } else {
-            return null;
         }
+
+        throw new Exception("no valid actions");
     }
 
-    public String getNextValidAction(){
-        if(validActionNamesForShow.size() == 0){
+    public String getNextValidAction() {
+        if (validActionNamesForShow.size() == 0) {
             return null;
         }
         return validActionNamesForShow.get
@@ -143,7 +141,7 @@ public class CardView extends Rectangle {
     }
 
 
-    public String getCurrentAction(){
+    public String getCurrentAction() {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 }

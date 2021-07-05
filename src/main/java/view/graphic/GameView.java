@@ -1,7 +1,6 @@
 package view.graphic;
 
 import controller.DuelControllers.Game;
-import controller.Utils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -30,7 +29,6 @@ import javafx.util.Duration;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
-import model.Data.graphicDataForServerToNotifyOtherClient;
 import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
@@ -189,10 +187,11 @@ public class GameView {
                 nextPhasePopup.hide();
             }
         });
-
         phaseButton.setOnMouseClicked(event -> {
-            game.run("next phase");
-            changePhase();
+            ArrayList<String> events = new ArrayList<>(game.run("next phase").getEvents());
+            for (String response : events) {
+                responseIsForPhaseChange(response);
+            }
         });
 
         gamePane.getChildren().add(phaseButton);
@@ -459,10 +458,7 @@ public class GameView {
     }
 
     public void initHand() {
-
-        System.out.println(Utils.getCardByName("Yomi Ship"));
         ArrayList<CardView> tempHand = new ArrayList<>();
-
         for (int i = 0; i < 5; i++) {
             tempHand.add(new CardView(
                     self.getGameBoard().getHand().getCardsInHand().get(i), 8, true, true));
@@ -509,8 +505,12 @@ public class GameView {
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
             if (cardView.canShowValidActions) {
-                showValidActionForCard(cardView.getFirstValidAction(), cardView);
+                try {
+                    showValidActionForCard(cardView.getFirstValidAction(), cardView);
+                } catch (Exception ignored) {
+                }
             }
+
         });
 
         cardView.setOnMouseExited(mouseEvent -> {
@@ -540,14 +540,43 @@ public class GameView {
         if (dataFromGameRun.size() == 1) {
             String response = dataFromGameRun.get(0);
             if (response.matches("summon \\d")) {
-                handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
+                runMoveCardFromHandToFieldGraphic
+                        (this, cardView, 0, 0, Integer.parseInt(response.substring(7)));
             } else if (response.matches("set spell \\d")) {
-                handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
+                runMoveCardFromHandToFieldGraphic
+                        (this, cardView, 2, 1, Integer.parseInt(response.substring(10)));
             } else if (response.matches("set monster \\d")) {
-                handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
+                runMoveCardFromHandToFieldGraphic
+                        (this, cardView, 1, 0, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
                 runFlipSummonGraphic(this, cardView);
+            } else {
+                responseIsForPhaseChange(response);
             }
+        }
+    }
+
+    private void responseIsForPhaseChange(String phaseChangeResponse) {
+        if (phaseChangeResponse.equals("draw phase")) {
+            changePhase();
+//             todo   draw phase
+        } else if (phaseChangeResponse.equals("stand by phase")) {
+            changePhase();
+//            todo    standby phase
+        } else if (phaseChangeResponse.equals("end phase")) {
+            changePhase();
+//            todo    end phase
+        } else if (phaseChangeResponse.equals("main phase 1")) {
+            changePhase();
+//            todo    main phase 1
+        } else if (phaseChangeResponse.equals("battle phase")) {
+            changePhase();
+//            todo    battle phase
+        } else if (phaseChangeResponse.equals("main phase 2")) {
+            changePhase();
+//            todo    main phase 2
+        } else if (phaseChangeResponse.matches("game finished \\w+")) {
+//           todo     finish game
         }
     }
 
@@ -838,7 +867,6 @@ public class GameView {
 
     private void f() {
 
-//        handleActivateSpellGraphic(selfHand.get(0), 4);
 //        getCardNameForMindCrush();
 //        runMoveCardFromHandToFieldGraphic(
 //                this, selfHand.get(0), 3,1,2);
@@ -847,13 +875,13 @@ public class GameView {
 //        runRemoveCardFromHandGraphic(this, selfHand.get(0));
 //        fadeCard(selfHand.get(0));
 
-        handleIncreaseLpGraphic(-12);
+//        runIncreaseLpGraphic(this, 12);
 
 //        counter++;
 //        if(counter == 1)
-//        handleSetMonsterGraphic(selfHand.get(0), 0);
+//        summon(selfHand.get(0));
 //        else
-//        handleFlipCardGraphic(monsterZoneCards.get(0));
+//        runFlipCardGraphic(monsterZoneCards.get(3));
     }
 
     private void setTestButton() {

@@ -4,7 +4,7 @@ import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
 import view.graphic.CardView;
 
-public class ScaleAnimation implements CardViewAnimationMaker {
+public class ScaleAnimation implements CardViewAnimationMaker{
 
     CardView cardView;
     ScaleTransition animation;
