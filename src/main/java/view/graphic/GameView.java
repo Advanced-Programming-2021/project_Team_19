@@ -652,7 +652,7 @@ public class GameView {
         } else if (mode == 4) {
             cardView = new CardView(card, 9, false, false);
         }
-        setShowCardOnMouseEntered(cardView);
+        cardView.setShowCardAndShowValidActions(this);
         return cardView;
     }
 
@@ -878,11 +878,11 @@ public class GameView {
 
 //        runIncreaseLpGraphic(this, 12);
 
-//        counter++;
-//        if(counter == 1)
-//        summon(selfHand.get(0));
-//        else
-//        runFlipCardGraphic(monsterZoneCards.get(3));
+        counter++;
+        if(counter == 1)
+        handleSummonGraphic(selfHand.get(0), 0);
+        else
+        monsterZoneCards.get(0).setShowCardAndShowValidActions(this);
     }
 
     private void setTestButton() {

@@ -6,12 +6,15 @@ import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import model.Card.Card;
 import model.Card.Monster;
+import view.graphic.CardViewAnimations.Translation;
 
 import java.util.ArrayList;
 
@@ -123,6 +126,13 @@ public class CardView extends Rectangle {
             }
         }
 
+//        //test
+//        validActionNamesForShow.add("hehe");
+//        validActionNames.add("hehe");
+//        validActionNamesForShow.add("hihi");
+//        validActionNames.add("hihi");
+//        //test
+
         validActionIndex = 0;
 
         if (validActionNamesForShow.size() > 0) {
@@ -143,6 +153,38 @@ public class CardView extends Rectangle {
 
     public String getCurrentAction() {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
+    }
+
+    public void setShowCardAndShowValidActions(GameView gameView){
+
+        setOnMouseEntered(mouseEvent -> {
+            gameView.game.gameData.setSelectedCard(card);
+            gameView.showCard(this);
+
+            if (this.canShowValidActions) {
+                try {
+                    gameView.showValidActionForCard(getFirstValidAction(), this);
+                } catch (Exception ignored) {
+                }
+            }
+        });
+
+        setOnMouseExited(mouseEvent -> {
+
+            Popup popup = tempPopup;
+            if (popup != null) {
+                popup.hide();
+            }
+            if (filter != null) {
+                gameView.stage.getScene().removeEventFilter(MouseEvent.MOUSE_MOVED, filter);
+            }
+        });
+
+        setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
+                gameView.showValidActionForCard(getNextValidAction(), this);
+            }
+        });
     }
 }
 
