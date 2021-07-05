@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import javafx.animation.KeyFrame;
@@ -164,6 +165,7 @@ public class menuGraphic extends Application {
     }
 
     public static void main(String[] args) {
+        CSVDataBaseController.load();
         DataBaseController.makeResourceDirectory();
         launch(args);
     }

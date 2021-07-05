@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DuelControllers.Game;
+import controller.Utils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -456,6 +457,7 @@ public class GameView {
 
     public void initHand() {
 
+        System.out.println(Utils.getCardByName("Yomi Ship"));
         ArrayList<CardView> tempHand = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
