@@ -721,15 +721,6 @@ public class GameView {
     }
 
 
-    private void fadeCard(CardView cardView){
-        new FadeAnimation(cardView, 500,1,0).getAnimation().play();
-    }
-
-    private void runSummonGraphic(CardView cardView) {
-        runMovingCardFromHandToFieldGraphic(cardView, 1, 0, 3);
-    }
-
-
     private CardView getCardViewForField(Card card, int mode) {
         CardView cardView = new CardView(9);
         if (mode == 0 || mode == 2) {
@@ -828,7 +819,7 @@ public class GameView {
     private void runMovingCardFromHandToFieldGraphic(CardView cardView, int mode, int zone, int index) {
         CardView newCardView = getCardViewForField(cardView.getCard(), mode);
 
-        addCardToCorrectZone(newCardView, zone, index);
+        addCardToCorrectCardListZone(newCardView, zone, index);
 
         newCardView.setVisible(false);
         gamePane.getChildren().add(newCardView);
@@ -892,7 +883,7 @@ public class GameView {
         transitions.play();
     }
 
-    private void addCardToCorrectZone(CardView cardView, int zone, int index){
+    private void addCardToCorrectCardListZone(CardView cardView, int zone, int index){
         if (zone == 0) {
             monsterZoneCards.set(index, cardView);
         } else if (zone == 1) {
@@ -1071,7 +1062,7 @@ public class GameView {
 
     private void putCardIntoFiled(Card card, int mode, int zone, int index){
         CardView cardView = getCardViewForField(card, mode);
-        addCardToCorrectZone(cardView, zone, index);
+        addCardToCorrectCardListZone(cardView, zone, index);
         cardView.setX(getCardInFieldX(cardView, mode));
         cardView.setY(getCardInFieldY(mode));
         new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
@@ -1175,37 +1166,39 @@ public class GameView {
 
     //lp animations
 
-    private void runIncreaseLpGraphic(int lp){
+    private void runIncreaseLpGraphic(double lp){
         getIncreaseLpTransition(lp, true).play();
         rivalGameView.runIncreaseRivalLpGraphic(lp);
     }
 
-    private void increaseLpInLabel(int lp){
+    private void increaseLpInLabel(double lp){
         selfLp += lp;
         selfLpLabel.setText(selfLp + "");
     }
 
-    private void runIncreaseRivalLpGraphic(int lp){
+    private void runIncreaseRivalLpGraphic(double lp){
         getIncreaseLpTransition(lp, false).play();
     }
 
-    private void increaseRivalLpInLabel(int lp){
+    private void increaseRivalLpInLabel(double lp){
         rivalLp += lp;
         rivalLpLabel.setText(rivalLp + "");
     }
 
-    private SequentialTransition getIncreaseLpTransition(int lp, boolean isSelf){
+    private SequentialTransition getIncreaseLpTransition(double lp, boolean isSelf){
 
         SequentialTransition transition = new SequentialTransition();
-        int increasingSize = 2;
-        for(int i = 0; i < Math.ceil((double) lp / increasingSize); i++){
+
+        double increasingSize = 2 * Math.signum(lp);
+
+        for(int i = 0; i < Math.ceil(lp / increasingSize); i++){
             int finalI = i;
             transition.getChildren().add(new Timeline(new KeyFrame(Duration.millis(2),
                     new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            int increasingLp = increasingSize;
-                            if(finalI >= lp/increasingSize){
+                            double increasingLp = increasingSize;
+                            if(finalI >= Math.floor(lp / increasingSize)){
                                 increasingLp = lp % increasingSize;
                             }
                             if(isSelf){
@@ -1279,14 +1272,14 @@ public class GameView {
 
     private void f() {
 
-        getCardNameForMindCrush();
+//        getCardNameForMindCrush();
 //        addCardToHand(controller.Utils.getCardByName("Battle ox"));
 
 //        addCardToSelfGraveYard(controller.Utils.getCardByName("Battle ox"));
 //        runRemoveCardFromHandGraphic(selfHand.get(0));
 //        fadeCard(selfHand.get(0));
 
-//        runIncreaseLPGraphic(125);
+//        runIncreaseLpGraphic(12);
 
 //        counter++;
 //        if(counter == 1)
