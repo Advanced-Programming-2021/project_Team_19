@@ -40,7 +40,7 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     public void init(){
-        Scene scene = new Scene(new Pane(), GameGraphic.sceneX, GameGraphic.sceneY);
+        Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
         stage2.setScene(scene);

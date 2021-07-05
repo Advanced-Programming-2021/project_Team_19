@@ -1,6 +1,5 @@
-package view.graphic.Animations;
+package view.graphic.CardViewAnimations;
 
-import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
@@ -9,11 +8,11 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import view.graphic.CardView;
 
-public class FlipTransition {
+public class FlipAnimation implements CardViewAnimationMaker{
 
     private SequentialTransition animation;
 
-    public FlipTransition(CardView cardView, double time){
+    public FlipAnimation(CardView cardView, double time){
 
         RotateTransition rotate1 = new RotateTransition();
 

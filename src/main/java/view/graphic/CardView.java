@@ -53,6 +53,17 @@ public class CardView extends Rectangle {
         }
     }
 
+    public static Image getImageByCard(Card card) {
+
+        if (card != null) {
+            String model = card instanceof Monster ? "Monsters/" : "SpellTrap/";
+            return new Image("/Assets/Cards/" + model +
+                    controller.Utils.getPascalCase(card.getName()) + ".jpg");
+
+        }
+        return new Image("/Assets/Cards/Monsters/Unknown.jpg");
+    }
+
     public void setCanShowValidActions(boolean canShowValidActions){
         this.canShowValidActions = canShowValidActions;
     }
@@ -64,9 +75,7 @@ public class CardView extends Rectangle {
 
     public void setCardImage(){
         if(isVertical){
-            String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
-            ImagePattern imagePattern = new ImagePattern(new Image("/Assets/Cards/" + model +
-                    Utils.getPascalCase(card.getName()) +".jpg"));
+            ImagePattern imagePattern = new ImagePattern(getImageByCard(card));
             setFill(imagePattern);
         } else{
             setCardImage2();
@@ -75,9 +84,8 @@ public class CardView extends Rectangle {
     }
 
     private void setCardImage2(){
-        String model =  card instanceof Monster ? "Monsters/" : "SpellTrap/";
-        ImageView imageView = new ImageView(new Image("/Assets/Cards/" + model +
-                Utils.getPascalCase(card.getName()) +".jpg"));
+
+        ImageView imageView = new ImageView(getImageByCard(card));
 
         imageView.setRotate(90);
 
@@ -116,13 +124,6 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add(validAction);
             }
         }
-
-//        //test
-//        validActionNames.add("summon");
-//        validActionNamesForShow.add("summon");
-//        validActionNames.add("attack");
-//        validActionNamesForShow.add("attack");
-//        //test
 
         validActionIndex = 0;
 

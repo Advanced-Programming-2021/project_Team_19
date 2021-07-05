@@ -1,10 +1,10 @@
-package view.graphic.Animations;
+package view.graphic.CardViewAnimations;
 
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
 import view.graphic.CardView;
 
-public class FadeAnimation {
+public class FadeAnimation implements CardViewAnimationMaker{
 
     FadeTransition fadeTransition = new FadeTransition();
 

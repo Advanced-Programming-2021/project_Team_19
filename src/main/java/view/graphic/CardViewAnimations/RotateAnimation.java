@@ -1,14 +1,10 @@
-package view.graphic.Animations;
+package view.graphic.CardViewAnimations;
 
 import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import view.graphic.CardView;
 
-public class RotateAnimation {
+public class RotateAnimation implements CardViewAnimationMaker {
 
     private RotateTransition animation;
 
