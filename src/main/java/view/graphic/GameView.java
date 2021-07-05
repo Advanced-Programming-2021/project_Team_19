@@ -621,10 +621,12 @@ public class GameView {
 
     private void cardOnLeftClick(CardView cardView){
         String response = game.run(cardView.getCurrentAction());
-        if (response.equals("summoned successfully")){
-            runMovingCardFromHandToFieldGraphic(cardView, 0, 0, 1);
-        }else if (response.equals("set successfully")){
-            runMovingCardFromHandToFieldGraphic(cardView, 1, 0, 1);
+        if (response.matches("summon \\d")){
+            runMovingCardFromHandToFieldGraphic(cardView, 0, 0, Integer.parseInt(response.substring(7)));
+        }else if (response.matches("set spell \\d")){
+            runMovingCardFromHandToFieldGraphic(cardView, 2, 1, Integer.parseInt(response.substring(10)));
+        }else if (response.matches("set monster \\d")){
+            runMovingCardFromHandToFieldGraphic(cardView, 1, 0, Integer.parseInt(response.substring(12)));
         }else if (response.equals("flip summoned successfully")){
             runFlipSummonGraphic(cardView);
         }
@@ -795,7 +797,6 @@ public class GameView {
     //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
 
     private void runMovingCardFromHandToFieldGraphic(CardView cardView, int mode, int zone, int index) {
-
         CardView newCardView = getCardViewForField(cardView.getCard(), mode);
 
         addCardToCorrectZone(newCardView, zone, index);

@@ -72,7 +72,7 @@ public class Set extends SummonAndSet {
 
             activateOrSetCheckFieldSpell(card, gameData);
 
-            return "set successfully";
+            return "set spell " + gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(card);
         }
 
         return "set not successful";
@@ -90,7 +90,7 @@ public class Set extends SummonAndSet {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             monster.handleSet(gameData);
             handleTriggerEffects();
-            return "set successfully";
+            return "set monster " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(card);
         }
 
 //        sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData));

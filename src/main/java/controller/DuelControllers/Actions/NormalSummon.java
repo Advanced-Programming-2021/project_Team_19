@@ -64,9 +64,10 @@ public class NormalSummon extends Summon {
                         getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
 
         if (numberOfSacrifices == 0){
+            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
             handleTriggerEffects();
-            return "summoned successfully";
+            return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster);
         }
 
         return "sacrifice " + numberOfSacrifices + " monsters";
