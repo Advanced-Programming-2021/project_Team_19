@@ -1,5 +1,6 @@
 package view;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
@@ -18,6 +19,8 @@ public class Main {
     public static void main(String[] arg) {
 
 //        new Game(GameData.getTestGameData()).DeprecatedRun();
+
+        CSVDataBaseController.load();
 
         DataBaseController.makeResourceDirectory();
 
