@@ -40,53 +40,37 @@ import java.util.ArrayList;
 import static view.graphic.ActionsAnimationHandler.*;
 
 public class GameView {
-
     Gamer self;
     Gamer rival;
     Game game;
     GameView rivalGameView;
-
     Stage stage;
-
     Pane mainPane = new Pane();
-
     Pane gamePane = new Pane();
     BorderPane cardShowPane = new BorderPane();
-
     CardView selfDeck;
     CardView rivalDeck;
-
     VBox phaseBox;
     Popup nextPhasePopup;
     static ArrayList<VBox> phaseBoxes = new ArrayList<>();
-
     ArrayList<CardView> selfHand = new ArrayList<>();
     ArrayList<CardView> selfGraveyardCards = new ArrayList<>();
     StackPane selfGraveYard = new StackPane();
-
     ArrayList<CardView> rivalHand = new ArrayList<>();
     ArrayList<CardView> rivalGraveyardCards = new ArrayList<>();
     StackPane rivalGraveYard = new StackPane();
-
     CardView cardForShow = null;
     Text cardDescription = new Text();
     ScrollPane descriptionScrollPane = new ScrollPane();
-
     ScrollPane cardViewsScrollPane = new ScrollPane();
-
     Label selfLpLabel = new Label();
     Label rivalLpLabel = new Label();
-
     int selfLp;
     int rivalLp;
-
     Label selfUsernameLabel = new Label();
     Label rivalUsernameLabel = new Label();
-
     HBox selfAtkDefLabels = new HBox(12);
     HBox rivalAtkDefLabels = new HBox(12);
-
-
     ArrayList<CardView> monsterZoneCards = new ArrayList<>();
     ArrayList<CardView> spellZoneCards = new ArrayList<>();
     ArrayList<CardView> rivalMonsterZoneCards = new ArrayList<>();
@@ -98,7 +82,6 @@ public class GameView {
             spellZoneCards.add(null);
             rivalMonsterZoneCards.add(null);
             rivalSpellZoneCards.add(null);
-
             selfAtkDefLabels.getChildren().add(getLabelForAtkDef());
             rivalAtkDefLabels.getChildren().add(getLabelForAtkDef());
         }
@@ -109,20 +92,16 @@ public class GameView {
         this.self = self;
         this.rival = rival;
         this.game = game;
-
         setCardShowPane();
         setGamePane();
         setDeck();
         setGraveYard();
         setData();
         setAtkDefLabels();
-
         HBox box = new HBox(cardShowPane, gamePane);
         mainPane.getChildren().add(box);
         box.setLayoutY((menuGraphic.sceneY - 600) / 2);
-
         mainPane.getChildren().add(descriptionScrollPane);
-
         setTestButton();
         setMouseLocationMonitor();
     }
@@ -153,7 +132,6 @@ public class GameView {
         Rectangle field = new Rectangle(600, 600);
         field.setFill(new ImagePattern(image));
         gamePane.getChildren().add(field);
-
         addPhaseBox();
         addPhaseChangeButton();
         gamePane.setOnKeyPressed(event -> {
@@ -166,7 +144,6 @@ public class GameView {
     }
 
     private void addPhaseChangeButton() {
-
         Button phaseButton = new Button("N\nP");
         phaseButton.setLayoutX(0);
         phaseButton.setLayoutY(5);
@@ -178,41 +155,33 @@ public class GameView {
                         stage.getY() + 20);
             }
         });
-
         phaseButton.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 nextPhasePopup.hide();
             }
         });
-
         phaseButton.setOnMouseClicked(event -> {
-            game.run("next phase");
-            changePhase();
+            ArrayList<String> events = new ArrayList<>(game.run("next phase").getEvents());
+            for (String response : events) {
+                responseIsForPhaseChange(response);
+            }
         });
-
         gamePane.getChildren().add(phaseButton);
     }
 
-
     private void addPhaseBox() {
-
         phaseBox = new VBox();
-
         phaseBox.setSpacing(25);
-
         phaseBox.setLayoutY(87);
         phaseBox.setLayoutX(1);
-
         phaseBox.getChildren().add(getPhaseLabel(" D\n P"));
         phaseBox.getChildren().add(getPhaseLabel(" S\n P"));
         phaseBox.getChildren().add(getPhaseLabel(" M\n 1"));
         phaseBox.getChildren().add(getPhaseLabel(" B\n P"));
         phaseBox.getChildren().add(getPhaseLabel(" M\n 2"));
         phaseBox.getChildren().add(getPhaseLabel(" E\n P"));
-
         gamePane.getChildren().add(phaseBox);
-
         phaseBoxes.add(phaseBox);
     }
 
@@ -226,12 +195,10 @@ public class GameView {
         return phaseLabel;
     }
 
-
     private void changePhase() {
         for (VBox phaseBox : phaseBoxes) {
             for (int i = 0; i < 6; i++) {
                 if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
-
                     phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                     phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                     phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
@@ -243,55 +210,42 @@ public class GameView {
 
     private Pane getCheatPane(Stage stage) {
         VBox cheatButtonBox = new VBox();
-
         Pane cheatPane = new Pane();
         Button lpIncreaseButton = new Button("increase LP");
         lpIncreaseButton.setOnMouseClicked(event -> {
             selfLpLabel.setText(String.valueOf(selfLp += 1000));
             stage.close();
         });
-
         Button winGameButton = new Button("win game");
         winGameButton.setOnMouseClicked(event -> {
             //TODO
             stage.close();
         });
-
         cheatButtonBox.getChildren().addAll(lpIncreaseButton, winGameButton);
-
         cheatPane.getChildren().add(cheatButtonBox);
-
         return cheatPane;
     }
-
 
     private void setData() {
         selfLp = 8000;
         rivalLp = 8000;
-
         cardShowPane.setTop(getVboxForData(selfLpLabel, selfUsernameLabel, false));
         cardShowPane.setBottom(getVboxForData(rivalLpLabel, rivalUsernameLabel, true));
     }
 
     private VBox getVboxForData(Label lpLabel, Label usernameLabel, boolean isRival) {
-
         VBox box = new VBox(5);
         box.setCenterShape(true);
         box.setAlignment(Pos.CENTER);
-
         setLpLabel(lpLabel);
         Gamer gamer = isRival ? rival : self;
         setUsernameLabel(usernameLabel, gamer);
-
         int usernameIndex = 0;
-
         if (isRival) {
             usernameIndex = 1;
         }
-
         box.getChildren().add(lpLabel);
         box.getChildren().add(usernameIndex, usernameLabel);
-
         return box;
     }
 
@@ -303,7 +257,6 @@ public class GameView {
         label.setText(gamer.getUsername());
     }
 
-
     private void setLpLabel(Label label) {
         label.setAlignment(Pos.CENTER);
         label.setMinWidth(40);
@@ -313,37 +266,29 @@ public class GameView {
     }
 
     public void setCardShowPane() {
-
         cardShowPane.setMaxWidth(200);
         cardShowPane.setMinWidth(200);
         cardShowPane.setMaxHeight(600);
         cardShowPane.setMinHeight(600);
-
         cardShowPane.setBackground(new Background(new BackgroundFill(Color.rgb(230, 180, 40)
                 , new CornerRadii(0),
                 new Insets(0, 0, 0, 0))));
-
         cardForShow = new CardView(2.3);
-
         cardShowPane.getChildren().add(cardForShow);
         cardForShow.setX(9);
         cardForShow.setY(110);
-
         descriptionScrollPane.setContent(cardDescription);
         cardDescription.setWrappingWidth(CardView.width / 2.4 - 10);
-
         descriptionScrollPane.setPannable(true);
         descriptionScrollPane.setMinWidth(100);
         descriptionScrollPane.setMinWidth(100);
         descriptionScrollPane.setMaxHeight(70);
         descriptionScrollPane.setLayoutX(10);
         descriptionScrollPane.setLayoutY(390);
-
         descriptionScrollPane.setId("scroll");
         descriptionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         descriptionScrollPane.setStyle("-fx-background-color:transparent;");
         descriptionScrollPane.setPadding(new Insets(4, 0, 4, 4));
-
     }
 
     private void setDeck() {
@@ -389,16 +334,12 @@ public class GameView {
 
     private CardView getCardForGraveyard(Card card, boolean isSelf) {
         CardView cardView = new CardView(card, 9, false, true);
-
         cardView.setOnMouseClicked(mouseEvent -> showGraveYard(isSelf));
-
         return cardView;
     }
 
     private ArrayList<CardView> showCardsInScrollPane(ArrayList<Card> cards, boolean canCloseByRightClick) {
-
         ArrayList<CardView> cardViews = new ArrayList<>();
-
         if (canCloseByRightClick) {
             cardViewsScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                 if (mouseEvent.getButton() == MouseButton.SECONDARY) {
@@ -406,32 +347,25 @@ public class GameView {
                 }
             });
         }
-
         cardViewsScrollPane.setId("cardViewsScrollPane");
         mainPane.getChildren().add(cardViewsScrollPane);
-
         cardViewsScrollPane.setLayoutX(250);
         cardViewsScrollPane.setLayoutY(200);
-
         HBox box = new HBox(5);
-
         for (Card card : cards) {
             CardView temp = new CardView(card, 4, false, true);
             setShowCardOnMouseEntered(temp);
             box.getChildren().add(temp);
             cardViews.add(temp);
         }
-
         cardViewsScrollPane.setContent(box);
         cardViewsScrollPane.setMaxWidth(450);
         cardViewsScrollPane.setMinWidth(450);
         cardViewsScrollPane.setMinHeight(170);
-
         return cardViews;
     }
 
     private void showGraveYard(boolean isSelf) {
-
         ArrayList<Card> cards = new ArrayList<>();
         ArrayList<CardView> cardViews = isSelf ? selfGraveyardCards : rivalGraveyardCards;
         for (CardView cardView : cardViews) {
@@ -443,21 +377,17 @@ public class GameView {
     public void run() {
         stage.getScene().setRoot(mainPane);
         stage.show();
-
         new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 initHand();
             }
         })).play();
-
         addCardToSelfGraveYard(controller.Utils.getCardByName("trap hole"));
     }
 
     public void initHand() {
-
         ArrayList<CardView> tempHand = new ArrayList<>();
-
         for (int i = 0; i < 5; i++) {
             tempHand.add(new CardView(
                     self.getGameBoard().getHand().getCardsInHand().get(i), 8, true, true));
@@ -480,7 +410,6 @@ public class GameView {
     }
 
     double getCardInHandX(CardView cardView) {
-
         double ans = menuGraphic.sceneX / 2 - 100;
         double index = selfHand.indexOf(cardView);
         double size = ((double) selfHand.size()) / 2;
@@ -498,16 +427,18 @@ public class GameView {
 
     CardView getCardForHand(Card card) {
         CardView cardView = new CardView(card, 5, false, true);
-
         cardView.setOnMouseEntered(mouseEvent -> {
             game.gameData.setSelectedCard(card);
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
             if (cardView.canShowValidActions) {
-                showValidActionForCard(cardView.getFirstValidAction(), cardView);
+                try {
+                    showValidActionForCard(cardView.getFirstValidAction(), cardView);
+                } catch (Exception ignored) {
+                }
             }
-        });
 
+        });
         cardView.setOnMouseExited(mouseEvent -> {
             new Translation(cardView, cardView.getLayoutY(), 150).getAnimation().play();
             Popup popup = cardView.tempPopup;
@@ -518,7 +449,6 @@ public class GameView {
                 stage.getScene().removeEventFilter(MouseEvent.MOUSE_MOVED, cardView.filter);
             }
         });
-
         cardView.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.SECONDARY)) {
                 showValidActionForCard(cardView.getNextValidAction(), cardView);
@@ -526,14 +456,13 @@ public class GameView {
                 cardOnLeftClick(cardView);
             }
         });
-
         return cardView;
     }
 
     void cardOnLeftClick(CardView cardView) {
         ArrayList<String> dataFromGameRun = game.run(cardView.getCurrentAction()).getEvents();
-        if (dataFromGameRun.size() == 1) {
-            String response = dataFromGameRun.get(0);
+        for (String response : dataFromGameRun) {
+            System.err.println(response);
             if (response.matches("summon \\d")) {
                 runMoveCardFromHandToFieldGraphic
                         (this, cardView, 0, 0, Integer.parseInt(response.substring(7)));
@@ -545,7 +474,33 @@ public class GameView {
                         (this, cardView, 1, 0, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
                 runFlipSummonGraphic(this, cardView);
+            } else {
+                responseIsForPhaseChange(response);
             }
+        }
+    }
+
+    private void responseIsForPhaseChange(String phaseChangeResponse) {
+        if (phaseChangeResponse.equals("draw phase")) {
+            changePhase();
+//             todo   draw phase
+        } else if (phaseChangeResponse.equals("stand by phase")) {
+            changePhase();
+//            todo    standby phase
+        } else if (phaseChangeResponse.equals("end phase")) {
+            changePhase();
+//            todo    end phase
+        } else if (phaseChangeResponse.equals("main phase 1")) {
+            changePhase();
+//            todo    main phase 1
+        } else if (phaseChangeResponse.equals("battle phase")) {
+            changePhase();
+//            todo    battle phase
+        } else if (phaseChangeResponse.equals("main phase 2")) {
+            changePhase();
+//            todo    main phase 2
+        } else if (phaseChangeResponse.matches("game finished \\w+")) {
+//           todo     finish game
         }
     }
 
@@ -554,9 +509,7 @@ public class GameView {
     }
 
     public void showCard(CardView cardView) {
-
         Card card = cardView.getCard();
-
         if (card == null) {
             return;
         }
@@ -583,19 +536,15 @@ public class GameView {
     }
 
     public void showValidActionForCard(String message, CardView cardView) {
-
         if (cardView.tempPopup != null) {
             cardView.tempPopup.hide();
         }
         if (cardView.filter != null) {
             stage.getScene().removeEventFilter(MouseEvent.MOUSE_MOVED, cardView.filter);
         }
-
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-
         cardView.tempPopup = menuGraphic.showPopupMessage(stage, message, mouseLocation.getX() + 12,
                 mouseLocation.getY() - 50);
-
         EventHandler filter = new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -607,7 +556,6 @@ public class GameView {
         cardView.filter = filter;
         stage.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, filter);
     }
-
 
     CardView getCardViewForField(Card card, int mode) {
         CardView cardView = new CardView(9);
@@ -639,7 +587,6 @@ public class GameView {
     }
 
     double getCardInRivalFieldX(CardView cardView, int mode) {
-
         if (mode == 0) {
             int i = rivalMonsterZoneCards.indexOf(cardView);
             return 122 + i * 82;
@@ -663,7 +610,6 @@ public class GameView {
         }
         return 0;
     }
-
 
     double getCardInRivalFieldY(int mode) {
         if (mode == 0) {
@@ -700,7 +646,6 @@ public class GameView {
     }
 
     // MindCrush data collector
-
     private void getCardNameForMindCrush() {
         VBox vBox = new VBox(10);
         vBox.setMinWidth(200);
@@ -711,12 +656,10 @@ public class GameView {
         vBox.setAlignment(Pos.CENTER);
         vBox.setBackground(new Background(
                 new BackgroundFill(Color.rgb(243, 89, 17), new CornerRadii(0), new Insets(-12, 0, 0, 0))));
-
         Label messageLabel = new Label("sadfds saldfjl lsadjf ljsdf aslkdjf lasdkjfl jasdf ljsdf lksjdflja l jlsdf");
         messageLabel.setWrapText(true);
         messageLabel.setMaxWidth(150);
         messageLabel.setAlignment(Pos.CENTER);
-
         TextField textField = new TextField();
         textField.setMaxWidth(150);
         vBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -736,7 +679,6 @@ public class GameView {
                 }
             }
         });
-
         vBox.getChildren().addAll(messageLabel, textField);
         gamePane.getChildren().add(vBox);
     }
@@ -759,17 +701,13 @@ public class GameView {
     public Button testButton = new Button("test");
 
     private void f() {
-
 //        getCardNameForMindCrush();
 //        runMoveCardFromHandToFieldGraphic(
 //                this, selfHand.get(0), 3,1,2);
-
 //        addCardToSelfGraveYard(controller.Utils.getCardByName("Battle ox"));
 //        runRemoveCardFromHandGraphic(this, selfHand.get(0));
 //        fadeCard(selfHand.get(0));
-
 //        runIncreaseLpGraphic(this, 12);
-
 //        counter++;
 //        if(counter == 1)
 //        summon(selfHand.get(0));
@@ -792,7 +730,6 @@ public class GameView {
     private void setMouseLocationMonitor() {
         final Label reporter = new Label(OUTSIDE_TEXT);
         Label monitored = createMonitoredLabel(reporter);
-
         VBox layout = new VBox(10);
         layout.setLayoutX(200);
         layout.setLayoutY(605);
@@ -809,9 +746,7 @@ public class GameView {
 
     private Label createMonitoredLabel(final Label reporter) {
         final Label monitored = new Label("Mouse Location Monitor");
-
         monitored.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white; -fx-font-size: 20px;");
-
         stage.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -819,13 +754,9 @@ public class GameView {
                         "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
                                 "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
                                 "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
-
                 reporter.setText(msg);
             }
         });
-
-
         return monitored;
     }
-
 }

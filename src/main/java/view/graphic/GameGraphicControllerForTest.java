@@ -25,7 +25,7 @@ public class GameGraphicControllerForTest extends Menu {
         init();
     }
 
-    public void run(){
+    public void run() {
 
         Pane pane = new Pane();
         stage.getScene().setRoot(pane);
@@ -39,27 +39,27 @@ public class GameGraphicControllerForTest extends Menu {
         });
     }
 
-    public void init(){
+    public void init() {
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
         stage2.setScene(scene);
         User user1 = UserDataBaseController.getUserByUsername("mohammad");
-        Gamer gamer1 =  new Gamer(user1);
+        Gamer gamer1 = new Gamer(user1);
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
 
         GameData gameData = new GameData(gamer1, gamer2);
         game = new Game(gameData);
 
-        gameView1 = new GameView(stage,gamer1, gamer2, game);
+        gameView1 = new GameView(stage, gamer1, gamer2, game);
         gameView2 = new GameView(stage2, gamer2, gamer1, game);
 
         gameView2.setRivalGameView(gameView1);
         gameView1.setRivalGameView(gameView2);
     }
 
-    public void startGame(){
+    public void startGame() {
         gameView1.run();
         gameView2.run();
     }

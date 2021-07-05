@@ -17,5 +17,9 @@ public class DataFromGameRun {
         return events;
     }
 
+    public void addEvents(ArrayList<String> eventsToAdd){
+        events.addAll(eventsToAdd);
+    }
+
 
 }

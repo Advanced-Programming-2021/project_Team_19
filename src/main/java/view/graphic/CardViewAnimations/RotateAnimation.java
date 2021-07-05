@@ -4,7 +4,7 @@ import javafx.animation.RotateTransition;
 import javafx.util.Duration;
 import view.graphic.CardView;
 
-public class RotateAnimation implements CardViewAnimationMaker {
+public class RotateAnimation implements CardViewAnimationMaker{
 
     private RotateTransition animation;
 
