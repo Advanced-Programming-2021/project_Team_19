@@ -55,7 +55,7 @@ public class Game {
                 return new DataFromGameRun("phase changed successfully");
             }
             case "get Atk|Def" -> {
-                return getAtkDef(gameData);
+                return new DataFromGameRun(getAtkDef(gameData));
             }
             default -> {
                 return new DataFromGameRun("");
