@@ -1,5 +1,6 @@
 package controller.DuelControllers;
 
+import controller.DataFromGameRun;
 import controller.DuelControllers.Actions.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
@@ -30,34 +31,34 @@ public class Game {
     }
 
 
-    public String run(String command) {
+    public DataFromGameRun run(String command) {
         switch (command) {
             case "set" -> {
                 destroyCurrentActionManager();
-                return new Set(gameData).run();
+                return new DataFromGameRun(new Set(gameData).run());
             }
             case "normal summon" -> {
                 destroyCurrentActionManager();
-                return new NormalSummon(gameData).run();
+                return new DataFromGameRun(new NormalSummon(gameData).run());
             }
             case "attack direct" -> {
                 destroyCurrentActionManager();
-                return new DirectAttack(gameData).run();
+                return new DataFromGameRun(new DirectAttack(gameData).run());
             }
             case "flip summon" -> {
                 destroyCurrentActionManager();
-                return new FlipSummon(gameData).run();
+                return new DataFromGameRun(new FlipSummon(gameData).run());
             }
             case "next phase" -> {
                 destroyCurrentActionManager();
                 goToNextPhase(gameData);
-                return "phase changed successfully";
+                return new DataFromGameRun("phase changed successfully");
             }
             case "get Atk|Def" -> {
                 return getAtkDef(gameData);
             }
             default -> {
-                return "";
+                return new DataFromGameRun("");
             }
         }
     }
@@ -66,6 +67,57 @@ public class Game {
     public ArrayList<String> getValidCommandsForCard(Card card) {
 
         return CardActionManager.getInstance(card).getValidActions();
+    }
+
+    public ArrayList<String> runServerSideGameEvents(){
+
+        ArrayList<String> events = new ArrayList<>();
+
+        while (true) {
+
+            if (checkLabels(gameData)) {
+                continue;
+            }
+
+            if (!gameData.hasAskedForSpellsThisPhase) {
+
+                if (canRivalActivateSpell(gameData)) {
+                    Utils.changeTurn(gameData);
+                    gameData.showBoard();
+
+                    if (Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")) {
+                        handleActivatingSpellByRival(gameData);
+                    }
+
+                    Utils.changeTurn(gameData);
+                }
+                gameData.hasAskedForSpellsThisPhase = true;
+            }
+
+
+            if (gameData.isGameOver()) {
+//                return finishGame(gameData);
+            }
+
+            if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
+                new DrawPhase().run(gameData);
+                goToNextPhase(gameData);
+                continue;
+            }
+            if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
+                new StandbyPhase().run(gameData);
+                goToNextPhase(gameData);
+                continue;
+            }
+            if (gameData.getCurrentPhase().equals(Phase.END)) {
+                gameData.setSelectedCard(null);
+                gameData.turnFinished();
+                goToNextPhase(gameData);
+                continue;
+            }
+
+            gameData.setEvent(GameEvent.NORMAL);
+        }
     }
 
 
