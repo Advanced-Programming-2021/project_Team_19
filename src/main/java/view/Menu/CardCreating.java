@@ -1,5 +1,6 @@
 package view.Menu;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import javafx.scene.Scene;
+import model.Card.Card;
 
 public class CardCreating extends Application{
 
@@ -23,6 +25,18 @@ public class CardCreating extends Application{
 
     @FXML
     private TextField imageURL;
+
+    @FXML
+    private TextField nameBox;
+
+    @FXML
+    private TextField attackBox;
+
+    @FXML
+    private TextField defenseBox;
+
+    @FXML
+    private TextField cloneBox;
 
     private static Stage stage;
 
@@ -52,8 +66,23 @@ public class CardCreating extends Application{
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             Image image = new Image("file:///" + file.getPath());
-            System.out.println(image.getUrl());
+            imageURL.setText(file.getPath());
             choosenPicture.setImage(image);
+        }
+    }
+
+    public void submit(MouseEvent mouseEvent) {
+        try {
+            String cardName = nameBox.getText();
+            int attack = Integer.parseInt(attackBox.getText());
+            int defense = Integer.parseInt(defenseBox.getText());
+            String cloneCardName = cloneBox.getText();
+            Card card = CSVDataBaseController.getCardByCardName(cloneCardName);
+            if (card != null) {
+                CSVDataBaseController.addCard(card, cardName);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("invalid Format");
         }
     }
 }
