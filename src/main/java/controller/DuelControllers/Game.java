@@ -53,6 +53,9 @@ public class Game {
                 goToNextPhase(gameData);
                 return "phase changed successfully";
             }
+            case "get Atk|Def" -> {
+                return getAtkDef(gameData);
+            }
             default -> {
                 return "";
             }
@@ -270,16 +273,15 @@ public class Game {
 
     //test
 
-    public static void showAtkDef(GameData gameData) {
+    public static String getAtkDef(GameData gameData) {
 
         Card card = gameData.getSelectedCard();
         try {
-            System.out.println(((Monster) card).getAttack(gameData));
-            System.out.println(((Monster) card).getDefence(gameData));
+            return ((Monster) card).getAttack(gameData) + "|" + ((Monster) card).getDefence(gameData);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return "";
     }
 
 }

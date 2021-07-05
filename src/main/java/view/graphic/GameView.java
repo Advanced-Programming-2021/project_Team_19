@@ -84,6 +84,10 @@ public class GameView {
     Label selfUsernameLabel = new Label();
     Label rivalUsernameLabel = new Label();
 
+    HBox selfAtkDefLabels = new HBox(12);
+    HBox rivalAtkDefLabels = new HBox(12);
+
+
     private ArrayList<CardView> monsterZoneCards = new ArrayList<>();
     private ArrayList<CardView> spellZoneCards = new ArrayList<>();
     private ArrayList<CardView> rivalMonsterZoneCards = new ArrayList<>();
@@ -95,9 +99,11 @@ public class GameView {
             spellZoneCards.add(null);
             rivalMonsterZoneCards.add(null);
             rivalSpellZoneCards.add(null);
+
+            selfAtkDefLabels.getChildren().add(getLabelForAtkDef());
+            rivalAtkDefLabels.getChildren().add(getLabelForAtkDef());
         }
     }
-
 
     public GameView(Stage stage, Gamer self, Gamer rival, Game game) {
         this.stage = stage;
@@ -110,13 +116,33 @@ public class GameView {
         setDeck();
         setGraveYard();
         setData();
+        setAtkDefLabels();
 
         HBox box = new HBox(cardShowPane, gamePane);
         mainPane.getChildren().add(box);
         box.setLayoutY((menuGraphic.sceneY - 600) / 2);
 
         mainPane.getChildren().add(descriptionScrollPane);
+
         setTestButton();
+        setMouseLocationMonitor();
+    }
+
+    private void setAtkDefLabels(){
+        selfAtkDefLabels.setLayoutX(112.5);
+        selfAtkDefLabels.setLayoutY(380);
+        rivalAtkDefLabels.setLayoutX(112.5);
+        rivalAtkDefLabels.setLayoutY(260);
+        gamePane.getChildren().addAll(selfAtkDefLabels, rivalAtkDefLabels);
+    }
+
+    private Label getLabelForAtkDef(){
+        Label label = new Label();
+        label.setMinWidth(70);
+        label.setMaxWidth(70);
+        label.setAlignment(Pos.CENTER);
+        label.getStyleClass().add("atkDef");
+        return label;
     }
 
     public void setRivalGameView(GameView gameView) {
@@ -1276,6 +1302,44 @@ public class GameView {
                 f();
             }
         });
+    }
+
+    private void setMouseLocationMonitor(){
+        final Label reporter = new Label(OUTSIDE_TEXT);
+        Label monitored = createMonitoredLabel(reporter);
+
+        VBox layout = new VBox(10);
+        layout.setLayoutX(200);
+        layout.setLayoutY(605);
+        layout.setStyle("-fx-background-color: cornsilk; -fx-padding: 10px;");
+        layout.getChildren().setAll(
+                monitored,
+                reporter
+        );
+        layout.setPrefWidth(500);
+        mainPane.getChildren().add(layout);
+    }
+
+    private static final String OUTSIDE_TEXT = "Outside Label";
+
+    private Label createMonitoredLabel(final Label reporter) {
+        final Label monitored = new Label("Mouse Location Monitor");
+
+        monitored.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white; -fx-font-size: 20px;");
+
+        stage.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent event) {
+                String msg =
+                        "(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
+                                "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+                                "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+
+                reporter.setText(msg);
+            }
+        });
+
+
+        return monitored;
     }
 
 }
