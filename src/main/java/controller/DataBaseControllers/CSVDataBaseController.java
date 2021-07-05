@@ -261,32 +261,7 @@ public class CSVDataBaseController {
 
     public static void main(String[] arg) {
         load();
-//        try {
-//            FileWriter fileWriter = new FileWriter("Resource/Cards/getClassByName.txt");
-//            for (Map.Entry entry : getClassByName.entrySet()) {
-//                fileWriter.append(entry.getKey() + ":" + entry.getValue().toString().substring(6) + "\n");
-//            }
-//            fileWriter.flush();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-////
-//        try {
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader("Resource/Cards/getClassByName.txt"));
-//            String row;
-//            int cnt = 1;
-//            while ((row = bufferedReader.readLine()) != null) {
-//                String[] temp = row.split(":");
-//                String name = temp[0];
-//                String clazz = temp[1];
-//                System.out.println(cnt + name + ":" + clazz);
-//                cnt ++;
-//            }
-//            bufferedReader.close();
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
+
 
     }
 

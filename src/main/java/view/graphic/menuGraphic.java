@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import javafx.animation.KeyFrame;
@@ -36,6 +37,7 @@ public class menuGraphic extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        CSVDataBaseController.load();
         stage = primaryStage;
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);

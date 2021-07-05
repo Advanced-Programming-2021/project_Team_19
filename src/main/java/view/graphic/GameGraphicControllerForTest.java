@@ -26,7 +26,6 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     public void run(){
-
         Pane pane = new Pane();
         stage.getScene().setRoot(pane);
         Button button = new Button("hoh");
