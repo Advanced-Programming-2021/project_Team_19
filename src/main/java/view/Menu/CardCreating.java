@@ -4,6 +4,7 @@ import controller.DataBaseControllers.CSVDataBaseController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import javafx.scene.Scene;
 import model.Card.Card;
+import model.Card.Monster;
 
 public class CardCreating extends Application{
 
@@ -37,6 +39,12 @@ public class CardCreating extends Application{
 
     @FXML
     private TextField cloneBox;
+
+    @FXML
+    private TextArea descriptionBox;
+
+    @FXML
+    private TextField levelBox;
 
     private static Stage stage;
 
@@ -74,15 +82,23 @@ public class CardCreating extends Application{
     public void submit(MouseEvent mouseEvent) {
         try {
             String cardName = nameBox.getText();
-            int attack = Integer.parseInt(attackBox.getText());
-            int defense = Integer.parseInt(defenseBox.getText());
             String cloneCardName = cloneBox.getText();
+            String description = descriptionBox.getText();
             Card card = CSVDataBaseController.getCardByCardName(cloneCardName);
             if (card != null) {
-                CSVDataBaseController.addCard(card, cardName);
+                if (card instanceof Monster) {
+                    int attack = Integer.parseInt(attackBox.getText());
+                    int defense = Integer.parseInt(defenseBox.getText());
+                    int level = Integer.parseInt(levelBox.getText());
+                    String result = CSVDataBaseController.addCard(card, cardName, attack, defense, level, description.replaceAll("\n", " "));
+                } else {
+                    String result = CSVDataBaseController.addCard(card, cardName, 0, 0, 0, description.replaceAll("\n", " "));
+                }
             }
         } catch (NumberFormatException e) {
             System.out.println("invalid Format");
         }
     }
+
+
 }
