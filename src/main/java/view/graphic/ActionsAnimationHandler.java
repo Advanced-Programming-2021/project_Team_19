@@ -117,7 +117,7 @@ public class ActionsAnimationHandler {
     //hand animations
 
     //zone -> 0 for monsterZone and 1 for spellZone
-    //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
+    //mode -> 0 for summon monster and 1 for set monster and 2 for activate spell and 3 for set spell
 
     static double runMoveCardFromHandToFieldGraphic(GameView gameView,
                                                     CardView cardView, int mode, int zone, int index) {
@@ -149,11 +149,6 @@ public class ActionsAnimationHandler {
                         newCardView.setVisible(true);
                     }
                 }));
-
-        Timeline notifyRivalAnimation = new Timeline(new KeyFrame(Duration.millis(1), actionEvent ->
-                runMoveRivalCardFromHandToFiledGraphic
-                        (gameView.rivalGameView, cardView, mode, zone, 4 - index)));
-
         ParallelTransition transitions;
 
         if (mode == 0 || mode == 2) {
@@ -161,7 +156,7 @@ public class ActionsAnimationHandler {
                     new ScaleAnimation(cardView, -(0.45555), 500).getAnimation(),
                     new TimelineTranslate(cardView, newCardView.getX() - 18,
                             newCardView.getY() - 28, 500).getAnimation(),
-                    addNewCardAnimation, notifyRivalAnimation);
+                    addNewCardAnimation);
         } else if (mode == 1) {
 
             Timeline hideCardAnimation = new Timeline(new KeyFrame(new Duration(250),
@@ -177,14 +172,14 @@ public class ActionsAnimationHandler {
                     new TimelineTranslate(cardView, newCardView.getX() - 8,
                             newCardView.getY() - 38, 500).getAnimation(),
                     new RotateAnimation(cardView, 500, 90).getAnimation(),
-                    addNewCardAnimation, notifyRivalAnimation, hideCardAnimation);
+                    addNewCardAnimation, hideCardAnimation);
         } else if (mode == 3) {
             transitions = new ParallelTransition(
                     new ScaleAnimation(cardView, -(0.45555), 500).getAnimation(),
                     new TimelineTranslate(cardView, newCardView.getX() - 18,
                             newCardView.getY() - 28, 500).getAnimation(),
                     new FlipAnimation(cardView, 500).getAnimation(),
-                    addNewCardAnimation, notifyRivalAnimation);
+                    addNewCardAnimation);
         } else {
             transitions = new ParallelTransition();
         }
@@ -193,7 +188,6 @@ public class ActionsAnimationHandler {
 
         transitions.play();
         return transitions;
-
     }
 
     static void addCardToCorrectCardListZone(GameView gameView, CardView cardView, int zone, int index) {
@@ -207,9 +201,9 @@ public class ActionsAnimationHandler {
 
     //rival
     static double runMoveRivalCardFromHandToFiledGraphic
-    (GameView gameView, CardView tempCardView, int mode, int zone, int index) {
+    (GameView gameView, Card card, int mode, int zone, int index) {
 
-        CardView cardView = gameView.searchCardInRivalHand(tempCardView.getCard());
+        CardView cardView = gameView.searchCardInRivalHand(card);
 
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
 
@@ -417,12 +411,6 @@ public class ActionsAnimationHandler {
                     }
                 }));
 
-        Timeline notifyRival = new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                runRivalFlipSummonGraphic(gameView.rivalGameView, cardView.getCard());
-            }
-        }));
         ParallelTransition transition = new ParallelTransition(
                 new RotateAnimation(cardView, 400, -90).getAnimation(),
                 new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
@@ -431,7 +419,7 @@ public class ActionsAnimationHandler {
                         cardView.setCardImage();
                     }
                 })),
-                notifyRival, addNewCardTimeline);
+                addNewCardTimeline);
 
         transition.play();
         return 400;
@@ -472,7 +460,6 @@ public class ActionsAnimationHandler {
 
     static double runFlipCardGraphic(GameView gameView, CardView cardView) {
         new FlipAnimation(cardView, 500).getAnimation().play();
-        runFlipRivalCardGraphic(gameView.rivalGameView, cardView.getCard());
         return 500;
     }
 
@@ -487,7 +474,6 @@ public class ActionsAnimationHandler {
 
     static double runIncreaseLpGraphic(GameView gameView, double lp) {
         getIncreaseLpTransition(gameView, lp, true).play();
-        runIncreaseRivalLpGraphic(gameView.rivalGameView, lp);
         return lp;
     }
 
@@ -510,11 +496,11 @@ public class ActionsAnimationHandler {
 
         SequentialTransition transition = new SequentialTransition();
 
-        double increasingSize = 2 * Math.signum(lp);
+        double increasingSize = 1 * Math.signum(lp);
 
         for (int i = 0; i < Math.ceil(lp / increasingSize); i++) {
             int finalI = i;
-            transition.getChildren().add(new Timeline(new KeyFrame(Duration.millis(2),
+            transition.getChildren().add(new Timeline(new KeyFrame(Duration.millis(1),
                     new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {

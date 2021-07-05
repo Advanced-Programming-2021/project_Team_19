@@ -170,5 +170,4 @@ public class menuGraphic extends Application {
         DataBaseController.makeResourceDirectory();
         launch(args);
     }
-
 }

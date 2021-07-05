@@ -30,6 +30,7 @@ import javafx.util.Duration;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
+import model.Data.graphicDataForServerToNotifyOtherClient;
 import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
@@ -42,6 +43,7 @@ import static view.graphic.ActionsAnimationHandler.*;
 
 public class GameView {
 
+    GameGraphicControllerForTest gameController;
     Gamer self;
     Gamer rival;
     Game game;
@@ -105,8 +107,9 @@ public class GameView {
         }
     }
 
-    public GameView(Stage stage, Gamer self, Gamer rival, Game game) {
+    public GameView(Stage stage, GameGraphicControllerForTest controller, Gamer self, Gamer rival, Game game) {
         this.stage = stage;
+        this.gameController = controller;
         this.self = self;
         this.rival = rival;
         this.game = game;
@@ -270,8 +273,8 @@ public class GameView {
         selfLp = 8000;
         rivalLp = 8000;
 
-        cardShowPane.setTop(getVboxForData(selfLpLabel, selfUsernameLabel, false));
-        cardShowPane.setBottom(getVboxForData(rivalLpLabel, rivalUsernameLabel, true));
+        cardShowPane.setBottom(getVboxForData(selfLpLabel, selfUsernameLabel, false));
+        cardShowPane.setTop(getVboxForData(rivalLpLabel, rivalUsernameLabel, true));
     }
 
     private VBox getVboxForData(Label lpLabel, Label usernameLabel, boolean isRival) {
@@ -286,7 +289,7 @@ public class GameView {
 
         int usernameIndex = 0;
 
-        if (isRival) {
+        if (!isRival) {
             usernameIndex = 1;
         }
 
@@ -537,14 +540,11 @@ public class GameView {
         if (dataFromGameRun.size() == 1) {
             String response = dataFromGameRun.get(0);
             if (response.matches("summon \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 0, 0, Integer.parseInt(response.substring(7)));
+                handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
             } else if (response.matches("set spell \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 2, 1, Integer.parseInt(response.substring(10)));
+                handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
             } else if (response.matches("set monster \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 1, 0, Integer.parseInt(response.substring(12)));
+                handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
                 runFlipSummonGraphic(this, cardView);
             }
@@ -678,13 +678,13 @@ public class GameView {
         return 0;
     }
 
-    CardView searchCardInRivalHand(Card card) throws RuntimeException {
+    CardView searchCardInRivalHand(Card card){
         for (CardView cardView : rivalHand) {
             if (cardView.getCard().equals(card)) {
                 return cardView;
             }
         }
-        throw new RuntimeException("card is not in hand");
+        return null;
     }
 
     CardView searchCardInRivalField(Card card) {
@@ -699,6 +699,82 @@ public class GameView {
             }
         }
         return null;
+    }
+
+    void handleSummonGraphic(CardView cardView, int index){
+        runMoveCardFromHandToFieldGraphic
+                (this, cardView, 0, 0, index);
+
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("summon", cardView.getCard(), 4 - index));
+    }
+
+    void handleSetMonsterGraphic(CardView cardView, int index){
+        runMoveCardFromHandToFieldGraphic
+                (this, cardView, 1, 0, index);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("set monster", cardView.getCard(), 4 - index));
+    }
+
+    void handleSetSpellGraphic(CardView cardView, int index){
+        runMoveCardFromHandToFieldGraphic
+                (this, cardView, 3, 1, index);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("set spell", cardView.getCard(), 4 - index));
+    }
+
+    void handleActivateSpellGraphic(CardView cardView, int index){
+        runMoveCardFromHandToFieldGraphic
+                (this, cardView, 2, 1, index);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("activate spell", cardView.getCard(), 4 - index));
+
+    }
+
+    void handleFlipSummonGraphic(CardView cardView){
+        runFlipSummonGraphic(this, cardView);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("flip summon", cardView.getCard(), -1));
+    }
+
+    void handleFlipCardGraphic(CardView cardView){
+        runFlipCardGraphic(this, cardView);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("flip", cardView.getCard(), -1));
+    }
+
+    void handleIncreaseLpGraphic(int lp){
+        runIncreaseLpGraphic(this, lp);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("increase lp", null, lp));
+    }
+
+    void handleRivalSummonGraphic(Card card, int index) {
+        runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
+    }
+
+    void handleRivalSetMonsterGraphic(Card card, int index){
+        runMoveRivalCardFromHandToFiledGraphic(this, card, 1, 0, index);
+    }
+
+    void handleRivalActivateSpellGraphic(Card card, int index){
+        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, index);
+    }
+
+    void handleRivalSetSpellGraphic(Card card, int index){
+        runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
+    }
+
+    void handleRivalFlipSummonGraphic(Card card){
+        runRivalFlipSummonGraphic(this, card);
+    }
+
+    void handleRivalFlipCardGraphic(Card card){
+        runFlipRivalCardGraphic(this, card);
+    }
+
+    void handleRivalIncreaseLpGraphic(int lp){
+        runIncreaseRivalLpGraphic(this, lp);
     }
 
     // MindCrush data collector
@@ -762,6 +838,7 @@ public class GameView {
 
     private void f() {
 
+//        handleActivateSpellGraphic(selfHand.get(0), 4);
 //        getCardNameForMindCrush();
 //        runMoveCardFromHandToFieldGraphic(
 //                this, selfHand.get(0), 3,1,2);
@@ -770,13 +847,13 @@ public class GameView {
 //        runRemoveCardFromHandGraphic(this, selfHand.get(0));
 //        fadeCard(selfHand.get(0));
 
-//        runIncreaseLpGraphic(this, 12);
+        handleIncreaseLpGraphic(-12);
 
 //        counter++;
 //        if(counter == 1)
-//        summon(selfHand.get(0));
+//        handleSetMonsterGraphic(selfHand.get(0), 0);
 //        else
-//        runFlipCardGraphic(monsterZoneCards.get(3));
+//        handleFlipCardGraphic(monsterZoneCards.get(0));
     }
 
     private void setTestButton() {

@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Gamer;
 import model.User;
+import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.Menu.Menu;
 
 public class GameGraphicControllerForTest extends Menu {
@@ -25,7 +26,7 @@ public class GameGraphicControllerForTest extends Menu {
         init();
     }
 
-    public void run(){
+    public void run() {
         Pane pane = new Pane();
         stage.getScene().setRoot(pane);
         Button button = new Button("hoh");
@@ -38,29 +39,51 @@ public class GameGraphicControllerForTest extends Menu {
         });
     }
 
-    public void init(){
+    public void init() {
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
         stage2.setScene(scene);
         User user1 = UserDataBaseController.getUserByUsername("mohammad");
-        Gamer gamer1 =  new Gamer(user1);
+        Gamer gamer1 = new Gamer(user1);
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
 
         GameData gameData = new GameData(gamer1, gamer2);
         game = new Game(gameData);
 
-        gameView1 = new GameView(stage,gamer1, gamer2, game);
-        gameView2 = new GameView(stage2, gamer2, gamer1, game);
+        gameView1 = new GameView(stage, this, gamer1, gamer2, game);
+        gameView2 = new GameView(stage2, this, gamer2, gamer1, game);
 
         gameView2.setRivalGameView(gameView1);
         gameView1.setRivalGameView(gameView2);
     }
 
-    public void startGame(){
+    public void startGame() {
         gameView1.run();
         gameView2.run();
     }
+
+    private GameView getTheOtherGameView(GameView gameView) {
+        return gameView.equals(gameView1) ? gameView2 : gameView1;
+    }
+
+    public void notifyOtherGameViewToDoSomething
+            (GameView notifier, graphicDataForServerToNotifyOtherClient data) {
+
+        GameView otherGameView = getTheOtherGameView(notifier);
+
+        switch (data.command) {
+            case "summon" -> otherGameView.handleRivalSummonGraphic(data.card, data.index);
+            case "set monster" ->  otherGameView.handleRivalSetMonsterGraphic(data.card, data.index);
+            case "set spell" -> otherGameView.handleRivalSetSpellGraphic(data.card, data.index);
+            case "activate spell" -> otherGameView.handleRivalActivateSpellGraphic(data.card, data.index);
+            case "flip summon" -> otherGameView.handleRivalFlipSummonGraphic(data.card);
+            case "flip" -> otherGameView.handleRivalFlipCardGraphic(data.card);
+            case "increase lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index);
+            default -> throw new IllegalStateException("Unexpected value: " + data.command);
+        }
+    }
+
 
 }
