@@ -15,7 +15,7 @@
 }
 
 #Scissor{
-    -fx-background-image: url("../Pictures/Scissor")
+    -fx-background-image: url("../Pictures/Scissor.jpg")
 }
 
 #cardViewsScrollPane > .viewport {
@@ -114,4 +114,10 @@
 
 .activePhase{
     -fx-text-fill: #e36930;
+}
+
+.atkDef{
+    -fx-font-family: Algerian;
+    -fx-text-fill: #021647;
+    -fx-font-size: 14px;
 }

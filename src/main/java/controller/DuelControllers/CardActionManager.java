@@ -36,18 +36,22 @@ public class CardActionManager {
         result = new AttackMonster(GameData.getGameData()).actionIsValid();
         if (result.equals("attack monster"))
             validActions.add(result);
+        System.err.println(result);
 
         result = new DirectAttack(GameData.getGameData()).actionIsValid();
         if (result.equals("attack direct"))
             validActions.add(result);
+        System.err.println(result);
 
         result = new NormalSummon(GameData.getGameData()).actionIsValid();
         if (result.equals("normal summon"))
             validActions.add(result);
+        System.err.println(result);
 
         result = new Set(GameData.getGameData()).actionIsValid();
         if (result.equals("set"))
             validActions.add("set");
+        System.err.println(result);
 
 
         result = new SetPosition(GameData.getGameData()).actionIsValid(true);
