@@ -1,8 +1,7 @@
 package controller.DataBaseControllers;
 
 import com.google.gson.Gson;
-import model.Card.Card;
-import model.Card.Monster;
+import model.Card.*;
 import model.Card.Monsters.*;
 import model.Card.Spells.*;
 import model.Card.Traps.*;
@@ -26,7 +25,7 @@ import java.util.TreeMap;
 public class CSVDataBaseController {
     static TreeMap<String, Class> getClassByName = new TreeMap<>();
 
-    public static String addCard(Card card, String cardName) {
+    public static String addCard(Card card, String cardName, int attack, int defense, int level,  String description) {
         if (getClassByName.containsKey(cardName)) {
             return "A card with this name already exists!";
         }
@@ -40,7 +39,7 @@ public class CSVDataBaseController {
                     csvWriter.append("\n");
                     csvWriter.append(cardName);
                     csvWriter.append(",");
-                    csvWriter.append(Integer.toString(monster.getLevel()));
+                    csvWriter.append(Integer.toString(level));
                     csvWriter.append(",");
                     csvWriter.append(monster.getAttribute().toString());
                     csvWriter.append(",");
@@ -48,20 +47,39 @@ public class CSVDataBaseController {
                     csvWriter.append(",");
                     csvWriter.append(monster.getEffectType().toString());
                     csvWriter.append(",");
-                    csvWriter.append(Integer.toString(monster.attack));
+                    csvWriter.append(Integer.toString(attack));
                     csvWriter.append(",");
-                    csvWriter.append(Integer.toString(monster.defence));
+                    csvWriter.append(Integer.toString(defense));
                     csvWriter.append(",");
-                    csvWriter.append(card.getDescription());
+                    csvWriter.append(description);
                     csvWriter.append(",");
                     csvWriter.append(Integer.toString(card.getPrice()));
                     csvWriter.flush();
                     csvWriter.close();
-                    FileWriter fileWriter = new FileWriter("Resource/Cards/getClassByName.txt", true);
-                    fileWriter.append(cardName).append(":").append(clazz.toString().substring(6));
-                    fileWriter.flush();
-                    fileWriter.close();
+                } else {
+                    SpellAndTraps spellAndTrap = (SpellAndTraps) card;
+                    FileWriter csvWriter = new FileWriter("Resource/Cards/SpellTrap.csv", true);
+                    csvWriter.append("\n");
+                    csvWriter.append(cardName);
+                    csvWriter.append(",");
+                    csvWriter.append(card instanceof Trap ? "Trap" : "Spell");
+                    csvWriter.append(",");
+                    if (card instanceof Trap) {
+                        csvWriter.append(((Trap)card).getTrapType().toString());
+                    } else {
+                        csvWriter.append(((Spell)card).getSpellType().toString());
+                    }
+                    csvWriter.append(",");
+                    csvWriter.append(description);
+                    csvWriter.append(",");
+                    csvWriter.append(spellAndTrap.getStatus().toString());
+                    csvWriter.append(",");
+                    csvWriter.append(Integer.toString(spellAndTrap.getPrice()));
                 }
+                FileWriter fileWriter = new FileWriter("Resource/Cards/getClassByName.txt", true);
+                fileWriter.append(cardName).append(":").append(clazz.toString().substring(6)).append("\n");
+                fileWriter.flush();
+                fileWriter.close();
                 return "Successful!";
             } catch (IOException e) {
                 e.printStackTrace();
@@ -242,34 +260,8 @@ public class CSVDataBaseController {
     }
 
     public static void main(String[] arg) {
-//        try {
-//            FileWriter fileWriter = new FileWriter("Resource/Cards/getClassByName.txt");
-//            for (Map.Entry entry : getClassByName.entrySet()) {
-//                fileWriter.append(entry.getKey() + ":" + entry.getValue().toString().substring(6) + "\n");
-//            }
-//            fileWriter.flush();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-////
-//        try {
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader("Resource/Cards/getClassByName.txt"));
-//            String row;
-//            int cnt = 1;
-//            while ((row = bufferedReader.readLine()) != null) {
-//                String[] temp = row.split(":");
-//                String name = temp[0];
-//                String clazz = temp[1];
-//                System.out.println(cnt + name + ":" + clazz);
-//                cnt ++;
-//            }
-//            bufferedReader.close();
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
-
         load();
+
 
     }
 

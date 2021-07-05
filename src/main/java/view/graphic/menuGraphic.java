@@ -37,6 +37,7 @@ public class menuGraphic extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        CSVDataBaseController.load();
         stage = primaryStage;
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);

@@ -46,6 +46,14 @@ public class Card {
         this.name = name;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     public String getDescription() {
         return description;
     }
