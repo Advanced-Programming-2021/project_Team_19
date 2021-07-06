@@ -48,5 +48,11 @@
          </font>
       </Label>
       <TextField fx:id="levelBox" layoutX="522.0" layoutY="268.0" />
+      <Label fx:id="result" layoutX="25.0" layoutY="508.0" prefHeight="54.0" prefWidth="273.0" text="Label">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="allCards" layoutX="37.0" layoutY="143.0" prefHeight="364.0" prefWidth="236.0" />
    </children>
 </AnchorPane>

@@ -5,12 +5,14 @@ import controller.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -22,8 +24,14 @@ import java.nio.file.StandardCopyOption;
 import javafx.scene.Scene;
 import model.Card.Card;
 import model.Card.Monster;
+import model.Data.DataForClientFromServer;
+import model.Data.DataForServerFromClient;
+import model.User;
+import view.graphic.CardView;
 
-public class CardCreating extends Application{
+import static view.Menu.Menu.sendDataToServer;
+
+public class CardCreating extends Menu{
 
 
     @FXML
@@ -50,16 +58,28 @@ public class CardCreating extends Application{
     @FXML
     private TextField levelBox;
 
-    private static Stage stage;
+    @FXML
+    private TextField result;
 
-    public void start(Stage primaryStage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/CardCreating.fxml"));
+    @FXML
+    private ScrollPane allCards;
+
+    static User user;
+
+    public CardCreating() {
+        super("Card creating Menu");
+    }
+
+
+    public void run(User user) {
+        CardCreating.user = user;
         try {
             CSVDataBaseController.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/CardCreating.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
-            primaryStage.setScene(new Scene(anchorPane));
-            stage = primaryStage;
-            primaryStage.show();
+            readyFxmlButtonsForCursor(anchorPane);
+            stage.getScene().setRoot(anchorPane);
+            stage.show();
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -67,9 +87,27 @@ public class CardCreating extends Application{
     }
 
 
-
-    public static void main(String[] args) {
-        launch(args);
+    public void initialize() {
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        DataForClientFromServer data =
+                sendDataToServer(new DataForServerFromClient("shop show --all", user.getUsername(), menuName));
+        System.out.println(data.getMessage());
+        String[] cards = data.getMessage().split("\n");
+        for(String card : cards) {
+            String tempCardName = card.split(":")[0].trim();
+            Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
+            try {
+                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
+                vBox.getChildren().add(cardViewToAddToScroll);
+                cardViewToAddToScroll.setOnMouseClicked(e -> {
+                    cloneBox.setText(tempCardName);
+                });
+            } catch (Exception e) {
+                System.out.println(tempCardName + "-----------------------------------------------");
+            }
+        }
+        allCards.setContent(vBox);
     }
 
     public void choosePicture(MouseEvent mouseEvent) {
@@ -107,10 +145,14 @@ public class CardCreating extends Application{
                         sendPictureToServer(cardName, false);
                     }
                 }
-                System.out.println(result);
+                this.result.setText(result);
+            } else if (card == null) {
+                this.result.setText("invalid card to clone");
+            } else {
+                this.result.setText("no picture is selected yet!");
             }
         } catch (NumberFormatException e) {
-            System.out.println("invalid Format");
+            this.result.setText("invalid Format");
         }
     }
 
