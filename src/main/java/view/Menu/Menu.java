@@ -31,6 +31,7 @@ public class Menu extends menuGraphic {
         menuLevels.put("Profile Menu", 2);
         menuLevels.put("Shop Menu", 2);
         menuLevels.put("Import/Export Menu", 2);
+        menuLevels.put("Card creating Menu", 2);
 
     }
 
