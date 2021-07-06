@@ -96,6 +96,9 @@ public class GameView {
     ArrayList<CardView> rivalMonsterZoneCards = new ArrayList<>();
     ArrayList<CardView> rivalSpellZoneCards = new ArrayList<>();
 
+    ArrayList<Integer> idsForMultiCardAction;
+    int numberOfNeededCards = 0;
+
     {
         for (int i = 0; i < 5; i++) {
             monsterZoneCards.add(null);
@@ -544,20 +547,52 @@ public class GameView {
     }
 
     void cardOnLeftClick(CardView cardView) {
-        ArrayList<String> dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self)).getEvents();
+        ArrayList<String> dataFromGameRun = new ArrayList<>();
+        if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null){
+            if (cardView.getCurrentAction().equals("sacrifice")){
+                idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
+            }
+            System.err.println(idsForMultiCardAction);
+
+            if (idsForMultiCardAction.size() == numberOfNeededCards){
+                numberOfNeededCards = 0;
+                StringBuilder command = new StringBuilder(cardView.getCurrentAction());
+                for (Integer integer : idsForMultiCardAction) {
+                    command.append(" ").append(integer);
+                }
+                System.out.println(command);
+                dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self)).getEvents();
+            }
+        } else {
+            dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self)).getEvents();
+        }
+
         for (String response : dataFromGameRun) {
             if (response.matches("summon \\d")) {
                 handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
             } else if (response.matches("set spell \\d")) {
                 handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
+            } else if (response.matches("get \\d monsters")) {
+                initForSummonBySacrifice(Integer.parseInt(response.substring(4, 5)));
             } else if (response.matches("set monster \\d")) {
                 handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
                 handleFlipSummonGraphic(cardView);
+            } else if (response.equals("summon \\d sacrifice( \\d)+")) {
+                handleSummonWithSacrificeGraphics(Integer.parseInt(response.substring(7, 8)));
             } else {
                 responseIsForPhaseChange(response);
             }
         }
+    }
+
+    private void handleSummonWithSacrificeGraphics(int summonId) {
+
+    }
+
+    private void initForSummonBySacrifice(int numberOfSacrifices) {
+        numberOfNeededCards = numberOfSacrifices;
+        idsForMultiCardAction = new ArrayList<>();
     }
 
     private void responseIsForPhaseChange(String phaseChangeResponse) {

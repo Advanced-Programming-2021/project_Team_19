@@ -20,11 +20,11 @@ import view.Printer.Printer;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static controller.DuelControllers.CardActionManager.destroyCurrentActionManager;
 
 public class Game {
 
     public GameData gameData;
+    public Card multiActionCard;
 
 
     public Game(GameData gameData) {
@@ -36,25 +36,35 @@ public class Game {
         String command = dataFromClient.getCommand();
         switch (command) {
             case "set" -> {
-                destroyCurrentActionManager();
                 DataFromGameRun data = new DataFromGameRun(new Set(gameData).run());
                 data.addEvents(runServerSideGameEvents());
                 return data;
             }
             case "normal summon" -> {
-                destroyCurrentActionManager();
-                DataFromGameRun data = new DataFromGameRun(new NormalSummon(gameData).run());
-                data.addEvents(runServerSideGameEvents());
-                return data;
+                String summonResponse = new NormalSummon(gameData).run(null);
+                if (summonResponse.matches("summon \\d")) {
+                    DataFromGameRun data = new DataFromGameRun(summonResponse);
+                    data.addEvents(runServerSideGameEvents());
+                    return data;
+                } else {
+                    System.err.println("here");
+                    multiActionCard = gameData.getSelectedCard();
+                    CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
+                    return new DataFromGameRun(summonResponse);
+                }
             }
+            case "summon with sacrifice" ->{
+                multiActionCard = gameData.getSelectedCard();
+                CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
+                return new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
+            }
+
             case "attack direct" -> {
-                destroyCurrentActionManager();
                 DataFromGameRun data = new DataFromGameRun(new DirectAttack(gameData).run());
                 data.addEvents(runServerSideGameEvents());
                 return data;
             }
             case "flip summon" -> {
-                destroyCurrentActionManager();
                 DataFromGameRun data = new DataFromGameRun(new FlipSummon(gameData).run());
                 data.addEvents(runServerSideGameEvents());
                 return data;
@@ -63,29 +73,33 @@ public class Game {
                 return new DataFromGameRun(getAtkDef(gameData));
             }
             case "next phase" -> {
-                destroyCurrentActionManager();
                 String nextPhaseName = goToNextPhase(gameData);
                 DataFromGameRun data = new DataFromGameRun(nextPhaseName);
                 data.addEvents(runServerSideGameEvents());
                 return data;
             }
-            default -> {
-                return new DataFromGameRun(runServerSideGameEvents());
-            }
         }
+        if (command.matches("sacrifice \\d( \\d)+")){
+            gameData.setSelectedCard(multiActionCard);
+            String summonResponse = new NormalSummon(gameData).run(command.substring(10));
+            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            DataFromGameRun data = new DataFromGameRun(summonResponse);
+            data.addEvents(runServerSideGameEvents());
+            return data;
+        }
+
+        return new DataFromGameRun(runServerSideGameEvents());
     }
-
-
 
 
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
         if (gameData.getCurrentGamer().equals(data.getGamer())) {
-            return CardActionManager.getInstance(data.getCard()).getValidActions();
+            return (new CardActionManager(data.getCard())).getValidActions();
         }
         throw new Exception("not your turn");
     }
 
-    public ArrayList<String> runServerSideGameEvents(){
+    public ArrayList<String> runServerSideGameEvents() {
 
         ArrayList<String> events = new ArrayList<>();
 
