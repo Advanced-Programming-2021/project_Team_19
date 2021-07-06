@@ -81,6 +81,7 @@ public class GameGraphicControllerForTest extends Menu {
             case "flip summon" -> otherGameView.handleRivalFlipSummonGraphic(data.card);
             case "flip" -> otherGameView.handleRivalFlipCardGraphic(data.card);
             case "increase lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index);
+            case "add card from deck to hand" -> otherGameView.handleRivalAddCardFromDeckToHandGraphic(data.card);
             default -> throw new IllegalStateException("Unexpected value: " + data.command);
         }
     }

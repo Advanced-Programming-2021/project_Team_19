@@ -1,6 +1,7 @@
 package view.Menu;
 
 import controller.DataBaseControllers.CSVDataBaseController;
+import controller.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import javafx.scene.Scene;
 import model.Card.Card;
 import model.Card.Monster;
@@ -51,6 +55,7 @@ public class CardCreating extends Application{
     public void start(Stage primaryStage) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/CardCreating.fxml"));
         try {
+            CSVDataBaseController.load();
             AnchorPane anchorPane = fxmlLoader.load();
             primaryStage.setScene(new Scene(anchorPane));
             stage = primaryStage;
@@ -85,20 +90,44 @@ public class CardCreating extends Application{
             String cloneCardName = cloneBox.getText();
             String description = descriptionBox.getText();
             Card card = CSVDataBaseController.getCardByCardName(cloneCardName);
-            if (card != null) {
+            System.out.println(card);
+            if (card != null && choosenPicture.getImage() != null) {
+                String result;
                 if (card instanceof Monster) {
                     int attack = Integer.parseInt(attackBox.getText());
                     int defense = Integer.parseInt(defenseBox.getText());
                     int level = Integer.parseInt(levelBox.getText());
-                    String result = CSVDataBaseController.addCard(card, cardName, attack, defense, level, description.replaceAll("\n", " "));
+                    result = CSVDataBaseController.addCard(card, cardName, attack, defense, level, description.replaceAll("\n", " "));
+                    if (result.equals("Successful!")){
+                        sendPictureToServer(cardName, true);
+                    }
                 } else {
-                    String result = CSVDataBaseController.addCard(card, cardName, 0, 0, 0, description.replaceAll("\n", " "));
+                    result = CSVDataBaseController.addCard(card, cardName, 0, 0, 0, description.replaceAll("\n", " "));
+                    if (result.equals("Successful!")) {
+                        sendPictureToServer(cardName, false);
+                    }
                 }
+                System.out.println(result);
             }
         } catch (NumberFormatException e) {
             System.out.println("invalid Format");
         }
     }
+
+    private void sendPictureToServer(String name, boolean isMonster) {
+        String url = choosenPicture.getImage().getUrl();
+        try {
+            if (isMonster) {
+                Files.copy(new File(url.substring(6)).toPath(), new File("src/main/resources/Cards/Monsters" + Utils.getPascalCase(name) + ".jpg").toPath());
+            } else {
+                Files.copy(new File(url.substring(6)).toPath(), new File("src/main/resources/Cards/SpellTrap" + Utils.getPascalCase(name) + "jpg").toPath());
+            }
+        } catch(IOException e) {
+
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
