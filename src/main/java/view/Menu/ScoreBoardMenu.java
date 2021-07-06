@@ -84,9 +84,9 @@ public class ScoreBoardMenu extends Menu {
 //            @Override
 //            public void handle(MouseEvent mouseEvent) {
 //                if(tempUser == null){
-//                    new FirstPage().run();
+//                    new FirstPage().testRun();
 //                }else{
-//                    new MainMenu().run(currentUser);
+//                    new MainMenu().testRun(currentUser);
 //                }
 //
 //            }

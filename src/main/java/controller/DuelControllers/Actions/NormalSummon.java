@@ -57,14 +57,14 @@ public class NormalSummon extends Summon {
 
 //        if (summoningMonster.getName().equals("Gate Guardian")) {
 //            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
-//                new SpecialSummon(gameData).run(gameData.getSelectedCard());
+//                new SpecialSummon(gameData).testRun(gameData.getSelectedCard());
 //                Printer.print("summoned successfully");
 //            }
 //            return "summoned successfully";
 //        }
 
 //        if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
-//            ((RitualSummon) gameData.getRitualSummoning()).run((Monster) summoningMonster);
+//            ((RitualSummon) gameData.getRitualSummoning()).testRun((Monster) summoningMonster);
 //            handleTriggerEffects();
 //            return "summoned successfully";
 //        }

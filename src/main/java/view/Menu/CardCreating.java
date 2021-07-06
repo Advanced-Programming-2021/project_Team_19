@@ -5,6 +5,7 @@ import controller.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -59,7 +60,7 @@ public class CardCreating extends Menu{
     private TextField levelBox;
 
     @FXML
-    private TextField result;
+    private Label result;
 
     @FXML
     private ScrollPane allCards;
@@ -91,7 +92,7 @@ public class CardCreating extends Menu{
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         DataForClientFromServer data =
-                sendDataToServer(new DataForServerFromClient("shop show --all", user.getUsername(), menuName));
+                sendDataToServer(new DataForServerFromClient("shop show --all", user.getUsername(), "Shop Menu"));
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
         for(String card : cards) {

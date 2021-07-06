@@ -23,10 +23,10 @@ public class GameGraphicControllerForTest extends Menu {
 
     public GameGraphicControllerForTest() {
         super("game test");
-        init();
+        TestInit();
     }
 
-    public void run() {
+    public void testRun() {
         Pane pane = new Pane();
         stage.getScene().setRoot(pane);
         Button button = new Button("hoh");
@@ -39,7 +39,7 @@ public class GameGraphicControllerForTest extends Menu {
         });
     }
 
-    public void init() {
+    public void TestInit() {
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
