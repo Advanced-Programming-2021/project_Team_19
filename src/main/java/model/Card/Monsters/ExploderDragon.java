@@ -27,14 +27,13 @@ public class ExploderDragon extends Monster {
     }
 
     @Override
-    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public String attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
         if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             defendingMonster.handleDestroy(gameData);
             this.handleDestroy(gameData);
-            Printer.print("both cards were destroyed and no one received any damage");
-            return;
+            return "destroy @ destroy self loses 0 lp";
         }
-        super.attackOffensiveMonster(defendingMonster, gameData);
+        return super.attackOffensiveMonster(defendingMonster, gameData);
     }
 
     public ExploderDragon(String name, String description, int price, int attack, int defence, int level, Attribute attribute, MonsterType monsterType, MonsterTypesForEffects monsterTypesForEffects) {

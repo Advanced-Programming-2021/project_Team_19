@@ -188,15 +188,26 @@ public abstract class Monster extends Card {
         return true;
     }
 
-    public void handleAttack(GameData gameData, Monster defendingMonster) {
+    public String handleAttack(GameData gameData, int enemyId) {
+
+        Monster defendingMonster = (Monster) gameData.getSecondGamer()
+                .getGameBoard().getMonsterCardZone().getCardById(enemyId);
 
         setLastTurnAttacked(gameData);
 
-        switch (defendingMonster.getCardMod()) {
+        String response = "attack " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(this) + " ";
+
+        response += switch (defendingMonster.getCardMod()) {
             case OFFENSIVE_OCCUPIED -> attackOffensiveMonster(defendingMonster, gameData);
             case DEFENSIVE_OCCUPIED -> attackDefensiveMonster(defendingMonster, gameData);
             case DEFENSIVE_HIDDEN -> attackDefensiveHiddenMonster(defendingMonster, gameData);
-        }
+            case EMPTY -> "";
+        };
+
+        response = response.replace("#", "");
+        response = response.replace("@", String.valueOf(enemyId));
+
+        return response;
 
     }
 
@@ -204,28 +215,28 @@ public abstract class Monster extends Card {
         this.lastTurnAttacked = gameData.getTurn();
     }
 
-    public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
-        System.out.print("opponent’s monster card was " + defendingMonster.getName() + " and ");
+    public String attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         defendingMonster.handleFlip(gameData, CardMod.DEFENSIVE_OCCUPIED);
-        attackDefensiveMonster(defendingMonster, gameData);
+        String toReturn = attackDefensiveMonster(defendingMonster, gameData);
+        return toReturn.replace("#", "flip ");
     }
 
-    public void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+    public String attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (getAttack(gameData) > defendingMonster.getDefence(gameData)) {
             defendingMonster.handleDestroy(gameData);
-            Printer.print("the defence position monster is destroyed");
+            return "stay @ destroy #self loses 0 lp";
         } else if (getAttack(gameData) < defendingMonster.getDefence(gameData)) {
             handleDestroy(gameData);
             damage = defendingMonster.getDefence(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
-            Printer.print("no card is destroyed and you received " + damage + " battle damage");
+            return "stay @ stay #self loses " + damage + " lp";
         } else {
-            Printer.print("no card is destroyed");
+            return "stay @ stay #rival loses 0 lp";
         }
     }
 
-    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public String attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
 
         int damage;
 
@@ -233,16 +244,16 @@ public abstract class Monster extends Card {
             damage = getAttack(gameData) - defendingMonster.getAttack(gameData);
             gameData.getSecondGamer().decreaseLifePoint(damage);
             defendingMonster.handleDestroy(gameData);
-            Printer.print("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+            return "stay @ destroy rival loses " + damage + " lp";
         } else if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             damage = defendingMonster.getAttack(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
             handleDestroy(gameData);
-            Printer.print("Your monster card is destroyed and you received " + damage + " battle damage");
+            return "destroy @ stay self loses " + damage + " lp";
         } else {
             defendingMonster.handleDestroy(gameData);
             handleDestroy(gameData);
-            Printer.print("both you and your opponent monster cards are destroyed and no one receives damage");
+            return "destroy @ destroy self loses 0 lp";
         }
     }
 
@@ -313,7 +324,7 @@ public abstract class Monster extends Card {
         equippedSpells.add(equipSpell);
     }
 
-    public void removeEquipSpellsAndCallOfTheHaunted(){
+    public void removeEquipSpellsAndCallOfTheHaunted() {
         equippedSpells = new ArrayList<>();
         callOfTheHauntedTrap = null;
     }

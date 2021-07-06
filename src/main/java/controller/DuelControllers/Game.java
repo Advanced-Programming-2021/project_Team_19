@@ -42,27 +42,24 @@ public class Game {
             }
             case "normal summon" -> {
                 String summonResponse = new NormalSummon(gameData).run(null);
-                if (summonResponse.matches("summon \\d")) {
-                    DataFromGameRun data = new DataFromGameRun(summonResponse);
-                    data.addEvents(runServerSideGameEvents());
-                    return data;
-                } else {
-                    System.err.println("here");
-                    multiActionCard = gameData.getSelectedCard();
-                    CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
-                    return new DataFromGameRun(summonResponse);
-                }
+                DataFromGameRun data = new DataFromGameRun(summonResponse);
+                data.addEvents(runServerSideGameEvents());
+                return data;
             }
-            case "summon with sacrifice" ->{
+            case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
                 return new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
             }
-
             case "attack direct" -> {
                 DataFromGameRun data = new DataFromGameRun(new DirectAttack(gameData).run());
                 data.addEvents(runServerSideGameEvents());
                 return data;
+            }
+            case "attack monster" -> {
+                multiActionCard = gameData.getSelectedCard();
+                CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
+                return new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
             }
             case "flip summon" -> {
                 DataFromGameRun data = new DataFromGameRun(new FlipSummon(gameData).run());
@@ -79,11 +76,18 @@ public class Game {
                 return data;
             }
         }
-        if (command.matches("sacrifice \\d( \\d)+")){
+        if (command.matches("sacrifice \\d( \\d)+")) {
             gameData.setSelectedCard(multiActionCard);
             String summonResponse = new NormalSummon(gameData).run(command.substring(10));
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
             DataFromGameRun data = new DataFromGameRun(summonResponse);
+            data.addEvents(runServerSideGameEvents());
+            return data;
+        } else if (command.matches("attack \\d")) {
+            gameData.setSelectedCard(multiActionCard);
+            String attackResponse = new AttackMonster(gameData).run(Integer.parseInt(command.substring(7)));
+            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            DataFromGameRun data = new DataFromGameRun(attackResponse);
             data.addEvents(runServerSideGameEvents());
             return data;
         }

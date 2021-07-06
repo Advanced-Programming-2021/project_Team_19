@@ -211,39 +211,39 @@ public class ScannerMonster extends EffectMonster {
     }
 
     @Override
-    public void handleAttack(GameData gameData, Monster defendingMonster) {
+    public String handleAttack(GameData gameData, int enemyId) {
         if (scannedMonster == null) {
-            super.handleAttack(gameData, defendingMonster);
+            return super.handleAttack(gameData, enemyId);
         } else {
-            scannedMonster.handleAttack(gameData, defendingMonster);
+            return scannedMonster.handleAttack(gameData, enemyId);
         }
 
     }
 
     @Override
-    public void attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
+    public String attackDefensiveHiddenMonster(Monster defendingMonster, GameData gameData) {
         if (scannedMonster == null) {
-            super.attackDefensiveHiddenMonster(defendingMonster, gameData);
+            return super.attackDefensiveHiddenMonster(defendingMonster, gameData);
         } else {
-            scannedMonster.attackDefensiveHiddenMonster(defendingMonster, gameData);
+            return scannedMonster.attackDefensiveHiddenMonster(defendingMonster, gameData);
         }
     }
 
     @Override
-    public void attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
+    public String attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         if (scannedMonster == null) {
-            super.attackDefensiveMonster(defendingMonster, gameData);
+            return super.attackDefensiveMonster(defendingMonster, gameData);
         } else {
-            scannedMonster.attackDefensiveMonster(defendingMonster, gameData);
+            return scannedMonster.attackDefensiveMonster(defendingMonster, gameData);
         }
     }
 
     @Override
-    public void attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
+    public String attackOffensiveMonster(Monster defendingMonster, GameData gameData) {
         if (scannedMonster == null) {
-            super.attackOffensiveMonster(defendingMonster, gameData);
+            return super.attackOffensiveMonster(defendingMonster, gameData);
         } else {
-            scannedMonster.attackOffensiveMonster(defendingMonster, gameData);
+            return scannedMonster.attackOffensiveMonster(defendingMonster, gameData);
         }
 
     }

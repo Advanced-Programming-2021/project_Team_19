@@ -19,18 +19,20 @@ public class AttackMonster extends Attack {
         return enemyId;
     }
 
-    public void run() {
+    public String run(int enemyId) {
+        this.enemyId = enemyId;
 
-        if (canActionBeDone()) {
-            attackMonster();
-        }
-
+        return attackMonster();
     }
 
     @Override
     public String actionIsValid() {
 
         String attackErrors = checkMutualAttackErrors();
+
+        if (!canActionBeDone()) {
+            return "action cannot be done";
+        }
 
         if (!attackErrors.equals("")) {
             return attackErrors;
@@ -43,21 +45,24 @@ public class AttackMonster extends Attack {
         return "attack monster";
     }
 
-    public void attackMonster() {
+    public String attackMonster() {
 
-//        ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
-//                .getCardById(enemyId)).attackIsNormal(gameData)
+        ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
+                .getCardById(enemyId)).attackIsNormal(gameData);
 
         TriggerActivationData activationData = handleTriggerEffects();
 
         if (activationData.hasActionStopped) {
-            return;
+            return "action stopped";
         }
 
-//        ((Monster) CardActionManager.getInstance(null).card).handleAttack(gameData,
-//                (Monster) CardActionManager.getInstance(null).getSelectedCardsForMultiCardAction().get(0));
+        return ((Monster) gameData.getSelectedCard()).handleAttack(gameData, enemyId);
 
+    }
 
+    public static boolean canAttack() {
+        GameData gameData = GameData.getGameData();
+        return gameData.getSecondGamer().getGameBoard().getMonsterCardZone().containsCard(gameData.getSelectedCard());
     }
 
 }
