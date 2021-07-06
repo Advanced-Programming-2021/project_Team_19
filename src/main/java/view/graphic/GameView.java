@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DuelControllers.Game;
+import controller.Utils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -459,12 +460,11 @@ public class GameView {
     }
 
     public void initHand() {
-        ArrayList<CardView> tempHand = new ArrayList<>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            tempHand.add(new CardView(
-                    self.getGameBoard().getHand().getCardsInHand().get(i), 8, true, true));
+            cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
-        runAddCardsToHandFromDeckAnimation(this, tempHand);
+        handleAddCardsFromDeckToHandGraphic(cards);
     }
 
     void setBooleanForShowActions(ArrayList<CardView> cardViews, boolean bool) {
@@ -779,6 +779,23 @@ public class GameView {
                 new graphicDataForServerToNotifyOtherClient("increase lp", null, lp));
     }
 
+    void handleAddCardFromDeckToHandGraphic(Card card){
+        CardView cardView = new CardView(card, 8, true, true);
+        setBooleanForShowActions(selfHand, false);
+        ParallelTransition transition = getTransitionForAddCardFromDeckToHand(this, cardView);
+        transition.setOnFinished(EventHandler -> setBooleanForShowActions(selfHand, true));
+        transition.play();
+    }
+
+    void handleAddCardsFromDeckToHandGraphic(ArrayList<Card> cards){
+        ArrayList<CardView> cardViews = new ArrayList<>();
+        for (Card card : cards) {
+            cardViews.add(new CardView(
+                    card, 8, true, true));
+        }
+        runAddCardsToHandFromDeckAnimation(this, cardViews);
+    }
+
     void handleRivalSummonGraphic(Card card, int index) {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
     }
@@ -793,6 +810,10 @@ public class GameView {
 
     void handleRivalSetSpellGraphic(Card card, int index){
         runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
+    }
+
+    void handleRivalAddCardFromDeckToHandGraphic(Card card){
+        addCardToRivalHandFromDeck(this, card);
     }
 
     void handleRivalFlipSummonGraphic(Card card){
@@ -868,6 +889,11 @@ public class GameView {
 
     private void f() {
 
+//        ArrayList<Card>cards = new ArrayList<>();
+//        cards.add(Utils.getCardByName("trap hole"));
+//        cards.add(Utils.getCardByName("trap hole"));
+//        cards.add(Utils.getCardByName("trap hole"));
+//        handleAddCardsFromDeckToHandGraphic(cards);
 //        getCardNameForMindCrush();
 //        runMoveCardFromHandToFieldGraphic(
 //                this, selfHand.get(0), 3,1,2);
@@ -877,12 +903,12 @@ public class GameView {
 //        fadeCard(selfHand.get(0));
 
 //        runIncreaseLpGraphic(this, 12);
-
-        counter++;
-        if(counter == 1)
-        handleSummonGraphic(selfHand.get(0), 0);
-        else
-        monsterZoneCards.get(0).setShowCardAndShowValidActions(this);
+//
+//        counter++;
+//        if(counter == 1)
+//        handleSummonGraphic(selfHand.get(0), 0);
+//        else
+//        monsterZoneCards.get(0).setShowCardAndShowValidActions(this);
     }
 
     private void setTestButton() {

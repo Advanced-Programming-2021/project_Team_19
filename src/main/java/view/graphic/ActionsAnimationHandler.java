@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 import model.Card.Card;
+import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.graphic.CardViewAnimations.*;
 
 import java.util.ArrayList;
@@ -94,7 +95,10 @@ public class ActionsAnimationHandler {
         });
 
         KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
-                addCardToRivalHandFromDeck(gameView.rivalGameView, cardView.card));
+                gameView.gameController.notifyOtherGameViewToDoSomething(gameView,
+                        new graphicDataForServerToNotifyOtherClient
+                                ("add card from deck to hand", cardView.card, -1))
+        );
 
         Timeline createCardTimeline = new Timeline(createNewCardAnimation);
 
