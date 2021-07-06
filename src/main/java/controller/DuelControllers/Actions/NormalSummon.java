@@ -13,9 +13,9 @@ public class NormalSummon extends Summon {
         super(gameData, "normal summon");
     }
 
-    public String run() {
-//        if (actionIsValid().equals("normal summon"))
-        return summonMonster();
+    public String run(String ids) {
+
+        return summonMonster(ids);
 
     }
 
@@ -40,10 +40,20 @@ public class NormalSummon extends Summon {
                 !summoningMonster.getName().equals("Gate Guardian")) {
             return "you already summoned/set on this turn";
         }
-        return "normal summon";
+
+        int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
+                (false, gameData.getCurrentGamer().
+                        getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+
+        if (numberOfSacrifices == 0) {
+            return "normal summon";
+        } else if (numberOfSacrifices <= gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards()) {
+            return "get " + numberOfSacrifices + " monsters";
+        }
+        return "not enough cards for tribute";
     }
 
-    private String summonMonster() {
+    private String summonMonster(String ids) {
 
 //        if (summoningMonster.getName().equals("Gate Guardian")) {
 //            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
@@ -59,20 +69,21 @@ public class NormalSummon extends Summon {
 //            return "summoned successfully";
 //        }
 
-        int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
-                (false, gameData.getCurrentGamer().
-                        getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
-
-        if (numberOfSacrifices == 0){
+        if (ids == null) {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
-            ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
+            ((Monster) summoningMonster).handleSummon(gameData, 0);
             handleTriggerEffects();
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster);
+        } else {
+            sacrificeByIds(ids);
+            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+            ((Monster) summoningMonster).handleSummon(gameData, (ids.length() + 1) / 2);
+            return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster) +
+                    " sacrifice " + ids;
         }
 
-        return "sacrifice " + numberOfSacrifices + " monsters";
 
-//        if (sacrificeMonstersForSummonOrSet(gameData, numberOfSacrifices)) {
+//        if (sacrificeMonstersForSummonOrSet(gameData, (ids.length() + 1) / 2)) {
 //            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
 //
 //            ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
@@ -81,5 +92,9 @@ public class NormalSummon extends Summon {
 //            return "summoned successfully";
 //        }
 
+    }
+
+    public boolean canSacrifice() {
+        return gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(gameData.getSelectedCard());
     }
 }

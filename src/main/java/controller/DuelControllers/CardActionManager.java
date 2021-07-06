@@ -7,71 +7,72 @@ import java.util.ArrayList;
 
 public class CardActionManager {
 
-    private static CardActionManager instance;
     public Card card;
+    public static actionManagerMode mode = actionManagerMode.NORMAL_MODE;
 
-    public static CardActionManager getInstance(Card card){
-        if (instance == null){
-            instance = new CardActionManager(card);
-        }
-        return instance;
-    }
 
-    private CardActionManager(Card card) {
+    public CardActionManager(Card card) {
         this.card = card;
     }
 
-    public static void destroyCurrentActionManager(){
-        instance = null;
+
+    public static void setMode(actionManagerMode mode) {
+        CardActionManager.mode = mode;
     }
 
-
-
     public ArrayList<String> getValidActions() {
-
         String result;
         ArrayList<String> validActions = new ArrayList<>();
 
+        switch (mode) {
+            case NORMAL_MODE -> {
+                result = new AttackMonster(GameData.getGameData()).actionIsValid();
+                if (result.equals("attack monster"))
+                    validActions.add(result);
 
-        result = new AttackMonster(GameData.getGameData()).actionIsValid();
-        if (result.equals("attack monster"))
-            validActions.add(result);
-        System.err.println(result);
+                result = new DirectAttack(GameData.getGameData()).actionIsValid();
+                if (result.equals("attack direct"))
+                    validActions.add(result);
 
-        result = new DirectAttack(GameData.getGameData()).actionIsValid();
-        if (result.equals("attack direct"))
-            validActions.add(result);
-        System.err.println(result);
+                result = new NormalSummon(GameData.getGameData()).actionIsValid();
+                if (result.equals("normal summon"))
+                    validActions.add(result);
 
-        result = new NormalSummon(GameData.getGameData()).actionIsValid();
-        if (result.equals("normal summon"))
-            validActions.add(result);
-        System.err.println(result);
-
-        result = new Set(GameData.getGameData()).actionIsValid();
-        if (result.equals("set"))
-            validActions.add("set");
-        System.err.println(result);
+                if (result.matches("get \\d monsters"))
+                    validActions.add("summon with sacrifice");
+                System.err.println(result);
 
 
-        result = new SetPosition(GameData.getGameData()).actionIsValid(true);
-        if (result.startsWith("set position")) {
-            validActions.add(result);
-        }
+                result = new Set(GameData.getGameData()).actionIsValid();
+                if (result.equals("set"))
+                    validActions.add("set");
 
-        result = new SetPosition(GameData.getGameData()).actionIsValid(false);
-        if (result.startsWith("set position")) {
-            validActions.add(result);
-        }
 
-        result = new ActivateSpellOrTrapNormally(GameData.getGameData()).actionIsValid();
-        if(result.equals("activate spell normally")){
-            validActions.add(result);
-        }
+                result = new SetPosition(GameData.getGameData()).actionIsValid(true);
+                if (result.startsWith("set position")) {
+                    validActions.add(result);
+                }
 
-        result = new ActivateEffectMonster(GameData.getGameData()).actionIsValid();
-        if(result.equals("activate effect monster")){
-            validActions.add(result);
+                result = new SetPosition(GameData.getGameData()).actionIsValid(false);
+                if (result.startsWith("set position")) {
+                    validActions.add(result);
+                }
+
+                result = new ActivateSpellOrTrapNormally(GameData.getGameData()).actionIsValid();
+                if (result.equals("activate spell normally")) {
+                    validActions.add(result);
+                }
+
+                result = new ActivateEffectMonster(GameData.getGameData()).actionIsValid();
+                if (result.equals("activate effect monster")) {
+                    validActions.add(result);
+                }
+            }
+            case SUMMON_MODE -> {
+                if (new NormalSummon(GameData.getGameData()).canSacrifice()){
+                    validActions.add("sacrifice");
+                }
+            }
         }
 
         return validActions;

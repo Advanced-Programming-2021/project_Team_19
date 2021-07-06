@@ -34,7 +34,7 @@ public class DirectAttack extends Attack {
             return "you can’t attack the opponent directly";
         }
 
-        return "direct attack";
+        return "attack direct";
     }
 
 
@@ -46,8 +46,8 @@ public class DirectAttack extends Attack {
             return "direct attack not successful";
         }
 
-        ((Monster) attackingMonster).handleDirectAttack(gameData);
-        return "direct attack successful";
+        String lpLoss = ((Monster) attackingMonster).handleDirectAttack(gameData);
+        return "rival loses " + lpLoss;
     }
 
 

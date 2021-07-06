@@ -110,10 +110,14 @@ public class CardView extends Rectangle {
         validActionNames = game.getValidCommandsForCard(new DataForGameRun(card, gamer));
 
         for (String validAction : validActionNames) {
-            if (validAction.startsWith("summon")) {
+            if (validAction.equals("summon with sacrifice")) {
+                validActionNamesForShow.add("summon with sacrifice");
+            } else if (validAction.startsWith("summon")) {
                 validActionNamesForShow.add("summon");
-            } else if (validAction.startsWith("attack")) {
+            } else if (validAction.equals("attack")) {
                 validActionNamesForShow.add("attack");
+            } else if (validAction.equals("attack direct")) {
+                validActionNamesForShow.add("attack direct");
             } else if (validAction.startsWith("set position")) {
                 validActionNamesForShow.add("change position");
             } else if (validAction.equals("set")) {
@@ -124,6 +128,8 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("activate");
             } else if (validAction.equals("select")) {
                 validActionNamesForShow.add("select");
+            } else if (validAction.equals("sacrifice")) {
+                validActionNamesForShow.add("sacrifice");
             } else {
                 validActionNamesForShow.add(validAction);
             }
@@ -158,7 +164,7 @@ public class CardView extends Rectangle {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 
-    public void setShowCardAndShowValidActions(GameView gameView){
+    public void setShowCardAndShowValidActions(GameView gameView) {
 
         setOnMouseEntered(mouseEvent -> {
             gameView.game.gameData.setSelectedCard(card);
@@ -186,6 +192,8 @@ public class CardView extends Rectangle {
         setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.SECONDARY)) {
                 gameView.showValidActionForCard(getNextValidAction(), this);
+            }else {
+                gameView.cardOnLeftClick(this);
             }
         });
     }

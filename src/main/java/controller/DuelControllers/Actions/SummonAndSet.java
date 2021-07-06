@@ -61,6 +61,12 @@ public class SummonAndSet extends Action {
         }
     }
 
+    public void sacrificeByIds(String ids){
+        Gamer gamer = gameData.getCurrentGamer();
+        MonsterCardZone monsterCardZone = gamer.getGameBoard().getMonsterCardZone();
+        sacrificeMonsters(ids.split(" "), monsterCardZone, gamer, gameData);
+    }
+
 
     private boolean hasNIds(int numberOfSacrifices, String command) {
         return (command.matches("[1-5] ".repeat(Math.max(0, numberOfSacrifices)).trim()));

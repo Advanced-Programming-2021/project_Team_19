@@ -260,10 +260,10 @@ public abstract class Monster extends Card {
     }
 
 
-    public void handleDirectAttack(GameData gameData) {
+    public String handleDirectAttack(GameData gameData) {
         setLastTurnAttacked(gameData);
         gameData.getSecondGamer().decreaseLifePoint(getAttack(gameData));
-        Printer.print("your opponent receives " + getAttack(gameData) + " battle damage");
+        return String.valueOf(getAttack(gameData));
     }
 
     public void handleSummon(GameData gameData, int numberOfSacrifices) {
