@@ -116,6 +116,8 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("summon");
             } else if (validAction.equals("attack")) {
                 validActionNamesForShow.add("attack");
+            } else if (validAction.equals("attack monster")) {
+                validActionNamesForShow.add("attack monster");
             } else if (validAction.equals("attack direct")) {
                 validActionNamesForShow.add("attack direct");
             } else if (validAction.startsWith("set position")) {
