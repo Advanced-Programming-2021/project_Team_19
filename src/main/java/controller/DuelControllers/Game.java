@@ -1,5 +1,6 @@
 package controller.DuelControllers;
 
+import controller.DataForGameRun;
 import controller.DataFromGameRun;
 import controller.DuelControllers.Actions.*;
 import controller.DuelControllers.Phases.DrawPhase;
@@ -31,7 +32,8 @@ public class Game {
     }
 
 
-    public DataFromGameRun run(String command) {
+    public DataFromGameRun run(DataForGameRun dataFromClient) {
+        String command = dataFromClient.getCommand();
         switch (command) {
             case "set" -> {
                 destroyCurrentActionManager();
@@ -76,9 +78,11 @@ public class Game {
 
 
 
-    public ArrayList<String> getValidCommandsForCard(Card card) {
-
-        return CardActionManager.getInstance(card).getValidActions();
+    public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
+        if (gameData.getCurrentGamer().equals(data.getGamer())) {
+            return CardActionManager.getInstance(data.getCard()).getValidActions();
+        }
+        throw new Exception("not your turn");
     }
 
     public ArrayList<String> runServerSideGameEvents(){

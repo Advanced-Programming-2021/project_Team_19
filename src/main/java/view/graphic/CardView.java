@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DataForGameRun;
 import controller.DuelControllers.CardActionManager;
 import controller.Utils;
 import javafx.event.EventHandler;
@@ -15,6 +16,8 @@ import javafx.stage.Popup;
 import model.Card.Card;
 import model.Card.Monster;
 import view.graphic.CardViewAnimations.Translation;
+import controller.DuelControllers.*;
+import model.*;
 
 import java.util.ArrayList;
 
@@ -101,10 +104,10 @@ public class CardView extends Rectangle {
         return card;
     }
 
-    public String getFirstValidAction() throws Exception {
+    public String getFirstValidAction(Game game, Gamer gamer) throws Exception {
 
         validActionNamesForShow = new ArrayList<>();
-        validActionNames = CardActionManager.getInstance(card).getValidActions();
+        validActionNames = game.getValidCommandsForCard(new DataForGameRun(card, gamer));
 
         for (String validAction : validActionNames) {
             if (validAction.startsWith("summon")) {
@@ -163,7 +166,7 @@ public class CardView extends Rectangle {
 
             if (this.canShowValidActions) {
                 try {
-                    gameView.showValidActionForCard(getFirstValidAction(), this);
+                    gameView.showValidActionForCard(getFirstValidAction(gameView.game, gameView.self), this);
                 } catch (Exception ignored) {
                 }
             }
