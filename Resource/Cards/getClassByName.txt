@@ -73,3 +73,17 @@ Wattkid:model.Card.Monsters.NormalMonster
 Yami:model.Card.Spells.FieldSpell
 Yomi Ship:model.Card.Monsters.YomiShip
 Math:model.Card.Monsters.NormalMonster
+Madar:model.Card.Monsters.NormalMonster
+Taha:model.Card.Monsters.NormalMonster
+sdlkfjad:model.Card.Monsters.NormalMonster
+sadfa:model.Card.Monsters.NormalMonster
+;lkj;a:model.Card.Monsters.NormalMonster
+heheadfadf:model.Card.Monsters.NormalMonster
+Tahaasldfa:model.Card.Monsters.NormalMonster
+Tahaadsf:model.Card.Monsters.NormalMonster
+Hidialkdf:model.Card.Monsters.NormalMonster
+rere:model.Card.Monsters.NormalMonster
+Tahaadsfla:model.Card.Monsters.NormalMonster
+;ajf;akljsd:model.Card.Monsters.NormalMonster
+adsj;fklajd:model.Card.Monsters.NormalMonster
+ladjfasdklf:model.Card.Monsters.NormalMonster
