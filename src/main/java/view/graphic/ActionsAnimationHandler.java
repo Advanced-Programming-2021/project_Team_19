@@ -463,17 +463,10 @@ public class ActionsAnimationHandler {
         return 400;
     }
 
-    static double runFlipCardGraphic(GameView gameView, CardView cardView) {
+    static double runFlipCardGraphic(CardView cardView) {
         new FlipAnimation(cardView, 500).getAnimation().play();
         return 500;
     }
-
-    static double runFlipRivalCardGraphic(GameView gameView, Card card) {
-        CardView cardView = gameView.searchCardInRivalField(card);
-        new FlipAnimation(cardView, 500).getAnimation().play();
-        return 500;
-    }
-
 
     //lp animations
 

@@ -813,6 +813,20 @@ public class GameView {
         return null;
     }
 
+    CardView searchCardInSelfField(Card card){
+        for (CardView cardView : monsterZoneCards) {
+            if (cardView != null && cardView.getCard().equals(card)) {
+                return cardView;
+            }
+        }
+        for (CardView cardView : spellZoneCards) {
+            if (cardView != null && cardView.getCard().equals(card)) {
+                return cardView;
+            }
+        }
+        return null;
+    }
+
     void handleSummonGraphic(CardView cardView, int index) {
         runMoveCardFromHandToFieldGraphic
                 (this, cardView, 0, 0, index);
@@ -850,7 +864,7 @@ public class GameView {
     }
 
     void handleFlipCardGraphic(CardView cardView) {
-        runFlipCardGraphic(this, cardView);
+        runFlipCardGraphic(cardView);
         gameController.notifyOtherGameViewToDoSomething(this,
                 new graphicDataForServerToNotifyOtherClient("flip", cardView.getCard(), -1));
     }
@@ -989,8 +1003,12 @@ public class GameView {
         runRivalFlipSummonGraphic(this, card);
     }
 
-    void handleRivalFlipCardGraphic(Card card) {
-        runFlipRivalCardGraphic(this, card);
+    void handleFlipCardGraphicBOOCN(Card card) {
+        CardView cardView = searchCardInRivalField(card);
+        if(cardView == null){
+            cardView = searchCardInSelfField(card);
+        }
+        runFlipCardGraphic(cardView);
     }
 
     void handleRivalIncreaseLpGraphic(int lp, boolean isSelf) {
@@ -1079,9 +1097,9 @@ public class GameView {
         counter++;
 //        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
 //        if(counter == 1)
-//        handleSummonGraphic(selfHand.get(0), 2);
+//        handleActivateSpellGraphic(selfHand.get(0), 0);
 //        else
-//            handleDestroyCardFromFieldOrHand(0, 2, false);
+//            handleFlipCardGraphic(rivalSpellZoneCards.get(4));
     }
 
     private void setTestButton() {

@@ -80,7 +80,7 @@ public class GameGraphicControllerForTest extends Menu {
             case "set spell" -> otherGameView.handleRivalSetSpellGraphic(data.card, data.index);
             case "activate spell" -> otherGameView.handleRivalActivateSpellGraphic(data.card, data.index);
             case "flip summon" -> otherGameView.handleRivalFlipSummonGraphic(data.card);
-            case "flip" -> otherGameView.handleRivalFlipCardGraphic(data.card);
+            case "flip" -> otherGameView.handleFlipCardGraphicBOOCN(data.card);
             case "increase rival lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, false);
             case "increase self lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, true);
             case "add card from deck to hand" -> otherGameView.handleRivalAddCardFromDeckToHandGraphic(data.card);
