@@ -2,7 +2,6 @@ package view.graphic;
 
 import controller.DataForGameRun;
 import controller.DuelControllers.Game;
-import controller.Utils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -62,7 +61,6 @@ public class GameView {
 
     VBox phaseBox;
     Popup nextPhasePopup;
-    static ArrayList<VBox> phaseBoxes = new ArrayList<>();
 
     ArrayList<CardView> selfHand = new ArrayList<>();
     ArrayList<CardView> selfGraveyardCards = new ArrayList<>();
@@ -227,8 +225,6 @@ public class GameView {
         phaseBox.getChildren().add(getPhaseLabel(" E\n P"));
 
         gamePane.getChildren().add(phaseBox);
-
-        phaseBoxes.add(phaseBox);
     }
 
     private Label getPhaseLabel(String text) {
@@ -242,16 +238,26 @@ public class GameView {
     }
 
 
-    private void changePhase() {
-        for (VBox phaseBox : phaseBoxes) {
-            for (int i = 0; i < 6; i++) {
-                if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
+    void handleChangePhase() {
 
-                    phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
-                    phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
-                    phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
-                    break;
-                }
+        runChangePhase();
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("change phase", null, -1));
+
+    }
+
+    void handleChangePhaseBecauseOfOtherClientNotification() {
+        runChangePhase();
+    }
+
+    private void runChangePhase() {
+        for (int i = 0; i < 6; i++) {
+            if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
+
+                phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
+                phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
+                phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
+                break;
             }
         }
     }
@@ -575,8 +581,7 @@ public class GameView {
             } else if (response.matches("get \\d monsters")) {
                 initForSummonBySacrifice(Integer.parseInt(response.substring(4, 5)));
             } else if (response.matches("rival loses \\d+")) {
-                System.out.println(123);
-//                todo decrease rival LP
+                handleIncreaseLpGraphic(Integer.parseInt(response.substring(12)), false);
             } else if (response.matches("set monster \\d")) {
                 handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
@@ -600,22 +605,22 @@ public class GameView {
 
     private void responseIsForPhaseChange(String phaseChangeResponse) {
         if (phaseChangeResponse.equals("draw phase")) {
-            changePhase();
+            handleChangePhase();
             handleAddCardFromDeckToHandGraphic(game.gameData.getCurrentGamer().getGameBoard().getHand().getCard(game.gameData.getCurrentGamer().getGameBoard().getHand().getSize() - 1));
         } else if (phaseChangeResponse.equals("stand by phase")) {
-            changePhase();
+            handleChangePhase();
 //            todo    standby phase
         } else if (phaseChangeResponse.equals("end phase")) {
-            changePhase();
+            handleChangePhase();
 //            todo    end phase
         } else if (phaseChangeResponse.equals("main phase 1")) {
-            changePhase();
+            handleChangePhase();
 //            todo    main phase 1
         } else if (phaseChangeResponse.equals("battle phase")) {
-            changePhase();
+            handleChangePhase();
 //            todo    battle phase
         } else if (phaseChangeResponse.equals("main phase 2")) {
-            changePhase();
+            handleChangePhase();
 //            todo    main phase 2
         } else if (phaseChangeResponse.matches("game finished \\w+")) {
 //           todo     finish game
@@ -814,10 +819,11 @@ public class GameView {
                 new graphicDataForServerToNotifyOtherClient("flip", cardView.getCard(), -1));
     }
 
-    void handleIncreaseLpGraphic(int lp) {
-        runIncreaseLpGraphic(this, lp);
+    void handleIncreaseLpGraphic(int lp, boolean isSelf) {
+        runIncreaseLpGraphic(this, lp, isSelf);
         gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("increase lp", null, lp));
+                new graphicDataForServerToNotifyOtherClient("increase "
+                        + (isSelf ? "rival" : "self") + " lp", null, lp));
     }
 
     void handleAddCardFromDeckToHandGraphic(Card card) {
@@ -865,8 +871,8 @@ public class GameView {
         runFlipRivalCardGraphic(this, card);
     }
 
-    void handleRivalIncreaseLpGraphic(int lp) {
-        runIncreaseRivalLpGraphic(this, lp);
+    void handleRivalIncreaseLpGraphic(int lp, boolean isSelf) {
+        runIncreaseLpGraphicBecauseOfRivalNotification(this, lp, isSelf);
     }
 
     // MindCrush data collector
@@ -943,7 +949,7 @@ public class GameView {
 //        runRemoveCardFromHandGraphic(this, selfHand.get(0));
 //        fadeCard(selfHand.get(0));
 
-//        runIncreaseLpGraphic(this, 12);
+//        handleIncreaseLpGraphic(123, true);
 //
 //        counter++;
 //        if(counter == 1)

@@ -45,8 +45,8 @@ public class menuGraphic extends Application {
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
 //        new Shop().testRun(UserDataBaseController.getUserByUsername("mohammad"));
-//        new GameGraphicControllerForTest().testRun();
-        WelcomeMenu.getInstance().run();
+        new GameGraphicControllerForTest().testRun();
+//        WelcomeMenu.getInstance().run();
         //testRun function of your menu for test here
         stage.show();
     }
