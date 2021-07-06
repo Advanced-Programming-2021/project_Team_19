@@ -541,16 +541,13 @@ public class GameView {
         if (dataFromGameRun.size() == 1) {
             String response = dataFromGameRun.get(0);
             if (response.matches("summon \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 0, 0, Integer.parseInt(response.substring(7)));
+                handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
             } else if (response.matches("set spell \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 2, 1, Integer.parseInt(response.substring(10)));
+                handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
             } else if (response.matches("set monster \\d")) {
-                runMoveCardFromHandToFieldGraphic
-                        (this, cardView, 1, 0, Integer.parseInt(response.substring(12)));
+                handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
-                runFlipSummonGraphic(this, cardView);
+                handleFlipSummonGraphic(cardView);
             } else {
                 responseIsForPhaseChange(response);
             }
