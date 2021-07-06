@@ -114,8 +114,10 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("summon with sacrifice");
             } else if (validAction.startsWith("summon")) {
                 validActionNamesForShow.add("summon");
-            } else if (validAction.startsWith("attack")) {
+            } else if (validAction.equals("attack")) {
                 validActionNamesForShow.add("attack");
+            } else if (validAction.equals("attack direct")) {
+                validActionNamesForShow.add("attack direct");
             } else if (validAction.startsWith("set position")) {
                 validActionNamesForShow.add("change position");
             } else if (validAction.equals("set")) {

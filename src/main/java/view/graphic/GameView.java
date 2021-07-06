@@ -548,13 +548,13 @@ public class GameView {
 
     void cardOnLeftClick(CardView cardView) {
         ArrayList<String> dataFromGameRun = new ArrayList<>();
-        if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null){
-            if (cardView.getCurrentAction().equals("sacrifice")){
+        if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null) {
+            if (cardView.getCurrentAction().equals("sacrifice")) {
                 idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
             }
             System.err.println(idsForMultiCardAction);
 
-            if (idsForMultiCardAction.size() == numberOfNeededCards){
+            if (idsForMultiCardAction.size() == numberOfNeededCards) {
                 numberOfNeededCards = 0;
                 StringBuilder command = new StringBuilder(cardView.getCurrentAction());
                 for (Integer integer : idsForMultiCardAction) {
@@ -574,11 +574,14 @@ public class GameView {
                 handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
             } else if (response.matches("get \\d monsters")) {
                 initForSummonBySacrifice(Integer.parseInt(response.substring(4, 5)));
+            } else if (response.matches("rival loses \\d+")) {
+                System.out.println(123);
+//                todo decrease rival LP
             } else if (response.matches("set monster \\d")) {
                 handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
             } else if (response.equals("flip summoned successfully")) {
                 handleFlipSummonGraphic(cardView);
-            } else if (response.equals("summon \\d sacrifice( \\d)+")) {
+            } else if (response.matches("summon \\d sacrifice( \\d)+")) {
                 handleSummonWithSacrificeGraphics(Integer.parseInt(response.substring(7, 8)));
             } else {
                 responseIsForPhaseChange(response);
@@ -587,7 +590,7 @@ public class GameView {
     }
 
     private void handleSummonWithSacrificeGraphics(int summonId) {
-
+//                       todo implement this method
     }
 
     private void initForSummonBySacrifice(int numberOfSacrifices) {

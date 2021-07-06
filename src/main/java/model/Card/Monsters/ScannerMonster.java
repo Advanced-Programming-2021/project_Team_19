@@ -291,11 +291,11 @@ public class ScannerMonster extends EffectMonster {
     }
 
     @Override
-    public void handleDirectAttack(GameData gameData) {
+    public String handleDirectAttack(GameData gameData) {
         if (scannedMonster == null) {
-            super.handleDirectAttack(gameData);
+            return super.handleDirectAttack(gameData);
         } else {
-            scannedMonster.handleDirectAttack(gameData);
+            return scannedMonster.handleDirectAttack(gameData);
         }
     }
 
