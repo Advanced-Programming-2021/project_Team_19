@@ -72,4 +72,3 @@ Wattaildragon:model.Card.Monsters.NormalMonster
 Wattkid:model.Card.Monsters.NormalMonster
 Yami:model.Card.Spells.FieldSpell
 Yomi Ship:model.Card.Monsters.YomiShip
-Math:model.Card.Monsters.NormalMonster
