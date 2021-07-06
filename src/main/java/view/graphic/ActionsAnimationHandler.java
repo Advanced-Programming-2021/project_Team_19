@@ -277,7 +277,7 @@ public class ActionsAnimationHandler {
     }
 
 
-    static double runRemoveCardFromHandGraphic(GameView gameView, CardView cardView) {
+    static double runMoveCardFromHandToGraveYardGraphic(GameView gameView, CardView cardView) {
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.selfHand.remove(cardView);
@@ -286,15 +286,15 @@ public class ActionsAnimationHandler {
             @Override
             public void handle(ActionEvent actionEvent) {
                 gameView.gamePane.getChildren().remove(cardView);
+                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
             }
         });
         transition.play();
-        runRemoveCardFromRivalHandGraphic(gameView.rivalGameView, cardView.getCard());
         return 500;
     }
 
-    static double runRemoveCardFromRivalHandGraphic(GameView gameView, Card card) {
-        CardView cardView = gameView.searchCardInRivalHand(card);
+    static double runRemoveCardFromRivalHandToGraveYardGraphic(GameView gameView, CardView cardView) {
+
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.rivalHand.remove(cardView);
@@ -303,6 +303,7 @@ public class ActionsAnimationHandler {
             @Override
             public void handle(ActionEvent actionEvent) {
                 gameView.gamePane.getChildren().remove(cardView);
+                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
             }
         });
         transition.play();

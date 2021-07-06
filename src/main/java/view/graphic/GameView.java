@@ -395,17 +395,40 @@ public class GameView {
         rivalGraveYard.setLayoutY(177);
     }
 
-    private void addCardToSelfGraveYard(Card card) {
-        CardView cardView = getCardForGraveyard(card, true);
-        selfGraveyardCards.add(cardView);
-        selfGraveYard.getChildren().add(cardView);
-        rivalGameView.addCardToRivalGraveYard(card);
+    void handleAddCardToGraveYardGraphic(Card card, boolean addToSelfGraveYard) {
+        runAddCardToGraveYard(card, addToSelfGraveYard);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient
+                        ("add card to " + (addToSelfGraveYard ? "rival" : "self") + " graveyard",
+                                card, -1));
     }
 
-    public void addCardToRivalGraveYard(Card card) {
+    void handleAddCardToGraveYardGraphicBOOTN(Card card, boolean addToSelfGraveYard) {
+        runAddCardToGraveYard(card, addToSelfGraveYard);
+    }
+
+    private void runAddCardToGraveYard(Card card, boolean addToSelfGraveYard) {
+        if (addToSelfGraveYard) {
+            runAddCardToSelfGraveYard(card);
+        } else {
+            runAddCardToRivalGraveYard(card);
+        }
+    }
+
+    private void runAddCardToSelfGraveYard(Card card) {
+        CardView cardView = getCardForGraveyard(card, true);
+        cardView.opacityProperty().set(0);
+        selfGraveyardCards.add(cardView);
+        selfGraveYard.getChildren().add(cardView);
+        new FadeAnimation(cardView, 500, 0, 1).getAnimation().play();
+    }
+
+    public void runAddCardToRivalGraveYard(Card card) {
         CardView cardView = getCardForGraveyard(card, false);
+        cardView.opacityProperty().set(0);
         rivalGraveyardCards.add(cardView);
         rivalGraveYard.getChildren().add(cardView);
+        new FadeAnimation(cardView, 500, 0, 1).getAnimation().play();
     }
 
     private CardView getCardForGraveyard(Card card, boolean isSelf) {
@@ -472,7 +495,7 @@ public class GameView {
             }
         })).play();
 
-        addCardToSelfGraveYard(controller.Utils.getCardByName("trap hole"));
+//        addCardToSelfGraveYard(controller.Utils.getCardByName("trap hole"));
     }
 
     public void initHand() {
@@ -843,6 +866,92 @@ public class GameView {
         runAddCardsToHandFromDeckAnimation(this, cardViews);
     }
 
+    //zone 0 for monster zone 1 for spell zone 2 for hand
+
+    void handleDestroyCardFromFieldOrHand(int index, int zone, boolean isSelf) {
+        runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
+        gameController.notifyOtherGameViewToDoSomething(this,
+                new graphicDataForServerToNotifyOtherClient("destroy card from" +
+                        (isSelf ? ":rival:" : ":self:") +
+                        (zone == 0 ? "monster zone" : (zone == 1 ? "spell zone" : "hand"))
+                        ,null, (zone == 2 ? index : 4 - index)));
+    }
+
+    void handleDestroyCardFromFieldOrHandBOOCN(int index, int zone, boolean isSelf){
+        runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
+    }
+
+    //move to graveyard
+    private void runDestroyCardFromFieldOrHandGraphic(int index, int zone, boolean isSelf){
+        CardView cardView = findCardViewForDestroy(index, zone, isSelf);
+        if (isSelf) {
+            if (zone == 0) {
+                Animation animation =
+                        new FadeAnimation(cardView, 500, 1, 0).getAnimation();
+                animation.setOnFinished(EventHandler -> {
+                    monsterZoneCards.remove(cardView);
+                    gamePane.getChildren().remove(cardView);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
+                });
+                animation.play();
+            } else if (zone == 1) {
+                Animation animation =
+                        new FadeAnimation(cardView, 500, 1, 0).getAnimation();
+                animation.setOnFinished(EventHandler -> {
+                    spellZoneCards.remove(cardView);
+                    gamePane.getChildren().remove(cardView);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
+                });
+                animation.play();
+            } else {
+                runMoveCardFromHandToGraveYardGraphic(this, cardView);
+            }
+        } else {
+            if (zone == 0) {
+                Animation animation =
+                        new FadeAnimation(cardView, 500, 1, 0).getAnimation();
+                animation.setOnFinished(EventHandler -> {
+                    rivalMonsterZoneCards.remove(cardView);
+                    gamePane.getChildren().remove(cardView);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
+                });
+                animation.play();
+            } else if (zone == 1) {
+                Animation animation =
+                        new FadeAnimation(cardView, 500, 1, 0).getAnimation();
+                animation.setOnFinished(EventHandler -> {
+                    rivalSpellZoneCards.remove(cardView);
+                    gamePane.getChildren().remove(cardView);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
+                });
+                animation.play();
+            } else {
+                runRemoveCardFromRivalHandToGraveYardGraphic(this, cardView);
+            }
+        }
+    }
+
+    private CardView findCardViewForDestroy(int index, int zone, boolean isSelf) {
+
+        if (isSelf) {
+            if (zone == 0) {
+                return monsterZoneCards.get(index);
+            } else if (zone == 1) {
+                return spellZoneCards.get(index);
+            } else {
+                return selfHand.get(index);
+            }
+        } else {
+            if (zone == 0) {
+                return rivalMonsterZoneCards.get(index);
+            } else if (zone == 1) {
+                return rivalSpellZoneCards.get(index);
+            } else {
+                return rivalHand.get(index);
+            }
+        }
+    }
+
     void handleRivalSummonGraphic(Card card, int index) {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
     }
@@ -936,6 +1045,9 @@ public class GameView {
 
     private void f() {
 
+//
+//        handleAddCardToGraveYardGraphic
+//                (controller.Utils.getCardByName("Battle ox"), false);
 //        ArrayList<Card>cards = new ArrayList<>();
 //        cards.add(Utils.getCardByName("trap hole"));
 //        cards.add(Utils.getCardByName("trap hole"));
@@ -951,11 +1063,12 @@ public class GameView {
 
 //        handleIncreaseLpGraphic(123, true);
 //
-//        counter++;
+        counter++;
+//        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
 //        if(counter == 1)
-//        handleSummonGraphic(selfHand.get(0), 0);
+//        handleSummonGraphic(selfHand.get(0), 2);
 //        else
-//        monsterZoneCards.get(0).setShowCardAndShowValidActions(this);
+//            handleDestroyCardFromFieldOrHand(0, 2, false);
     }
 
     private void setTestButton() {

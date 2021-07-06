@@ -84,9 +84,26 @@ public class GameGraphicControllerForTest extends Menu {
             case "increase rival lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, false);
             case "increase self lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, true);
             case "add card from deck to hand" -> otherGameView.handleRivalAddCardFromDeckToHandGraphic(data.card);
-            default -> throw new IllegalStateException("Unexpected value: " + data.command);
+            case "add card to self graveyard"-> otherGameView.handleAddCardToGraveYardGraphicBOOTN
+                    (data.card, true);
+            case "add card to rival graveyard" -> otherGameView.handleAddCardToGraveYardGraphicBOOTN
+                    (data.card, false);
+
+            default -> handleOtherCommands(otherGameView, data);
+        }
+
+
+    }
+
+    private void handleOtherCommands(GameView otherGameView, graphicDataForServerToNotifyOtherClient data) {
+        if(data.command.startsWith("destroy card from")){
+            String [] strings = data.command.split(":");
+            boolean isSelf = strings[1].equals("self");
+            int zone = strings[2].equals("monster zone") ? 0 : (strings[2].equals("spell zone") ? 1 : 2);
+            otherGameView.handleDestroyCardFromFieldOrHandBOOCN(data.index, zone, isSelf);
         }
     }
+
 
 
 }
