@@ -476,8 +476,8 @@ public class ActionsAnimationHandler {
 
     //lp animations
 
-    static double runIncreaseLpGraphic(GameView gameView, double lp) {
-        getIncreaseLpTransition(gameView, lp, true).play();
+    static double runIncreaseLpGraphic(GameView gameView, double lp, boolean isSelf) {
+        getIncreaseLpTransition(gameView, lp, isSelf).play();
         return lp;
     }
 
@@ -486,8 +486,8 @@ public class ActionsAnimationHandler {
         gameView.selfLpLabel.setText(gameView.selfLp + "");
     }
 
-    static double runIncreaseRivalLpGraphic(GameView gameView, double lp) {
-        getIncreaseLpTransition(gameView, lp, false).play();
+    static double runIncreaseLpGraphicBecauseOfRivalNotification(GameView gameView, double lp, boolean isSelf) {
+        getIncreaseLpTransition(gameView, lp, isSelf).play();
         return lp;
     }
 
