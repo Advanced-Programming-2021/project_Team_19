@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataForGameRun;
+import controller.DataFromGameRun;
 import controller.DuelControllers.Game;
 import controller.Utils;
 import javafx.animation.*;
@@ -200,7 +201,7 @@ public class GameView {
         });
         phaseButton.setOnMouseClicked(event -> {
             if (game.gameData.getCurrentGamer().equals(self)) {
-                ArrayList<String> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)).getEvents());
+                ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)).getEvents());
                 gameController.graphicsForEvents(this, events, null);
             }
         });
@@ -579,7 +580,7 @@ public class GameView {
     }
 
     void cardOnLeftClick(CardView cardView) {
-        ArrayList<String> dataFromGameRun = new ArrayList<>();
+        ArrayList<DataFromGameRun> dataFromGameRun = new ArrayList<>();
         if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null) {
             if (cardView.getCurrentAction().equals("sacrifice")) {
                 idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));

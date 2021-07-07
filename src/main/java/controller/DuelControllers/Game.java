@@ -152,9 +152,9 @@ public class Game {
             }
 
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
+                events.add("draw phase");
                 new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
-                events.add("draw phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
