@@ -56,6 +56,10 @@ public class SetPosition extends Action {
             return "you already changed this card position in this turn";
         }
 
+        if (monster.getTurnWasPutInMonsterZone() == gameData.getTurn()){
+            return "you cannot change the card position this turn";
+        }
+
         String mode = toDefensiveMode ? "defence" : "attack";
         return "set position " + mode;
     }

@@ -22,6 +22,12 @@ public class RockPaper extends Application {
     @FXML
     private Label choiceText;
 
+    @FXML
+    private Label result;
+
+    @FXML
+    private Label choice;
+
 
     private static RockPaperScissorResult firstPlayerChoice;
 
@@ -31,6 +37,9 @@ public class RockPaper extends Application {
 
     private static Stage secondPlayerStage;
 
+    private static Label prevChoice;
+
+    private static Label prevResult;
 
     @Override
     public void start(Stage primaryStage) {
@@ -95,33 +104,54 @@ public class RockPaper extends Application {
     public void choosePaper(MouseEvent mouseEvent) {
         if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.PAPER;
+            choice.setText("You choosed Paper Please wait for the other" +
+                    "player to choose too");
         } else if (secondPlayerChoice == null){
             secondPlayerChoice = RockPaperScissorResult.PAPER;
+            choice.setText("You choosed Paper Please wait for the other" +
+                    "player to choose too");
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
+        } else {
+            prevChoice = choice;
+            prevResult = result;
         }
     }
 
     public void chooseScissor(MouseEvent mouseEvent) {
         if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.SCISSOR;
+            choice.setText("You choosed Scissor Please wait for the other" +
+                    "player to choose too");
         } else if (secondPlayerChoice == null) {
             secondPlayerChoice = RockPaperScissorResult.SCISSOR;
+            choice.setText("You choosed Scissor Please wait for the other" +
+                    "player to choose too");
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
+        } else {
+            prevChoice = choice;
+            prevResult = result;
         }
     }
 
     public void chooseRock(MouseEvent mouseEvent) {
         if (playerNumber.getText().equals("First player") && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.ROCK;
+            choice.setText("You choosed Rock Please wait for the other" +
+                    "player to choose too");
         } else if (secondPlayerChoice == null){
             secondPlayerChoice = RockPaperScissorResult.ROCK;
+            choice.setText("You choosed Rock Please wait for the other" +
+                    "player to choose too");
         }
         if (firstPlayerChoice != null && secondPlayerChoice != null) {
             finishGame();
+        } else {
+            prevChoice = choice;
+            prevResult = result;
         }
     }
 
@@ -129,19 +159,34 @@ public class RockPaper extends Application {
         if (firstPlayerChoice.equals(secondPlayerChoice)) {
             firstPlayerChoice = null;
             secondPlayerChoice = null;
+            result.setText("Tie please try again!");
+            prevResult.setText("Tie please try again!");
+            prevChoice.setText(null);
+            choice.setText(null);
+
         } else {
             if (firstPlayerChoice.equals(RockPaperScissorResult.PAPER) &&
             secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
-                System.out.println("first player is the winner");
+                result.setText("first player is the winner");
+                prevResult.setText("second player is the winner");
             } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
             secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
-                System.out.println("first player is the winner");
+                result.setText("first player is the winner");
+                prevResult.setText("second player is the winner");
             } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
             secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
-                System.out.println("first player is the winner");
+                result.setText("first player is the winner");
+                prevResult.setText("first player is the winner");
             } else {
-                System.out.println("second player is the winner");
+                result.setText("second player is the winner");
+                prevResult.setText("second player is the winner");
             }
+            try {
+                Thread.sleep(1000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
