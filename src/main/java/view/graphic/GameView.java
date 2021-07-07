@@ -911,7 +911,6 @@ public class GameView {
                         }
                     }
                 })).play();
-
             }
         })).play();
 
@@ -919,6 +918,7 @@ public class GameView {
     }
 
     //zone 0 for monster zone 1 for spell zone 2 for hand
+
 
     double handleDestroyCardFromFieldOrHand(int index, int zone, boolean isSelf) {
         double ans = runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
@@ -965,7 +965,7 @@ public class GameView {
         CardView cardView = findCardViewForDestroy(index, zone, isSelf);
         if (isSelf) {
             if (zone == 0) {
-                monsterZoneCards.remove(cardView);
+                monsterZoneCards.set(monsterZoneCards.indexOf(cardView), null);
                 Animation animation =
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
@@ -974,7 +974,7 @@ public class GameView {
                 });
                 animation.play();
             } else if (zone == 1) {
-                spellZoneCards.remove(cardView);
+                spellZoneCards.set(spellZoneCards.indexOf(cardView), null);
                 Animation animation =
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
@@ -987,7 +987,7 @@ public class GameView {
             }
         } else {
             if (zone == 0) {
-                rivalMonsterZoneCards.remove(cardView);
+                rivalMonsterZoneCards.set(rivalMonsterZoneCards.indexOf(cardView), null);
                 Animation animation =
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
@@ -996,7 +996,7 @@ public class GameView {
                 });
                 animation.play();
             } else if (zone == 1) {
-                rivalSpellZoneCards.remove(cardView);
+                rivalSpellZoneCards.set(rivalSpellZoneCards.indexOf(cardView), null);
                 Animation animation =
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
@@ -1130,7 +1130,7 @@ public class GameView {
     private void f() {
 
 
-        handleDestroyCardFromFieldOrHand(3, 0, true);
+//        handleDestroyCardFromFieldOrHand(3, 0, true);
 //
 //        handleAddCardToGraveYardGraphic
 //                (controller.Utils.getCardByName("Battle ox"), false);
