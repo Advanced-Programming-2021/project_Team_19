@@ -595,6 +595,8 @@ public class GameView {
                 }
                 dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self));
                 cardView = mainCardForMultiCardAction;
+            } else {
+                return;
             }
         } else {
             dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
@@ -959,6 +961,8 @@ public class GameView {
 
     //move to graveyard
     private double runDestroyCardFromFieldOrHandGraphic(int index, int zone, boolean isSelf) {
+        System.out.println(index + " " + zone + " " + isSelf);
+        System.out.println(monsterZoneCards.get(index).card);
         CardView cardView = findCardViewForDestroy(index, zone, isSelf);
         if (isSelf) {
             if (zone == 0) {
@@ -1126,6 +1130,8 @@ public class GameView {
 
     private void f() {
 
+
+        handleDestroyCardFromFieldOrHand(3, 0, true);
 //
 //        handleAddCardToGraveYardGraphic
 //                (controller.Utils.getCardByName("Battle ox"), false);
