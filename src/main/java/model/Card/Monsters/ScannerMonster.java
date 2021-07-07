@@ -310,11 +310,11 @@ public class ScannerMonster extends EffectMonster {
     }
 
     @Override
-    public void handleDestroy(GameData gameData) {
+    public String handleDestroy(GameData gameData) {
         if (scannedMonster == null) {
-            super.handleDestroy(gameData);
+            return super.handleDestroy(gameData);
         } else {
-            scannedMonster.handleDestroy(gameData);
+            return scannedMonster.handleDestroy(gameData);
         }
     }
 
