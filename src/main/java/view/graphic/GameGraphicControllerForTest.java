@@ -144,7 +144,7 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (phaseChangeResponse.matches("game finished \\w+")) {
 //           todo     finish game
         }
-        return 1000;
+        return 500;
     }
 
     public void graphicsForEvents(ArrayList<DataFromGameRun> events, CardView cardView, int index) {

@@ -961,8 +961,7 @@ public class GameView {
 
     //move to graveyard
     private double runDestroyCardFromFieldOrHandGraphic(int index, int zone, boolean isSelf) {
-        System.out.println(index + " " + zone + " " + isSelf);
-        System.out.println(monsterZoneCards.get(index).card);
+
         CardView cardView = findCardViewForDestroy(index, zone, isSelf);
         if (isSelf) {
             if (zone == 0) {
