@@ -96,7 +96,7 @@ public class Card {
         }
     }
 
-    public void handleDestroy(GameData gameData) {
+    public String handleDestroy(GameData gameData) {
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(this) != null)
             gameData.moveCardFromOneZoneToAnother(this,
@@ -106,5 +106,7 @@ public class Card {
             gameData.moveCardFromOneZoneToAnother(this,
                     gameData.getSecondGamer().getGameBoard().getZone(this),
                     gameData.getSecondGamer().getGameBoard().getGraveYard());
+
+        return "normal";
     }
 }

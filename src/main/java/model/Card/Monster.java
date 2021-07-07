@@ -297,7 +297,7 @@ public abstract class Monster extends Card {
     }
 
 
-    public void handleDestroy(GameData gameData) {
+    public String handleDestroy(GameData gameData) {
 
         if (callOfTheHauntedTrap != null) {
             new Destroy(gameData).run(callOfTheHauntedTrap, false);
@@ -308,7 +308,7 @@ public abstract class Monster extends Card {
             }
         }
 
-        super.handleDestroy(gameData);
+        return super.handleDestroy(gameData);
     }
 
     public int numberOfSacrifices(boolean isForSetting, int cardsThatCanBeSacrificed, GameData gameData) {
