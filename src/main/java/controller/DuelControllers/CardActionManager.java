@@ -40,12 +40,14 @@ public class CardActionManager {
 
                 if (result.matches("get \\d monsters"))
                     validActions.add("summon with sacrifice");
-                System.err.println(result);
 
 
                 result = new Set(GameData.getGameData()).actionIsValid();
                 if (result.equals("set"))
                     validActions.add("set");
+
+                if (result.matches("get \\d monsters"))
+                    validActions.add("set with sacrifice");
 
 
                 result = new SetPosition(GameData.getGameData()).actionIsValid(true);
@@ -68,7 +70,7 @@ public class CardActionManager {
                     validActions.add(result);
                 }
             }
-            case SUMMON_MODE -> {
+            case SUMMON_MODE, SET_MODE -> {
                 if (NormalSummon.canSacrifice()){
                     validActions.add("sacrifice");
                 }

@@ -36,9 +36,14 @@ public class Game {
         String command = dataFromClient.getCommand();
         switch (command) {
             case "set" -> {
-                DataFromGameRun data = new DataFromGameRun(new Set(gameData).run());
+                DataFromGameRun data = new DataFromGameRun(new Set(gameData).run(null));
                 data.addEvents(runServerSideGameEvents());
                 return data;
+            }
+            case "set with sacrifice" -> {
+                multiActionCard = gameData.getSelectedCard();
+                CardActionManager.setMode(actionManagerMode.SET_MODE);
+                return new DataFromGameRun(new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
                 String summonResponse = new NormalSummon(gameData).run(null);
@@ -76,11 +81,16 @@ public class Game {
                 return data;
             }
         }
-        if (command.matches("sacrifice \\d( \\d)+")) {
+        if (command.matches("sacrifice \\d( \\d)*")) {
             gameData.setSelectedCard(multiActionCard);
-            String summonResponse = new NormalSummon(gameData).run(command.substring(10));
+            String summonOrSetResponse = "";
+            if (CardActionManager.mode.equals(actionManagerMode.SUMMON_MODE)) {
+                summonOrSetResponse = new NormalSummon(gameData).run(command.substring(10));
+            }else if (CardActionManager.mode.equals(actionManagerMode.SET_MODE)) {
+                summonOrSetResponse = new Set(gameData).run(command.substring(10));
+            }
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            DataFromGameRun data = new DataFromGameRun(summonResponse);
+            DataFromGameRun data = new DataFromGameRun(summonOrSetResponse);
             data.addEvents(runServerSideGameEvents());
             return data;
         } else if (command.matches("attack \\d")) {
@@ -88,6 +98,11 @@ public class Game {
             String attackResponse = new AttackMonster(gameData).run(Integer.parseInt(command.substring(7)));
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
             DataFromGameRun data = new DataFromGameRun(attackResponse);
+            data.addEvents(runServerSideGameEvents());
+            return data;
+        }else if (command.matches("set position (attack|defence)")) {
+            String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
+            DataFromGameRun data = new DataFromGameRun(setPositionResponse);
             data.addEvents(runServerSideGameEvents());
             return data;
         }

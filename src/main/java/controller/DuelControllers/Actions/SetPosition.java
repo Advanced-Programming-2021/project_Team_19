@@ -56,30 +56,26 @@ public class SetPosition extends Action {
             return "you already changed this card position in this turn";
         }
 
-        String mode = toDefensiveMode ? "defense" : "attack";
+        String mode = toDefensiveMode ? "defence" : "attack";
         return "set position " + mode;
     }
 
-    public void run(Matcher matcher) {
-        setPosition(matcher);
+    public String run(Matcher matcher) {
+        return setPosition(matcher);
     }
 
-    private void setPosition(Matcher matcher) {
+    private String setPosition(Matcher matcher) {
 
         Card selectedCard =  gameData.getSelectedCard();
         String newModeStr = Utils.getFirstGroupInMatcher(matcher);
-        boolean toDefensiveMode = newModeStr.equals("defense");
-        String result = actionIsValid(toDefensiveMode);
+        boolean toDefensiveMode = newModeStr.equals("defence");
 
-        if(!result.startsWith("set position")){
-            print(result);
-            return;
-        }
 
         CardMod newCardMode = toDefensiveMode ? CardMod.DEFENSIVE_OCCUPIED : CardMod.OFFENSIVE_OCCUPIED;
 
         ((Monster)selectedCard).handleChangePosition(gameData, newCardMode);
-        print("monster card position changed successfully");
+
+        return "position changed to " + newModeStr;
     }
 
 }

@@ -15,8 +15,8 @@ public class Set extends SummonAndSet {
         super(gameData, "set");
     }
 
-    public String run() {
-        return manageSetCard();
+    public String run(String ids) {
+        return manageSetCard(ids);
     }
 
     @Override
@@ -39,6 +39,17 @@ public class Set extends SummonAndSet {
             } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn()) {
                 return "you already summoned/set on this turn";
             }
+
+            int numberOfSacrifices = ((Monster) card).numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+
+            if (numberOfSacrifices == 0) {
+                return "set";
+            } else if (numberOfSacrifices <= gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards()) {
+                return "get " + numberOfSacrifices + " monsters";
+            }
+            return "not enough cards for tribute";
+
+
         } else if (card.getCardFamily().equals(CardFamily.TRAP) ||
                 card.getCardFamily().equals(CardFamily.SPELL)) {
             if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
@@ -48,7 +59,7 @@ public class Set extends SummonAndSet {
         return "set";
     }
 
-    private String manageSetCard() {
+    private String manageSetCard(String ids) {
 
         Card selectedCard = gameData.getSelectedCard();
 
@@ -60,7 +71,7 @@ public class Set extends SummonAndSet {
 //        }
 
         if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
-            return setMonster(selectedCard);
+            return setMonster(selectedCard, ids);
         } else {
             return setSpellOrTrap(selectedCard);
         }
@@ -80,22 +91,22 @@ public class Set extends SummonAndSet {
     }
 
 
-    private String setMonster(Card card) {
+    private String setMonster(Card card, String ids) {
 
         Monster monster = (Monster) card;
 
-        int numberOfSacrifices = monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
-
-        if (numberOfSacrifices == 0) {
+        if (ids == null) {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             monster.handleSet(gameData);
             handleTriggerEffects();
             return "set monster " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(card);
+        } else {
+            sacrificeByIds(ids);
+            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+            monster.handleSet(gameData);
+            handleTriggerEffects();
+            return "set monster " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(monster) +
+                    " sacrifice " + ids;
         }
-
-//        sacrificeMonstersForSummonOrSet(gameData, monster.numberOfSacrifices(true, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData));
-
-        return "sacrifice " + numberOfSacrifices + " monsters";
-
     }
 }

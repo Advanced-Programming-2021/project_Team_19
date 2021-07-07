@@ -94,6 +94,7 @@ public class GameView {
     ArrayList<CardView> rivalMonsterZoneCards = new ArrayList<>();
     ArrayList<CardView> rivalSpellZoneCards = new ArrayList<>();
 
+    CardView mainCardForMultiCardAction;
     ArrayList<Integer> idsForMultiCardAction;
     int numberOfNeededCards = 0;
 
@@ -589,6 +590,7 @@ public class GameView {
                     command.append(" ").append(integer);
                 }
                 dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self)).getEvents();
+                cardView = mainCardForMultiCardAction;
             }
         } else {
             dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self)).getEvents();
@@ -603,14 +605,16 @@ public class GameView {
 //                       todo implement this method
     }
 
-    private void initForSummonBySacrifice(int numberOfSacrifices) {
+    private void initForSummonOrSetBySacrifice(int numberOfSacrifices, CardView mainCard) {
         numberOfNeededCards = numberOfSacrifices;
         idsForMultiCardAction = new ArrayList<>();
+        mainCardForMultiCardAction = mainCard;
     }
 
-    private void initForAttackMonster() {
+    private void initForAttackMonster(CardView mainCard) {
         numberOfNeededCards = 1;
         idsForMultiCardAction = new ArrayList<>();
+        mainCardForMultiCardAction = mainCard;
     }
 
     private void responseIsForPhaseChange(String phaseChangeResponse) {
@@ -643,10 +647,12 @@ public class GameView {
                 handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
             } else if (response.matches("set spell \\d")) {
                 handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
+            } else if (response.matches("position changed to (attack|defence)")) {
+                // todo change position graphic
             } else if (response.matches("get \\d monsters")) {
-                initForSummonBySacrifice(Integer.parseInt(response.substring(4, 5)));
+                initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
             } else if (response.equals("attack monster")) {
-                initForAttackMonster();
+                initForAttackMonster(cardView);
             } else if (response.matches("rival loses \\d+")) {
 //                todo decrease rival LP
             } else if (response.matches("set monster \\d")) {
@@ -657,6 +663,8 @@ public class GameView {
                 handleFlipSummonGraphic(cardView);
             } else if (response.matches("summon \\d sacrifice( \\d)+")) {
                 handleSummonWithSacrificeGraphics(Integer.parseInt(response.substring(7, 8)));
+            } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
+//                todo handle set with sacrifice
             } else {
                 responseIsForPhaseChange(response);
             }
