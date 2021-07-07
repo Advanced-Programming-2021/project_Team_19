@@ -202,7 +202,7 @@ public class GameView {
         phaseButton.setOnMouseClicked(event -> {
             if (game.gameData.getCurrentGamer().equals(self)) {
                 ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
-                gameController.graphicsForEvents(this, events, null, 0);
+                gameController.graphicsForEvents(events, null, 0);
             }
         });
 
@@ -600,7 +600,7 @@ public class GameView {
             dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
         }
 
-        gameController.graphicsForEvents(this, dataFromGameRun, cardView, 0);
+        gameController.graphicsForEvents(dataFromGameRun, cardView, 0);
 
         cardView.tempPopup.hide();
     }

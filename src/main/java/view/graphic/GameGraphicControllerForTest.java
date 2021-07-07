@@ -73,7 +73,7 @@ public class GameGraphicControllerForTest extends Menu {
         gameView1.run();
         gameView2.run();
         new Timeline(new KeyFrame(Duration.millis(2500), event -> {
-            graphicsForEvents(gameView1, game.run(new DataForGameRun
+            graphicsForEvents(game.run(new DataForGameRun
                     ("start game", gameView1.self)), null, 0);
         })).play();
     }
@@ -147,10 +147,11 @@ public class GameGraphicControllerForTest extends Menu {
         return 1000;
     }
 
-    public void graphicsForEvents(GameView gameView, ArrayList<DataFromGameRun> events, CardView cardView, int index) {
+    public void graphicsForEvents(ArrayList<DataFromGameRun> events, CardView cardView, int index) {
 
         double time = 500;
 
+        GameView gameView = events.get(index).gamerOfAction.equals(gameView1.self) ? gameView1 : gameView2;
 
         String response = events.get(index).event;
 
@@ -186,8 +187,9 @@ public class GameGraphicControllerForTest extends Menu {
             time = responseIsForPhaseChange(gameView, response);
         }
         if (index < events.size() - 1) {
+            GameView finalGameView = gameView;
             new Timeline(new KeyFrame(Duration.millis(time),
-                    EventHandler -> graphicsForEvents(gameView, events, cardView, index + 1))).play();
+                    EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
         }
     }
 
