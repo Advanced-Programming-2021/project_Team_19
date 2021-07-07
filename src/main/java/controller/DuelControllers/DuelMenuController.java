@@ -11,11 +11,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.Enums.GameEvent;
 import model.Gamer;
+import model.Pair;
 import model.User;
 import view.Menu.MainMenu;
 import view.Menu.Menu;
+import view.Menu.RockPaper;
 import view.Printer.Printer;
 
 public class DuelMenuController extends Menu {
@@ -182,8 +185,16 @@ public class DuelMenuController extends Menu {
 
     private void startDuelWithAnotherPlayer() {
 
-        gameStarter = new Gamer(user);
-        rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
+        RockPaper rockPaper = new RockPaper();
+        rockPaper.run(user, UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()), stage);
+        Pair<Pair<Stage, Stage>, Boolean> result = rockPaper.getResult2();
+        if (result.getSecond()) {
+            gameStarter = new Gamer(user);
+            rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
+        } else {
+            gameStarter = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
+            rivalGamer = new Gamer(user);
+        }
         handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
 
     }

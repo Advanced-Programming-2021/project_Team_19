@@ -25,10 +25,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import controller.DataBaseControllers.CSVDataBaseController;
-import view.Menu.CardCreating;
-import view.Menu.Deck;
-import view.Menu.Shop;
-import view.Menu.WelcomeMenu;
+import view.Menu.*;
 
 public class menuGraphic extends Application {
 
@@ -45,8 +42,8 @@ public class menuGraphic extends Application {
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
 //        new Shop().testRun(UserDataBaseController.getUserByUsername("mohammad"));
-        new GameGraphicControllerForTest().testRun();
-//        WelcomeMenu.getInstance().run();
+//        new RockPaper().run();
+        WelcomeMenu.getInstance().run();
         //testRun function of your menu for test here
         stage.show();
     }
