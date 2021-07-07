@@ -639,12 +639,22 @@ public class GameView {
         }
     }
 
+    public int getIndexById(int id){
+        String data = "53124";
+        return data.indexOf(id + "");
+    }
+
+    public int getIndexByRivalId(int id){
+        String data = "42135";
+        return data.indexOf(id + "");
+    }
+
     public void graphicsForEvents(ArrayList<String> events, CardView cardView) {
         for (String response : events) {
             if (response.matches("summon \\d")) {
-                handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
+                handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
             } else if (response.matches("set spell \\d")) {
-                handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
+                handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
             } else if (response.matches("position changed to (attack|defence)")) {
                 handleChangePositionGraphic(cardView, Utils.getFirstGroupInMatcher(
                         Utils.getMatcher(response, "position changed to (attack|defence)")));
@@ -655,7 +665,7 @@ public class GameView {
             } else if (response.matches("rival loses \\d+")) {
                 handleIncreaseLpGraphic(-Integer.parseInt(response.substring(12)), false);
             } else if (response.matches("set monster \\d")) {
-                handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
+                handleSetMonsterGraphic(cardView, getIndexById(Integer.parseInt(response.substring(12))));
             } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
                 handleAttackResultGraphic(Utils.getMatcher(response,
                         "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp"));
@@ -663,7 +673,7 @@ public class GameView {
                 handleFlipSummonGraphic(cardView);
             } else if (response.matches("summon \\d sacrifice( \\d)+")) {
                 handleSummonSetWithSacrificeGraphics(cardView,
-                        Integer.parseInt(response.substring(7, 8)), response.substring(19), false);
+                        getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
             } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
                 handleSummonSetWithSacrificeGraphics(cardView,
                         Integer.parseInt(response.substring(13, 14)), response.substring(25), true);
@@ -906,8 +916,10 @@ public class GameView {
     void handleSummonSetWithSacrificeGraphics(CardView cardView, int index, String sacrificeData, boolean isSet) {
 
         double time = 0;
+
         for (String indexStr : sacrificeData.split(" ")) {
-            time = handleDestroyCardFromFieldOrHand(Integer.parseInt(indexStr), 0, true);
+            System.out.println(monsterZoneCards.get(getIndexById(Integer.parseInt(indexStr))).card);
+            time = handleDestroyCardFromFieldOrHand(getIndexById(Integer.parseInt(indexStr)), 0, true);
         }
 
         EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(cardView, index)
@@ -919,14 +931,16 @@ public class GameView {
     void handleAttackResultGraphic(Matcher matcher) {
 
         matcher.find();
-        int attackerID = Integer.parseInt(matcher.group(0));
-        boolean destroyAttacker = matcher.group(1).equals("destroy");
-        int attackedID = Integer.parseInt(matcher.group(2));
-        boolean destroyAttacked = matcher.group(3).equals("destroy");
-        boolean flipAttacked = matcher.group(4).equals("flip ");
-        boolean isLpLoserSelf = matcher.group(5).equals("self");
-        int lp = Integer.parseInt(matcher.group(6));
+        int attackerID = getIndexById(Integer.parseInt(matcher.group(1)));
+        boolean destroyAttacker = matcher.group(2).equals("destroy");
+        int attackedID = getIndexByRivalId(Integer.parseInt(matcher.group(3)));
+        boolean destroyAttacked = matcher.group(4).equals("destroy");
+        boolean flipAttacked = matcher.group(5).equals("flip ");
+        boolean isLpLoserSelf = matcher.group(6).equals("self");
+        int lp = -Integer.parseInt(matcher.group(7));
 
+        System.out.println(matcher.group(0) + "\n" + attackedID + " "+ destroyAttacked + " " + attackedID + " "
+                + destroyAttacked + " " + flipAttacked + " " + isLpLoserSelf + " " + lp);
         double time = 10;
 
         if (flipAttacked) {
@@ -943,17 +957,18 @@ public class GameView {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         if (destroyAttacker) {
-                            handleDestroyCardFromFieldOrHand(attackerID, 1, true);
+                            handleDestroyCardFromFieldOrHand(attackerID, 0, true);
                         }
 
                         if (destroyAttacked) {
-                            handleDestroyCardFromFieldOrHand(4 - attackedID, 1, false);
+
+                            handleDestroyCardFromFieldOrHand(attackedID, 0, false);
                         }
                     }
                 })).play();
 
             }
-        }));
+        })).play();
 
     }
 
@@ -981,6 +996,7 @@ public class GameView {
         if (cardView == null) {
             cardView = searchCardInSelfField(card);
         }
+        System.out.println(card);
         return runSetPosition(cardView, position);
     }
 

@@ -472,7 +472,7 @@ public class ActionsAnimationHandler {
 
     static double runIncreaseLpGraphic(GameView gameView, double lp, boolean isSelf) {
         getIncreaseLpTransition(gameView, lp, isSelf).play();
-        return lp;
+        return Math.abs(lp);
     }
 
     static void increaseLpInLabel(GameView gameView, double lp) {
@@ -482,7 +482,7 @@ public class ActionsAnimationHandler {
 
     static double runIncreaseLpGraphicBecauseOfRivalNotification(GameView gameView, double lp, boolean isSelf) {
         getIncreaseLpTransition(gameView, lp, isSelf).play();
-        return lp;
+        return Math.abs(lp);
     }
 
     static void increaseRivalLpInLabel(GameView gameView, double lp) {

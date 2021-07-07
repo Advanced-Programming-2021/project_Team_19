@@ -76,9 +76,9 @@ public class GameGraphicControllerForTest extends Menu {
         switch (data.command) {
             case "change phase" -> otherGameView.handleChangePhaseBecauseOfOtherClientNotification();
 
-            case "position changed to attack" ->
+            case "set position attack" ->
                     otherGameView.handleChangePositionGraphicBOOCN(data.card, "attack");
-            case "position changed to defence" ->
+            case "set position defence" ->
                     otherGameView.handleChangePositionGraphicBOOCN(data.card, "defence");
 
             case "summon" -> otherGameView.handleSummonRivalMonsterGraphicBOOCN(data.card, data.index);
