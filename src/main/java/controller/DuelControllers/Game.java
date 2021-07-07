@@ -32,55 +32,47 @@ public class Game {
     }
 
 
-    public DataFromGameRun run(DataForGameRun dataFromClient) {
+    public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
+        DataFromGameRun.reset();
         String command = dataFromClient.getCommand();
         switch (command) {
             case "start game" -> {
-                return new DataFromGameRun(runServerSideGameEvents());
-            }case "set" -> {
-                DataFromGameRun data = new DataFromGameRun(new Set(gameData).run(null));
-                data.addEvents(runServerSideGameEvents());
-                return data;
+                runServerSideGameEvents();
+            }
+            case "set" -> {
+                new DataFromGameRun(new Set(gameData).run(null));
             }
             case "set with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.SET_MODE);
-                return new DataFromGameRun(new Set(gameData).actionIsValid());
+                new DataFromGameRun(new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
                 String summonResponse = new NormalSummon(gameData).run(null);
-                DataFromGameRun data = new DataFromGameRun(summonResponse);
-                data.addEvents(runServerSideGameEvents());
-                return data;
+                new DataFromGameRun(summonResponse);
             }
             case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
-                return new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
+                new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
             }
             case "attack direct" -> {
-                DataFromGameRun data = new DataFromGameRun(new DirectAttack(gameData).run());
-                data.addEvents(runServerSideGameEvents());
-                return data;
+                new DataFromGameRun(new DirectAttack(gameData).run());
             }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
-                return new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
+                new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
             }
             case "flip summon" -> {
                 DataFromGameRun data = new DataFromGameRun(new FlipSummon(gameData).run());
-                data.addEvents(runServerSideGameEvents());
-                return data;
             }
             case "get Atk|Def" -> {
-                return new DataFromGameRun(getAtkDef(gameData));
+                new DataFromGameRun(getAtkDef(gameData));
             }
             case "next phase" -> {
                 String nextPhaseName = goToNextPhase(gameData);
-                DataFromGameRun data = new DataFromGameRun(nextPhaseName);
-                data.addEvents(runServerSideGameEvents());
-                return data;
+                new DataFromGameRun(nextPhaseName);
             }
         }
         if (command.matches("sacrifice \\d( \\d)*")) {
@@ -88,28 +80,24 @@ public class Game {
             String summonOrSetResponse = "";
             if (CardActionManager.mode.equals(actionManagerMode.SUMMON_MODE)) {
                 summonOrSetResponse = new NormalSummon(gameData).run(command.substring(10));
-            }else if (CardActionManager.mode.equals(actionManagerMode.SET_MODE)) {
+            } else if (CardActionManager.mode.equals(actionManagerMode.SET_MODE)) {
                 summonOrSetResponse = new Set(gameData).run(command.substring(10));
             }
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            DataFromGameRun data = new DataFromGameRun(summonOrSetResponse);
-            data.addEvents(runServerSideGameEvents());
-            return data;
+            new DataFromGameRun(summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
             String attackResponse = new AttackMonster(gameData).run(Integer.parseInt(command.substring(7)));
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            DataFromGameRun data = new DataFromGameRun(attackResponse);
-            data.addEvents(runServerSideGameEvents());
-            return data;
-        }else if (command.matches("set position (attack|defence)")) {
+            new DataFromGameRun(attackResponse);
+        } else if (command.matches("set position (attack|defence)")) {
             String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
-            DataFromGameRun data = new DataFromGameRun(setPositionResponse);
-            data.addEvents(runServerSideGameEvents());
-            return data;
+            new DataFromGameRun(setPositionResponse);
         }
 
-        return new DataFromGameRun(runServerSideGameEvents());
+        runServerSideGameEvents();
+
+        return DataFromGameRun.eventDataFromServer;
     }
 
 
@@ -120,9 +108,7 @@ public class Game {
         throw new Exception("not your turn");
     }
 
-    public ArrayList<String> runServerSideGameEvents() {
-
-        ArrayList<String> events = new ArrayList<>();
+    public void runServerSideGameEvents() {
 
         while (true) {
 
@@ -147,34 +133,34 @@ public class Game {
 
 
             if (gameData.isGameOver()) {
-                events.add("game finished" + finishGame(gameData).getUsername());
+                new DataFromGameRun("game finished" + finishGame(gameData).getUsername());
 //                return finishGame(gameData);
             }
 
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
-                events.add("draw phase");
-                new DrawPhase().run(gameData);
+                Card card = new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
+                new DataFromGameRun("add card to hand", card);
+                new DataFromGameRun("draw phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
                 new StandbyPhase().run(gameData);
                 goToNextPhase(gameData);
-                events.add("stand by phase");
+                new DataFromGameRun("stand by phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.END)) {
                 gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
-                events.add("end phase");
+                new DataFromGameRun("end phase");
                 continue;
             }
 
             gameData.setEvent(GameEvent.NORMAL);
             break;
         }
-        return events;
     }
 
 

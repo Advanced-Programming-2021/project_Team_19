@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataBaseControllers.UserDataBaseController;
+import controller.DataFromGameRun;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.Utils;
@@ -142,11 +143,12 @@ public class GameGraphicControllerForTest extends Menu {
         return 1000;
     }
 
-    public void graphicsForEvents(GameView gameView, ArrayList<String> events, CardView cardView, int index) {
+    public void graphicsForEvents(GameView gameView, ArrayList<DataFromGameRun> events, CardView cardView, int index) {
 
         double time = 500;
 
-        String response = events.get(index);
+
+        String response = events.get(index).event;
 
         if (response.matches("summon \\d")) {
             time = gameView.handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
