@@ -14,6 +14,8 @@ import model.Pair;
 import model.User;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class RockPaper extends Menu {
 
@@ -46,11 +48,13 @@ public class RockPaper extends Menu {
 
     private static Label prevResult;
 
+    private BlockingQueue<Boolean> getResult = new LinkedBlockingQueue<>();
+
     public RockPaper() {
         super("Rock Paper");
     }
 
-    public void run(User main, User invited) {
+    public void run(User main, User invited, Stage before) {
         RockPaper.main = main;
         RockPaper.invited = invited;
         Platform.runLater(() -> {
@@ -171,21 +175,29 @@ public class RockPaper extends Menu {
             choice.setText(null);
 
         } else {
-            if (firstPlayerChoice.equals(RockPaperScissorResult.PAPER) &&
-            secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
-                result.setText(main.getUsername() + " is the winner");
-                prevResult.setText(main.getUsername() + "is the winner");
-            } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
-            secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
-                result.setText(main.getUsername() + " is the winner");
-                prevResult.setText(main.getUsername() + "is the winner");
-            } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
-            secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
-                result.setText(main.getUsername() + " is the winner");
-                prevResult.setText(main.getUsername() + "is the winner");
-            } else {
-                result.setText(invited.getUsername() + " is the winner");
-                prevResult.setText(invited.getUsername() + "is the winner");
+            try {
+                if (firstPlayerChoice.equals(RockPaperScissorResult.PAPER) &&
+                        secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
+                    result.setText(main.getUsername() + " is the winner");
+                    prevResult.setText(main.getUsername() + "is the winner");
+                    getResult.put(true);
+                } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
+                        secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
+                    result.setText(main.getUsername() + " is the winner");
+                    prevResult.setText(main.getUsername() + "is the winner");
+                    getResult.put(true);
+                } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
+                        secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
+                    result.setText(main.getUsername() + " is the winner");
+                    prevResult.setText(main.getUsername() + "is the winner");
+                    getResult.put(true);
+                } else {
+                    result.setText(invited.getUsername() + " is the winner");
+                    prevResult.setText(invited.getUsername() + "is the winner");
+                    getResult.put(false);
+                }
+            } catch(InterruptedException e) {
+                e.printStackTrace();
             }
             try {
                 Thread.sleep(1000);
@@ -194,5 +206,15 @@ public class RockPaper extends Menu {
             }
 
         }
+    }
+
+    public Pair<Pair<Stage, Stage>, Boolean> getResult2() {
+        try {
+            Boolean tempResult = getResult.take();
+            return new Pair<>(new Pair<>(firstPlayerStage, secondPlayerStage), tempResult);
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
