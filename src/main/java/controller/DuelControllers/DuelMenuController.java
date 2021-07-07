@@ -184,6 +184,7 @@ public class DuelMenuController extends Menu {
 
         gameStarter = new Gamer(user);
         rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
+
         handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
 
     }
