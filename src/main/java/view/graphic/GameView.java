@@ -506,8 +506,6 @@ public class GameView {
             cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
         handleAddCardsFromDeckToHandGraphic(cards);
-        gameController.graphicsForEvents(this, game.run(new DataForGameRun
-                ("start game", self)), null, 0);
 
     }
 

@@ -65,7 +65,7 @@ public class Game {
                 new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
             }
             case "flip summon" -> {
-                DataFromGameRun data = new DataFromGameRun(new FlipSummon(gameData).run());
+                new DataFromGameRun(new FlipSummon(gameData).run());
             }
             case "get Atk|Def" -> {
                 new DataFromGameRun(getAtkDef(gameData));

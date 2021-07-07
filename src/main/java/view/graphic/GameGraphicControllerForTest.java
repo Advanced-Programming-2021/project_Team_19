@@ -1,6 +1,7 @@
 package view.graphic;
 
 import controller.DataBaseControllers.UserDataBaseController;
+import controller.DataForGameRun;
 import controller.DataFromGameRun;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
@@ -71,6 +72,10 @@ public class GameGraphicControllerForTest extends Menu {
     public void startGame() {
         gameView1.run();
         gameView2.run();
+        new Timeline(new KeyFrame(Duration.millis(2500), event -> {
+            graphicsForEvents(gameView1, game.run(new DataForGameRun
+                    ("start game", gameView1.self)), null, 0);
+        })).play();
     }
 
     private GameView getTheOtherGameView(GameView gameView) {
@@ -121,7 +126,6 @@ public class GameGraphicControllerForTest extends Menu {
     private double responseIsForPhaseChange(GameView gameView, String phaseChangeResponse) {
         if (phaseChangeResponse.equals("draw phase")) {
             gameView.handleChangePhase();
-//            gameView.handleAddCardFromDeckToHandGraphic(game.gameData.getCurrentGamer().getGameBoard().getHand().getCard(game.gameData.getCurrentGamer().getGameBoard().getHand().getSize() - 1));
         } else if (phaseChangeResponse.equals("stand by phase")) {
             gameView.handleChangePhase();
 //            todo    standby phase
@@ -152,6 +156,8 @@ public class GameGraphicControllerForTest extends Menu {
 
         if (response.matches("summon \\d")) {
             time = gameView.handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
+        } else if (response.equals("add card to hand")) {
+            time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
         } else if (response.matches("set spell \\d")) {
             time = gameView.handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
         } else if (response.matches("position changed to (attack|defence)")) {
@@ -179,7 +185,7 @@ public class GameGraphicControllerForTest extends Menu {
         } else {
             time = responseIsForPhaseChange(gameView, response);
         }
-        if(index < events.size() - 1){
+        if (index < events.size() - 1) {
             new Timeline(new KeyFrame(Duration.millis(time),
                     EventHandler -> graphicsForEvents(gameView, events, cardView, index + 1))).play();
         }
