@@ -182,7 +182,7 @@ public class GameGraphicControllerForTest extends Menu {
                     getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
             time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
-                    getIndexById(Integer.parseInt(response.substring(13, 14))), response.substring(25), true);
+                    getIndexById(Integer.parseInt(response.substring(12, 13))), response.substring(24), true);
         } else {
             time = responseIsForPhaseChange(gameView, response);
         }

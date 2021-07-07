@@ -224,10 +224,12 @@ public abstract class Monster extends Card {
     public String attackDefensiveMonster(Monster defendingMonster, GameData gameData) {
         int damage;
         if (getAttack(gameData) > defendingMonster.getDefence(gameData)) {
-            defendingMonster.handleDestroy(gameData);
+            String destroyResponse = defendingMonster.handleDestroy(gameData);
+            if (destroyResponse.equals("yomi ship")){
+                return "destroy @ destroy #self loses 0 lp";
+            }
             return "stay @ destroy #self loses 0 lp";
         } else if (getAttack(gameData) < defendingMonster.getDefence(gameData)) {
-            handleDestroy(gameData);
             damage = defendingMonster.getDefence(gameData) - getAttack(gameData);
             gameData.getCurrentGamer().decreaseLifePoint(damage);
             return "stay @ stay #self loses " + damage + " lp";
@@ -243,7 +245,9 @@ public abstract class Monster extends Card {
         if (getAttack(gameData) > defendingMonster.getAttack(gameData)) {
             damage = getAttack(gameData) - defendingMonster.getAttack(gameData);
             gameData.getSecondGamer().decreaseLifePoint(damage);
-            defendingMonster.handleDestroy(gameData);
+            String destroyResponse = defendingMonster.handleDestroy(gameData);
+            if (destroyResponse.equals("yomi ship"))
+                return "destroy @ destroy rival loses " + damage + " lp";
             return "stay @ destroy rival loses " + damage + " lp";
         } else if (getAttack(gameData) < defendingMonster.getAttack(gameData)) {
             damage = defendingMonster.getAttack(gameData) - getAttack(gameData);

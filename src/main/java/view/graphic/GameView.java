@@ -289,8 +289,8 @@ public class GameView {
 
 
     private void setData() {
-        selfLp = 8000;
-        rivalLp = 8000;
+        selfLp = 4000;
+        rivalLp = 4000;
 
         cardShowPane.setBottom(getVboxForData(selfLpLabel, selfUsernameLabel, false));
         cardShowPane.setTop(getVboxForData(rivalLpLabel, rivalUsernameLabel, true));
@@ -545,6 +545,7 @@ public class GameView {
 
         cardView.setOnMouseEntered(mouseEvent -> {
             game.gameData.setSelectedCard(card);
+            cardView.hasBeenClicked = false;
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
             if (cardView.canShowValidActions) {
@@ -569,9 +570,16 @@ public class GameView {
 
         cardView.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.SECONDARY)) {
-                showValidActionForCard(cardView.getNextValidAction(), cardView);
+                try {
+                    showValidActionForCard(cardView.getNextValidAction(), cardView);
+                } catch (Exception ignored) {
+                }
             } else {
-                cardOnLeftClick(cardView);
+                try {
+                    cardView.throwExceptionIfHasNoValidAction();
+                    cardOnLeftClick(cardView);
+                } catch (Exception ignored) {
+                }
             }
         });
 
@@ -579,7 +587,11 @@ public class GameView {
     }
 
     void cardOnLeftClick(CardView cardView) {
-        ArrayList<DataFromGameRun> dataFromGameRun = new ArrayList<>();
+        if (cardView.hasBeenClicked) {
+            return;
+        }
+        cardView.hasBeenClicked = true;
+        ArrayList<DataFromGameRun> dataFromGameRun;
         if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null) {
             if (cardView.getCurrentAction().equals("sacrifice")) {
                 idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
@@ -619,12 +631,12 @@ public class GameView {
         mainCardForMultiCardAction = mainCard;
     }
 
-    public static int getIndexById(int id){
+    public static int getIndexById(int id) {
         String data = "53124";
         return data.indexOf(id + "");
     }
 
-    public static int getIndexByRivalId(int id){
+    public static int getIndexByRivalId(int id) {
         String data = "42135";
         return data.indexOf(id + "");
     }
@@ -889,7 +901,7 @@ public class GameView {
         double time = 10;
 
         if (flipAttacked) {
-            time = handleFlipCardGraphic(rivalMonsterZoneCards.get(4 - attackedID));
+            time = handleFlipCardGraphic(rivalMonsterZoneCards.get(attackedID));
         }
 
         new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {

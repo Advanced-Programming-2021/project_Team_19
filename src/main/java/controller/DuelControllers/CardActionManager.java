@@ -55,6 +55,11 @@ public class CardActionManager {
                     validActions.add(result);
                 }
 
+                result = new FlipSummon(GameData.getGameData()).actionIsValid();
+                if (result.equals("flip summon")) {
+                    validActions.add(result);
+                }
+
                 result = new SetPosition(GameData.getGameData()).actionIsValid(false);
                 if (result.startsWith("set position")) {
                     validActions.add(result);
