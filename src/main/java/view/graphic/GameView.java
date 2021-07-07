@@ -505,6 +505,8 @@ public class GameView {
             cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
         handleAddCardsFromDeckToHandGraphic(cards);
+        graphicsForEvents(game.run(new DataForGameRun("start game", self)).getEvents(), null);
+
     }
 
     void setBooleanForShowActions(ArrayList<CardView> cardViews, boolean bool) {

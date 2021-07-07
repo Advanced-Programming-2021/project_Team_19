@@ -35,7 +35,9 @@ public class Game {
     public DataFromGameRun run(DataForGameRun dataFromClient) {
         String command = dataFromClient.getCommand();
         switch (command) {
-            case "set" -> {
+            case "start game" -> {
+                return new DataFromGameRun(runServerSideGameEvents());
+            }case "set" -> {
                 DataFromGameRun data = new DataFromGameRun(new Set(gameData).run(null));
                 data.addEvents(runServerSideGameEvents());
                 return data;
