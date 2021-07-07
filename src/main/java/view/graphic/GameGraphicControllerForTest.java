@@ -3,6 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
+import controller.Utils;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +14,10 @@ import model.Gamer;
 import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.Menu.Menu;
+
+import java.util.ArrayList;
+
+import static view.graphic.GameView.getIndexById;
 
 public class GameGraphicControllerForTest extends Menu {
 
@@ -107,6 +112,67 @@ public class GameGraphicControllerForTest extends Menu {
             boolean isSelf = strings[1].equals("self");
             int zone = strings[2].equals("monster zone") ? 0 : (strings[2].equals("spell zone") ? 1 : 2);
             otherGameView.handleDestroyCardFromFieldOrHandBOOCN(data.index, zone, isSelf);
+        }
+    }
+
+
+
+
+    private void responseIsForPhaseChange(GameView gameView, String phaseChangeResponse) {
+        if (phaseChangeResponse.equals("draw phase")) {
+            gameView.handleChangePhase();
+//            gameView.handleAddCardFromDeckToHandGraphic(game.gameData.getCurrentGamer().getGameBoard().getHand().getCard(game.gameData.getCurrentGamer().getGameBoard().getHand().getSize() - 1));
+        } else if (phaseChangeResponse.equals("stand by phase")) {
+            gameView.handleChangePhase();
+//            todo    standby phase
+        } else if (phaseChangeResponse.equals("end phase")) {
+            gameView.handleChangePhase();
+//            todo    end phase
+        } else if (phaseChangeResponse.equals("main phase 1")) {
+            gameView.handleChangePhase();
+//            todo    main phase 1
+        } else if (phaseChangeResponse.equals("battle phase")) {
+            gameView.handleChangePhase();
+//            todo    battle phase
+        } else if (phaseChangeResponse.equals("main phase 2")) {
+            gameView.handleChangePhase();
+//            todo    main phase 2
+        } else if (phaseChangeResponse.matches("game finished \\w+")) {
+//           todo     finish game
+        }
+    }
+
+    public void graphicsForEvents(GameView gameView, ArrayList<String> events, CardView cardView) {
+        for (String response : events) {
+            if (response.matches("summon \\d")) {
+                gameView.handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
+            } else if (response.matches("set spell \\d")) {
+                gameView.handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
+            } else if (response.matches("position changed to (attack|defence)")) {
+                gameView.handleChangePositionGraphic(cardView, Utils.getFirstGroupInMatcher(
+                        Utils.getMatcher(response, "position changed to (attack|defence)")));
+            } else if (response.matches("get \\d monsters")) {
+                gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
+            } else if (response.equals("attack monster")) {
+                gameView.initForAttackMonster(cardView);
+            } else if (response.matches("rival loses \\d+")) {
+                gameView.handleIncreaseLpGraphic(-Integer.parseInt(response.substring(12)), false);
+            } else if (response.matches("set monster \\d")) {
+                gameView.handleSetMonsterGraphic(cardView, getIndexById(Integer.parseInt(response.substring(12))));
+            } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
+                gameView.handleAttackResultGraphic(Utils.getMatcher(response,
+                        "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp"));
+            } else if (response.equals("flip summoned successfully")) {
+                gameView.handleFlipSummonGraphic(cardView);
+            } else if (response.matches("summon \\d sacrifice( \\d)+")) {
+                gameView.handleSummonSetWithSacrificeGraphics(cardView,
+                        getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
+            } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
+                gameView.handleSummonSetWithSacrificeGraphics(cardView,
+                        getIndexById(Integer.parseInt(response.substring(13, 14))), response.substring(25), true);
+            } else {
+                responseIsForPhaseChange(gameView, response);
+            }
         }
     }
 

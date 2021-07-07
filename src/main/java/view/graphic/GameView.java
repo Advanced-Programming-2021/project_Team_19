@@ -201,7 +201,7 @@ public class GameView {
         phaseButton.setOnMouseClicked(event -> {
             if (game.gameData.getCurrentGamer().equals(self)) {
                 ArrayList<String> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)).getEvents());
-                graphicsForEvents(events, null);
+                gameController.graphicsForEvents(this, events, null);
             }
         });
 
@@ -505,7 +505,7 @@ public class GameView {
             cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
         handleAddCardsFromDeckToHandGraphic(cards);
-        graphicsForEvents(game.run(new DataForGameRun("start game", self)).getEvents(), null);
+        gameController.graphicsForEvents(this, game.run(new DataForGameRun("start game", self)).getEvents(), null);
 
     }
 
@@ -600,90 +600,33 @@ public class GameView {
             dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self)).getEvents();
         }
 
-        graphicsForEvents(dataFromGameRun, cardView);
+        gameController.graphicsForEvents(this, dataFromGameRun, cardView);
 
         cardView.tempPopup.hide();
     }
 
-    private void initForSummonOrSetBySacrifice(int numberOfSacrifices, CardView mainCard) {
+    void initForSummonOrSetBySacrifice(int numberOfSacrifices, CardView mainCard) {
         numberOfNeededCards = numberOfSacrifices;
         idsForMultiCardAction = new ArrayList<>();
         mainCardForMultiCardAction = mainCard;
     }
 
-    private void initForAttackMonster(CardView mainCard) {
+    void initForAttackMonster(CardView mainCard) {
         numberOfNeededCards = 1;
         idsForMultiCardAction = new ArrayList<>();
         mainCardForMultiCardAction = mainCard;
     }
 
-    private void responseIsForPhaseChange(String phaseChangeResponse) {
-        if (phaseChangeResponse.equals("draw phase")) {
-            handleChangePhase();
-            handleAddCardFromDeckToHandGraphic(game.gameData.getCurrentGamer().getGameBoard().getHand().getCard(game.gameData.getCurrentGamer().getGameBoard().getHand().getSize() - 1));
-        } else if (phaseChangeResponse.equals("stand by phase")) {
-            handleChangePhase();
-//            todo    standby phase
-        } else if (phaseChangeResponse.equals("end phase")) {
-            handleChangePhase();
-//            todo    end phase
-        } else if (phaseChangeResponse.equals("main phase 1")) {
-            handleChangePhase();
-//            todo    main phase 1
-        } else if (phaseChangeResponse.equals("battle phase")) {
-            handleChangePhase();
-//            todo    battle phase
-        } else if (phaseChangeResponse.equals("main phase 2")) {
-            handleChangePhase();
-//            todo    main phase 2
-        } else if (phaseChangeResponse.matches("game finished \\w+")) {
-//           todo     finish game
-        }
-    }
-
-    public int getIndexById(int id){
+    public static int getIndexById(int id){
         String data = "53124";
         return data.indexOf(id + "");
     }
 
-    public int getIndexByRivalId(int id){
+    public static int getIndexByRivalId(int id){
         String data = "42135";
         return data.indexOf(id + "");
     }
 
-    public void graphicsForEvents(ArrayList<String> events, CardView cardView) {
-        for (String response : events) {
-            if (response.matches("summon \\d")) {
-                handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
-            } else if (response.matches("set spell \\d")) {
-                handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
-            } else if (response.matches("position changed to (attack|defence)")) {
-                handleChangePositionGraphic(cardView, Utils.getFirstGroupInMatcher(
-                        Utils.getMatcher(response, "position changed to (attack|defence)")));
-            } else if (response.matches("get \\d monsters")) {
-                initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
-            } else if (response.equals("attack monster")) {
-                initForAttackMonster(cardView);
-            } else if (response.matches("rival loses \\d+")) {
-                handleIncreaseLpGraphic(-Integer.parseInt(response.substring(12)), false);
-            } else if (response.matches("set monster \\d")) {
-                handleSetMonsterGraphic(cardView, getIndexById(Integer.parseInt(response.substring(12))));
-            } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
-                handleAttackResultGraphic(Utils.getMatcher(response,
-                        "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp"));
-            } else if (response.equals("flip summoned successfully")) {
-                handleFlipSummonGraphic(cardView);
-            } else if (response.matches("summon \\d sacrifice( \\d)+")) {
-                handleSummonSetWithSacrificeGraphics(cardView,
-                        getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
-            } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
-                handleSummonSetWithSacrificeGraphics(cardView,
-                        getIndexById(Integer.parseInt(response.substring(13, 14))), response.substring(25), true);
-            } else {
-                responseIsForPhaseChange(response);
-            }
-        }
-    }
 
     CardView getCardForRivalHand(Card card) {
         return new CardView(card, 5, true, true);
