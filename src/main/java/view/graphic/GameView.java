@@ -919,13 +919,13 @@ public class GameView {
     void handleAttackResultGraphic(Matcher matcher) {
 
         matcher.find();
-        int attackerID = Integer.parseInt(matcher.group(0));
-        boolean destroyAttacker = matcher.group(1).equals("destroy");
-        int attackedID = Integer.parseInt(matcher.group(2));
-        boolean destroyAttacked = matcher.group(3).equals("destroy");
-        boolean flipAttacked = matcher.group(4).equals("flip ");
-        boolean isLpLoserSelf = matcher.group(5).equals("self");
-        int lp = Integer.parseInt(matcher.group(6));
+        int attackerID = Integer.parseInt(matcher.group(1));
+        boolean destroyAttacker = matcher.group(2).equals("destroy");
+        int attackedID = Integer.parseInt(matcher.group(3));
+        boolean destroyAttacked = matcher.group(4).equals("destroy");
+        boolean flipAttacked = matcher.group(5).equals("flip ");
+        boolean isLpLoserSelf = matcher.group(6).equals("self");
+        int lp = Integer.parseInt(matcher.group(7));
 
         double time = 10;
 
