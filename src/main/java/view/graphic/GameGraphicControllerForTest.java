@@ -75,15 +75,21 @@ public class GameGraphicControllerForTest extends Menu {
 
         switch (data.command) {
             case "change phase" -> otherGameView.handleChangePhaseBecauseOfOtherClientNotification();
-            case "summon" -> otherGameView.handleRivalSummonGraphic(data.card, data.index);
-            case "set monster" ->  otherGameView.handleRivalSetMonsterGraphic(data.card, data.index);
-            case "set spell" -> otherGameView.handleRivalSetSpellGraphic(data.card, data.index);
-            case "activate spell" -> otherGameView.handleRivalActivateSpellGraphic(data.card, data.index);
-            case "flip summon" -> otherGameView.handleRivalFlipSummonGraphic(data.card);
+
+            case "position changed to attack" ->
+                    otherGameView.handleChangePositionGraphicBOOCN(data.card, "attack");
+            case "position changed to defence" ->
+                    otherGameView.handleChangePositionGraphicBOOCN(data.card, "defence");
+
+            case "summon" -> otherGameView.handleSummonRivalMonsterGraphicBOOCN(data.card, data.index);
+            case "set monster" ->  otherGameView.handleSetRivalMonsterGraphicBOOCN(data.card, data.index);
+            case "set spell" -> otherGameView.handleSetRivalSpellGraphicBOOCN(data.card, data.index);
+            case "activate spell" -> otherGameView.handleActivateRivalSpellGraphicBOOCN(data.card, data.index);
+            case "flip summon" -> otherGameView.handleRivalFlipSummonGraphicBOOCN(data.card);
             case "flip" -> otherGameView.handleFlipCardGraphicBOOCN(data.card);
-            case "increase rival lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, false);
-            case "increase self lp" -> otherGameView.handleRivalIncreaseLpGraphic(data.index, true);
-            case "add card from deck to hand" -> otherGameView.handleRivalAddCardFromDeckToHandGraphic(data.card);
+            case "increase rival lp" -> otherGameView.handleIncreaseLpGraphicBOOCN(data.index, false);
+            case "increase self lp" -> otherGameView.handleIncreaseLpGraphicBOOCN(data.index, true);
+            case "add card from deck to hand" -> otherGameView.handleAddRivalCardFromDeckToHandGraphicBOOCN(data.card);
             case "add card to self graveyard"-> otherGameView.handleAddCardToGraveYardGraphicBOOTN
                     (data.card, true);
             case "add card to rival graveyard" -> otherGameView.handleAddCardToGraveYardGraphicBOOTN
