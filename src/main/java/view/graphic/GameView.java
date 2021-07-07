@@ -652,9 +652,9 @@ public class GameView {
     public void graphicsForEvents(ArrayList<String> events, CardView cardView) {
         for (String response : events) {
             if (response.matches("summon \\d")) {
-                handleSummonGraphic(cardView, Integer.parseInt(response.substring(7)));
+                handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
             } else if (response.matches("set spell \\d")) {
-                handleSetSpellGraphic(cardView, Integer.parseInt(response.substring(10)));
+                handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
             } else if (response.matches("position changed to (attack|defence)")) {
                 handleChangePositionGraphic(cardView, Utils.getFirstGroupInMatcher(
                         Utils.getMatcher(response, "position changed to (attack|defence)")));
@@ -665,7 +665,7 @@ public class GameView {
             } else if (response.matches("rival loses \\d+")) {
                 handleIncreaseLpGraphic(-Integer.parseInt(response.substring(12)), false);
             } else if (response.matches("set monster \\d")) {
-                handleSetMonsterGraphic(cardView, Integer.parseInt(response.substring(12)));
+                handleSetMonsterGraphic(cardView, getIndexById(Integer.parseInt(response.substring(12))));
             } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
                 handleAttackResultGraphic(Utils.getMatcher(response,
                         "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp"));
@@ -673,10 +673,10 @@ public class GameView {
                 handleFlipSummonGraphic(cardView);
             } else if (response.matches("summon \\d sacrifice( \\d)+")) {
                 handleSummonSetWithSacrificeGraphics(cardView,
-                        Integer.parseInt(response.substring(7, 8)), response.substring(19), false);
+                        getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
             } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
                 handleSummonSetWithSacrificeGraphics(cardView,
-                        Integer.parseInt(response.substring(13, 14)), response.substring(25), true);
+                        getIndexById(Integer.parseInt(response.substring(13, 14))), response.substring(25), true);
             } else {
                 responseIsForPhaseChange(response);
             }
@@ -917,7 +917,7 @@ public class GameView {
 
         double time = 0;
         for (String indexStr : sacrificeData.split(" ")) {
-            time = handleDestroyCardFromFieldOrHand(Integer.parseInt(indexStr), 0, true);
+            time = handleDestroyCardFromFieldOrHand(getIndexById(Integer.parseInt(indexStr)), 0, true);
         }
 
         EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(cardView, index)
