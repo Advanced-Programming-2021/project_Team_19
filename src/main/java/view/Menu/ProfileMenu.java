@@ -24,6 +24,8 @@ public class ProfileMenu extends Menu {
     private static Label changeNicknameResponse = new Label();
     private static Label changePasswordResponse = new Label();
 
+    private String nickname;
+
     private ProfileMenu() {
         super("Profile Menu");
     }
@@ -37,9 +39,10 @@ public class ProfileMenu extends Menu {
 
     }
 
-    public void run(String username) {
+    public void run(String username, String nickname) {
         pane = new Pane();
         setUsername(username);
+        this.nickname = nickname;
         setButtons();
         setResponseLabels();
         stage.setTitle("Profile Menu");
@@ -77,6 +80,7 @@ public class ProfileMenu extends Menu {
         backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
         pane.getChildren().addAll(buttonBox, backButton);
+        showUsernameAndNickName(pane);
     }
 
     public void setChangeNicknameMenu() {
@@ -96,12 +100,13 @@ public class ProfileMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> run(username));
+        backButton.setOnMouseClicked(event -> run(username, nickname));
 
         ((VBox) changeNicknameBox.getChildren().get(1)).getChildren().add(submitNickname);
 
         pane = new Pane();
         pane.getChildren().addAll(changeNicknameBox, changeNicknameResponse, backButton);
+        showUsernameAndNickName(pane);
 
         stage.getScene().setRoot(pane);
 
@@ -149,7 +154,7 @@ public class ProfileMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> run(username));
+        backButton.setOnMouseClicked(event -> run(username, nickname));
 
         changePasswordGrid.setLayoutX(200);
         changePasswordGrid.setLayoutY(100);
@@ -157,6 +162,7 @@ public class ProfileMenu extends Menu {
 
         pane = new Pane();
         pane.getChildren().addAll(changePasswordGrid, changePasswordResponse, backButton);
+        showUsernameAndNickName(pane);
 
         stage.getScene().setRoot(pane);
 
@@ -191,6 +197,21 @@ public class ProfileMenu extends Menu {
                         , username, menuName));
 
         Printer.setAppropriateResponseToLabelFromData(data, changePasswordResponse);
+    }
+
+    private void showUsernameAndNickName(Pane pane){
+        HBox nameBox = new HBox(20);
+
+        Label usernameLabel = new Label("username: " + username);
+        Label nicknameLabel = new Label("nickname:  " + nickname);
+
+        nameBox.getChildren().addAll(usernameLabel, nicknameLabel);
+
+        pane.getChildren().add(nameBox);
+
+        nameBox.setLayoutX(stage.getScene().getWidth()/ 2);
+        nameBox.setLayoutY(10);
+
     }
 
 

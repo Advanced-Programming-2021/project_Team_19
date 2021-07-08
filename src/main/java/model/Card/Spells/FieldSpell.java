@@ -40,7 +40,7 @@ public class FieldSpell extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
 
-        return new ActivationData(this, "you successfully activated " + this.getName());
+        return new ActivationData(this, "field spell " + this.getName());
     }
 
 

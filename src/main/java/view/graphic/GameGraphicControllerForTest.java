@@ -12,6 +12,9 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -36,7 +39,7 @@ public class GameGraphicControllerForTest extends Menu {
     Game game;
     int rounds;
 
-    public GameGraphicControllerForTest(){
+    public GameGraphicControllerForTest() {
         super("test game");
         TestInit();
     }
@@ -81,7 +84,7 @@ public class GameGraphicControllerForTest extends Menu {
         stage2.setScene(scene);
         User user1 = UserDataBaseController.getUserByUsername("mohammad");
         Gamer gamer1 = new Gamer(user1);
-        User user2 = UserDataBaseController.getUserByUsername("reza");
+        User user2 = UserDataBaseController.getUserByUsername("iman");
         Gamer gamer2 = new Gamer(user2);
 
         GameData gameData = new GameData(gamer1, gamer2);
@@ -229,6 +232,7 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(String spellCommand) {
+
         if (spellCommand.equals("destroy this spell")) {
 //            todo destroy this spell only and do nothing else
         } else if (spellCommand.matches("destroy rival monsters( \\d)*")) {
@@ -240,8 +244,23 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (spellCommand.matches("destroy rival spells( \\d)*")) {
 //            todo destroy this spell and destroy spells and traps in the given ids in enemy spell and trap zone
 //            todo number of ids can be zero
+        } else if (spellCommand.startsWith("field spell ")) {
+            changeStages(spellCommand.substring(12));
         }
         return 0;
+    }
+
+    private void changeStages(String fieldSpellName) {
+        String backgroundName = "";
+        switch (fieldSpellName){
+            case "Yami" -> backgroundName = "yami";
+            case "Forest" -> backgroundName = "forest";
+            case "Umii Ruka" -> backgroundName = "umi";
+//            case "yami" -> backgroundName = "dark";
+        }
+        Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
+        ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+        ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
     }
 
 }

@@ -41,7 +41,7 @@ public class MainMenu extends Menu {
         VBox buttonBox = setSeveralChoiceButtons("Profile Menu", "Deck Menu",
                 "Duel Menu", "Shop Menu", "Scoreboard Menu", "Import/Export Menu", "Card Creating Menu");
 
-        buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username));
+        buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username, UserDataBaseController.getUserByUsername(username).getNickname()));
 
         buttonBox.getChildren().get(1).setOnMouseClicked(event -> new Deck().run(UserDataBaseController.getUserByUsername(username)));
 

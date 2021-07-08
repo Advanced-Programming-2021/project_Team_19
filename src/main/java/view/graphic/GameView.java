@@ -175,7 +175,7 @@ public class GameView {
         addPhaseBox();
         addPhaseChangeButton();
         gamePane.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.C) && event.isAltDown() && event.isShiftDown()) {
+            if (event.getCode().equals(KeyCode.C) && event.isControlDown() && event.isShiftDown()) {
                 Stage cheatSheet = new Stage();
                 cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
                 cheatSheet.show();
@@ -280,19 +280,15 @@ public class GameView {
         VBox cheatButtonBox = new VBox();
 
         Pane cheatPane = new Pane();
-        Button lpIncreaseButton = new Button("increase LP");
-        lpIncreaseButton.setOnMouseClicked(event -> {
-            selfLpLabel.setText(String.valueOf(selfLp += 1000));
+        TextField cheatTextField = new TextField();
+
+        Button submit = new Button("submit");
+        submit.setOnMouseClicked(event -> {
+            game.run(new DataForGameRun("game button " + cheatTextField.getText(), self));
             stage.close();
         });
 
-        Button winGameButton = new Button("win game");
-        winGameButton.setOnMouseClicked(event -> {
-            //TODO
-            stage.close();
-        });
-
-        cheatButtonBox.getChildren().addAll(lpIncreaseButton, winGameButton);
+        cheatButtonBox.getChildren().addAll(cheatTextField, submit);
 
         cheatPane.getChildren().add(cheatButtonBox);
 
