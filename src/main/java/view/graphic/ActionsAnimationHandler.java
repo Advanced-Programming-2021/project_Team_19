@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DuelControllers.Game;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -463,8 +464,32 @@ public class ActionsAnimationHandler {
         return 400;
     }
 
-    static double runFlipCardGraphic(CardView cardView) {
-        new FlipAnimation(cardView, 500).getAnimation().play();
+    static double runFlipCardGraphic(CardView cardView, GameView gameView) {
+
+        CardView newCardView = new CardView
+                (cardView.card, cardView.sizeInverse, !cardView.isHidden, cardView.isVertical);
+        newCardView.setX(cardView.getX());
+        newCardView.setY(cardView.getY());
+        newCardView.setVisible(false);
+        gameView.gamePane.getChildren().add(newCardView);
+
+        Animation animation = new FlipAnimation(cardView, 500).getAnimation();
+        animation.setOnFinished(EventHandler -> {
+            gameView.gamePane.getChildren().remove(cardView);
+            newCardView.setVisible(true);
+        });
+        animation.play();
+
+        if(gameView.monsterZoneCards.contains(cardView)){
+            gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
+        } else if (gameView.spellZoneCards.contains(cardView)){
+            gameView.spellZoneCards.set(gameView.spellZoneCards.indexOf(cardView), newCardView);
+        } else if (gameView.rivalSpellZoneCards.contains(cardView)){
+            gameView.rivalSpellZoneCards.set(gameView.rivalSpellZoneCards.indexOf(cardView), newCardView);
+        } else if (gameView.rivalMonsterZoneCards.contains(cardView)){
+            gameView.rivalMonsterZoneCards.set(gameView.rivalMonsterZoneCards.indexOf(cardView), newCardView);
+        }
+
         return 500;
     }
 

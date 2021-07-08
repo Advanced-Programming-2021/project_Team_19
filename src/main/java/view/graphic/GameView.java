@@ -844,7 +844,7 @@ public class GameView {
     double handleFlipCardGraphic(CardView cardView) {
         gameController.notifyOtherGameViewToDoSomething(this,
                 new graphicDataForServerToNotifyOtherClient("flip", cardView.getCard(), -1));
-        return runFlipCardGraphic(cardView);
+        return runFlipCardGraphic(cardView, this);
     }
 
     double handleIncreaseLpGraphic(int lp, boolean isSelf) {
@@ -942,27 +942,46 @@ public class GameView {
         return ans;
     }
 
-    double handleChangePositionGraphic(CardView cardView, String position) {
+    double handleChangePositionGraphicForSelfMonsters(CardView cardView, String position) {
         gameController.notifyOtherGameViewToDoSomething(this,
                 new graphicDataForServerToNotifyOtherClient("set position " + position
                         , cardView.card, -1));
-        return runSetPosition(cardView, position);
+        int mode = position.equals("attack") ? 0 : 4;
+        CardView newCardView = getCardViewForField(cardView.card, mode);
+        monsterZoneCards.set(monsterZoneCards.indexOf(cardView), newCardView);
+        newCardView.setX(getCardInFieldX(newCardView, mode));
+        newCardView.setY(getCardInFieldY(mode));
+        newCardView.setVisible(false);
+        gamePane.getChildren().add(newCardView);
+        return runSetPosition(cardView,newCardView, position);
     }
 
-    double handleChangePositionGraphicBOOCN(Card card, String position) {
+    double handleChangePositionOfRivalMonsterGraphicBOOCN(Card card, String position) {
         CardView cardView = searchCardInRivalField(card);
-        if (cardView == null) {
-            cardView = searchCardInSelfField(card);
-        }
-        return runSetPosition(cardView, position);
+        int mode = position.equals("attack") ? 0 : 4;
+        CardView newCardView = getCardViewForField(cardView.card, mode);
+        rivalMonsterZoneCards.set(rivalMonsterZoneCards.indexOf(cardView), newCardView);
+        newCardView.setX(getCardInRivalFieldX(newCardView, mode));
+        newCardView.setY(getCardInRivalFieldY(mode));
+        newCardView.setVisible(false);
+        gamePane.getChildren().add(newCardView);
+        return runSetPosition(cardView, newCardView, position);
     }
 
-    double runSetPosition(CardView cardView, String position) {
+    double runSetPosition(CardView cardView, CardView newCardView, String position) {
+
+        Animation animation;
+
         if (position.equals("attack")) {
-            new RotateAnimation(cardView, 500, 90).getAnimation().play();
+            animation = new RotateAnimation(cardView, 500, -90).getAnimation();
         } else {
-            new RotateAnimation(cardView, 500, -90).getAnimation().play();
+            animation = new RotateAnimation(cardView, 500, 90).getAnimation();
         }
+        animation.setOnFinished(EventHandler -> {
+            newCardView.setVisible(true);
+            gamePane.getChildren().remove(cardView);
+        });
+        animation.play();
         return 500;
     }
 
@@ -1073,7 +1092,7 @@ public class GameView {
         if (cardView == null) {
             cardView = searchCardInSelfField(card);
         }
-        runFlipCardGraphic(cardView);
+        runFlipCardGraphic(cardView, this);
     }
 
     void handleIncreaseLpGraphicBOOCN(int lp, boolean isSelf) {
@@ -1142,6 +1161,9 @@ public class GameView {
     private void f() {
 
 
+
+
+
 //        handleDestroyCardFromFieldOrHand(3, 0, true);
 //
 //        handleAddCardToGraveYardGraphic
@@ -1164,9 +1186,9 @@ public class GameView {
         counter++;
 //        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
 //        if(counter == 1)
-//        handleActivateSpellGraphic(selfHand.get(0), 0);
+//            handleChangePositionGraphic(monsterZoneCards.get(2), "defence");
 //        else
-//            handleFlipCardGraphic(rivalSpellZoneCards.get(4));
+//            handleFlipCardGraphic(monsterZoneCards.get(2));
     }
 
     private void setTestButton() {

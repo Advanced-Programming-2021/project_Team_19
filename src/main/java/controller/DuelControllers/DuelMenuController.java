@@ -188,7 +188,6 @@ public class DuelMenuController extends Menu {
         RockPaper rockPaper = new RockPaper();
         rockPaper.run(user, UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()), stage, this);
 
-
     }
 
 

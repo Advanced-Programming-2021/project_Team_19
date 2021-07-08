@@ -90,8 +90,8 @@ public class GameGraphicControllerForTest extends Menu {
         switch (data.command) {
             case "change phase" -> otherGameView.handleChangePhaseBecauseOfOtherClientNotification();
 
-            case "set position attack" -> otherGameView.handleChangePositionGraphicBOOCN(data.card, "attack");
-            case "set position defence" -> otherGameView.handleChangePositionGraphicBOOCN(data.card, "defence");
+            case "set position attack" -> otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(data.card, "attack");
+            case "set position defence" -> otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(data.card, "defence");
 
             case "summon" -> otherGameView.handleSummonRivalMonsterGraphicBOOCN(data.card, data.index);
             case "set monster" -> otherGameView.handleSetRivalMonsterGraphicBOOCN(data.card, data.index);
@@ -162,7 +162,7 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (response.matches("set spell \\d")) {
             time = gameView.handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
         } else if (response.matches("position changed to (attack|defence)")) {
-            time = gameView.handleChangePositionGraphic(cardView, Utils.getFirstGroupInMatcher(
+            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)")));
         } else if (response.matches("get \\d monsters")) {
             gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
