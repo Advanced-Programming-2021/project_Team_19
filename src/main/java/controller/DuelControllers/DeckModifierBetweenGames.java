@@ -26,7 +26,7 @@ public class DeckModifierBetweenGames {
         this.user = user;
     }
 
-
+    @Deprecated
     public void run() {
         String command;
         while (true) {
@@ -49,6 +49,19 @@ public class DeckModifierBetweenGames {
 
         DeckDataBaseController.changeDeck(user.getUsername(), deck);
 
+    }
+
+    public boolean runForGraphic(String command) {
+        if (command.matches("finish")) {
+            DeckDataBaseController.changeDeck(user.getUsername(), deck);
+            return canEndModification();
+        } else if (command.matches("--(main|side) \\d+")) {
+            moveCard(Utils.getMatcher(command, "--(.+) (\\d+)"));
+        } else {
+            Printer.printInvalidCommand();
+        }
+        DeckDataBaseController.changeDeck(user.getUsername(), deck);
+        return false;
     }
 
     private void moveCard(Matcher matcher) {
