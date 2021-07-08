@@ -27,7 +27,7 @@ public class Game {
     public Card multiActionCard;
 
 
-    public Game(GameData gameData) {
+    public Game(GameData gameData, int round) {
         this.gameData = gameData;
     }
 

@@ -217,7 +217,8 @@ public class RockPaper extends Menu {
                 e.printStackTrace();
             }
 
-            duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
+            duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                     firstPlayerStage, secondPlayerStage);
         }
     }
 

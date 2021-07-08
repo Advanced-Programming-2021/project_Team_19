@@ -20,6 +20,7 @@ import view.Menu.MainMenu;
 import view.Menu.Menu;
 import view.Menu.RockPaper;
 import view.Printer.Printer;
+import view.graphic.GameGraphicControllerForTest;
 
 public class DuelMenuController extends Menu {
 
@@ -160,7 +161,7 @@ public class DuelMenuController extends Menu {
 
         gameStarter = new Gamer(user);
         rivalGamer = AI.getGamer(0);
-        handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
+//        handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
 
     }
 
@@ -192,11 +193,12 @@ public class DuelMenuController extends Menu {
     }
 
 
-    public void handleDuel(int rounds) {
+    public void handleDuel(int rounds, Stage firstStage, Stage secondStage) {
         gameIsHappening = true;
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
-            finishDuel(new Game(gameData).DeprecatedRun(), gameData, 1);
+//            finishDuel(new Game(gameData).DeprecatedRun(), gameData, 1);
+            new GameGraphicControllerForTest(firstStage, secondStage, gameStarter, rivalGamer).run();
         } else {
             int userWins = 0;
             int rivalWins = 0;
@@ -241,7 +243,7 @@ public class DuelMenuController extends Menu {
         GameData.getGameData().setEvent(null);
     }
 
-    private void finishDuel(Gamer winner, GameData gameData, int rounds) {
+    public static void finishDuel(Gamer winner, GameData gameData, int rounds) {
         gameIsHappening = false;
         Gamer loser = gameData.getCurrentGamer();
         if (loser.equals(winner))
@@ -257,7 +259,7 @@ public class DuelMenuController extends Menu {
         return gameIsHappening;
     }
 
-    private void increaseCreditAndScoreAfterGame(Gamer winner, Gamer loser, int rounds) {
+    public static void increaseCreditAndScoreAfterGame(Gamer winner, Gamer loser, int rounds) {
         winner.increaseCredit(1000 * rounds + winner.getMaxLifePointsInDuel());
         loser.increaseCredit(1000 * rounds);
         winner.increaseUserScore(1000 * rounds);

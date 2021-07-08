@@ -1219,5 +1219,4 @@ public class GameView {
 
         return monitored;
     }
-
 }
