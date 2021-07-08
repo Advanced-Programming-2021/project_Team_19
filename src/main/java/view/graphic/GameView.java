@@ -3,7 +3,6 @@ package view.graphic;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
 import controller.DuelControllers.Game;
-import controller.Utils;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -32,14 +31,12 @@ import javafx.util.Duration;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
-import model.Data.graphicDataForServerToNotifyOtherClient;
 import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
 import view.graphic.CardViewAnimations.*;
 
 import java.awt.*;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -251,8 +248,8 @@ public class GameView {
     void handleChangePhase() {
 
         runChangePhase();
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("change phase", null, -1));
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient("change phase", null, -1));
 
     }
 
@@ -405,13 +402,13 @@ public class GameView {
         rivalGraveYard.setLayoutY(177);
     }
 
-    void handleAddCardToGraveYardGraphic(Card card, boolean addToSelfGraveYard) {
-        runAddCardToGraveYard(card, addToSelfGraveYard);
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient
-                        ("add card to " + (addToSelfGraveYard ? "rival" : "self") + " graveyard",
-                                card, -1));
-    }
+//    void handleAddCardToGraveYardGraphic(Card card, boolean addToSelfGraveYard) {
+//        runAddCardToGraveYard(card, addToSelfGraveYard);
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient
+//                        ("add card to " + (addToSelfGraveYard ? "rival" : "self") + " graveyard",
+//                                card, -1));
+//    }
 
     void handleAddCardToGraveYardGraphicBOOTN(Card card, boolean addToSelfGraveYard) {
         runAddCardToGraveYard(card, addToSelfGraveYard);
@@ -515,10 +512,27 @@ public class GameView {
 
     public void initHand() {
         ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<Card> rivalCards = new ArrayList<>();
+
         for (int i = 0; i < 5; i++) {
             cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
+            rivalCards.add(rival.getGameBoard().getHand().getCardsInHand().get(i));
         }
-        handleAddCardsFromDeckToHandGraphic(cards);
+        handleAddCardsFromDeckToSelfHandGraphic(cards);
+        handleAddCardsFromDeckToRivalHandGraphic(rivalCards);
+    }
+
+    public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<Card> cards){
+        Timeline timeline = new Timeline();
+
+        for(int i = 0; i < cards.size(); i++){
+            int finalI = i;
+            KeyFrame frame = new KeyFrame(Duration.millis(i * 500 + 1),
+                    Event -> handleAddRivalCardFromDeckToHandGraphic(cards.get(finalI)));
+            timeline.getKeyFrames().add(frame);
+        }
+
+        timeline.play();
     }
 
     void setBooleanForShowActions(ArrayList<CardView> cardViews, boolean bool) {
@@ -820,49 +834,42 @@ public class GameView {
 
     double handleSummonGraphic(CardView cardView, int index) {
 
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("summon", cardView.getCard(), 4 - index));
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient("summon", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, cardView, 0, 0, index);
     }
 
     double handleSetMonsterGraphic(CardView cardView, int index) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("set monster", cardView.getCard(), 4 - index));
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient("set monster", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, cardView, 1, 0, index);
     }
 
     double handleSetSpellGraphic(CardView cardView, int index) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("set spell", cardView.getCard(), 4 - index));
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient("set spell", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, cardView, 3, 1, index);
     }
 
     double handleActivateSpellGraphic(CardView cardView, int index) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("activate spell", cardView.getCard(), 4 - index));
+//        gameController.notifyOtherGameViewToDoSomething(this,
+//                new graphicDataForServerToNotifyOtherClient("activate spell", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, cardView, 2, 1, index);
     }
 
     double handleFlipSummonGraphic(CardView cardView) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("flip summon", cardView.getCard(), -1));
         return runFlipSummonGraphic(this, cardView);
     }
 
     double handleFlipCardGraphic(CardView cardView) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("flip", cardView.getCard(), -1));
         return runFlipCardGraphic(cardView, this);
     }
 
     double handleIncreaseLpGraphic(int lp, boolean isSelf) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("increase "
-                        + (isSelf ? "rival" : "self") + " lp", null, lp));
         return runIncreaseLpGraphic(this, lp, isSelf);
     }
 
@@ -875,22 +882,23 @@ public class GameView {
         return 500;
     }
 
-    double handleAddCardsFromDeckToHandGraphic(ArrayList<Card> cards) {
+    double handleAddCardsFromDeckToSelfHandGraphic(ArrayList<Card> cards) {
         ArrayList<CardView> cardViews = new ArrayList<>();
         for (Card card : cards) {
             cardViews.add(new CardView(
                     card, 8, true, true));
         }
-        return runAddCardsToHandFromDeckAnimation(this, cardViews);
+        return runAddCardsToSelfHandFromDeckAnimation(this, cardViews);
     }
 
-    double handleSummonSetWithSacrificeGraphics(CardView cardView, int index, String sacrificeData, boolean isSet) {
+    double handleSummonSetWithSacrificeGraphics
+            (CardView cardView, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
 
         double time = 0;
-        for (String indexStr : sacrificeData.split(" ")) {
-            time = handleDestroyCardFromFieldOrHand(getIndexById(Integer.parseInt(indexStr)), 0, true);
-        }
 
+        for (int i : sacrificesIndex) {
+            time = handleDestroyCardFromField(i, 0, true);
+        }
         EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(cardView, index)
                 : EventHandler -> handleSummonGraphic(cardView, index);
 
@@ -899,9 +907,72 @@ public class GameView {
         return time + 800;
     }
 
+    double handleRivalSummonSetWithSacrificeGraphic
+            (Card card, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
+
+        double time = 0;
+
+        for (int i : sacrificesIndex) {
+            time = handleDestroyCardFromField(i, 0, false);
+        }
+        EventHandler eventHandler = isSet ? EventHandler -> handleSetRivalMonsterGraphicBOOCN(card, index)
+                : EventHandler -> handleSummonRivalMonsterGraphic(card, index);
+
+        new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
+
+        return time + 800;
+    }
+
+
+    double handleRivalAttackResultGraphic(Matcher matcher){
+
+        matcher.find();
+        int attackerID = getIndexByRivalId(Integer.parseInt(matcher.group(1)));
+        boolean destroyAttacker = matcher.group(2).equals("destroy");
+        int attackedID = getIndexById(Integer.parseInt(matcher.group(3)));
+        boolean destroyAttacked = matcher.group(4).equals("destroy");
+        boolean flipAttacked = matcher.group(5).equals("flip ");
+        boolean isLpLoserSelf = matcher.group(6).equals("rival");
+        int lp = -Integer.parseInt(matcher.group(7));
+
+        System.out.println(attackerID + " " + destroyAttacker + " " +
+                attackedID + " " + destroyAttacked + " " + flipAttacked + " " + isLpLoserSelf + " " +
+                lp);
+
+        double time = 10;
+
+        if (flipAttacked) {
+            time = handleFlipCardGraphic(monsterZoneCards.get(attackedID));
+        }
+
+        new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                double time = handleIncreaseLpGraphic(lp, isLpLoserSelf) + 10;
+
+                new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if (destroyAttacker) {
+                            handleDestroyCardFromField(attackerID, 0, false);
+                        }
+
+                        if (destroyAttacked) {
+                            handleDestroyCardFromField(attackedID, 0, true);
+                        }
+                    }
+                })).play();
+            }
+        })).play();
+
+        return time + lp + 500;
+    }
+
     double handleAttackResultGraphic(Matcher matcher) {
 
         matcher.find();
+
         int attackerID = getIndexById(Integer.parseInt(matcher.group(1)));
         boolean destroyAttacker = matcher.group(2).equals("destroy");
         int attackedID = getIndexByRivalId(Integer.parseInt(matcher.group(3)));
@@ -926,12 +997,12 @@ public class GameView {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         if (destroyAttacker) {
-                            handleDestroyCardFromFieldOrHand(attackerID, 0, true);
+                            handleDestroyCardFromField(attackerID, 0, true);
                         }
 
                         if (destroyAttacked) {
 
-                            handleDestroyCardFromFieldOrHand(attackedID, 0, false);
+                            handleDestroyCardFromField(attackedID, 0, false);
                         }
                     }
                 })).play();
@@ -941,23 +1012,72 @@ public class GameView {
         return time + lp + 500;
     }
 
-    //zone 0 for monster zone 1 for spell zone 2 for hand
+    //zone 0 for monster zone 1 for spell zone
 
 
-    double handleDestroyCardFromFieldOrHand(int index, int zone, boolean isSelf) {
+    //get Index of ArrayList
+    double handleDestroyCardFromField(int index, int zone, boolean isSelf) {
         double ans = runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("destroy card from" +
-                        (isSelf ? ":rival:" : ":self:") +
-                        (zone == 0 ? "monster zone" : (zone == 1 ? "spell zone" : "hand"))
-                        , null, (zone == 2 ? index : 4 - index)));
         return ans;
     }
 
+    double justDestroyActivatedSpellOrTrap(Card card, boolean isSelf){
+        if(isSelf){
+            CardView cardView = searchCardInSelfField(card);
+            return handleDestroyCardFromField(spellZoneCards.indexOf(cardView), 1, true);
+        } else {
+            CardView cardView = searchCardInRivalField(card);
+            return handleDestroyCardFromField(rivalSpellZoneCards.indexOf(cardView), 1, false);
+        }
+    }
+
+    double activateSpell1(Card card, boolean isSelf, String ids){
+
+        for(String index : ids.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 0, false);
+            } else {
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 0, true);
+            }
+        }
+        return justDestroyActivatedSpellOrTrap(card, isSelf);
+    }
+
+    double activateSpell2(Card card, boolean isSelf, String rivalIds, String activatorIDs){
+
+        for(String index : activatorIDs.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 0, true);
+            } else {
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 0, false);
+            }
+        }
+        return activateSpell1(card, isSelf, rivalIds);
+    }
+
+    double activateSpell3(Card card, boolean isSelf, String ids){
+
+        for(String index : ids.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 1, false);
+            } else {
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 1, true);
+            }
+        }
+        return justDestroyActivatedSpellOrTrap(card, isSelf);
+    }
+
+
     double handleChangePositionGraphicForSelfMonsters(CardView cardView, String position) {
-        gameController.notifyOtherGameViewToDoSomething(this,
-                new graphicDataForServerToNotifyOtherClient("set position " + position
-                        , cardView.card, -1));
         int mode = position.equals("attack") ? 0 : 4;
         CardView newCardView = getCardViewForField(cardView.card, mode);
         monsterZoneCards.set(monsterZoneCards.indexOf(cardView), newCardView);
@@ -995,11 +1115,6 @@ public class GameView {
         });
         animation.play();
         return 500;
-    }
-
-
-    double handleDestroyCardFromFieldOrHandBOOCN(int index, int zone, boolean isSelf) {
-        return runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
     }
 
     //move to graveyard
@@ -1075,7 +1190,7 @@ public class GameView {
         }
     }
 
-    void handleSummonRivalMonsterGraphicBOOCN(Card card, int index) {
+    void handleSummonRivalMonsterGraphic(Card card, int index) {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
     }
 
@@ -1087,28 +1202,16 @@ public class GameView {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, index);
     }
 
-    void handleSetRivalSpellGraphicBOOCN(Card card, int index) {
+    void handleSetRivalSpellGraphic(Card card, int index) {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphicBOOCN(Card card) {
+    void handleAddRivalCardFromDeckToHandGraphic(Card card) {
         addCardToRivalHandFromDeck(this, card);
     }
 
     void handleRivalFlipSummonGraphicBOOCN(Card card) {
         runRivalFlipSummonGraphic(this, card);
-    }
-
-    void handleFlipCardGraphicBOOCN(Card card) {
-        CardView cardView = searchCardInRivalField(card);
-        if (cardView == null) {
-            cardView = searchCardInSelfField(card);
-        }
-        runFlipCardGraphic(cardView, this);
-    }
-
-    void handleIncreaseLpGraphicBOOCN(int lp, boolean isSelf) {
-        runIncreaseLpGraphicBecauseOfRivalNotification(this, lp, isSelf);
     }
 
     // MindCrush data collector
@@ -1172,29 +1275,6 @@ public class GameView {
 
     private void f() {
 
-
-
-
-
-//        handleDestroyCardFromFieldOrHand(3, 0, true);
-//
-//        handleAddCardToGraveYardGraphic
-//                (controller.Utils.getCardByName("Battle ox"), false);
-//        ArrayList<Card>cards = new ArrayList<>();
-//        cards.add(Utils.getCardByName("trap hole"));
-//        cards.add(Utils.getCardByName("trap hole"));
-//        cards.add(Utils.getCardByName("trap hole"));
-//        handleAddCardsFromDeckToHandGraphic(cards);
-//        getCardNameForMindCrush();
-//        runMoveCardFromHandToFieldGraphic(
-//                this, selfHand.get(0), 3,1,2);
-
-//        addCardToSelfGraveYard(controller.Utils.getCardByName("Battle ox"));
-//        runRemoveCardFromHandGraphic(this, selfHand.get(0));
-//        fadeCard(selfHand.get(0));
-
-//        handleIncreaseLpGraphic(123, true);
-//
         counter++;
 //        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
 //        if(counter == 1)
