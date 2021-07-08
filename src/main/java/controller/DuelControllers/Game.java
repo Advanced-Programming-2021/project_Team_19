@@ -25,10 +25,12 @@ public class Game {
 
     public GameData gameData;
     public Card multiActionCard;
+    public int round;
 
 
     public Game(GameData gameData, int round) {
         this.gameData = gameData;
+        this.round = round;
     }
 
 
