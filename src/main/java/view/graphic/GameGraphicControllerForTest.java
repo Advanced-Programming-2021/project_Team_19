@@ -261,7 +261,7 @@ public class GameGraphicControllerForTest extends Menu {
             case "Yami" -> backgroundName = "yami";
             case "Forest" -> backgroundName = "gaia";
             case "Umii Ruka" -> backgroundName = "umi";
-//            case "yami" -> backgroundName = "dark";
+            case "Closed Forest" -> backgroundName = "mori";
         }
         Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
         ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
