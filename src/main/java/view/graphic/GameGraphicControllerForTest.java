@@ -221,6 +221,15 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
+        boolean isFromHand = true;
+        if (spellCommand.startsWith("hand ")) {
+            spellCommand = spellCommand.replace("hand ", "");
+        }
+        if (spellCommand.startsWith("board ")) {
+            spellCommand = spellCommand.replace("board ", "");
+            isFromHand = false;
+        }
+
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
             gameView.justDestroyActivatedSpellOrTrap(cardView.card, true);
@@ -242,6 +251,10 @@ public class GameGraphicControllerForTest extends Menu {
             idMatcher.find();
             gameView.activateSpell3(cardView.card, true, idMatcher.group(1));
             otherGameView.activateSpell3(cardView.card, false, idMatcher.group(1));
+        } else if (spellCommand.startsWith("field spell ")){
+            Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
+            matcher.find();
+            changeStages(matcher.group(1));
         }
         return 0;
     }
