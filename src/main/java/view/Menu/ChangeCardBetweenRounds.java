@@ -95,6 +95,7 @@ public class ChangeCardBetweenRounds extends Menu {
             }
         }
         result.setText("Sorry there is no such card in side Deck!");
+        updateCard();
     }
 
     public void addToSideDeck(MouseEvent mouseEvent) {
@@ -110,6 +111,7 @@ public class ChangeCardBetweenRounds extends Menu {
             cnt++;
         }
         result.setText("Sorry there is no such card in side Deck!");
+        updateCard();
     }
 
     public void finishChange(MouseEvent mouseEvent) {
