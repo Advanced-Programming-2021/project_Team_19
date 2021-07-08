@@ -232,6 +232,10 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(String spellCommand) {
+            if (spellCommand.startsWith("hand "))
+            spellCommand = spellCommand.replace("hand ", "");
+        if (spellCommand.startsWith("board "))
+            spellCommand = spellCommand.replace("board ", "");
 
         if (spellCommand.equals("destroy this spell")) {
 //            todo destroy this spell only and do nothing else
@@ -251,10 +255,11 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private void changeStages(String fieldSpellName) {
+//        todo move card to field zone
         String backgroundName = "";
         switch (fieldSpellName){
             case "Yami" -> backgroundName = "yami";
-            case "Forest" -> backgroundName = "forest";
+            case "Forest" -> backgroundName = "gaia";
             case "Umii Ruka" -> backgroundName = "umi";
 //            case "yami" -> backgroundName = "dark";
         }

@@ -51,12 +51,9 @@ public class FieldSpell extends Spell {
             return true;
         }
 
-        if (Utils.askForConfirmation("to activate a new field spell you have to destroy your current field spell\n" +
-                "do you still want to activate it?")) {
-            gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard().handleDestroy(gameData);
-            return true;
-        }
-        return false;
+
+        gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard().handleDestroy(gameData);
+        return true;
     }
 
     protected HashMap<MonsterType, Integer[]> typesAndAmountToChangeAttackAndDefence = spellToProperties.get(getName());
