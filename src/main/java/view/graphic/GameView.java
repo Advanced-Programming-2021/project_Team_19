@@ -1019,10 +1019,67 @@ public class GameView {
     //zone 0 for monster zone 1 for spell zone
 
 
+    //get Index of ArrayList
     double handleDestroyCardFromField(int index, int zone, boolean isSelf) {
         double ans = runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
         return ans;
     }
+
+    double justDestroyActivatedSpellOrTrap(Card card, boolean isSelf){
+        if(isSelf){
+            CardView cardView = searchCardInSelfField(card);
+            return handleDestroyCardFromField(spellZoneCards.indexOf(cardView), 1, true);
+        } else {
+            CardView cardView = searchCardInRivalField(card);
+            return handleDestroyCardFromField(rivalSpellZoneCards.indexOf(cardView), 1, false);
+        }
+    }
+
+    double activateSpell1(Card card, boolean isSelf, String ids){
+
+        for(String index : ids.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 0, false);
+            } else {
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 0, true);
+            }
+        }
+        return justDestroyActivatedSpellOrTrap(card, isSelf);
+    }
+
+    double activateSpell2(Card card, boolean isSelf, String rivalIds, String activatorIDs){
+
+        for(String index : activatorIDs.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 0, true);
+            } else {
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 0, false);
+            }
+        }
+        return activateSpell1(card, isSelf, rivalIds);
+    }
+
+    double activateSpell3(Card card, boolean isSelf, String ids){
+
+        for(String index : ids.split(" ")){
+            if(index.equals(" ") || index.equals("")){
+                continue;
+            }
+            if (isSelf){
+                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 1, false);
+            } else {
+                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 1, true);
+            }
+        }
+        return justDestroyActivatedSpellOrTrap(card, isSelf);
+    }
+
 
     double handleChangePositionGraphicForSelfMonsters(CardView cardView, String position) {
         int mode = position.equals("attack") ? 0 : 4;
@@ -1062,11 +1119,6 @@ public class GameView {
         });
         animation.play();
         return 500;
-    }
-
-
-    double handleDestroyCardFromFieldOrHandBOOCN(int index, int zone, boolean isSelf) {
-        return runDestroyCardFromFieldOrHandGraphic(index, zone, isSelf);
     }
 
     //move to graveyard

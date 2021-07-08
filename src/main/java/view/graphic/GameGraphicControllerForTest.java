@@ -147,7 +147,7 @@ public class GameGraphicControllerForTest extends Menu {
             otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
             time = gameView.handleSetSpellGraphic(cardView, getIndexById(cardIndex));
         } else if (response.startsWith("activate spell ")) {
-            time = graphicsHandlingForSpells(response.replace("activate spell ", ""));
+            time = graphicsHandlingForSpells(gameView, cardView, response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
@@ -217,18 +217,28 @@ public class GameGraphicControllerForTest extends Menu {
         return sacrificesIndex;
     }
 
-    private double graphicsHandlingForSpells(String spellCommand) {
+    private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
+        GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-//            todo destroy this spell only and do nothing else
-        } else if (spellCommand.matches("destroy rival monsters( \\d)*")) {
-//            todo destroy this spell and destroy monsters in the given ids in enemy monster card zone
-//            todo number of ids can be zero
-        } else if (spellCommand.matches("destroy rival monsters( \\d)* self monsters( \\d)*")) {
-//            todo destroy this spell and destroy monsters in the given ids in enemy monster card zone and self monster card zone
-//            todo number of ids can be zero
-        } else if (spellCommand.matches("destroy rival spells( \\d)*")) {
-//            todo destroy this spell and destroy spells and traps in the given ids in enemy spell and trap zone
-//            todo number of ids can be zero
+            gameView.justDestroyActivatedSpellOrTrap(cardView.card, true);
+            otherGameView.justDestroyActivatedSpellOrTrap(cardView.card, false);
+        } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
+            String ids = Utils.getFirstGroupInMatcher(
+                    Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
+            gameView.activateSpell1(cardView.card, true, ids);
+            otherGameView.activateSpell1(cardView.card, false, ids);
+        } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
+            Matcher idMatcher = Utils.getMatcher(spellCommand,
+                    "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
+            idMatcher.find();
+            gameView.activateSpell2(cardView.card, true, idMatcher.group(1), idMatcher.group(2));
+            otherGameView.activateSpell2(cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+
+        } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
+            Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
+            idMatcher.find();
+            gameView.activateSpell3(cardView.card, true, idMatcher.group(1));
+            otherGameView.activateSpell3(cardView.card, false, idMatcher.group(1));
         }
         return 0;
     }
