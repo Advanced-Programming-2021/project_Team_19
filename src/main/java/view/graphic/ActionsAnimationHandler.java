@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ActionsAnimationHandler {
 
-    static double runAddCardsToHandFromDeckAnimation
+    static double runAddCardsToSelfHandFromDeckAnimation
             (GameView gameView, ArrayList<CardView> cardViews) {
 
         gameView.setBooleanForShowActions(gameView.selfHand, false);
@@ -96,21 +96,21 @@ public class ActionsAnimationHandler {
             gameView.gamePane.getChildren().remove(cardView);
         });
 
-        KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
-                gameView.gameController.notifyOtherGameViewToDoSomething(gameView,
-                        new graphicDataForServerToNotifyOtherClient
-                                ("add card from deck to hand", cardView.card, -1))
-        );
+//        KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
+//                gameView.gameController.notifyOtherGameViewToDoSomething(gameView,
+//                        new graphicDataForServerToNotifyOtherClient
+//                                ("add card from deck to hand", cardView.card, -1))
+//        );
 
         Timeline createCardTimeline = new Timeline(createNewCardAnimation);
 
-        Timeline notifyRivalTimeLine = new Timeline(notifyRivalAnimation);
+//        Timeline notifyRivalTimeLine = new Timeline(notifyRivalAnimation);
 
         ParallelTransition transitions = new ParallelTransition(
                 new ScaleAnimation(cardView, 0.6, 500).getAnimation(),
                 new TimelineTranslate(cardView, gameView.getCardInHandX(newCardView) + 15,
                         gameView.getCardinHandY() + 23, 500).getAnimation(),
-                new FlipAnimation(cardView, 500).getAnimation(), createCardTimeline, notifyRivalTimeLine
+                new FlipAnimation(cardView, 500).getAnimation(), createCardTimeline/*, notifyRivalTimeLine*/
         );
 
 

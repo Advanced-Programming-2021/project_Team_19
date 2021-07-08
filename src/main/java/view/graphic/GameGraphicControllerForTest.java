@@ -21,12 +21,11 @@ import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.Menu.Menu;
 
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static view.graphic.GameView.getIndexById;
+import static view.graphic.GameView.getIndexByRivalId;
 
 public class GameGraphicControllerForTest extends Menu {
 
@@ -36,7 +35,7 @@ public class GameGraphicControllerForTest extends Menu {
     Game game;
     int rounds;
 
-    public GameGraphicControllerForTest(){
+    public GameGraphicControllerForTest() {
         super("test game");
         TestInit();
     }
@@ -108,65 +107,19 @@ public class GameGraphicControllerForTest extends Menu {
         return gameView.equals(gameView1) ? gameView2 : gameView1;
     }
 
-    public void notifyOtherGameViewToDoSomething
-            (GameView notifier, graphicDataForServerToNotifyOtherClient data) {
-
-        GameView otherGameView = getTheOtherGameView(notifier);
-
-        switch (data.command) {
-            case "change phase" -> otherGameView.handleChangePhaseBecauseOfOtherClientNotification();
-
-            case "set position attack" -> otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(data.card, "attack");
-            case "set position defence" -> otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(data.card, "defence");
-
-            case "summon" -> otherGameView.handleSummonRivalMonsterGraphicBOOCN(data.card, data.index);
-            case "set monster" -> otherGameView.handleSetRivalMonsterGraphicBOOCN(data.card, data.index);
-            case "set spell" -> otherGameView.handleSetRivalSpellGraphicBOOCN(data.card, data.index);
-            case "activate spell" -> otherGameView.handleActivateRivalSpellGraphicBOOCN(data.card, data.index);
-            case "flip summon" -> otherGameView.handleRivalFlipSummonGraphicBOOCN(data.card);
-            case "flip" -> otherGameView.handleFlipCardGraphicBOOCN(data.card);
-            case "increase rival lp" -> otherGameView.handleIncreaseLpGraphicBOOCN(data.index, false);
-            case "increase self lp" -> otherGameView.handleIncreaseLpGraphicBOOCN(data.index, true);
-            case "add card from deck to hand" -> otherGameView.handleAddRivalCardFromDeckToHandGraphicBOOCN(data.card);
-            case "add card to self graveyard" -> otherGameView.handleAddCardToGraveYardGraphicBOOTN
-                    (data.card, true);
-            case "add card to rival graveyard" -> otherGameView.handleAddCardToGraveYardGraphicBOOTN
-                    (data.card, false);
-
-            default -> handleOtherCommands(otherGameView, data);
-        }
-
-
-    }
-
-    private void handleOtherCommands(GameView otherGameView, graphicDataForServerToNotifyOtherClient data) {
-        if (data.command.startsWith("destroy card from")) {
-            String[] strings = data.command.split(":");
-            boolean isSelf = strings[1].equals("self");
-            int zone = strings[2].equals("monster zone") ? 0 : (strings[2].equals("spell zone") ? 1 : 2);
-            otherGameView.handleDestroyCardFromFieldOrHandBOOCN(data.index, zone, isSelf);
-        }
-    }
-
-
     private double responseIsForPhaseChange(GameView gameView, String phaseChangeResponse) {
-        if (phaseChangeResponse.equals("draw phase")) {
+        GameView otherGameView = getTheOtherGameView(gameView);
+
+        boolean changePhase = phaseChangeResponse.equals("draw phase") ||
+                phaseChangeResponse.equals("stand by phase") ||
+                phaseChangeResponse.equals("battle phase") ||
+                phaseChangeResponse.equals("main phase 1") ||
+                phaseChangeResponse.equals("main phase 2") ||
+                phaseChangeResponse.equals("end phase");
+
+        if (changePhase) {
             gameView.handleChangePhase();
-        } else if (phaseChangeResponse.equals("stand by phase")) {
-            gameView.handleChangePhase();
-//            todo    standby phase
-        } else if (phaseChangeResponse.equals("end phase")) {
-            gameView.handleChangePhase();
-//            todo    end phase
-        } else if (phaseChangeResponse.equals("main phase 1")) {
-            gameView.handleChangePhase();
-//            todo    main phase 1
-        } else if (phaseChangeResponse.equals("battle phase")) {
-            gameView.handleChangePhase();
-//            todo    battle phase
-        } else if (phaseChangeResponse.equals("main phase 2")) {
-            gameView.handleChangePhase();
-//            todo    main phase 2
+            otherGameView.handleChangePhase();
         } else if (phaseChangeResponse.matches("game finished \\w+")) {
 //           todo     finish game
         }
@@ -178,39 +131,64 @@ public class GameGraphicControllerForTest extends Menu {
         double time = 500;
 
         GameView gameView = events.get(index).gamerOfAction.equals(gameView1.self) ? gameView1 : gameView2;
+        GameView otherGameView = getTheOtherGameView(gameView);
 
         String response = events.get(index).event;
 
         if (response.matches("summon \\d")) {
-            time = gameView.handleSummonGraphic(cardView, getIndexById(Integer.parseInt(response.substring(7))));
+            int cardIndex = Integer.parseInt(response.substring(7));
+            otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
+            time = gameView.handleSummonGraphic(cardView, getIndexById(cardIndex));
         } else if (response.equals("add card to hand")) {
+            otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
             time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
         } else if (response.matches("set spell \\d")) {
-            time = gameView.handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
+            int cardIndex = Integer.parseInt(response.substring(10));
+            otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
+            time = gameView.handleSetSpellGraphic(cardView, getIndexById(cardIndex));
         } else if (response.startsWith("activate spell ")) {
             time = graphicsHandlingForSpells(response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
-            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, Utils.getFirstGroupInMatcher(
-                    Utils.getMatcher(response, "position changed to (attack|defence)")));
+            String position = Utils.getFirstGroupInMatcher(
+                    Utils.getMatcher(response, "position changed to (attack|defence)"));
+            otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
+            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, position);
         } else if (response.matches("get \\d monsters")) {
             gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
         } else if (response.equals("attack monster")) {
             gameView.initForAttackMonster(cardView);
         } else if (response.matches("rival loses \\d+")) {
-            time = gameView.handleIncreaseLpGraphic(-Integer.parseInt(response.substring(12)), false);
+            int lp = -Integer.parseInt(response.substring(12));
+            otherGameView.handleIncreaseLpGraphic(lp, true);
+            time = gameView.handleIncreaseLpGraphic(lp, false);
         } else if (response.matches("set monster \\d")) {
-            time = gameView.handleSetMonsterGraphic(cardView, getIndexById(Integer.parseInt(response.substring(12))));
+            int cardIndex = Integer.parseInt(response.substring(12));
+            otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
+            time = gameView.handleSetMonsterGraphic
+                    (cardView, getIndexById(cardIndex));
         } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
-            time = gameView.handleAttackResultGraphic(Utils.getMatcher(response,
-                    "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp"));
+            Matcher matcher = Utils.getMatcher(response,
+                    "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp");
+            otherGameView.handleRivalAttackResultGraphic(matcher);
+            matcher.reset();
+            time = gameView.handleAttackResultGraphic(matcher);
         } else if (response.equals("flip summoned successfully")) {
+            otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
             time = gameView.handleFlipSummonGraphic(cardView);
         } else if (response.matches("summon \\d sacrifice( \\d)+")) {
+            otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
+                    getIndexByRivalId(Integer.parseInt(response.substring(7, 8))), false,
+                    getSacrificesIndex(response.substring(19), false));
             time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
-                    getIndexById(Integer.parseInt(response.substring(7, 8))), response.substring(19), false);
+                    getIndexById(Integer.parseInt(response.substring(7, 8))), false,
+                    getSacrificesIndex(response.substring(19), true));
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
+            otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
+                    getIndexByRivalId(Integer.parseInt(response.substring(12,13))), true,
+                    getSacrificesIndex(response.substring(24), false));
             time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
-                    getIndexById(Integer.parseInt(response.substring(12, 13))), response.substring(24), true);
+                    getIndexById(Integer.parseInt(response.substring(12, 13))), true,
+                    getSacrificesIndex(response.substring(24), true));
         } else if (response.startsWith("game finished ")) {
             String name = response.split(" ")[2];
             if (gameView1.self.getUsername().equals(name)) {
@@ -226,6 +204,17 @@ public class GameGraphicControllerForTest extends Menu {
             new Timeline(new KeyFrame(Duration.millis(time),
                     EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
         }
+    }
+
+    private ArrayList<Integer> getSacrificesIndex(String sacrificeData, boolean isSelf) {
+        ArrayList<Integer> sacrificesIndex = new ArrayList<>();
+        for (String indexStr : sacrificeData.split(" ")) {
+            if (isSelf)
+                sacrificesIndex.add(getIndexById(Integer.parseInt(indexStr)));
+            else
+                sacrificesIndex.add(getIndexByRivalId(Integer.parseInt(indexStr)));
+        }
+        return sacrificesIndex;
     }
 
     private double graphicsHandlingForSpells(String spellCommand) {
