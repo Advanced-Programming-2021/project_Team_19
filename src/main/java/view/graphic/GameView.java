@@ -1084,34 +1084,45 @@ public class GameView {
         return time + 500;
     }
 
-    double activateSpell2(Card card, boolean isSelf, String rivalIds, String activatorIDs) {
+    double activateSpell2(int index, Card card, boolean isSelf, String rivalIds, String activatorIDs) {
 
-        for (String index : activatorIDs.split(" ")) {
-            if (index.equals(" ") || index.equals("")) {
-                continue;
+        double time = activateSpell1(index, card, isSelf, rivalIds) - 500;
+
+        new Timeline(new KeyFrame(Duration.millis(time), Event -> {
+            for (String indexStr : activatorIDs.split(" ")) {
+                if (indexStr.equals(" ") || indexStr.equals("")) {
+                    continue;
+                }
+                if (isSelf) {
+                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 0, true);
+                } else {
+                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
+                }
             }
-            if (isSelf) {
-                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 0, true);
-            } else {
-                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 0, false);
-            }
-        }
-        return activateSpell1(-1, card, isSelf, rivalIds);
+        })).play();
+
+        return time + 500;
     }
 
-    double activateSpell3(Card card, boolean isSelf, String ids) {
+    double activateSpell3(int index, Card card, boolean isSelf, String ids) {
 
-        for (String index : ids.split(" ")) {
-            if (index.equals(" ") || index.equals("")) {
-                continue;
+        double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
+
+        new Timeline(new KeyFrame(Duration.millis(time), Event -> {
+            for (String indexStr : ids.split(" ")) {
+                if (indexStr.equals(" ") || indexStr.equals("")) {
+                    continue;
+                }
+                if (isSelf) {
+                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 1, false);
+                } else {
+                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 1, true);
+                }
             }
-            if (isSelf) {
-                handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(index)), 1, false);
-            } else {
-                handleDestroyCardFromField(getIndexById(Integer.parseInt(index)), 1, true);
-            }
-        }
-        return justDestroyActivatedSpellOrTrap(-1, card, isSelf);
+        })).play();
+
+
+        return time + 500;
     }
 
 
@@ -1313,7 +1324,11 @@ public class GameView {
 
     private void f() {
 
-//        activateSpell1(0, selfHand.get(2).card, true, "");
+//        justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, true);
+//        rivalGameView.justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, false);
+//        Card card = selfHand.get(0).card;
+//        activateSpell3(0, card, true, "");
+//        rivalGameView.activateSpell3(0, card, false, "");
         counter++;
 //        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
 //        if(counter == 1)

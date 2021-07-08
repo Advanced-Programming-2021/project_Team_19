@@ -243,14 +243,14 @@ public class GameGraphicControllerForTest extends Menu {
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell2(cardView.card, true, idMatcher.group(1), idMatcher.group(2));
-            otherGameView.activateSpell2(cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+            gameView.activateSpell2(-1, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
+            otherGameView.activateSpell2(-1, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
 
         } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell3(cardView.card, true, idMatcher.group(1));
-            otherGameView.activateSpell3(cardView.card, false, idMatcher.group(1));
+            gameView.activateSpell3(-1, cardView.card, true, idMatcher.group(1));
+            otherGameView.activateSpell3(-1, cardView.card, false, idMatcher.group(1));
         } else if (spellCommand.startsWith("field spell ")){
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
