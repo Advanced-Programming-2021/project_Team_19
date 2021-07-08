@@ -73,3 +73,4 @@ Wattkid:model.Card.Monsters.NormalMonster
 Yami:model.Card.Spells.FieldSpell
 Yomi Ship:model.Card.Monsters.YomiShip
 hoho:model.Card.Monsters.ManEaterBug
+the master:model.Card.Monsters.NormalMonster

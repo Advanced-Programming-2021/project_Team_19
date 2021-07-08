@@ -21,7 +21,7 @@ public class MainMenu extends Menu {
     }
 
     public static MainMenu getInstance(String username) {
-        if (instance == null) {
+        if (instance == null || username != null) {
             instance =  new MainMenu(username);
         }
         return instance;
@@ -39,7 +39,7 @@ public class MainMenu extends Menu {
     private void setMainMenu() {
 
         VBox buttonBox = setSeveralChoiceButtons("Profile Menu", "Deck Menu",
-                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Import/Export Menu");
+                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Import/Export Menu", "Card Creating Menu");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username));
 
@@ -52,6 +52,8 @@ public class MainMenu extends Menu {
         buttonBox.getChildren().get(4).setOnMouseClicked(event -> new ScoreBoardMenu().run());
 
         buttonBox.getChildren().get(5).setOnMouseClicked(event -> ImportAndExportMenu.getInstance().run());
+
+        buttonBox.getChildren().get(6).setOnMouseClicked(event -> new CardCreating().run(UserDataBaseController.getUserByUsername(username)));
 
         Button backButton = new Button();
         setBackButton(backButton);

@@ -24,6 +24,11 @@ public class NormalSummon extends Summon {
 
         Card card = gameData.getSelectedCard();
 
+        int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
+                (false, gameData.getCurrentGamer().
+                        getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
+
+
         if (card == null) {
             return "no card is selected yet";
         } else if (!gameData.getCurrentGamer().getGameBoard().getHand().getCardsInHand()
@@ -34,16 +39,14 @@ public class NormalSummon extends Summon {
             return "you can’t summon this card";
         } else if (!gameData.getCurrentPhase().equals(Phase.MAIN1) && !gameData.getCurrentPhase().equals(Phase.MAIN2)) {
             return "action not allowed in this phase";
-        } else if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull()) {
+        } else if (gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().isZoneFull() &&
+        numberOfSacrifices != 0) {
             return "monster card zone is full";
         } else if (gameData.getCurrentGamer().getLastTurnHasSummonedOrSet() == gameData.getTurn() &&
                 !summoningMonster.getName().equals("Gate Guardian")) {
             return "you already summoned/set on this turn";
         }
 
-        int numberOfSacrifices = ((Monster) summoningMonster).numberOfSacrifices
-                (false, gameData.getCurrentGamer().
-                        getGameBoard().getMonsterCardZone().getNumberOfCards(), gameData);
 
         if (numberOfSacrifices == 0) {
             return "normal summon";

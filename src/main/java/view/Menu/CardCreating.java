@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -79,12 +80,20 @@ public class CardCreating extends Menu{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/CardCreating.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
             readyFxmlButtonsForCursor(anchorPane);
+            anchorPane.getChildren().add(backButton());
             stage.getScene().setRoot(anchorPane);
             stage.show();
         } catch(IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private Button backButton(){
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
+        return backButton;
     }
 
 
