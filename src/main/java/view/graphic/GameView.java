@@ -114,6 +114,7 @@ public class GameView {
             rivalAtkDefLabels.getChildren().add(getLabelForAtkDef());
         }
         phases.add("draw phase");
+        phases.add("standby phase");
         phases.add("main phase");
         phases.add("battle phase");
         phases.add("main phase");
