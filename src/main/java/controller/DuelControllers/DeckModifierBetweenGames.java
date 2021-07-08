@@ -26,7 +26,7 @@ public class DeckModifierBetweenGames {
         this.user = user;
     }
 
-
+    @Deprecated
     public void run() {
         String command;
         while (true) {
@@ -49,6 +49,18 @@ public class DeckModifierBetweenGames {
 
         DeckDataBaseController.changeDeck(user.getUsername(), deck);
 
+    }
+
+    public String runForGraphic(String command) {
+        if (command.matches("finish")) {
+            return canEndModificationGraphic();
+        } else if (command.matches("--(main|side) \\d+")) {
+            moveCard(Utils.getMatcher(command, "--(.+) (\\d+)"));
+        } else {
+            Printer.printInvalidCommand();
+        }
+        DeckDataBaseController.changeDeck(user.getUsername(), deck);
+        return null;
     }
 
     private void moveCard(Matcher matcher) {
@@ -101,6 +113,7 @@ public class DeckModifierBetweenGames {
         return current;
     }
 
+    @Deprecated
     private boolean canEndModification() {
         if (cardsToMove == 0)
             return true;
@@ -112,4 +125,16 @@ public class DeckModifierBetweenGames {
         }
         return false;
     }
+
+    private String canEndModificationGraphic() {
+        if (cardsToMove == 0)
+            return null;
+
+        if (cardsToMove > 0) {
+            return "you have to move " + cardsToMove + " more cards from your main deck to your side deck";
+        } else {
+            return "you have to move " + -cardsToMove + " more cards from your side deck to your main deck";
+        }
+    }
+
 }
