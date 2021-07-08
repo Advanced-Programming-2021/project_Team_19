@@ -232,13 +232,13 @@ public class GameGraphicControllerForTest extends Menu {
 
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-            gameView.justDestroyActivatedSpellOrTrap(cardView.card, true);
-            otherGameView.justDestroyActivatedSpellOrTrap(cardView.card, false);
+            gameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, true);
+            otherGameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, false);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
             String ids = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(cardView.card, true, ids);
-            otherGameView.activateSpell1(cardView.card, false, ids);
+            gameView.activateSpell1(-1, cardView.card, true, ids);
+            otherGameView.activateSpell1(-1, cardView.card, false, ids);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
