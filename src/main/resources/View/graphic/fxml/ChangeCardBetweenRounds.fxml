@@ -37,5 +37,6 @@
             </graphic>
         </Button>
         <Label fx:id="result" layoutX="300.0" layoutY="555.0" prefHeight="38.0" prefWidth="246.0" />
+      <Button layoutX="681.0" layoutY="555.0" mnemonicParsing="false" onMouseClicked="#finishChange" prefHeight="25.0" prefWidth="105.0" text="finish" />
     </children>
 </AnchorPane>

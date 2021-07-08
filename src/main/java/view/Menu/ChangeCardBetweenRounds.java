@@ -24,6 +24,8 @@ public class ChangeCardBetweenRounds extends Menu {
 
     private User user;
 
+    private DeckModifierBetweenGames deckModifierBetweenGames;
+
     @FXML
     private TextField cardName;
     @FXML
@@ -40,6 +42,7 @@ public class ChangeCardBetweenRounds extends Menu {
 
     public void run(User user) {
         this.user = user;
+        deckModifierBetweenGames = new DeckModifierBetweenGames(user);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/OneDeck.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
@@ -86,11 +89,31 @@ public class ChangeCardBetweenRounds extends Menu {
         int cnt = 1;
         for (Card card : deck.getAllSideCardsSorted()) {
             if (card.getName().equals(cardNameToMove)) {
-                new DeckModifierBetweenGames(user).run();
+                deckModifierBetweenGames.runForGraphic("--side " + cnt);
+                result.setText("Successful");
+                return;
             }
         }
+        result.setText("Sorry there is no such card in side Deck!");
     }
 
     public void addToSideDeck(MouseEvent mouseEvent) {
+        Deck deck = getDeck();
+        String cardNameToMove = cardName.getText();
+        int cnt = 1;
+        for (Card card : deck.getAllMainCardsSorted()) {
+            if (card.getName().equals(cardNameToMove)) {
+                deckModifierBetweenGames.runForGraphic("--main " + cnt);
+                result.setText("Successful");
+                return;
+            }
+            cnt++;
+        }
+        result.setText("Sorry there is no such card in side Deck!");
+    }
+
+    public void finishChange(MouseEvent mouseEvent) {
+        String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
+        result.setText(resultFromLogic);
     }
 }
