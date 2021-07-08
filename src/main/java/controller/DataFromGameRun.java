@@ -1,24 +1,32 @@
 package controller;
 
 import java.util.*;
+import model.Card.*;
+import model.*;
+import controller.DuelControllers.*;
 
 public class DataFromGameRun {
-    private ArrayList<String> events = new ArrayList<>();
+    public static ArrayList<DataFromGameRun> eventDataFromServer = new ArrayList<>();
+    public ArrayList<Card> cardsForEvent = new ArrayList<>();
+    public String event;
+    public Gamer gamerOfAction;
 
-    public DataFromGameRun(ArrayList<String> events){
-        this.events = events;
-    }
 
     public DataFromGameRun(String event){
-        events.add(event);
+        this.event = event;
+        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        eventDataFromServer.add(this);
     }
 
-    public ArrayList<String> getEvents() {
-        return events;
+    public DataFromGameRun(String event, Card card){
+        this.event = event;
+        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        cardsForEvent.add(card);
+        eventDataFromServer.add(this);
     }
 
-    public void addEvents(ArrayList<String> eventsToAdd){
-        events.addAll(eventsToAdd);
+    public static void reset() {
+        eventDataFromServer = new ArrayList<>();
     }
 
 

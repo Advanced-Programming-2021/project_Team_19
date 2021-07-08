@@ -35,6 +35,7 @@ public class CardView extends Rectangle {
     public boolean canShowValidActions = true;
     public Popup tempPopup;
     public EventHandler filter;
+    public boolean hasBeenClicked;
 
     public CardView(double sizeInverse) {
         super(width / sizeInverse, height / sizeInverse);
@@ -132,6 +133,8 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("activate");
             } else if (validAction.equals("select")) {
                 validActionNamesForShow.add("select");
+            } else if (validAction.equals("flip summon")) {
+                validActionNamesForShow.add("flip summon");
             } else if (validAction.equals("sacrifice")) {
                 validActionNamesForShow.add("sacrifice");
             } else {
@@ -139,26 +142,16 @@ public class CardView extends Rectangle {
             }
         }
 
-//        //test
-//        validActionNamesForShow.add("hehe");
-//        validActionNames.add("hehe");
-//        validActionNamesForShow.add("hihi");
-//        validActionNames.add("hihi");
-//        //test
-
         validActionIndex = 0;
 
-        if (validActionNamesForShow.size() > 0) {
-            return validActionNamesForShow.get(0);
-        }
+        throwExceptionIfHasNoValidAction();
 
-        throw new Exception("no valid actions");
+        return validActionNamesForShow.get(0);
     }
 
-    public String getNextValidAction() {
-        if (validActionNamesForShow.size() == 0) {
-            return null;
-        }
+    public String getNextValidAction() throws Exception {
+        throwExceptionIfHasNoValidAction();
+
         return validActionNamesForShow.get
                 (++validActionIndex % validActionNamesForShow.size());
     }
@@ -168,9 +161,16 @@ public class CardView extends Rectangle {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 
+    public void throwExceptionIfHasNoValidAction() throws Exception {
+        if (validActionNamesForShow.size() == 0) {
+            throw new Exception("no valid actions");
+        }
+    }
+
     public void setShowCardAndShowValidActions(GameView gameView) {
 
         setOnMouseEntered(mouseEvent -> {
+            hasBeenClicked = false;
             gameView.game.gameData.setSelectedCard(card);
             gameView.showCard(this);
 
@@ -195,9 +195,17 @@ public class CardView extends Rectangle {
 
         setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.SECONDARY)) {
-                gameView.showValidActionForCard(getNextValidAction(), this);
+                try {
+                    gameView.showValidActionForCard(getNextValidAction(), this);
+                } catch (Exception ignored) {
+                }
             }else {
-                gameView.cardOnLeftClick(this);
+                try {
+                    throwExceptionIfHasNoValidAction();
+                    gameView.cardOnLeftClick(this);
+                } catch (Exception ignored) {
+                }
+
             }
         });
     }

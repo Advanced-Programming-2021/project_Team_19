@@ -34,6 +34,11 @@ public class DirectAttack extends Attack {
             return "you can’t attack the opponent directly";
         }
 
+
+        if (gameData.getTurn() == 1){
+            return "cannot direct attack on first turn";
+        }
+
         return "attack direct";
     }
 

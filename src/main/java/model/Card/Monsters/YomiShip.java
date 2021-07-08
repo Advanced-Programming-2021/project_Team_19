@@ -14,11 +14,15 @@ public class YomiShip extends EffectMonster {
 
 
     @Override
-    public void handleDestroy(GameData gameData) {
-        super.handleDestroy(gameData);
-        if (gameData.getCurrentPhase().equals(Phase.BATTLE) && !gameData.getSelectedCard().equals(this) && gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
+    public String handleDestroy(GameData gameData) {
+        String toReturn = super.handleDestroy(gameData);
+        if (gameData.getCurrentPhase().equals(Phase.BATTLE) &&
+                !gameData.getSelectedCard().equals(this) &&
+                gameData.getSelectedCard().getCardFamily().equals(CardFamily.MONSTER)) {
             new Activation(gameData, this).activate();
+            toReturn =  "yomi ship";
         }
+        return toReturn;
     }
 
     @Override

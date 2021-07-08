@@ -86,14 +86,14 @@ public class CallOfTheHaunted extends SpeedEffectTrap {
         return false;
     }
 
-    public void handleDestroy(GameData gameData) {
+    public String handleDestroy(GameData gameData) {
 
         if (!gameData.getCardController(summonedMonster).getGameBoard().getGraveYard().
                 getCardsInGraveYard().contains(summonedMonster)) {
             summonedMonster.handleDestroy(gameData);
         }
 
-        super.handleDestroy(gameData);
+        return super.handleDestroy(gameData);
     }
 
 }
