@@ -3,6 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
+import controller.DuelControllers.DuelMenuController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import controller.Utils;
@@ -21,6 +22,8 @@ import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.Menu.Menu;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static view.graphic.GameView.getIndexById;
 
@@ -31,9 +34,19 @@ public class GameGraphicControllerForTest extends Menu {
     GameView gameView2;
     Game game;
 
-    public GameGraphicControllerForTest() {
+    public GameGraphicControllerForTest(Stage first, Stage second, Gamer firstGamer, Gamer secondGamer) {
         super("game test");
-        TestInit();
+//        TestInit();
+        Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
+        scene.getStylesheets().add("CSS/Css.css");
+        second.setScene(scene);
+        GameData gameData = new GameData(firstGamer, secondGamer);
+        game = new Game(gameData);
+        gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
+        gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
+
+        gameView2.setRivalGameView(gameView1);
+        gameView1.setRivalGameView(gameView2);
     }
 
     public void testRun() {
@@ -49,6 +62,11 @@ public class GameGraphicControllerForTest extends Menu {
         });
     }
 
+    public void run() {
+        startGame();
+    }
+
+    @Deprecated
     public void TestInit() {
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
@@ -184,6 +202,13 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
             time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
                     getIndexById(Integer.parseInt(response.substring(12, 13))), response.substring(24), true);
+        } else if (response.startsWith("game finished ")) {
+            String name = response.split(" ")[2];
+            if (gameView1.self.getUsername().equals(name)) {
+                DuelMenuController.finishDuel(gameView1.self, GameData.getGameData());
+            } else {
+
+            }
         } else {
             time = responseIsForPhaseChange(gameView, response);
         }
