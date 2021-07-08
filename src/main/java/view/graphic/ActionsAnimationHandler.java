@@ -126,8 +126,9 @@ public class ActionsAnimationHandler {
     //mode -> 0 for summon monster and 1 for set monster and 2 for activate spell and 3 for set spell
 
     static double runMoveCardFromHandToFieldGraphic(GameView gameView,
-                                                    CardView cardView, int mode, int zone, int index) {
+                                                    Card card, int mode, int zone, int index) {
 
+        CardView cardView = gameView.searchCardInSelfHand(card);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
 
         addCardToCorrectCardListZone(gameView, newCardView, zone, index);
@@ -400,8 +401,9 @@ public class ActionsAnimationHandler {
 
     //flip animations
 
-    static double runFlipSummonGraphic(GameView gameView, CardView cardView) {
+    static double runFlipSummonGraphic(GameView gameView, Card card) {
 
+        CardView cardView = gameView.searchCardInSelfField(card);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
         gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInFieldX(newCardView, 0));

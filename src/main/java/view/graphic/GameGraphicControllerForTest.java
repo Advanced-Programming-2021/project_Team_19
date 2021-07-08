@@ -141,21 +141,21 @@ public class GameGraphicControllerForTest extends Menu {
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
             otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSummonGraphic(cardView, getIndexById(cardIndex));
+            time = gameView.handleSummonGraphic(cardView.card, getIndexById(cardIndex));
         } else if (response.equals("add card to hand")) {
             otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
             time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSetSpellGraphic(cardView, getIndexById(cardIndex));
+            time = gameView.handleSetSpellGraphic(cardView.card, getIndexById(cardIndex));
         } else if (response.startsWith("activate spell ")) {
             time = graphicsHandlingForSpells(gameView, cardView, response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
             otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
-            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, position);
+            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView.card, position);
         } else if (response.matches("get \\d monsters")) {
             gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
         } else if (response.equals("attack monster")) {
@@ -168,7 +168,7 @@ public class GameGraphicControllerForTest extends Menu {
             int cardIndex = Integer.parseInt(response.substring(12));
             otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
             time = gameView.handleSetMonsterGraphic
-                    (cardView, getIndexById(cardIndex));
+                    (cardView.card, getIndexById(cardIndex));
         } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
             Matcher matcher = Utils.getMatcher(response,
                     "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp");
@@ -177,19 +177,19 @@ public class GameGraphicControllerForTest extends Menu {
             time = gameView.handleAttackResultGraphic(matcher);
         } else if (response.equals("flip summoned successfully")) {
             otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
-            time = gameView.handleFlipSummonGraphic(cardView);
+            time = gameView.handleFlipSummonGraphic(cardView.card);
         } else if (response.matches("summon \\d sacrifice( \\d)+")) {
             otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
                     getIndexByRivalId(Integer.parseInt(response.substring(7, 8))), false,
                     getSacrificesIndex(response.substring(19), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
+            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
                     getIndexById(Integer.parseInt(response.substring(7, 8))), false,
                     getSacrificesIndex(response.substring(19), true));
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
             otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
                     getIndexByRivalId(Integer.parseInt(response.substring(12,13))), true,
                     getSacrificesIndex(response.substring(24), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
+            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
                     getIndexById(Integer.parseInt(response.substring(12, 13))), true,
                     getSacrificesIndex(response.substring(24), true));
         } else if (response.startsWith("game finished ")) {
