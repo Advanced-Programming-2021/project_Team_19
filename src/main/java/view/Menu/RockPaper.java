@@ -1,5 +1,7 @@
 package view.Menu;
 
+import controller.DataBaseControllers.UserDataBaseController;
+import controller.DuelControllers.DuelMenuController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Enums.RockPaperScissorResult;
+import model.Gamer;
 import model.Pair;
 import model.User;
 
@@ -48,13 +51,16 @@ public class RockPaper extends Menu {
 
     private static Label prevResult;
 
+    private static DuelMenuController duelMenuController;
+
     private BlockingQueue<Boolean> getResult = new LinkedBlockingQueue<>();
 
     public RockPaper() {
         super("Rock Paper");
     }
 
-    public void run(User main, User invited, Stage before) {
+    public void run(User main, User invited, Stage before, DuelMenuController duelMenuController) {
+        RockPaper.duelMenuController = duelMenuController;
         RockPaper.main = main;
         RockPaper.invited = invited;
         Platform.runLater(() -> {
@@ -69,10 +75,8 @@ public class RockPaper extends Menu {
                         }
                     }
                 }
-                Stage stage = new Stage();
-                stage.setScene(new Scene(anchorPane));
+                before.getScene().setRoot(anchorPane);
                 firstPlayerStage = stage;
-                stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -181,20 +185,28 @@ public class RockPaper extends Menu {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
                     getResult.put(true);
+                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
+                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
                     getResult.put(true);
+                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
+                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
                     getResult.put(true);
+                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
+                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
                 } else {
                     result.setText(invited.getUsername() + " is the winner");
                     prevResult.setText(invited.getUsername() + "is the winner");
                     getResult.put(false);
+                    DuelMenuController.rivalGamer = new Gamer(DuelMenuController.user);
+                    DuelMenuController.gameStarter = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
                 }
             } catch(InterruptedException e) {
                 e.printStackTrace();
@@ -205,6 +217,7 @@ public class RockPaper extends Menu {
                 e.printStackTrace();
             }
 
+            duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
         }
     }
 

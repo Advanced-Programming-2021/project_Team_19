@@ -23,15 +23,15 @@ import view.Printer.Printer;
 
 public class DuelMenuController extends Menu {
 
-    private static User user;
-    private static Gamer gameStarter;
-    private static Gamer rivalGamer;
+    public static User user;
+    public static Gamer gameStarter;
+    public static Gamer rivalGamer;
     private Pane pane = new Pane();
-    private ChoiceBox numberOfRounds;
+    public ChoiceBox numberOfRounds;
     private ChoiceBox rivalChoiceBox;
     private HBox rivalNameField;
     private Label responseLabel = new Label();
-    private TextField rivalUserNameTextField = new TextField();
+    public TextField rivalUserNameTextField = new TextField();
     private static boolean gameIsHappening = false;
 
     public DuelMenuController() {
@@ -186,21 +186,13 @@ public class DuelMenuController extends Menu {
     private void startDuelWithAnotherPlayer() {
 
         RockPaper rockPaper = new RockPaper();
-        rockPaper.run(user, UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()), stage);
-        Pair<Pair<Stage, Stage>, Boolean> result = rockPaper.getResult2();
-        if (result.getSecond()) {
-            gameStarter = new Gamer(user);
-            rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
-        } else {
-            gameStarter = new Gamer(UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()));
-            rivalGamer = new Gamer(user);
-        }
-        handleDuel(Integer.parseInt(((String) numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)));
+        rockPaper.run(user, UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText()), stage, this);
+
 
     }
 
 
-    private void handleDuel(int rounds) {
+    public void handleDuel(int rounds) {
         gameIsHappening = true;
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
