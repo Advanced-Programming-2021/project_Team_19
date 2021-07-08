@@ -267,12 +267,12 @@ public class GameView {
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
-                currentPhase = phases.get((i + 1) % 6);
+                currentPhase = phases.get(i % 6);
                 break;
             }
         }
-        Popup popup = menuGraphic.showPopupMessage(stage, currentPhase, stage.getX() + 400, stage.getY() + 250);
-        new Timeline(new KeyFrame(Duration.millis(500), Event -> popup.hide())).play();
+//        Popup popup = menuGraphic.showPopupMessage(stage, currentPhase, stage.getX() + 400, stage.getY() + 250);
+//        new Timeline(new KeyFrame(Duration.millis(500), Event -> popup.hide())).play();
     }
 
     private Pane getCheatPane(Stage stage) {
