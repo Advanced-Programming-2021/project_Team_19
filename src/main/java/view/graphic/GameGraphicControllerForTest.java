@@ -33,15 +33,17 @@ public class GameGraphicControllerForTest extends Menu {
     GameView gameView1;
     GameView gameView2;
     Game game;
+    int rounds;
 
-    public GameGraphicControllerForTest(Stage first, Stage second, Gamer firstGamer, Gamer secondGamer) {
+    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer) {
         super("game test");
 //        TestInit();
+        this.rounds = rounds;
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         second.setScene(scene);
         GameData gameData = new GameData(firstGamer, secondGamer);
-        game = new Game(gameData);
+        game = new Game(gameData, rounds);
         gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
         gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
 
@@ -78,7 +80,7 @@ public class GameGraphicControllerForTest extends Menu {
         Gamer gamer2 = new Gamer(user2);
 
         GameData gameData = new GameData(gamer1, gamer2);
-        game = new Game(gameData);
+        game = new Game(gameData, rounds);
 
         gameView1 = new GameView(stage, this, gamer1, gamer2, game);
         gameView2 = new GameView(stage2, this, gamer2, gamer1, game);
@@ -205,9 +207,9 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (response.startsWith("game finished ")) {
             String name = response.split(" ")[2];
             if (gameView1.self.getUsername().equals(name)) {
-                DuelMenuController.finishDuel(gameView1.self, GameData.getGameData());
+                DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), game.round);
             } else {
-
+                DuelMenuController.finishDuel(gameView.rival, GameData.getGameData(), game.round);
             }
         } else {
             time = responseIsForPhaseChange(gameView, response);

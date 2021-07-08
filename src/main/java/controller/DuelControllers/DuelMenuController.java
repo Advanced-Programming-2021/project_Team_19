@@ -197,13 +197,13 @@ public class DuelMenuController extends Menu {
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
 //            finishDuel(new Game(gameData).DeprecatedRun(), gameData, 1);
-            new GameGraphicControllerForTest(firstStage, secondStage, gameStarter, rivalGamer).run();
+            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer).run();
         } else {
             int userWins = 0;
             int rivalWins = 0;
             GameData gameData = new GameData(gameStarter, rivalGamer);
             while (true) {
-                if ((new Game(gameData).DeprecatedRun()).equals(gameStarter))
+                if ((new Game(gameData, rounds).DeprecatedRun()).equals(gameStarter))
                     userWins++;
                 else
                     rivalWins++;
