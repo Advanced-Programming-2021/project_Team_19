@@ -59,6 +59,9 @@ public class Game {
             case "attack direct" -> {
                 new DataFromGameRun(new DirectAttack(gameData).run());
             }
+            case "activate spell normally" -> {
+                new DataFromGameRun(new ActivateSpellOrTrapNormally(gameData).run());
+            }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);

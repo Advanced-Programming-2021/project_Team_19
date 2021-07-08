@@ -46,28 +46,42 @@ public class ActivateSpellOrTrapNormally extends Activation {
             return "invalid zone";
         }
 
+        if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand){
+            if (card instanceof Trap) {
+                return "you should set trap card first";
+            }
+
+            if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
+                return "spell card zone is full";
+            }
+            if (!card.canActivate(gameData)) {
+                return "preparations of this spell are not done yet";
+            }
+
+
+        }
+
         return "activate spell normally";
     }
 
-    public void run() {
+    public String run() {
 
         String result = actionIsValid();
 
         if(!result.equals("activate spell normally")){
             print(result);
-            return;
         }
 
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
-            activateFromHand(card);
-        } else if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof SpellAndTrapCardZone) {
-            activateSpellOrTrap();
+             return "activate spell hand " + activateFromHand(card);
+        } else {
+            return "activate spell board " + activateSpellOrTrap();
         }
     }
 
-    private void activateSpellOrTrap() {
+    private String activateSpellOrTrap() {
 
         ActivationData data = super.activate();
 
@@ -77,27 +91,27 @@ public class ActivateSpellOrTrapNormally extends Activation {
     }
 
 
-    private void activateFromHand(SpellAndTraps card) {
+    private String activateFromHand(SpellAndTraps card) {
 
-        if (card instanceof Trap) {
-            print("you should set trap card first");
-            return;
-        }
-
-        if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
-            print("spell card zone is full");
-            return;
-        }
-        if (!card.canActivate(gameData)) {
-            print("preparations of this spell are not done yet");
-            return;
-        }
+//        if (card instanceof Trap) {
+//            print("you should set trap card first");
+//            return;
+//        }
+//
+//        if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
+//            print("spell card zone is full");
+//            return;
+//        }
+//        if (!card.canActivate(gameData)) {
+//            print("preparations of this spell are not done yet");
+//            return;
+//        }
 
         activateOrSetCheckFieldSpell(card, gameData);
 
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);
 
-        activateSpellOrTrap();
+        return activateSpellOrTrap();
     }
 
 }

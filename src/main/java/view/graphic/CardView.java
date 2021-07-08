@@ -128,9 +128,9 @@ public class CardView extends Rectangle {
             } else if (validAction.equals("set")) {
                 validActionNamesForShow.add("set");
             } else if (validAction.equals("activate spell normally")) {
-                validActionNamesForShow.add("activate");
+                validActionNamesForShow.add("activate spell");
             } else if (validAction.equals("activate effect monster")) {
-                validActionNamesForShow.add("activate");
+                validActionNamesForShow.add("activate effect");
             } else if (validAction.equals("select")) {
                 validActionNamesForShow.add("select");
             } else if (validAction.equals("flip summon")) {
