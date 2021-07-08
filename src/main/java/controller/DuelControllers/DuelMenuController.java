@@ -174,6 +174,11 @@ public class DuelMenuController extends Menu {
             return false;
         }
 
+        if (rivalUserName.equals(user.getUsername())){
+            Printer.setFailureResponseToLabel(responseLabel, "enter another user's name");
+            return false;
+        }
+
         User rival = UserDataBaseController.getUserByUsername(rivalUserNameTextField.getText());
 
         if (rival == null) {

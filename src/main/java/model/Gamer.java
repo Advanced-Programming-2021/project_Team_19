@@ -108,11 +108,16 @@ public class Gamer {
         return currentScoreInDuel;
     }
 
-    public void destroyAllMonstersOnBoard(GameData gameData) {
-        for (Monster monster : getGameBoard().getMonsterCardZone().getCards()) {
-            if (monster != null)
+    public String destroyAllMonstersOnBoard(GameData gameData) {
+        StringBuilder ids = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            Monster monster = getGameBoard().getMonsterCardZone().getCards().get(i);
+            if (monster != null){
+                ids.append(getGameBoard().getMonsterCardZone().getId(monster)).append(" ");
                 monster.handleDestroy(gameData);
+            }
         }
+        return ids.toString().trim();
     }
 
 

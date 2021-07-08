@@ -10,11 +10,14 @@ import model.Enums.Type;
 public class Raigeki extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
-        gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+        String ids = gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
 
         handleCommonsForActivate(gameData);
         handleDestroy(gameData);
-        return new ActivationData(this, "all enemy monsters were destroyed");
+        if (ids.equals("")){
+            return new ActivationData(this, "destroy this spell");
+        }
+        return new ActivationData(this, "destroy rival monsters " + ids);
     }
 
     public Raigeki(String name, String description, int price, Type type, SpellTypes spellType, Status status) {

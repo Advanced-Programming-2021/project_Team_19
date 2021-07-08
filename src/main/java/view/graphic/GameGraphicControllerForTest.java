@@ -182,6 +182,8 @@ public class GameGraphicControllerForTest extends Menu {
             time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
         } else if (response.matches("set spell \\d")) {
             time = gameView.handleSetSpellGraphic(cardView, getIndexById(Integer.parseInt(response.substring(10))));
+        } else if (response.startsWith("activate spell ")) {
+            time = graphicsHandlingForSpells(response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)")));
@@ -219,6 +221,22 @@ public class GameGraphicControllerForTest extends Menu {
             new Timeline(new KeyFrame(Duration.millis(time),
                     EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
         }
+    }
+
+    private double graphicsHandlingForSpells(String spellCommand) {
+        if (spellCommand.equals("destroy this spell")) {
+//            todo destroy this spell only and do nothing else
+        } else if (spellCommand.matches("destroy rival monsters( \\d)*")) {
+//            todo destroy this spell and destroy monsters in the given ids in enemy monster card zone
+//            todo number of ids can be zero
+        } else if (spellCommand.matches("destroy rival monsters( \\d)* self monsters( \\d)*")) {
+//            todo destroy this spell and destroy monsters in the given ids in enemy monster card zone and self monster card zone
+//            todo number of ids can be zero
+        } else if (spellCommand.matches("destroy rival spells( \\d)*")) {
+//            todo destroy this spell and destroy spells and traps in the given ids in enemy spell and trap zone
+//            todo number of ids can be zero
+        }
+        return 0;
     }
 
 }

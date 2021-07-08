@@ -10,13 +10,16 @@ import model.Enums.Type;
 public class HarpiesFeatherDuster extends Spell {
     @Override
     public ActivationData activate(GameData gameData) {
+        StringBuilder ids = new StringBuilder();
         for (int i = 1; i < 6; i++) {
-            if (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getCard(i) != null)
+            if (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getCard(i) != null) {
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getCard(i).handleDestroy(gameData);
+                ids.append(" ").append(i);
+            }
         }
         handleCommonsForActivate(gameData);
         handleDestroy(gameData);
-        return new ActivationData(this, "all enemy spell and traps were destroyed");
+        return new ActivationData(this, "destroy rival spells" + ids);
     }
 
     public HarpiesFeatherDuster(String name, String description, int price, Type type, SpellTypes spellType, Status status) {

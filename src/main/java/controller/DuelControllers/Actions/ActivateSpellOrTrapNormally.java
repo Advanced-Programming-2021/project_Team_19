@@ -88,6 +88,8 @@ public class ActivateSpellOrTrapNormally extends Activation {
         if (!data.message.equals("")) {
             print(data.message);
         }
+
+        return data.message;
     }
 
 

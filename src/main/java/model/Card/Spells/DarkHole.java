@@ -15,11 +15,12 @@ public class DarkHole extends Spell {
 
     @Override
     public ActivationData activate(GameData gameData) {
-        gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
-        gameData.getCurrentGamer().destroyAllMonstersOnBoard(gameData);
+        String rivalIds = " rival monsters " + gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+        String selfIds = " self monsters " + gameData.getCurrentGamer().destroyAllMonstersOnBoard(gameData);
         handleCommonsForActivate(gameData);
         handleDestroy(gameData);
-        return new ActivationData(this, "all monsters were destroyed");
+
+        return new ActivationData(this, ("destroy" + rivalIds + selfIds).trim());
     }
 
 }

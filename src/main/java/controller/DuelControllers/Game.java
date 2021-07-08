@@ -61,8 +61,8 @@ public class Game {
             case "attack direct" -> {
                 new DataFromGameRun(new DirectAttack(gameData).run());
             }
-            case "activate spell normally" -> {
-                new DataFromGameRun(new ActivateSpellOrTrapNormally(gameData).run());
+            case "activate spell" -> {
+                new DataFromGameRun("activate spell " + new ActivateSpellOrTrapNormally(gameData).run());
             }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
