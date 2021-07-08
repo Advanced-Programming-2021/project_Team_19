@@ -72,7 +72,8 @@ public class GameGraphicControllerForTest extends Menu {
     public void startGame() {
         gameView1.run();
         gameView2.run();
-        new Timeline(new KeyFrame(Duration.millis(2500), event -> {
+
+        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
             graphicsForEvents(game.run(new DataForGameRun
                     ("start game", gameView1.self)), null, 0);
         })).play();
@@ -144,7 +145,7 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (phaseChangeResponse.matches("game finished \\w+")) {
 //           todo     finish game
         }
-        return 500;
+        return 1000;
     }
 
     public void graphicsForEvents(ArrayList<DataFromGameRun> events, CardView cardView, int index) {

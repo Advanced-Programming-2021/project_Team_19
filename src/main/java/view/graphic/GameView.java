@@ -39,6 +39,7 @@ import model.Gamer;
 import view.graphic.CardViewAnimations.*;
 
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -100,6 +101,7 @@ public class GameView {
     CardView mainCardForMultiCardAction;
     ArrayList<Integer> idsForMultiCardAction;
     int numberOfNeededCards = 0;
+    ArrayList<String> phases = new ArrayList<>();
 
     {
         for (int i = 0; i < 5; i++) {
@@ -111,6 +113,11 @@ public class GameView {
             selfAtkDefLabels.getChildren().add(getLabelForAtkDef());
             rivalAtkDefLabels.getChildren().add(getLabelForAtkDef());
         }
+        phases.add("draw phase");
+        phases.add("main phase");
+        phases.add("battle phase");
+        phases.add("main phase");
+        phases.add("end phase");
     }
 
     public GameView(Stage stage, GameGraphicControllerForTest controller, Gamer self, Gamer rival, Game game) {
@@ -253,15 +260,19 @@ public class GameView {
     }
 
     private void runChangePhase() {
+        String currentPhase = "";
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
 
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
+                currentPhase = phases.get((i + 1) % 6);
                 break;
             }
         }
+        Popup popup = menuGraphic.showPopupMessage(stage, currentPhase, stage.getX() + 400, stage.getY() + 250);
+        new Timeline(new KeyFrame(Duration.millis(500), Event -> popup.hide())).play();
     }
 
     private Pane getCheatPane(Stage stage) {
@@ -436,7 +447,12 @@ public class GameView {
     private CardView getCardForGraveyard(Card card, boolean isSelf) {
         CardView cardView = new CardView(card, 9, false, true);
 
-        cardView.setOnMouseClicked(mouseEvent -> showGraveYard(isSelf));
+        cardView.setOnMouseClicked(mouseEvent -> {
+            if(!mainPane.getChildren().contains(cardViewsScrollPane)){
+                showGraveYard(isSelf);
+            }
+
+        });
 
         return cardView;
     }
@@ -506,7 +522,6 @@ public class GameView {
             cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
         }
         handleAddCardsFromDeckToHandGraphic(cards);
-
     }
 
     void setBooleanForShowActions(ArrayList<CardView> cardViews, boolean bool) {
