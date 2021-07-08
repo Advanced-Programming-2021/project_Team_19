@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 import model.Card.Card;
+import model.Card.Monster;
 import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.graphic.CardViewAnimations.*;
 
@@ -464,10 +465,22 @@ public class ActionsAnimationHandler {
         return 400;
     }
 
-    static double runFlipCardGraphic(CardView cardView, GameView gameView) {
+    static int getCardViewMode(CardView cardView){
+        if(cardView.isHidden && cardView.isVertical){
+            return 3;
+        } else if (cardView.isHidden && !cardView.isVertical){
+            return 1;
+        } else if (!cardView.isHidden && !cardView.isVertical){
+            return 4;
+        } else if (!cardView.isHidden && cardView.isVertical){
+            return cardView.getCard() instanceof Monster ? 0 : 2;
+        }
+        return -1;
+    }
 
-        CardView newCardView = new CardView
-                (cardView.card, cardView.sizeInverse, !cardView.isHidden, cardView.isVertical);
+    static double runFlipCardGraphic(CardView cardView, GameView gameView) {
+        int newMode = 5 -  getCardViewMode(cardView);
+        CardView newCardView = gameView.getCardViewForField(cardView.card, newMode);
         newCardView.setX(cardView.getX());
         newCardView.setY(cardView.getY());
         newCardView.setVisible(false);

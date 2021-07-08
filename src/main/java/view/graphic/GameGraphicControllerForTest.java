@@ -21,6 +21,7 @@ import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.Menu.Menu;
 
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,9 +36,13 @@ public class GameGraphicControllerForTest extends Menu {
     Game game;
     int rounds;
 
+    public GameGraphicControllerForTest(){
+        super("test game");
+        TestInit();
+    }
+
     public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer) {
         super("game test");
-//        TestInit();
         this.rounds = rounds;
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
