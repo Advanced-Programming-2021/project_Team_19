@@ -83,6 +83,7 @@ public class DataBaseController {
     protected static void writeDataInfile(String data, String path) throws IOException {
         FileWriter fileWriter = new FileWriter(path);
         fileWriter.write(data);
+        fileWriter.flush();
         fileWriter.close();
     }
 

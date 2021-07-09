@@ -98,7 +98,12 @@ public class Game {
         } else if (command.matches("set position (attack|defence)")) {
             String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
             new DataFromGameRun(setPositionResponse);
+        } else if (command.matches("game button @\\d+@")) {
+            String lpIncrease = command.split(" ")[2].replace("@", "");
+            CheatCodes.increaseLifePoint(gameData, lpIncrease);
+            new DataFromGameRun("increase lp " + lpIncrease);
         }
+
 
         runServerSideGameEvents();
 
