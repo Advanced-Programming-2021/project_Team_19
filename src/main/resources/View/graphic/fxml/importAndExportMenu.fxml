@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Menu.ImportAndExportMenu">
+   <children>
+      <Button layoutX="174.0" layoutY="288.0" mnemonicParsing="false" onMouseClicked="#chooseCardJson" prefHeight="25.0" prefWidth="265.0" text="import" />
+      <HBox fx:id="importedCard" layoutX="207.0" layoutY="27.0" prefHeight="225.0" prefWidth="200.0" />
+      <TextField fx:id="cardToExport" layoutX="290.0" layoutY="355.0" />
+      <Button layoutX="174.0" layoutY="413.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="265.0" text="export" />
+      <Label layoutX="107.0" layoutY="355.0" text="Card name to export:" textFill="#ff3030">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="allCards" layoutX="515.0" layoutY="100.0" prefHeight="339.0" prefWidth="200.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

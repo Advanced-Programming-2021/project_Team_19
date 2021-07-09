@@ -1,16 +1,30 @@
 package view.Menu;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
 
+import java.io.File;
+
 public class ImportAndExportMenu extends Menu {
+
+    @FXML
+    private ScrollPane allCards;
+    @FXML
+    private HBox importedCard;
+    @FXML
+    private TextField cardToExport;
 
     private static ImportAndExportMenu instance = null;
     private Pane pane = new Pane();
@@ -74,21 +88,33 @@ public class ImportAndExportMenu extends Menu {
 
     }
 
+    public void chooseCardJson(MouseEvent mouseEvent) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("json files (*.json)","*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            Image image = new Image("file:///" + file.getPath());
+            imageURL.setText(file.getPath());
+            choosenPicture.setImage(image);
+        }
+    }
+
     private void importCard() {
 
-        String cardName = cardNameTextField.getText();
-
-        if (cardName.equals("")){
-            Printer.setFailureResponseToLabel(responseLabel, "enter a card name");
-            return;
-        }
-
-        clearTextField();
-
-        DataForClientFromServer data = sendDataToServer
-                (new DataForServerFromClient("import card " + cardName, menuName));
-
-        Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
+//        String cardName = cardNameTextField.getText();
+//
+//        if (cardName.equals("")){
+//            Printer.setFailureResponseToLabel(responseLabel, "enter a card name");
+//            return;
+//        }
+//
+//        clearTextField();
+//
+//        DataForClientFromServer data = sendDataToServer
+//                (new DataForServerFromClient("import card " + cardName, menuName));
+//
+//        Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
     }
 
     private void exportCard() {
