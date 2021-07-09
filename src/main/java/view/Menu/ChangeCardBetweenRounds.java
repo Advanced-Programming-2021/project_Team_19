@@ -105,6 +105,7 @@ public class ChangeCardBetweenRounds extends Menu {
             if (card.getName().equals(cardNameToMove)) {
                 deckModifierBetweenGames.runForGraphic("--side " + cnt);
                 result.setText("Successful");
+                updateCard();
                 return;
             }
         }
@@ -120,6 +121,7 @@ public class ChangeCardBetweenRounds extends Menu {
             if (card.getName().equals(cardNameToMove)) {
                 deckModifierBetweenGames.runForGraphic("--main " + cnt);
                 result.setText("Successful");
+                updateCard();
                 return;
             }
             cnt++;
@@ -142,8 +144,9 @@ public class ChangeCardBetweenRounds extends Menu {
             int cnt = 1;
             for (Card card : deck.getAllSideCardsSorted()) {
                 if (card.getName().equals(cardNameToMove)) {
-                    deckModifierBetweenGames.runForGraphic("--main " + cnt);
-                    result.setText("Successful");
+                    String res = deckModifierBetweenGames.runForGraphic("--main " + cnt);
+                    result.setText(res);
+                    updateCard();
                     return;
                 }
                 cnt++;
@@ -162,8 +165,9 @@ public class ChangeCardBetweenRounds extends Menu {
             int cnt = 1;
             for (Card card : deck.getAllMainCardsSorted()) {
                 if (card.getName().equals(cardNameToMove)) {
-                    deckModifierBetweenGames.runForGraphic("--main " + cnt);
-                    result.setText("Successful");
+                    String res = deckModifierBetweenGames.runForGraphic("--main " + cnt);
+                    result.setText(res);
+                    updateCard();
                     return;
                 }
                 cnt++;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -27,7 +26,10 @@
         <TextField fx:id="cardName" layoutX="348.0" layoutY="481.0" />
         <Button layoutX="144.0" layoutY="521.0" mnemonicParsing="false" onMouseClicked="#addToMainDeck" prefHeight="25.0" prefWidth="246.0" text="add to main deck!" />
         <Button layoutX="423.0" layoutY="521.0" mnemonicParsing="false" onMouseClicked="#addToSideDeck" prefHeight="25.0" prefWidth="246.0" text="add to side deck!" />
-        <Label fx:id="result" layoutX="300.0" layoutY="555.0" prefHeight="38.0" prefWidth="246.0" />
+        <Label fx:id="result" layoutX="300.0" layoutY="555.0" prefHeight="38.0" prefWidth="246.0" textFill="#eaff4c">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
       <Button layoutX="681.0" layoutY="555.0" mnemonicParsing="false" onMouseClicked="#finishChange" prefHeight="25.0" prefWidth="105.0" text="finish" />
     </children>
 </AnchorPane>

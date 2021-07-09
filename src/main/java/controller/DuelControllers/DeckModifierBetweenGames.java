@@ -55,7 +55,7 @@ public class DeckModifierBetweenGames {
         if (command.matches("finish")) {
             return canEndModificationGraphic();
         } else if (command.matches("--(main|side) \\d+")) {
-            moveCard(Utils.getMatcher(command, "--(.+) (\\d+)"));
+            return moveCard(Utils.getMatcher(command, "--(.+) (\\d+)"));
         } else {
             Printer.printInvalidCommand();
         }
@@ -63,43 +63,48 @@ public class DeckModifierBetweenGames {
         return null;
     }
 
-    private void moveCard(Matcher matcher) {
+    private String moveCard(Matcher matcher) {
         matcher.find();
         if (matcher.group(1).equals("main")) {
-            moveFromMainDeckToSideDeckCommand(Integer.parseInt(matcher.group(2)));
-            return;
+            return moveFromMainDeckToSideDeckCommand(Integer.parseInt(matcher.group(2)));
         }
-        moveFromSideDeckToMainDeckCommand(Integer.parseInt(matcher.group(2)));
+        return moveFromSideDeckToMainDeckCommand(Integer.parseInt(matcher.group(2)));
     }
 
-    private void moveFromSideDeckToMainDeckCommand(int id) {
+    private String moveFromSideDeckToMainDeckCommand(int id) {
         if (id > deck.getSideDeckCards().size() || id <= 0) {
             Printer.print("invalid id");
-            return;
+            return "invalid id";
         }
 
         Card current = getCardOfIndexI(id, deck.getAllSideCardsSorted());
-        String cardName = current.getName().toLowerCase(Locale.ROOT);
+        String cardName = current.getName();
 
         cardsToMove += 1;
 
         deck.removeCardFromSideDeck(cardName);
         deck.addCardToMainDeck(cardName);
+        Printer.print("successful");
+        DeckDataBaseController.changeDeck(user.getUsername(), deck);
+        return "success";
     }
 
-    private void moveFromMainDeckToSideDeckCommand(int id) {
+    private String moveFromMainDeckToSideDeckCommand(int id) {
         if (id > deck.getMainDeckCards().size() || id <= 0) {
             Printer.print("invalid id");
-            return;
+            return "invalid id";
         }
 
         Card current = getCardOfIndexI(id, deck.getAllMainCardsSorted());
-        String cardName = current.getName().toLowerCase(Locale.ROOT);
+        String cardName = current.getName();
 
         cardsToMove -= 1;
 
         deck.removeCardFromMainDeck(cardName);
         deck.addCardToSideDeck(cardName);
+        Printer.print("success");
+        DeckDataBaseController.changeDeck(user.getUsername(), deck);
+        return "success";
     }
 
     private Card getCardOfIndexI(int index, TreeSet<Card> cards) {
