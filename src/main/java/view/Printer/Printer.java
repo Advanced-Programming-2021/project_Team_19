@@ -3,6 +3,7 @@ package view.Printer;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 
@@ -42,6 +43,7 @@ public class Printer {
     public static void setSuccessResponseToLabel(Label label, String text){
         label.setText(text);
         label.setTextFill(Color.GREEN);
+        label.setFont(new Font(16));
     }
 
     public static void setFailureResponseToLabel(Label label, String text){

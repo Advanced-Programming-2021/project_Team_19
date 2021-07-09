@@ -281,7 +281,6 @@ public class DuelMenuController extends Menu {
         });
 
         StackPane.setAlignment(backButton, Pos.TOP_LEFT);
-
         pane.getChildren().addAll(backButton, winnerLabel);
 
         return pane;

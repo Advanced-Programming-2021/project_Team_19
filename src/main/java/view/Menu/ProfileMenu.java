@@ -59,6 +59,8 @@ public class ProfileMenu extends Menu {
 
     public void run(String username, String nickname) {
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         setUsername(username);
         this.nickname = nickname;
         setButtons();

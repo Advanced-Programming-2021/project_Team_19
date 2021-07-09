@@ -38,6 +38,8 @@ public class WelcomeMenu extends Menu {
     public void run() {
         pane = new Pane();
         setButtons();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         stage.setTitle("Welcome Menu");
         stage.getScene().setRoot(pane);
     }
