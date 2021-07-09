@@ -19,18 +19,24 @@ public class MagicCylinder extends TrapsActivateBecauseOfActionAttack {
     @Override
     public ActivationData activate(GameData gameData) {
 
+        int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
+
         Attack attack = (Attack) Utils.getLastActionOfSpecifiedAction
                 (gameData.getCurrentActions(), Attack.class);
 
-        gameData.getCardController(attack.getAttackingMonster()).decreaseLifePoint
-                (((Monster) attack.getAttackingMonster()).getAttack(gameData));
+        int attackOfMonster = ((Monster) attack.getAttackingMonster()).getAttack(gameData);
+
+        gameData.getCardController(attack.getAttackingMonster()).decreaseLifePoint(attackOfMonster);
 
         handleDestroy(gameData);
 
         handleCommonsForActivate(gameData);
 
         return new TriggerActivationData
-                (true, "trap activated successfully\nrival LP decrease by ard attack", this);
+                (true, "activate trap " +
+                        trapIndex
+                        + ":change turn:magic cylinder:" +
+                        "activate spell -1 " + "destroy spell and rival loses " + attackOfMonster, this);
     }
 
 }

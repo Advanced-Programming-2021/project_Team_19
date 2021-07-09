@@ -28,7 +28,7 @@ public class CardActionManager {
 
         switch (mode) {
             case NORMAL_MODE -> {
-                result = new AttackMonster(GameData.getGameData()).actionIsValid();
+                result = new AttackMonster(GameData.getGameData(), 0).actionIsValid();
                 if (result.equals("attack monster"))
                     validActions.add(result);
 

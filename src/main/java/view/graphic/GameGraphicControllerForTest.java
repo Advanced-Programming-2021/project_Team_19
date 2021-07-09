@@ -306,19 +306,7 @@ public class GameGraphicControllerForTest extends Menu {
             }
 
         } else if (response.matches("rival loses \\d+")) {
-            int lp = -Integer.parseInt(response.substring(12));
-            try {
-                otherGameView.handleIncreaseLpGraphic(lp, true);
-            } catch (NullPointerException ignored) {
-
-            }
-            try {
-                time = gameView.handleIncreaseLpGraphic(lp, false);
-            } catch (NullPointerException ignored) {
-
-            }
-
-
+            time = handleIncreaseLP(gameView, response);
         } else if (response.matches("set monster \\d")) {
             int cardIndex = Integer.parseInt(response.substring(12));
 
@@ -438,6 +426,22 @@ public class GameGraphicControllerForTest extends Menu {
         }
     }
 
+    private double handleIncreaseLP(GameView gameView, String response) {
+        double time = 500;
+        int lp = -Integer.parseInt(response.substring(12));
+        try {
+            time = getTheOtherGameView(gameView).handleIncreaseLpGraphic(lp, true);
+        } catch (NullPointerException ignored) {
+
+        }
+        try {
+            time = gameView.handleIncreaseLpGraphic(lp, false);
+        } catch (NullPointerException ignored) {
+
+        }
+        return time;
+    }
+
     private void handleAI() {
         if (AIMod()) {
 
@@ -476,16 +480,7 @@ public class GameGraphicControllerForTest extends Menu {
 
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-            try {
-                gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
-            } catch (NullPointerException ignored) {
-            }
-
-            try {
-                otherGameView.justDestroyActivatedSpellOrTrap(index, cardView.card, false);
-            } catch (NullPointerException ignored) {
-
-            }
+            handleDestroySpell(gameView, cardView, index);
 
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
             String ids = Utils.getFirstGroupInMatcher(
@@ -535,8 +530,24 @@ public class GameGraphicControllerForTest extends Menu {
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
             changeStages(gameView, cardView.card, matcher.group(1));
+        } else if (spellCommand.matches("destroy spell and rival loses \\d+")){
+            handleIncreaseLP(gameView, spellCommand.substring(18));
+            handleDestroySpell(gameView, cardView, index);
         }
         return time;
+    }
+
+    private void handleDestroySpell(GameView gameView, CardView cardView, int index) {
+        try {
+            gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
+        } catch (NullPointerException ignored) {
+        }
+
+        try {
+            getTheOtherGameView(gameView).justDestroyActivatedSpellOrTrap(index, cardView.card, false);
+        } catch (NullPointerException ignored) {
+
+        }
     }
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {

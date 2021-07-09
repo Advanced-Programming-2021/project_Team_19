@@ -11,17 +11,16 @@ public class AttackMonster extends Attack {
 
     private int enemyId;
 
-    public AttackMonster(GameData gameData) {
+    public AttackMonster(GameData gameData, int enemyId) {
         super(gameData, "attack monster");
+        this.enemyId = enemyId;
     }
 
     public int getEnemyId() {
         return enemyId;
     }
 
-    public String run(int enemyId) {
-        this.enemyId = enemyId;
-
+    public String run(boolean checkTriggerOrRun) {
         return attackMonster();
     }
 

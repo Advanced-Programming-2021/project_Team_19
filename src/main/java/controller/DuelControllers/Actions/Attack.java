@@ -15,6 +15,8 @@ public abstract class Attack extends Action {
         attackingMonster = gameData.getSelectedCard();
     }
 
+    public abstract String run(boolean checkTriggerOrRun);
+
     public Card getAttackingMonster() {
         return attackingMonster;
     }
