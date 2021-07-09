@@ -65,7 +65,7 @@ public class ChangeCardBetweenRounds extends Menu {
         Deck deck = getDeck();
         HBox mainMenuCards = new HBox();
         for (Card card : deck.getAllMainCardsSorted()) {
-            CardView cardView = new CardView(card, 2, false, true);
+            CardView cardView = new CardView(card, 3, false, true);
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
             });
@@ -81,7 +81,7 @@ public class ChangeCardBetweenRounds extends Menu {
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
         for (Card card : deck.getAllSideCardsSorted()) {
-            CardView cardView = new CardView(card, 2, false, true);
+            CardView cardView = new CardView(card, 3, false, true);
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
             });
