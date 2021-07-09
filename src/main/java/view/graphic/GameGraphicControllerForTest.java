@@ -53,11 +53,11 @@ public class GameGraphicControllerForTest extends Menu {
 
     public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
         super("game test");
+        stage2 = second;
         this.rounds = rounds;
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         second.setScene(scene);
-        first.setScene(scene);
         GameData gameData = new GameData(firstGamer, secondGamer);
         game = new Game(gameData, rounds);
         if (!isInverted) {
@@ -202,6 +202,8 @@ public class GameGraphicControllerForTest extends Menu {
         GameView otherGameView = getTheOtherGameView(gameView);
 
         String response = events.get(index).event;
+
+        System.err.println(response);
 
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
@@ -358,6 +360,8 @@ public class GameGraphicControllerForTest extends Menu {
 
         } else if (response.startsWith("game finished ")) {
             String name = response.split(" ")[2];
+            stage2.close();
+
             if (gameView1.self.getUsername().equals(name)) {
                 DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), game.round);
             } else {
@@ -473,7 +477,6 @@ public class GameGraphicControllerForTest extends Menu {
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {
         double time = 1000;
-//        todo move card to field zone
 
         try {
             getTheOtherGameView(gameView).activateFieldSpell(card, false);

@@ -70,7 +70,7 @@ public class Game {
                 new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
             }
             case "flip summon" -> {
-                new DataFromGameRun(new FlipSummon(gameData).run());
+                new DataFromGameRun("game finished reza");
             }
             case "get Atk|Def" -> {
                 new DataFromGameRun(getAtkDef(gameData));
