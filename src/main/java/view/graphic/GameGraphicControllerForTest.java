@@ -225,7 +225,7 @@ public class GameGraphicControllerForTest extends Menu {
         System.out.println(spellCommand);
 
         int index = spellCommand.matches("\\d .*") ?
-                Integer.parseInt(spellCommand.split(" ")[0]) : -1;
+                getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
 
         spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
 
