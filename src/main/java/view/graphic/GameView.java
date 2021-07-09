@@ -1161,6 +1161,51 @@ public class GameView {
         return 500;
     }
 
+    CardView selfFieldSpell;
+    CardView rivalFieldSpell;
+
+    public double activateFieldSpell(Card card, boolean isSelf) {
+        CardView cardView;
+        double time;
+
+        if(isSelf){
+            cardView = searchCardInSelfHand(card);
+            time = runRemoveCardFromHand(this, cardView);
+        } else {
+            cardView = searchCardInRivalHand(card);
+            time = runRemoveCardFromRivalHand(this, cardView);
+        }
+
+        if(selfFieldSpell != null){
+            gamePane.getChildren().remove(selfFieldSpell);
+        }
+        if(rivalFieldSpell != null){
+            gamePane.getChildren().remove(rivalFieldSpell);
+        }
+
+        if(isSelf){
+            selfFieldSpell = new CardView(card, 9, false, true);
+        } else {
+            rivalFieldSpell = new CardView(card, 9, false, true);
+        }
+
+        if(isSelf){
+            selfFieldSpell.setX(535);
+            selfFieldSpell.setY(200);
+            selfFieldSpell.setOpacity(0);
+            gamePane.getChildren().add(selfFieldSpell);
+            new FadeAnimation(selfFieldSpell, 500, 0, 1).getAnimation().play();
+        }else{
+            rivalFieldSpell.setX(40);
+            rivalFieldSpell.setY(320);
+            rivalFieldSpell.setOpacity(0);
+            gamePane.getChildren().add(rivalFieldSpell);
+            new FadeAnimation(rivalFieldSpell, 500, 0, 1).getAnimation().play();
+        }
+
+        return time;
+    }
+
     //move to graveyard
     private double runDestroyCardFromFieldOrHandGraphic(int index, int zone, boolean isSelf) {
 
@@ -1319,6 +1364,7 @@ public class GameView {
 
     private void f() {
 
+        activateFieldSpell(rivalHand.get(0).card, false);
 //        justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, true);
 //        rivalGameView.justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, false);
 //        Card card = selfHand.get(0).card;
@@ -1382,4 +1428,5 @@ public class GameView {
 
         return monitored;
     }
+
 }

@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Card.Card;
 import model.Gamer;
 import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
@@ -228,7 +229,7 @@ public class GameGraphicControllerForTest extends Menu {
         System.out.println(spellCommand);
 
         int index = spellCommand.matches("\\d .*") ?
-                Integer.parseInt(spellCommand.split(" ")[0]) : -1;
+                getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
 
         spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
 
@@ -260,23 +261,33 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (spellCommand.startsWith("field spell ")){
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
-            changeStages(matcher.group(1));
+            changeStages(gameView, cardView.card, matcher.group(1));
         }
         return 0;
     }
 
-    private void changeStages(String fieldSpellName) {
+    private double changeStages(GameView gameView, Card card, String fieldSpellName) {
+        double time;
 //        todo move card to field zone
-        String backgroundName = "";
-        switch (fieldSpellName){
-            case "Yami" -> backgroundName = "yami";
-            case "Forest" -> backgroundName = "gaia";
-            case "Umii Ruka" -> backgroundName = "umi";
-            case "Closed Forest" -> backgroundName = "mori";
-        }
-        Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
-        ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
-        ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+
+        getTheOtherGameView(gameView).activateFieldSpell(card, false);
+        time = gameView.activateFieldSpell(card, true);
+
+        new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
+
+            String backgroundName = "";
+            switch (fieldSpellName){
+                case "Yami" -> backgroundName = "yami";
+                case "Forest" -> backgroundName = "gaia";
+                case "Umii Ruka" -> backgroundName = "umi";
+                case "Closed Forest" -> backgroundName = "mori";
+            }
+            Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
+            ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+            ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+        })).play();
+
+        return time;
     }
 
 }
