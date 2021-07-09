@@ -113,6 +113,7 @@ public class Gamer {
         for (int i = 0; i < 5; i++) {
             Monster monster = getGameBoard().getMonsterCardZone().getCards().get(i);
             if (monster != null){
+                System.out.println(monster);
                 ids.append(getGameBoard().getMonsterCardZone().getId(monster)).append(" ");
                 monster.handleDestroy(gameData);
             }

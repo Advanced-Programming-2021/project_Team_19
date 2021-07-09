@@ -41,8 +41,8 @@ public class TrapHole extends TrapsActivateBecauseOfActionSummon {
                 (false, "activate trap " +
                         trapIndex
                         + ":change turn:trap hole:" +
-                        "activate spell" +
-                        " destroy rival monsters " + monsterIndex, this);
+                        "activate spell " +
+                        "-1 destroy rival monsters " + monsterIndex, this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {

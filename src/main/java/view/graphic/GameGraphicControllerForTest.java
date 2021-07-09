@@ -455,6 +455,8 @@ public class GameGraphicControllerForTest extends Menu {
 
     private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
 
+        System.out.println(spellCommand);
+
         double time = 500;
 
         int index = spellCommand.matches("\\d .*") ?
@@ -495,6 +497,7 @@ public class GameGraphicControllerForTest extends Menu {
 
 
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
+
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
             idMatcher.find();
@@ -526,7 +529,7 @@ public class GameGraphicControllerForTest extends Menu {
             matcher.find();
             changeStages(gameView, cardView.card, matcher.group(1));
         }
-        return 0;
+        return time;
     }
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {

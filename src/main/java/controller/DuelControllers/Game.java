@@ -45,20 +45,18 @@ public class Game {
             case "activate trap" -> {
                 String message = new ActivateTriggerTrapEffect
                         (gameData.triggerLabel.action).handleActivate().message;
-
-                String [] messages = message.split(":");
+                String[] messages = message.split(":");
                 new DataFromGameRun(message);
-                if(messages[1].equals("change turn")){
+                if (messages[1].equals("change turn")) {
                     gameData.changeTurn();
                 }
-                gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
-                gameData.setActionIndexForTriggerActivation(-1);
+                gameData.triggerLabel.inProgress = false;
             }
             case "cancel activate trap" -> {
-                gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
-                gameData.setActionIndexForTriggerActivation(-1);
-                gameData.triggerLabel = null;
-                gameData.changeTurn();
+                gameData.triggerLabel.inProgress = false;
+                if(!gameData.getCurrentGamer().equals(gameData.getTurnOwner())){
+                    gameData.changeTurn();
+                }
             }
             case "start game" -> {
                 runServerSideGameEvents();
@@ -141,43 +139,46 @@ public class Game {
         throw new Exception("not your turn");
     }
 
-    public void checkTriggerData(){
+    public void checkTriggerData() {
 
-        if(gameData.triggerLabel == null){
+        if (gameData.triggerLabel == null) {
+            return;
+        }
+
+        if(!gameData.triggerLabel.shouldAskFromFirstGamer
+                && !gameData.triggerLabel.shouldAskFromSecondGamer
+                && !gameData.triggerLabel.inProgress){
+
+            gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
+            gameData.triggerLabel = null;
+            gameData.setActionIndexForTriggerActivation(-1);
+            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            return;
+        }
+
+        if(gameData.triggerLabel.inProgress){
             return;
         }
 
         Action action = gameData.triggerLabel.action;
 
-        TriggerActivationData data = new TriggerActivationData
-                (false, "", null);
-
         gameData.addActionToCurrentActions(action);
         gameData.setActionIndexForTriggerActivation(gameData.getCurrentActions().indexOf(action));
-        boolean hasTurnOwnerActivatedEffect = false;
-//
-//        if (action.canTurnOwnerActivateTrapBecauseOfAnAction()) {
-//
-//            data = action.handleActivateTrapOnGamerTurnBecauseOfAnAction();
-//
-//            if (data.activatedCard != null) {
-//
-//                hasTurnOwnerActivatedEffect = true;
-//            }
-//        }
 
-        if (!hasTurnOwnerActivatedEffect) {
-
-            if (action.canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()) {
+        if (action.canTurnOwnerActivateTrapBecauseOfAnAction() &&
+                gameData.triggerLabel.shouldAskFromFirstGamer){
+            gameData.triggerLabel.inProgress = true;
+            new DataFromGameRun("ask gamer for trap:" + action.getActionName());
+        } else {
+            if (action.canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction() &&
+                    gameData.triggerLabel.shouldAskFromSecondGamer) {
+                gameData.triggerLabel.inProgress = true;
                 gameData.changeTurn();
                 new DataFromGameRun("ask gamer for trap:" + action.getActionName());
-
-//                data = action.handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
-            } else {
-                gameData.removeActionFromCurrentActions(action);
-                gameData.setActionIndexForTriggerActivation(-1);
             }
+            gameData.triggerLabel.shouldAskFromSecondGamer = false;
         }
+        gameData.triggerLabel.shouldAskFromFirstGamer = false;
     }
 
     public void runServerSideGameEvents() {

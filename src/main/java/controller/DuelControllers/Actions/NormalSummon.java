@@ -85,6 +85,7 @@ public class NormalSummon extends Summon {
             sacrificeByIds(ids);
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, (ids.length() + 1) / 2);
+            gameData.triggerLabel = new TriggerLabel(this);
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster) +
                     " sacrifice " + ids;
         }

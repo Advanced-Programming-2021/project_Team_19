@@ -24,6 +24,8 @@ public class CardActionManager {
         String result;
         ArrayList<String> validActions = new ArrayList<>();
 
+        System.out.println(mode);
+
         switch (mode) {
             case NORMAL_MODE -> {
                 result = new AttackMonster(GameData.getGameData()).actionIsValid();

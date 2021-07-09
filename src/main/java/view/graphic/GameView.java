@@ -1459,13 +1459,9 @@ public class GameView {
                     null, -1);
 
             mainPane.getChildren().remove(mainBox);
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
         });
 
         yesButton.setOnMouseClicked(mouseEvent -> {
-            gameController.graphicsForEvents(
-                    game.run(new DataForGameRun("activate trigger", self)),
-                    null, -1);
             mainPane.getChildren().remove(mainBox);
             CardActionManager.setMode(actionManagerMode.HOHO);
         });

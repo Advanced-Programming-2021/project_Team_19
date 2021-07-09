@@ -7,6 +7,7 @@ import controller.TrapCheckers.CardOwnerIsNotActionDoerChecker;
 import controller.TrapCheckers.Checker;
 import controller.TrapCheckers.TurnChecker;
 import controller.TrapCheckers.mirageDragonChecker;
+import controller.Utils;
 import model.Card.Monster;
 import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
@@ -26,49 +27,40 @@ public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
     @Override
     public ActivationData activate(GameData gameData) {
 
-
         int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
 
+        String rivalIds = " rival monsters " + gameData.getSecondGamer().destroyAllMonstersOnBoard(gameData);
+        String selfIds = " self monsters " + gameData.getCurrentGamer().destroyAllMonstersOnBoard(gameData);
 
-        String rivalMonsterIds = "";
-
-        destroyMonsters(gameData, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards());
-        destroyMonsters(gameData, gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards());
         handleCommonsForActivate(gameData);
-
         handleDestroy(gameData);
 
-        new TriggerActivationData
+        Summon action = (Summon) Utils.getLastActionOfSpecifiedAction
+                (gameData.getCurrentActions(), Summon.class);
+
+        String changeTurn = "hehe";
+
+        if(!action.getActionDoer().equals(gameData.getCurrentGamer())){
+            changeTurn = "change turn";
+        }
+
+        TriggerActivationData data = new TriggerActivationData
                 (false, "activate trap " +
                         trapIndex
-                        + ":change turn:torrential tribute:" +
-                        "activate spell" +
-                        " destroy rival monsters" + rivalMonsterIds, this);
+                        + ":" + changeTurn + ":torrential tribute:" +
+                        "activate spell -1 " +
+                        ("destroy" + rivalIds + selfIds).trim(), this);
 
-        return new TriggerActivationData
-                (false,
-                        "trap activated successfully\nAll monsters has destroyed",
-                        this);
-
-    }
+        return data;
 
 
-    private void destroyMonsters(GameData gameData, ArrayList<Monster> monsters) {
-
-        for (Monster monster : monsters) {
-            if (monster != null) {
-                monster.handleDestroy(gameData);
-            }
-        }
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {
 
-
         ArrayList<Checker> checkers = new ArrayList<>();
 
         checkers.add(new TurnChecker(action.getGameData(), this));
-        checkers.add(new CardOwnerIsNotActionDoerChecker(action, this));
         checkers.add(new mirageDragonChecker(action.getGameData(), this));
 
         if (!Checker.multipleCheck(checkers)) {
