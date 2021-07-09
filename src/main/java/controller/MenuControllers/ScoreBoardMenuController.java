@@ -57,6 +57,7 @@ public class ScoreBoardMenuController {
 
         Gson gson = new GsonBuilder().create();
         String data = gson.toJson(persons);
+
         return new DataForClientFromServer(data, MessageType.SCORE);
 
     }
