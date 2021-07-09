@@ -98,6 +98,8 @@ public class WelcomeMenu extends Menu {
             responseLabel.setLayoutY(300);
 
             Pane pane = new Pane();
+            pane.getStylesheets().add("CSS/Css.css");
+            pane.setId("shopBackGround");
             pane.getChildren().addAll(box, backButton, responseLabel);
 
             stage.setTitle("Signup Menu");
@@ -206,6 +208,8 @@ public class WelcomeMenu extends Menu {
             responseLabel.setLayoutY(200);
 
             Pane pane = new Pane();
+            pane.getStylesheets().add("CSS/Css.css");
+            pane.setId("shopBackGround");
             pane.getChildren().addAll(box, backButton, responseLabel);
 
             stage.setTitle("Login Menu");

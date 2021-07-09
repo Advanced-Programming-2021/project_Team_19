@@ -46,6 +46,8 @@ public class DuelMenuController extends Menu {
 
 
     public void graphicRun(String username) {
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         user = UserDataBaseController.getUserByUsername(username);
         setRivalChoosingMenu();
 

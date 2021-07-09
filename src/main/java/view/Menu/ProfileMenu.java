@@ -138,6 +138,8 @@ public class ProfileMenu extends Menu {
         ((VBox) changeNicknameBox.getChildren().get(1)).getChildren().add(submitNickname);
 
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         pane.getChildren().addAll(changeNicknameBox, changeNicknameResponse, backButton);
         showUsernameAndNickName(pane);
 
@@ -194,6 +196,8 @@ public class ProfileMenu extends Menu {
         ((VBox) changePasswordGrid.getChildren().get(1)).getChildren().add(submit);
 
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         pane.getChildren().addAll(changePasswordGrid, changePasswordResponse, backButton);
         showUsernameAndNickName(pane);
 
