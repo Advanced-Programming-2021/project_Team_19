@@ -53,6 +53,7 @@ public class GameGraphicControllerForTest extends Menu {
 
     public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
         super("game test");
+        stage = first;
         stage2 = second;
         this.rounds = rounds;
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
