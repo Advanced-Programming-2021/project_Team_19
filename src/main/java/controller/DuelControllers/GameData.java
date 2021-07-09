@@ -10,6 +10,7 @@ import model.Card.SpellAndTraps;
 import model.Enums.GameEvent;
 import model.Gamer;
 import model.Phase;
+import model.TriggerLabel;
 import model.User;
 import view.Printer.Printer;
 
@@ -30,6 +31,7 @@ public class GameData {
     public boolean hasAskedForSpellsThisPhase = true;
     private GameEvent event = null;
     private int actionIndexForTriggerActivation = -1;
+    public TriggerLabel triggerLabel = null;
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);

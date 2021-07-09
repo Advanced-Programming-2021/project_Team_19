@@ -25,18 +25,24 @@ public class TrapHole extends TrapsActivateBecauseOfActionSummon {
 
     public ActivationData activate(GameData gameData) {
 
-
         Summon action = (Summon) Utils.getLastActionOfSpecifiedAction
                 (gameData.getCurrentActions(), Summon.class);
 
-        action.getSummoningMonster().handleDestroy(gameData);
+        int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
+        int monsterIndex = gameData.getSecondGamer().getGameBoard().getMonsterCardZone().
+                getId(action.getSummoningMonster());
 
+        action.getSummoningMonster().handleDestroy(gameData);
         handleDestroy(gameData);
 
         handleCommonsForActivate(gameData);
 
         return new TriggerActivationData
-                (false, "trap activate successfully", this);
+                (false, "activate trap " +
+                        trapIndex
+                        + ":change turn:trap hole:" +
+                        "activate spell" +
+                        " destroy rival monsters " + monsterIndex, this);
     }
 
     public boolean canActivateBecauseOfAnAction(Action action) {

@@ -3,10 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
-import controller.DuelControllers.AI;
-import controller.DuelControllers.DuelMenuController;
-import controller.DuelControllers.Game;
-import controller.DuelControllers.GameData;
+import controller.DuelControllers.*;
 import controller.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -201,14 +198,48 @@ public class GameGraphicControllerForTest extends Menu {
             return;
         }
 
-        GameView gameView = events.get(index).gamerOfAction.equals(gameView1.self) ? gameView1 : gameView2;
+
+        GameView gameView = null;
+
+        if (gameView1 == null) {
+            if (events.get(index).gamerOfAction.equals(gameView2.self)) {
+                gameView = gameView2;
+            }
+        } else if (gameView2 == null) {
+            if (events.get(index).gamerOfAction.equals(gameView1.self)) {
+                gameView = gameView1;
+            }
+        } else {
+            gameView = events.get(index).gamerOfAction.equals(gameView1.self) ? gameView1 : gameView2;
+        }
+
         GameView otherGameView = getTheOtherGameView(gameView);
 
         String response = events.get(index).event;
 
         System.err.println(response);
 
-        if (response.matches("summon \\d")) {
+        if (response.startsWith("activate trap")) {
+            time = graphicsHandlingForSpells
+                    (gameView, gameView.spellZoneCards.get(
+                            getIndexById(Integer.parseInt(response.split(":")[0].substring(14)))
+                    ), response.split(":")[3].replace("activate spell ", ""));
+
+            new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
+                CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            }
+            )).play();
+        } else if (response.startsWith("ask gamer for trap:")) {
+            CardActionManager.setMode(actionManagerMode.HEHE);
+            try {
+                if (gameView == null) {
+                    handleAI();
+                } else {
+                    gameView.askForTrap(response.split(":")[1]);
+                }
+            } catch (NullPointerException ignored) {
+            }
+        } else if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
             try {
                 otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
@@ -395,14 +426,18 @@ public class GameGraphicControllerForTest extends Menu {
         }
 
         if (index == events.size() - 1) {
-            if (AIMod()) {
+            handleAI();
+        }
+    }
 
-                new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
-                    graphicsForEvents
-                            (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
-                                    null, 0);
-                })).play();
-            }
+    private void handleAI() {
+        if (AIMod()) {
+
+            new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
+                graphicsForEvents
+                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
+                                null, 0);
+            })).play();
         }
     }
 
@@ -418,7 +453,8 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
-        System.out.println(spellCommand);
+
+        double time = 500;
 
         int index = spellCommand.matches("\\d .*") ?
                 getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
@@ -495,6 +531,7 @@ public class GameGraphicControllerForTest extends Menu {
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {
         double time = 1000;
+//        todo move card to field zone
 
         try {
             getTheOtherGameView(gameView).activateFieldSpell(card, false);
