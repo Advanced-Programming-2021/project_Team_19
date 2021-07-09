@@ -36,8 +36,8 @@ import static view.graphic.GameView.getIndexByRivalId;
 
 public class GameGraphicControllerForTest extends Menu {
 
-    Stage stage2;
-    GameView gameView1;
+    public Stage stage2;
+    public GameView gameView1;
     GameView gameView2;
     Game game;
     int rounds;
@@ -382,7 +382,7 @@ public class GameGraphicControllerForTest extends Menu {
                 } else if (invitedGamerWins == 2){
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
-
+                    //todo put deck modifier between rounds here
                 }
             }
         } else {

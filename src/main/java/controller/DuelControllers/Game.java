@@ -70,7 +70,7 @@ public class Game {
                 new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
             }
             case "flip summon" -> {
-                new DataFromGameRun("game finished reza");
+                new DataFromGameRun(new FlipSummon(gameData).run());
             }
             case "get Atk|Def" -> {
                 new DataFromGameRun(getAtkDef(gameData));
@@ -144,7 +144,7 @@ public class Game {
 
 
             if (gameData.isGameOver()) {
-                new DataFromGameRun("game finished" + finishGame(gameData).getUsername());
+                new DataFromGameRun("game finished " + finishGame(gameData).getUsername());
 //                return finishGame(gameData);
             }
 
