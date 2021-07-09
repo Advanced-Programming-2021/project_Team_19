@@ -69,7 +69,6 @@ public class CardActionManager {
                 if (result.equals("activate spell normally")) {
                     validActions.add(result);
                 }
-
                 result = new ActivateEffectMonster(GameData.getGameData()).actionIsValid();
                 if (result.equals("activate effect monster")) {
                     validActions.add(result);
