@@ -184,41 +184,41 @@ public class RockPaper extends Menu {
                         secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
-                    getResult.put(true);
                     DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
                     DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
+                    Thread.sleep(1000);
+                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                            firstPlayerStage, secondPlayerStage, false);
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
-                    getResult.put(true);
                     DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
                     DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
+                    Thread.sleep(1000);
+                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                            firstPlayerStage, secondPlayerStage, false);
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
                     result.setText(main.getUsername() + " is the winner");
                     prevResult.setText(main.getUsername() + "is the winner");
-                    getResult.put(true);
                     DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
                     DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
+                    Thread.sleep(1000);
+                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                            firstPlayerStage, secondPlayerStage, false);
                 } else {
                     result.setText(invited.getUsername() + " is the winner");
                     prevResult.setText(invited.getUsername() + "is the winner");
-                    getResult.put(false);
                     DuelMenuController.rivalGamer = new Gamer(DuelMenuController.user);
                     DuelMenuController.gameStarter = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
+                    Thread.sleep(1000);
+                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                            firstPlayerStage, secondPlayerStage, true);
                 }
             } catch(InterruptedException e) {
                 e.printStackTrace();
             }
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
-                     firstPlayerStage, secondPlayerStage);
         }
     }
 

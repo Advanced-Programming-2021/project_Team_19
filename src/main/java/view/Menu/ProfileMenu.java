@@ -1,9 +1,11 @@
 package view.Menu;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -11,6 +13,8 @@ import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
 import view.Utils;
+
+import java.io.IOException;
 
 import static view.Printer.Printer.setFailureResponseToLabel;
 
@@ -166,6 +170,16 @@ public class ProfileMenu extends Menu {
 
         stage.getScene().setRoot(pane);
 
+    }
+
+    private void setChangePictureMenu() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangePicture.fxml"));
+        try {
+            AnchorPane anchorPane = fxmlLoader.load();
+            stage.getScene().setRoot(anchorPane);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changePassword() {

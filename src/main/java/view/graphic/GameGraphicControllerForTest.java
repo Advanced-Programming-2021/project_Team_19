@@ -44,16 +44,22 @@ public class GameGraphicControllerForTest extends Menu {
         TestInit();
     }
 
-    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer) {
+    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
         super("game test");
         this.rounds = rounds;
         Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
         scene.getStylesheets().add("CSS/Css.css");
         second.setScene(scene);
+        first.setScene(scene);
         GameData gameData = new GameData(firstGamer, secondGamer);
         game = new Game(gameData, rounds);
-        gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
-        gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
+        if (!isInverted) {
+            gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
+            gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
+        } else {
+            gameView1 = new GameView(second, this, firstGamer, secondGamer, game);
+            gameView2 = new GameView(first, this, secondGamer, firstGamer, game);
+        }
 
         gameView2.setRivalGameView(gameView1);
         gameView1.setRivalGameView(gameView2);

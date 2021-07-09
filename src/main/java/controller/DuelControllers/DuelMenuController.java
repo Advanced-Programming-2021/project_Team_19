@@ -197,12 +197,12 @@ public class DuelMenuController extends Menu {
     }
 
 
-    public void handleDuel(int rounds, Stage firstStage, Stage secondStage) {
+    public void handleDuel(int rounds, Stage firstStage, Stage secondStage, boolean isInverted) {
         gameIsHappening = true;
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
 //            finishDuel(new Game(gameData).DeprecatedRun(), gameData, 1);
-            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer).run();
+            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
         } else {
             int userWins = 0;
             int rivalWins = 0;
