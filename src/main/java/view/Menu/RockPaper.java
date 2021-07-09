@@ -60,6 +60,10 @@ public class RockPaper extends Menu {
     }
 
     public void run(User main, User invited, Stage before, DuelMenuController duelMenuController) {
+        firstPlayerChoice = null;
+        secondPlayerChoice = null;
+        prevChoice.setText(null);
+        prevResult.setText(null);
         RockPaper.duelMenuController = duelMenuController;
         RockPaper.main = main;
         RockPaper.invited = invited;
