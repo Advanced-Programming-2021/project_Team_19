@@ -85,6 +85,15 @@ public class CardActionManager {
                     validActions.add("attack");
                 }
             }
+            case HEHE ->{
+
+            }
+            case HOHO -> {
+                if(new ActivateTriggerTrapEffect
+                        (GameData.getGameData().triggerLabel.action).canDoThisActionBecauseOfAnAction()){
+                    validActions.add("activate trap");
+                }
+            }
         }
 
         return validActions;

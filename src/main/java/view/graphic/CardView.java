@@ -137,7 +137,10 @@ public class CardView extends Rectangle {
                 validActionNamesForShow.add("flip summon");
             } else if (validAction.equals("sacrifice")) {
                 validActionNamesForShow.add("sacrifice");
-            } else {
+            } else if (validAction.equals("activate trap")){
+                validActionNamesForShow.add("activate");
+            }
+            else {
                 validActionNamesForShow.add(validAction);
             }
         }
@@ -156,9 +159,9 @@ public class CardView extends Rectangle {
                 (++validActionIndex % validActionNamesForShow.size());
     }
 
-
+//hoho
     public String getCurrentAction() {
-        return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
+        return validActionNames.get(validActionIndex % validActionNamesForShow.size());
     }
 
     public void throwExceptionIfHasNoValidAction() throws Exception {

@@ -52,7 +52,7 @@ public abstract class Action {
         return actionDoer;
     }
 
-    protected boolean canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction() {
+    public boolean canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction() {
 
         for (SpellAndTraps spellOrTrap :
                 gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
@@ -68,7 +68,7 @@ public abstract class Action {
         return false;
     }
 
-    protected boolean canTurnOwnerActivateTrapBecauseOfAnAction() {
+    public boolean canTurnOwnerActivateTrapBecauseOfAnAction() {
 
         for (SpellAndTraps spellOrTrap :
                 gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards()) {
@@ -80,7 +80,7 @@ public abstract class Action {
         return false;
     }
 
-    protected TriggerActivationData handleActivateTrapOrSpeedSpellOnOtherPlayerTurn() {
+    public TriggerActivationData handleActivateTrapOrSpeedSpellOnOtherPlayerTurn() {
 
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
@@ -110,7 +110,7 @@ public abstract class Action {
     }
 
 
-    protected TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction() {
+    public TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction() {
 
 
         if (Utils.askForActivate(actionName + " has occurred just now")) {
