@@ -8,7 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,9 +22,9 @@ import java.io.IOException;
 
 public class ChangeCardBetweenRounds extends Menu {
 
-    private User user;
+    private static  User user;
 
-    private DeckModifierBetweenGames deckModifierBetweenGames;
+    private static DeckModifierBetweenGames deckModifierBetweenGames;
 
     @FXML
     private TextField cardName;
@@ -41,9 +41,9 @@ public class ChangeCardBetweenRounds extends Menu {
     }
 
     public void run(User user) {
-        this.user = user;
+        ChangeCardBetweenRounds.user = user;
         deckModifierBetweenGames = new DeckModifierBetweenGames(user);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/OneDeck.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangeCardBetweenRounds.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
             readyFxmlButtonsForCursor(anchorPane);
@@ -69,6 +69,13 @@ public class ChangeCardBetweenRounds extends Menu {
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
             });
+            cardView.setOnDragDetected(e -> {
+                Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent clipBoardContent = new ClipboardContent();
+                clipBoardContent.putString(cardView.getCard().getName() + ":Main");
+                dragboard.setContent(clipBoardContent);
+                e.consume();
+            });
             mainMenuCards.getChildren().add(cardView);
         }
         cardsInMainDeck.setContent(mainMenuCards);
@@ -77,6 +84,13 @@ public class ChangeCardBetweenRounds extends Menu {
             CardView cardView = new CardView(card, 2, false, true);
             cardView.setOnMouseClicked(e -> {
                 this.cardName.setText(card.getName());
+            });
+            cardView.setOnDragDetected(e -> {
+                Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent clipboardContent = new ClipboardContent();
+                clipboardContent.putString(cardView.getCard().getName() + ":Side");
+                dragboard.setContent(clipboardContent);
+                e.consume();
             });
             sideMenuCards.getChildren().add(cardView);
         }
@@ -117,5 +131,45 @@ public class ChangeCardBetweenRounds extends Menu {
     public void finishChange(MouseEvent mouseEvent) {
         String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
         result.setText(resultFromLogic);
+    }
+
+    public void handleDraggingCardToMainDeck(DragEvent dragEvent) {
+        String command = dragEvent.getDragboard().getString();
+        String[] commandDetails = command.split(":");
+        if (commandDetails[1].equals("Side")) {
+            Deck deck = getDeck();
+            String cardNameToMove = commandDetails[0];
+            int cnt = 1;
+            for (Card card : deck.getAllSideCardsSorted()) {
+                if (card.getName().equals(cardNameToMove)) {
+                    deckModifierBetweenGames.runForGraphic("--main " + cnt);
+                    result.setText("Successful");
+                    return;
+                }
+                cnt++;
+            }
+            result.setText("Sorry there is no such card in side Deck!");
+            updateCard();
+        }
+    }
+
+    public void handleDraggingToSideDeck(DragEvent dragEvent) {
+        String command = dragEvent.getDragboard().getString();
+        String[] commandDetails = command.split(":");
+        if (commandDetails[1].equals("Main")) {
+            Deck deck = getDeck();
+            String cardNameToMove = commandDetails[0];
+            int cnt = 1;
+            for (Card card : deck.getAllMainCardsSorted()) {
+                if (card.getName().equals(cardNameToMove)) {
+                    deckModifierBetweenGames.runForGraphic("--main " + cnt);
+                    result.setText("Successful");
+                    return;
+                }
+                cnt++;
+            }
+            result.setText("Sorry there is no such card in side Deck!");
+            updateCard();
+        }
     }
 }
