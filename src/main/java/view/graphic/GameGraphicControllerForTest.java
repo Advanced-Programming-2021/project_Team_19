@@ -3,6 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
+import controller.DuelControllers.AI;
 import controller.DuelControllers.DuelMenuController;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
@@ -23,8 +24,10 @@ import model.Card.Card;
 import model.Gamer;
 import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
+import view.GetInput;
 import view.Menu.Menu;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -39,9 +42,13 @@ public class GameGraphicControllerForTest extends Menu {
     Game game;
     int rounds;
 
-    public GameGraphicControllerForTest() {
+
+    public GameGraphicControllerForTest(boolean ai) {
         super("test game");
-        TestInit();
+        if (ai)
+            TestInit2();
+        else
+            TestInit();
     }
 
     public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
@@ -103,9 +110,34 @@ public class GameGraphicControllerForTest extends Menu {
         gameView1.setRivalGameView(gameView2);
     }
 
+    @Deprecated
+    public void TestInit2() {
+        User user1 = UserDataBaseController.getUserByUsername("mohammad");
+        Gamer gamer1 = new Gamer(user1);
+        Gamer gamer2 = AI.getGamer(0);
+        GameData gameData = new GameData(gamer1, gamer2);
+        game = new Game(gameData, 1);
+        gameView1 = new GameView(stage, this, gamer1, gamer2, game);
+    }
+
+    public boolean AIMod() {
+        try {
+            if (AI.getGamer(0).equals(game.gameData.getCurrentGamer())) {
+                return true;
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return false;
+    }
+
     public void startGame() {
         gameView1.run();
-        gameView2.run();
+        try {
+            gameView2.run();
+        } catch (NullPointerException ignored) {
+
+        }
 
         new Timeline(new KeyFrame(Duration.millis(3500), event -> {
             graphicsForEvents(game.run(new DataForGameRun
@@ -114,6 +146,9 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private GameView getTheOtherGameView(GameView gameView) {
+        if(gameView == null){
+            return gameView2 == null ? gameView1 : gameView2;
+        }
         return gameView.equals(gameView1) ? gameView2 : gameView1;
     }
 
@@ -128,8 +163,19 @@ public class GameGraphicControllerForTest extends Menu {
                 phaseChangeResponse.equals("end phase");
 
         if (changePhase) {
-            gameView.handleChangePhase();
-            otherGameView.handleChangePhase();
+            try {
+                gameView.handleChangePhase();
+            } catch (NullPointerException ignored){
+
+            }
+
+            try {
+                otherGameView.handleChangePhase();
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (phaseChangeResponse.matches("game finished \\w+")) {
 //           todo     finish game
         }
@@ -140,6 +186,18 @@ public class GameGraphicControllerForTest extends Menu {
 
         double time = 500;
 
+        if(events.size() == 0){
+            if (AIMod()) {
+
+                new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
+                    graphicsForEvents
+                            (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
+                                    null, 0);
+                })).play();
+            }
+            return;
+        }
+
         GameView gameView = events.get(index).gamerOfAction.equals(gameView1.self) ? gameView1 : gameView2;
         GameView otherGameView = getTheOtherGameView(gameView);
 
@@ -147,62 +205,157 @@ public class GameGraphicControllerForTest extends Menu {
 
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
-            otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSummonGraphic(cardView.card, getIndexById(cardIndex));
+            try {
+                otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                time = gameView.handleSummonGraphic(cardView.card, getIndexById(cardIndex));
+            } catch (NullPointerException ignored) {
+            }
         } else if (response.equals("add card to hand")) {
-            otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
-            time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
+            try {
+                otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
+            } catch (NullPointerException e) {
+            }
+
+            try {
+                time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
+            } catch (NullPointerException ignored){
+
+            }
+
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
-            otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSetSpellGraphic(cardView.card, getIndexById(cardIndex));
+            try {
+                otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                time = gameView.handleSetSpellGraphic(cardView.card, getIndexById(cardIndex));
+            } catch (NullPointerException ignored) {
+            }
+
         } else if (response.startsWith("activate spell ")) {
             time = graphicsHandlingForSpells(gameView, cardView, response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
-            otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
-            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView.card, position);
+            try {
+                otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                time = gameView.handleChangePositionGraphicForSelfMonsters(cardView.card, position);
+            } catch (NullPointerException ignored){
+
+            }
+
         } else if (response.matches("get \\d monsters")) {
-            gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
+            try {
+                gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
+            } catch (NullPointerException ignored){
+
+            }
+
         } else if (response.equals("attack monster")) {
-            gameView.initForAttackMonster(cardView);
+            try {
+                gameView.initForAttackMonster(cardView);
+            } catch (NullPointerException ignored){
+
+            }
+
         } else if (response.matches("rival loses \\d+")) {
             int lp = -Integer.parseInt(response.substring(12));
-            otherGameView.handleIncreaseLpGraphic(lp, true);
-            time = gameView.handleIncreaseLpGraphic(lp, false);
-        } else if (response.matches("increase lp \\d+")) {
-            int lp = Integer.parseInt(response.substring(12));
-            otherGameView.handleIncreaseLpGraphic(lp, false);
-            time = gameView.handleIncreaseLpGraphic(lp, true);
+            try {
+                otherGameView.handleIncreaseLpGraphic(lp, true);
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                time = gameView.handleIncreaseLpGraphic(lp, false);
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (response.matches("set monster \\d")) {
             int cardIndex = Integer.parseInt(response.substring(12));
-            otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSetMonsterGraphic
-                    (cardView.card, getIndexById(cardIndex));
+
+            try {
+                otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
+            } catch (NullPointerException ignored){
+            }
+
+            try {
+                time = gameView.handleSetMonsterGraphic
+                        (cardView.card, getIndexById(cardIndex));
+            } catch (NullPointerException ignored){ }
+
         } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
             Matcher matcher = Utils.getMatcher(response,
                     "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp");
-            otherGameView.handleRivalAttackResultGraphic(matcher);
-            matcher.reset();
-            time = gameView.handleAttackResultGraphic(matcher);
+            try {
+                otherGameView.handleRivalAttackResultGraphic(matcher);
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                matcher.reset();
+                time = gameView.handleAttackResultGraphic(matcher);
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (response.equals("flip summoned successfully")) {
-            otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
-            time = gameView.handleFlipSummonGraphic(cardView.card);
+            try {
+                otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                time = gameView.handleFlipSummonGraphic(cardView.card);
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (response.matches("summon \\d sacrifice( \\d)+")) {
-            otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
-                    getIndexByRivalId(Integer.parseInt(response.substring(7, 8))), false,
-                    getSacrificesIndex(response.substring(19), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
-                    getIndexById(Integer.parseInt(response.substring(7, 8))), false,
-                    getSacrificesIndex(response.substring(19), true));
+            try {
+                otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
+                        getIndexByRivalId(Integer.parseInt(response.substring(7, 8))), false,
+                        getSacrificesIndex(response.substring(19), false));
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
+                        getIndexById(Integer.parseInt(response.substring(7, 8))), false,
+                        getSacrificesIndex(response.substring(19), true));
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
-            otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
-                    getIndexByRivalId(Integer.parseInt(response.substring(12,13))), true,
-                    getSacrificesIndex(response.substring(24), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
-                    getIndexById(Integer.parseInt(response.substring(12, 13))), true,
-                    getSacrificesIndex(response.substring(24), true));
+            try {
+                otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
+                        getIndexByRivalId(Integer.parseInt(response.substring(12, 13))), true,
+                        getSacrificesIndex(response.substring(24), false));
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
+                        getIndexById(Integer.parseInt(response.substring(12, 13))), true,
+                        getSacrificesIndex(response.substring(24), true));
+            } catch (NullPointerException ignored){
+
+            }
+
+
         } else if (response.startsWith("game finished ")) {
             String name = response.split(" ")[2];
             if (gameView1.self.getUsername().equals(name)) {
@@ -217,6 +370,17 @@ public class GameGraphicControllerForTest extends Menu {
             GameView finalGameView = gameView;
             new Timeline(new KeyFrame(Duration.millis(time),
                     EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
+        }
+
+        if (index == events.size() - 1) {
+            if (AIMod()) {
+
+                new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
+                    graphicsForEvents
+                            (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
+                                    null, 0);
+                })).play();
+            }
         }
     }
 
@@ -245,26 +409,61 @@ public class GameGraphicControllerForTest extends Menu {
 
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-            gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
-            otherGameView.justDestroyActivatedSpellOrTrap(index, cardView.card, false);
+            try {
+                gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
+            } catch (NullPointerException ignored) {
+            }
+
+            try {
+                otherGameView.justDestroyActivatedSpellOrTrap(index, cardView.card, false);
+            } catch (NullPointerException ignored) {
+
+            }
+
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
             String ids = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(index, cardView.card, true, ids);
-            otherGameView.activateSpell1(index, cardView.card, false, ids);
+            try {
+                gameView.activateSpell1(index, cardView.card, true, ids);
+            } catch (NullPointerException ignored) {
+
+            }
+
+            try {
+                otherGameView.activateSpell1(index, cardView.card, false, ids);
+            } catch (NullPointerException ignored) {
+
+            }
+
+
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell2(index, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
-            otherGameView.activateSpell2(index, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+
+            try {
+                gameView.activateSpell2(index, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                otherGameView.activateSpell2(index, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+            } catch (NullPointerException ignored){
+            }
 
         } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell3(index, cardView.card, true, idMatcher.group(1));
-            otherGameView.activateSpell3(index, cardView.card, false, idMatcher.group(1));
-        } else if (spellCommand.startsWith("field spell ")){
+            try {
+                gameView.activateSpell3(index, cardView.card, true, idMatcher.group(1));
+            } catch (NullPointerException ignored){
+            }
+            try {
+                otherGameView.activateSpell3(index, cardView.card, false, idMatcher.group(1));
+            } catch (NullPointerException ignored){
+            }
+
+
+        } else if (spellCommand.startsWith("field spell ")) {
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
             changeStages(gameView, cardView.card, matcher.group(1));
@@ -273,24 +472,44 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {
-        double time;
+        double time = 1000;
 //        todo move card to field zone
 
-        getTheOtherGameView(gameView).activateFieldSpell(card, false);
-        time = gameView.activateFieldSpell(card, true);
+        try {
+            getTheOtherGameView(gameView).activateFieldSpell(card, false);
+        } catch (NullPointerException ignored){
+
+        }
+        try {
+            time = gameView.activateFieldSpell(card, true);
+        } catch (NullPointerException ignored){
+
+        }
+
+
 
         new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
 
             String backgroundName = "";
-            switch (fieldSpellName){
+            switch (fieldSpellName) {
                 case "Yami" -> backgroundName = "yami";
                 case "Forest" -> backgroundName = "gaia";
                 case "Umii Ruka" -> backgroundName = "umi";
                 case "Closed Forest" -> backgroundName = "mori";
             }
             Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
-            ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
-            ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+
+            try {
+                ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+            } catch (NullPointerException ignored){
+
+            }
+            try {
+                ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+            } catch (NullPointerException ignored){
+
+            }
+
         })).play();
 
         return time;

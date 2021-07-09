@@ -52,6 +52,19 @@ public class GetInput {
         }
     }
 
+    public static String getAICommand(){
+        System.out.println("ho hi ha he");
+        if (scannerCounter > 0) {
+            scannerCounter--;
+            String ans = AIScanner.nextLine();
+            Printer.print(ans);
+            return ans;
+        } else {
+            AI.run(GameData.getGameData());
+            return getAICommand();
+        }
+    }
+
     public static void addCommand(String command) {
         commands.add(command);
     }
