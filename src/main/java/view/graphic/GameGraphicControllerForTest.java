@@ -3,10 +3,7 @@ package view.graphic;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
-import controller.DuelControllers.AI;
-import controller.DuelControllers.DuelMenuController;
-import controller.DuelControllers.Game;
-import controller.DuelControllers.GameData;
+import controller.DuelControllers.*;
 import controller.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -220,11 +217,9 @@ public class GameGraphicControllerForTest extends Menu {
 
         String response = events.get(index).event;
 
-        if (response.startsWith("activate trap")) {
-
         System.err.println(response);
 
-        if (response.matches("summon \\d")) {
+        if (response.startsWith("activate trap")) {
             time = graphicsHandlingForSpells
                     (gameView, gameView.spellZoneCards.get(
                             getIndexById(Integer.parseInt(response.split(":")[0].substring(14)))
