@@ -113,6 +113,7 @@ public class Game {
 
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
         if (gameData.getCurrentGamer().equals(data.getGamer())) {
+            gameData.setSelectedCard(data.getCard());
             return (new CardActionManager(data.getCard())).getValidActions();
         }
         throw new Exception("not your turn");

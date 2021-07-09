@@ -571,7 +571,6 @@ public class GameView {
         CardView cardView = new CardView(card, 5, false, true);
 
         cardView.setOnMouseEntered(mouseEvent -> {
-            game.gameData.setSelectedCard(card);
             cardView.hasBeenClicked = false;
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();

@@ -89,7 +89,7 @@ public class GameGraphicControllerForTest extends Menu {
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
         stage2.setScene(scene);
-        User user1 = UserDataBaseController.getUserByUsername("mohammad");
+        User user1 = UserDataBaseController.getUserByUsername("iman");
         Gamer gamer1 = new Gamer(user1);
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
