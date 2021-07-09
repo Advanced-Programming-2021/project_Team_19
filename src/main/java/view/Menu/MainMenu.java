@@ -53,7 +53,7 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(4).setOnMouseClicked(event -> new ScoreBoardMenu().run(UserDataBaseController.getUserByUsername(username)));
 
-        buttonBox.getChildren().get(5).setOnMouseClicked(event -> ImportAndExportMenu.getInstance().run());
+        buttonBox.getChildren().get(5).setOnMouseClicked(event -> ImportAndExportMenu.getInstance().run(UserDataBaseController.getUserByUsername(username)));
 
         buttonBox.getChildren().get(6).setOnMouseClicked(event -> new CardCreating().run(UserDataBaseController.getUserByUsername(username)));
 
