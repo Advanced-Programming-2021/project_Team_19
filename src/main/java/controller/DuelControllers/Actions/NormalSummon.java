@@ -6,6 +6,7 @@ import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Phase;
+import model.TriggerLabel;
 
 public class NormalSummon extends Summon {
 
@@ -78,7 +79,7 @@ public class NormalSummon extends Summon {
         if (ids == null) {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, 0);
-            handleTriggerEffects();
+            gameData.triggerLabel = new TriggerLabel(this);
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster);
         } else {
             sacrificeByIds(ids);

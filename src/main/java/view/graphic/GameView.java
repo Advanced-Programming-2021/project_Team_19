@@ -2,7 +2,9 @@ package view.graphic;
 
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
+import controller.DuelControllers.CardActionManager;
 import controller.DuelControllers.Game;
+import controller.DuelControllers.actionManagerMode;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -1059,6 +1061,7 @@ public class GameView {
 
     double activateSpell1(int index, Card card, boolean isSelf, String ids) {
 
+        System.out.println(card + " " + index);
         double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
@@ -1428,4 +1431,43 @@ public class GameView {
         return monitored;
     }
 
+    public void askForTrap(String event) {
+
+        Button yesButton = new Button("yes");
+        Button noButton = new Button("no");
+
+        HBox buttons = new HBox(20);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(yesButton, noButton);
+
+        Label data = new Label(event + " has occurred just now\ndo you want do activate your trap ?");
+        VBox mainBox = new VBox(10);
+
+        mainBox.getChildren().addAll(data, buttons);
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setLayoutX(400);
+        mainBox.setLayoutY(300);
+        mainBox.setBackground(new Background(
+                new BackgroundFill(Color.rgb(243, 89, 17), new CornerRadii(0),
+                        new Insets(-12, 0, 0, 0))));
+
+        mainPane.getChildren().add(mainBox);
+
+        noButton.setOnMouseClicked(mouseEvent -> {
+            gameController.graphicsForEvents(
+                    game.run(new DataForGameRun("cancel activate trap", self)),
+                    null, -1);
+
+            mainPane.getChildren().remove(mainBox);
+            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+        });
+
+        yesButton.setOnMouseClicked(mouseEvent -> {
+            gameController.graphicsForEvents(
+                    game.run(new DataForGameRun("activate trigger", self)),
+                    null, -1);
+            mainPane.getChildren().remove(mainBox);
+            CardActionManager.setMode(actionManagerMode.HOHO);
+        });
+    }
 }

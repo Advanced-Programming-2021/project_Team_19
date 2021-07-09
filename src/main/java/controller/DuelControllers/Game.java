@@ -10,6 +10,7 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
+import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.GameEvent;
 import model.Gamer;
@@ -19,6 +20,8 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static controller.DuelControllers.actionManagerMode.HEHE;
 
 
 public class Game {
@@ -38,6 +41,25 @@ public class Game {
         DataFromGameRun.reset();
         String command = dataFromClient.getCommand();
         switch (command) {
+            case "activate trap" -> {
+
+                String message = new ActivateTriggerTrapEffect
+                        (gameData.triggerLabel.action).handleActivate().message;
+
+                String [] messages = message.split(":");
+                new DataFromGameRun(message);
+                if(messages[1].equals("change turn")){
+                    gameData.changeTurn();
+                }
+                gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
+                gameData.setActionIndexForTriggerActivation(-1);
+            }
+            case "cancel activate trap" -> {
+                gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
+                gameData.setActionIndexForTriggerActivation(-1);
+                gameData.triggerLabel = null;
+                gameData.changeTurn();
+            }
             case "start game" -> {
                 runServerSideGameEvents();
             }
@@ -119,9 +141,50 @@ public class Game {
         throw new Exception("not your turn");
     }
 
+    public void checkTriggerData(){
+
+        if(gameData.triggerLabel == null){
+            return;
+        }
+
+        Action action = gameData.triggerLabel.action;
+
+        TriggerActivationData data = new TriggerActivationData
+                (false, "", null);
+
+        gameData.addActionToCurrentActions(action);
+        gameData.setActionIndexForTriggerActivation(gameData.getCurrentActions().indexOf(action));
+        boolean hasTurnOwnerActivatedEffect = false;
+//
+//        if (action.canTurnOwnerActivateTrapBecauseOfAnAction()) {
+//
+//            data = action.handleActivateTrapOnGamerTurnBecauseOfAnAction();
+//
+//            if (data.activatedCard != null) {
+//
+//                hasTurnOwnerActivatedEffect = true;
+//            }
+//        }
+
+        if (!hasTurnOwnerActivatedEffect) {
+
+            if (action.canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction()) {
+                gameData.changeTurn();
+                new DataFromGameRun("ask gamer for trap:" + action.getActionName());
+
+//                data = action.handleActivateTrapOrSpeedSpellOnOtherPlayerTurn();
+            } else {
+                gameData.removeActionFromCurrentActions(action);
+                gameData.setActionIndexForTriggerActivation(-1);
+            }
+        }
+    }
+
     public void runServerSideGameEvents() {
 
         while (true) {
+
+            checkTriggerData();
 
             if (checkLabels(gameData)) {
                 continue;
@@ -182,9 +245,9 @@ public class Game {
 
         while (true) {
 
-            if (checkLabels(gameData)) {
-                continue;
-            }
+//            if (checkLabels(gameData)) {
+//                continue;
+//            }
 
             if (!gameData.hasAskedForSpellsThisPhase) {
 

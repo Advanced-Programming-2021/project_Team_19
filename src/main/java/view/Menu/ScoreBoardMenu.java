@@ -78,13 +78,13 @@ public class ScoreBoardMenu extends Menu {
         Person currentPerson = null;
 
         for (Person person : people) {
-            if(person.getUsername().equals(user)){
+            if(person.getUsername().equals(user.getUsername())){
                 currentPerson = person;
             }
             tableView.getItems().add(person);
         }
 
-//        setUserColor(currentPerson);
+        setUserColor(currentPerson);
     }
 
     private void setUserColor(Person currentPerson){

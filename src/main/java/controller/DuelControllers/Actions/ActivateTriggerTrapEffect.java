@@ -7,7 +7,7 @@ import model.Data.TriggerActivationData;
 
 import java.util.ArrayList;
 
-public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotification {
+public class ActivateTriggerTrapEffect extends ActivateTrapWithNotification {
 
     Action activatorAction;
 
@@ -26,7 +26,29 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
     }
 
 
-    private TriggerActivationData activateTrapOrSpell(Action action) {
+    public boolean canDoThisActionBecauseOfAnAction(){
+
+        setActivatedCard(gameData.getSelectedCard());
+
+        ArrayList<ActivationChecker> checkers = new ArrayList<>();
+        checkers.add(new SelectedCardIsNotNullChecker(gameData, activatedCard));
+        checkers.add(new CardIsNotOneMonsterChecker(gameData, activatedCard));
+        checkers.add(new CardIsInCorrectSpellZoneChecker(gameData, activatedCard));
+        checkers.add(new CardHasNotBeenActivatedYetChecker(gameData, activatedCard));
+
+        String checkersResult = ActivationChecker.multipleCheck(checkers);
+
+        if (checkersResult != null) {
+            return false;
+        }
+
+        if (!((SpellAndTraps) activatedCard).canActivateBecauseOfAnAction(activatorAction)) {
+            return false;
+        }
+        return true;
+    }
+
+    public TriggerActivationData activateTrapOrSpell(Action action) {
 
         TriggerActivationData data = new TriggerActivationData
                 (false, "", null);
@@ -41,6 +63,7 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
 
         String checkersResult = ActivationChecker.multipleCheck(checkers);
 
+
         if (checkersResult != null) {
             data.message = checkersResult;
             return data;
@@ -52,19 +75,17 @@ public abstract class ActivateTriggerTrapEffect extends ActivateTrapWithNotifica
             return data;
         }
 
+
         if (((SpellAndTraps) activatedCard).canActivateBecauseOfAnAction(action)) {
-
             return (TriggerActivationData) super.activate();
-
-//            return (TriggerActivationData) ((SpellAndTraps)activatedCard).activate(gameData);
-
-
         }
 
         return data;
 
     }
 
-    protected abstract boolean checkInvalidMoves(String command);
+    protected boolean checkInvalidMoves(String command){
+        return false;
+    }
 
 }

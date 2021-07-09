@@ -21,6 +21,7 @@ import view.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import static view.Printer.Printer.setFailureResponseToLabel;
 
@@ -82,6 +83,7 @@ public class ProfileMenu extends Menu {
 
     public void setButtons() {
 
+
         VBox buttonBox = setSeveralChoiceButtons("change nickname", "change password", "change Picture");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> {clearResponseLabels();
@@ -101,7 +103,12 @@ public class ProfileMenu extends Menu {
         setBackButton(backButton);
         backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
-        pane.getChildren().addAll(buttonBox, backButton);
+
+        Image image = new Image("UserProfilePicture/" + username + ".jpg");;
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(300);
+        imageView.setFitWidth(200);
+        pane.getChildren().addAll(buttonBox, imageView, backButton);
         showUsernameAndNickName(pane);
     }
 
@@ -194,6 +201,10 @@ public class ProfileMenu extends Menu {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangePicture.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
+            Button backButton = new Button();
+            setBackButton(backButton);
+            backButton.setOnMouseClicked(event -> run(username, nickname));
+            anchorPane.getChildren().add(backButton);
             stage.getScene().setRoot(anchorPane);
         } catch(IOException e) {
             e.printStackTrace();
@@ -256,6 +267,23 @@ public class ProfileMenu extends Menu {
             Image image = new Image("file:///" + file.getPath());
             address.setText(file.getPath());
             profilePicture.setImage(image);
+        }
+    }
+
+    public void submit(MouseEvent mouseEvent) {
+        String url = profilePicture.getImage().getUrl();
+        if (profilePicture.getImage() != null) {
+            try {
+                File dir = new File("src/main/resources/UserProfilePicture");
+                for (File file : dir.listFiles()) {
+                    if (file.getName().equals(username + ".jpg")) {
+                        file.delete();
+                    }
+                }
+                Files.copy(new File(url.substring(6)).toPath(), new File("src/main/resources/UserProfilePicture/" + username + ".jpg").toPath());
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
