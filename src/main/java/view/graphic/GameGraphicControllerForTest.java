@@ -89,7 +89,7 @@ public class GameGraphicControllerForTest extends Menu {
         scene.getStylesheets().add("CSS/Css.css");
         stage2 = new Stage();
         stage2.setScene(scene);
-        User user1 = UserDataBaseController.getUserByUsername("iman");
+        User user1 = UserDataBaseController.getUserByUsername("mohammad");
         Gamer gamer1 = new Gamer(user1);
         User user2 = UserDataBaseController.getUserByUsername("reza");
         Gamer gamer2 = new Gamer(user2);
@@ -211,7 +211,12 @@ public class GameGraphicControllerForTest extends Menu {
             try {
                 otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
             } catch (NullPointerException e) {
+            }
+
+            try {
                 time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
+            } catch (NullPointerException ignored){
+
             }
 
         } else if (response.matches("set spell \\d")) {
@@ -271,17 +276,16 @@ public class GameGraphicControllerForTest extends Menu {
 
         } else if (response.matches("set monster \\d")) {
             int cardIndex = Integer.parseInt(response.substring(12));
+
             try {
                 otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
             } catch (NullPointerException ignored){
-
             }
+
             try {
                 time = gameView.handleSetMonsterGraphic
                         (cardView.card, getIndexById(cardIndex));
-            } catch (NullPointerException ignored){
-
-            }
+            } catch (NullPointerException ignored){ }
 
         } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
             Matcher matcher = Utils.getMatcher(response,
