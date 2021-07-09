@@ -41,6 +41,8 @@ public class GameGraphicControllerForTest extends Menu {
     GameView gameView2;
     Game game;
     int rounds;
+    int gameStarterWins = 0;
+    int invitedGamerWins = 0;
 
 
     public GameGraphicControllerForTest(boolean ai) {
@@ -362,11 +364,26 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (response.startsWith("game finished ")) {
             String name = response.split(" ")[2];
             stage2.close();
-
-            if (gameView1.self.getUsername().equals(name)) {
-                DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), game.round);
+            if (rounds == 1 ){
+                if (gameView1.self.getUsername().equals(name)) {
+                    DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), rounds);
+                } else {
+                    DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
+                }
             } else {
-                DuelMenuController.finishDuel(gameView.rival, GameData.getGameData(), game.round);
+                if (gameView1.self.getUsername().equals(name)) {
+                    gameStarterWins++;
+                } else {
+                    invitedGamerWins++;
+                }
+
+                if (gameStarterWins == 2){
+                    DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), rounds);
+                } else if (invitedGamerWins == 2){
+                    DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
+                } else {
+
+                }
             }
         } else {
             time = responseIsForPhaseChange(gameView, response);
