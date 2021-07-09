@@ -41,8 +41,8 @@ public class Game {
         DataFromGameRun.reset();
         String command = dataFromClient.getCommand();
         switch (command) {
-            case "activate trap" -> {
 
+            case "activate trap" -> {
                 String message = new ActivateTriggerTrapEffect
                         (gameData.triggerLabel.action).handleActivate().message;
 

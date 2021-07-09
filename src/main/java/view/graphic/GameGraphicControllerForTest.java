@@ -273,6 +273,7 @@ public class GameGraphicControllerForTest extends Menu {
             }
 
         } else if (response.startsWith("activate spell ")) {
+
             time = graphicsHandlingForSpells(gameView, cardView, response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
@@ -464,7 +465,6 @@ public class GameGraphicControllerForTest extends Menu {
         System.out.println(index);
         System.out.println(spellCommand);
 
-
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
             try {
@@ -531,7 +531,6 @@ public class GameGraphicControllerForTest extends Menu {
 
     private double changeStages(GameView gameView, Card card, String fieldSpellName) {
         double time = 1000;
-//        todo move card to field zone
 
         try {
             getTheOtherGameView(gameView).activateFieldSpell(card, false);

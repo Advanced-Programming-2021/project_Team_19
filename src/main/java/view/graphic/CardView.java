@@ -138,7 +138,7 @@ public class CardView extends Rectangle {
             } else if (validAction.equals("sacrifice")) {
                 validActionNamesForShow.add("sacrifice");
             } else if (validAction.equals("activate trap")){
-                validActionNamesForShow.add("activate");
+                validActionNamesForShow.add("activate trap");
             }
             else {
                 validActionNamesForShow.add(validAction);
@@ -161,7 +161,7 @@ public class CardView extends Rectangle {
 
 //hoho
     public String getCurrentAction() {
-        return validActionNames.get(validActionIndex % validActionNamesForShow.size());
+        return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 
     public void throwExceptionIfHasNoValidAction() throws Exception {

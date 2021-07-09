@@ -26,11 +26,24 @@ public class TorrentialTribute extends TrapsActivateBecauseOfActionSummon {
     @Override
     public ActivationData activate(GameData gameData) {
 
+
+        int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
+
+
+        String rivalMonsterIds = "";
+
         destroyMonsters(gameData, gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards());
         destroyMonsters(gameData, gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards());
         handleCommonsForActivate(gameData);
 
         handleDestroy(gameData);
+
+        new TriggerActivationData
+                (false, "activate trap " +
+                        trapIndex
+                        + ":change turn:torrential tribute:" +
+                        "activate spell" +
+                        " destroy rival monsters" + rivalMonsterIds, this);
 
         return new TriggerActivationData
                 (false,
