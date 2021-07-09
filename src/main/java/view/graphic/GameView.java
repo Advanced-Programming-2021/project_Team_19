@@ -281,7 +281,8 @@ public class GameView {
 
         Button submit = new Button("submit");
         submit.setOnMouseClicked(event -> {
-            game.run(new DataForGameRun("game button " + cheatTextField.getText(), self));
+            ArrayList<DataFromGameRun> data = game.run(new DataForGameRun("game button " + cheatTextField.getText(), self));
+            gameController.graphicsForEvents(data, null, 0);
             stage.close();
         });
 

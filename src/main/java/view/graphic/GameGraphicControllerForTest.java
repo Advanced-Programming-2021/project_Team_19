@@ -164,6 +164,10 @@ public class GameGraphicControllerForTest extends Menu {
             int lp = -Integer.parseInt(response.substring(12));
             otherGameView.handleIncreaseLpGraphic(lp, true);
             time = gameView.handleIncreaseLpGraphic(lp, false);
+        } else if (response.matches("increase lp \\d+")) {
+            int lp = Integer.parseInt(response.substring(12));
+            otherGameView.handleIncreaseLpGraphic(lp, false);
+            time = gameView.handleIncreaseLpGraphic(lp, true);
         } else if (response.matches("set monster \\d")) {
             int cardIndex = Integer.parseInt(response.substring(12));
             otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
