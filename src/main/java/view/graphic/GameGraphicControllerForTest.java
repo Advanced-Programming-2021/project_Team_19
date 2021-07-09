@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Card.Card;
 import model.Gamer;
 import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
@@ -141,21 +142,21 @@ public class GameGraphicControllerForTest extends Menu {
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
             otherGameView.handleSummonRivalMonsterGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSummonGraphic(cardView, getIndexById(cardIndex));
+            time = gameView.handleSummonGraphic(cardView.card, getIndexById(cardIndex));
         } else if (response.equals("add card to hand")) {
             otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
             time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             otherGameView.handleSetRivalSpellGraphic(cardView.card, getIndexByRivalId(cardIndex));
-            time = gameView.handleSetSpellGraphic(cardView, getIndexById(cardIndex));
+            time = gameView.handleSetSpellGraphic(cardView.card, getIndexById(cardIndex));
         } else if (response.startsWith("activate spell ")) {
             time = graphicsHandlingForSpells(gameView, cardView, response.replace("activate spell ", ""));
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
             otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
-            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView, position);
+            time = gameView.handleChangePositionGraphicForSelfMonsters(cardView.card, position);
         } else if (response.matches("get \\d monsters")) {
             gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
         } else if (response.equals("attack monster")) {
@@ -168,7 +169,7 @@ public class GameGraphicControllerForTest extends Menu {
             int cardIndex = Integer.parseInt(response.substring(12));
             otherGameView.handleSetRivalMonsterGraphicBOOCN(cardView.card, getIndexByRivalId(cardIndex));
             time = gameView.handleSetMonsterGraphic
-                    (cardView, getIndexById(cardIndex));
+                    (cardView.card, getIndexById(cardIndex));
         } else if (response.matches("attack \\d (destroy|stay) \\d (destroy|stay) (flip |)(self|rival) loses \\d+ lp")) {
             Matcher matcher = Utils.getMatcher(response,
                     "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp");
@@ -177,19 +178,19 @@ public class GameGraphicControllerForTest extends Menu {
             time = gameView.handleAttackResultGraphic(matcher);
         } else if (response.equals("flip summoned successfully")) {
             otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
-            time = gameView.handleFlipSummonGraphic(cardView);
+            time = gameView.handleFlipSummonGraphic(cardView.card);
         } else if (response.matches("summon \\d sacrifice( \\d)+")) {
             otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
                     getIndexByRivalId(Integer.parseInt(response.substring(7, 8))), false,
                     getSacrificesIndex(response.substring(19), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
+            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
                     getIndexById(Integer.parseInt(response.substring(7, 8))), false,
                     getSacrificesIndex(response.substring(19), true));
         } else if (response.matches("set monster \\d sacrifice( \\d)+")) {
             otherGameView.handleRivalSummonSetWithSacrificeGraphic(cardView.getCard(),
                     getIndexByRivalId(Integer.parseInt(response.substring(12,13))), true,
                     getSacrificesIndex(response.substring(24), false));
-            time = gameView.handleSummonSetWithSacrificeGraphics(cardView,
+            time = gameView.handleSummonSetWithSacrificeGraphics(cardView.card,
                     getIndexById(Integer.parseInt(response.substring(12, 13))), true,
                     getSacrificesIndex(response.substring(24), true));
         } else if (response.startsWith("game finished ")) {
@@ -221,56 +222,68 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
-        boolean isFromHand = true;
-        if (spellCommand.startsWith("hand ")) {
-            spellCommand = spellCommand.replace("hand ", "");
-        }
-        if (spellCommand.startsWith("board ")) {
-            spellCommand = spellCommand.replace("board ", "");
-            isFromHand = false;
-        }
+        System.out.println(spellCommand);
+
+        int index = spellCommand.matches("\\d .*") ?
+                getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
+
+        spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
+
+        System.out.println(index);
+        System.out.println(spellCommand);
+
 
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-            gameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, true);
-            otherGameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, false);
+            gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
+            otherGameView.justDestroyActivatedSpellOrTrap(index, cardView.card, false);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
             String ids = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(-1, cardView.card, true, ids);
-            otherGameView.activateSpell1(-1, cardView.card, false, ids);
+            gameView.activateSpell1(index, cardView.card, true, ids);
+            otherGameView.activateSpell1(index, cardView.card, false, ids);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell2(-1, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
-            otherGameView.activateSpell2(-1, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+            gameView.activateSpell2(index, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
+            otherGameView.activateSpell2(index, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
 
         } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell3(-1, cardView.card, true, idMatcher.group(1));
-            otherGameView.activateSpell3(-1, cardView.card, false, idMatcher.group(1));
+            gameView.activateSpell3(index, cardView.card, true, idMatcher.group(1));
+            otherGameView.activateSpell3(index, cardView.card, false, idMatcher.group(1));
         } else if (spellCommand.startsWith("field spell ")){
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
-            changeStages(matcher.group(1));
+            changeStages(gameView, cardView.card, matcher.group(1));
         }
         return 0;
     }
 
-    private void changeStages(String fieldSpellName) {
+    private double changeStages(GameView gameView, Card card, String fieldSpellName) {
+        double time;
 //        todo move card to field zone
-        String backgroundName = "";
-        switch (fieldSpellName){
-            case "Yami" -> backgroundName = "yami";
-            case "Forest" -> backgroundName = "gaia";
-            case "Umii Ruka" -> backgroundName = "umi";
-            case "Closed Forest" -> backgroundName = "mori";
-        }
-        Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
-        ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
-        ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+
+        getTheOtherGameView(gameView).activateFieldSpell(card, false);
+        time = gameView.activateFieldSpell(card, true);
+
+        new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
+
+            String backgroundName = "";
+            switch (fieldSpellName){
+                case "Yami" -> backgroundName = "yami";
+                case "Forest" -> backgroundName = "gaia";
+                case "Umii Ruka" -> backgroundName = "umi";
+                case "Closed Forest" -> backgroundName = "mori";
+            }
+            Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
+            ((Rectangle) gameView1.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+            ((Rectangle) gameView2.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+        })).play();
+
+        return time;
     }
 
 }

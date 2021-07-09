@@ -126,8 +126,9 @@ public class ActionsAnimationHandler {
     //mode -> 0 for summon monster and 1 for set monster and 2 for activate spell and 3 for set spell
 
     static double runMoveCardFromHandToFieldGraphic(GameView gameView,
-                                                    CardView cardView, int mode, int zone, int index) {
+                                                    Card card, int mode, int zone, int index) {
 
+        CardView cardView = gameView.searchCardInSelfHand(card);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
 
         addCardToCorrectCardListZone(gameView, newCardView, zone, index);
@@ -295,6 +296,15 @@ public class ActionsAnimationHandler {
         return 500;
     }
 
+    static double runRemoveCardFromHand(GameView gameView, CardView cardView){
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 1, 0).getAnimation());
+        gameView.selfHand.remove(cardView);
+        transition.getChildren().add(getHandAnimationForCardsWasInHand(gameView));
+        transition.play();
+        return 500;
+    }
+
     static double runRemoveCardFromRivalHandToGraveYardGraphic(GameView gameView, CardView cardView) {
 
         ParallelTransition transition = new ParallelTransition(
@@ -308,6 +318,15 @@ public class ActionsAnimationHandler {
                 gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
             }
         });
+        transition.play();
+        return 500;
+    }
+
+    static double runRemoveCardFromRivalHand(GameView gameView, CardView cardView){
+        ParallelTransition transition = new ParallelTransition(
+                new FadeAnimation(cardView, 500, 1, 0).getAnimation());
+        gameView.rivalHand.remove(cardView);
+        transition.getChildren().add(getHandAnimationForCardsWasInRivalHand(gameView));
         transition.play();
         return 500;
     }
@@ -400,8 +419,9 @@ public class ActionsAnimationHandler {
 
     //flip animations
 
-    static double runFlipSummonGraphic(GameView gameView, CardView cardView) {
+    static double runFlipSummonGraphic(GameView gameView, Card card) {
 
+        CardView cardView = gameView.searchCardInSelfField(card);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
         gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInFieldX(newCardView, 0));
