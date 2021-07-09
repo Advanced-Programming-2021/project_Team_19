@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
@@ -94,9 +95,7 @@ public class ImportAndExportMenu extends Menu {
         fileChooser.getExtensionFilters().add(extensionFilter);
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-            Image image = new Image("file:///" + file.getPath());
-            imageURL.setText(file.getPath());
-            choosenPicture.setImage(image);
+//            Card card =
         }
     }
 
