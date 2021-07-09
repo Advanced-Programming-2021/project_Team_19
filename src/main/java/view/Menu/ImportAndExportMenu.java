@@ -33,6 +33,8 @@ public class ImportAndExportMenu extends Menu {
 
         setImportMenu();
         stage.setTitle("Import/Export Menu");
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         stage.getScene().setRoot(pane);
     }
 

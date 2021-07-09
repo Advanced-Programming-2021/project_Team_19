@@ -121,3 +121,8 @@
     -fx-text-fill: #021647;
     -fx-font-size: 14px;
 }
+
+.gameFinishLabel{
+    -fx-text-fill: #17d917;
+    -fx-font-size: 25;
+}

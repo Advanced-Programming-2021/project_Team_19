@@ -46,6 +46,8 @@ public class DuelMenuController extends Menu {
 
 
     public void graphicRun(String username) {
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         user = UserDataBaseController.getUserByUsername(username);
         setRivalChoosingMenu();
 
@@ -271,9 +273,10 @@ public class DuelMenuController extends Menu {
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
 
+        pane.getStylesheets().add("CSS/Css.css");
         winnerLabel.setTextAlignment(TextAlignment.CENTER);
         winnerLabel.setLayoutY(90);
-        winnerLabel.setTextFill(Color.GREEN);
+        winnerLabel.getStylesheets().add("gameFinishLabel");
 
         Button backButton = new Button();
         setBackButton(backButton);
@@ -281,7 +284,6 @@ public class DuelMenuController extends Menu {
         });
 
         StackPane.setAlignment(backButton, Pos.TOP_LEFT);
-
         pane.getChildren().addAll(backButton, winnerLabel);
 
         return pane;

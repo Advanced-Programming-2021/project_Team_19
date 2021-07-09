@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -59,6 +61,8 @@ public class ProfileMenu extends Menu {
 
     public void run(String username, String nickname) {
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         setUsername(username);
         this.nickname = nickname;
         setButtons();
@@ -134,6 +138,8 @@ public class ProfileMenu extends Menu {
         ((VBox) changeNicknameBox.getChildren().get(1)).getChildren().add(submitNickname);
 
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         pane.getChildren().addAll(changeNicknameBox, changeNicknameResponse, backButton);
         showUsernameAndNickName(pane);
 
@@ -190,6 +196,8 @@ public class ProfileMenu extends Menu {
         ((VBox) changePasswordGrid.getChildren().get(1)).getChildren().add(submit);
 
         pane = new Pane();
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         pane.getChildren().addAll(changePasswordGrid, changePasswordResponse, backButton);
         showUsernameAndNickName(pane);
 
@@ -246,7 +254,11 @@ public class ProfileMenu extends Menu {
         HBox nameBox = new HBox(20);
 
         Label usernameLabel = new Label("username: " + username);
+        usernameLabel.setTextFill(Color.RED);
+        usernameLabel.setFont(new Font(16));
         Label nicknameLabel = new Label("nickname:  " + nickname);
+        nicknameLabel.setTextFill(Color.RED);
+        nicknameLabel.setFont(new Font(16));
 
         nameBox.getChildren().addAll(usernameLabel, nicknameLabel);
 

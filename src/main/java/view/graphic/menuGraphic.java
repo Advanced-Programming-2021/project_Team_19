@@ -20,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -154,7 +156,10 @@ public class menuGraphic extends Application {
     public static HBox textFieldGridToEnterInfo(String... fieldNames) {
         VBox fieldNamesBox = new VBox(13);
         for (String fieldName : fieldNames) {
-            fieldNamesBox.getChildren().add(new Label(fieldName));
+            Label label = new Label(fieldName);
+            label.setTextFill(Color.RED);
+            label.setFont(new Font(16));
+            fieldNamesBox.getChildren().add(label);
         }
         VBox textFieldsBox = new VBox(5);
         for (int i = 0; i < fieldNames.length; i++) {
