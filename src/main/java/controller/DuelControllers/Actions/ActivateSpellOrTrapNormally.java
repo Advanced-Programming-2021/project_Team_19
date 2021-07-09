@@ -75,9 +75,9 @@ public class ActivateSpellOrTrapNormally extends Activation {
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
-             return "activate spell hand " + activateFromHand(card);
+             return "activate spell " + activateFromHand(card);
         } else {
-            return "activate spell board " + activateSpellOrTrap();
+            return "activate spell -1 " + activateSpellOrTrap();
         }
     }
 
@@ -113,7 +113,8 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);
 
-        return activateSpellOrTrap();
+        return  gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(card) +
+                " " + activateSpellOrTrap();
     }
 
 }

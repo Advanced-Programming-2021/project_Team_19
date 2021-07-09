@@ -221,36 +221,38 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     private double graphicsHandlingForSpells(GameView gameView, CardView cardView, String spellCommand) {
-        boolean isFromHand = true;
-        if (spellCommand.startsWith("hand ")) {
-            spellCommand = spellCommand.replace("hand ", "");
-        }
-        if (spellCommand.startsWith("board ")) {
-            spellCommand = spellCommand.replace("board ", "");
-            isFromHand = false;
-        }
+        System.out.println(spellCommand);
+
+        int index = spellCommand.matches("\\d .*") ?
+                Integer.parseInt(spellCommand.split(" ")[0]) : -1;
+
+        spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
+
+        System.out.println(index);
+        System.out.println(spellCommand);
+
 
         GameView otherGameView = getTheOtherGameView(gameView);
         if (spellCommand.equals("destroy this spell")) {
-            gameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, true);
-            otherGameView.justDestroyActivatedSpellOrTrap(-1, cardView.card, false);
+            gameView.justDestroyActivatedSpellOrTrap(index, cardView.card, true);
+            otherGameView.justDestroyActivatedSpellOrTrap(index, cardView.card, false);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
             String ids = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(-1, cardView.card, true, ids);
-            otherGameView.activateSpell1(-1, cardView.card, false, ids);
+            gameView.activateSpell1(index, cardView.card, true, ids);
+            otherGameView.activateSpell1(index, cardView.card, false, ids);
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand,
                     "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell2(-1, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
-            otherGameView.activateSpell2(-1, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
+            gameView.activateSpell2(index, cardView.card, true, idMatcher.group(1), idMatcher.group(2));
+            otherGameView.activateSpell2(index, cardView.card, false, idMatcher.group(1), idMatcher.group(2));
 
         } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
             Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
             idMatcher.find();
-            gameView.activateSpell3(-1, cardView.card, true, idMatcher.group(1));
-            otherGameView.activateSpell3(-1, cardView.card, false, idMatcher.group(1));
+            gameView.activateSpell3(index, cardView.card, true, idMatcher.group(1));
+            otherGameView.activateSpell3(index, cardView.card, false, idMatcher.group(1));
         } else if (spellCommand.startsWith("field spell ")){
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
