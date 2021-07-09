@@ -49,6 +49,7 @@ public class Printer {
     public static void setFailureResponseToLabel(Label label, String text){
         label.setText(text);
         label.setTextFill(Color.RED);
+        label.setFont(new Font(16));
     }
 
     public static void setAppropriateResponseToLabelFromData(DataForClientFromServer data, Label label){

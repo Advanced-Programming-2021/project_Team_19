@@ -32,6 +32,8 @@ public class MainMenu extends Menu {
 
         setMainMenu();
         stage.setTitle("Main Menu");
+        pane.getStylesheets().add("CSS/Css.css");
+        pane.setId("shopBackGround");
         stage.getScene().setRoot(pane);
 
     }

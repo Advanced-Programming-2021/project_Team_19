@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -248,7 +250,11 @@ public class ProfileMenu extends Menu {
         HBox nameBox = new HBox(20);
 
         Label usernameLabel = new Label("username: " + username);
+        usernameLabel.setTextFill(Color.RED);
+        usernameLabel.setFont(new Font(16));
         Label nicknameLabel = new Label("nickname:  " + nickname);
+        nicknameLabel.setTextFill(Color.RED);
+        nicknameLabel.setFont(new Font(16));
 
         nameBox.getChildren().addAll(usernameLabel, nicknameLabel);
 
