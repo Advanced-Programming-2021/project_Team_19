@@ -207,7 +207,7 @@ public class Game {
 
 
             if (gameData.isGameOver()) {
-                new DataFromGameRun("game finished" + finishGame(gameData).getUsername());
+                new DataFromGameRun("game finished " + finishGame(gameData).getUsername());
 //                return finishGame(gameData);
             }
 

@@ -12,6 +12,12 @@ import model.Enums.MessageType;
 import view.Printer.Printer;
 import view.Utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class WelcomeMenu extends Menu {
 
     static WelcomeMenu instance = null;
@@ -139,6 +145,20 @@ public class WelcomeMenu extends Menu {
                     (new DataForServerFromClient(commandToSendToServer, username, WelcomeMenu.getInstance().menuName));
 
             Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
+            if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
+                ArrayList<File> allFiles = new ArrayList<>();
+                File files = new File("src/main/resources/RandomPictures");
+                for (File file : files.listFiles()) {
+                    allFiles.add(file);
+                }
+                Collections.shuffle(allFiles);
+                try {
+                    Files.copy(allFiles.get(0).toPath(),
+                            new File("src/main/resources/UserProfilePicture/" + username + ".jpg").toPath());
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         private static void clearTextFields() {

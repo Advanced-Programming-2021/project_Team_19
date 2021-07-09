@@ -1,17 +1,20 @@
 package controller.DuelControllers;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.paint.*;
 import model.Enums.GameEvent;
 import model.Gamer;
 import model.Pair;
@@ -21,6 +24,8 @@ import view.Menu.Menu;
 import view.Menu.RockPaper;
 import view.Printer.Printer;
 import view.graphic.GameGraphicControllerForTest;
+
+import java.io.IOException;
 
 public class DuelMenuController extends Menu {
 
@@ -197,12 +202,12 @@ public class DuelMenuController extends Menu {
     }
 
 
-    public void handleDuel(int rounds, Stage firstStage, Stage secondStage) {
+    public void handleDuel(int rounds, Stage firstStage, Stage secondStage, boolean isInverted) {
         gameIsHappening = true;
         if (rounds == 1) {
             GameData gameData = new GameData(gameStarter, rivalGamer);
 //            finishDuel(new Game(gameData).DeprecatedRun(), gameData, 1);
-            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer).run();
+            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
         } else {
             int userWins = 0;
             int rivalWins = 0;
@@ -248,15 +253,39 @@ public class DuelMenuController extends Menu {
     }
 
     public static void finishDuel(Gamer winner, GameData gameData, int rounds) {
+
+        Pane gameFinishPane = getGameFinishedPane(winner, gameData);
+        stage.getScene().setRoot(gameFinishPane);
         gameIsHappening = false;
         Gamer loser = gameData.getCurrentGamer();
         if (loser.equals(winner))
             loser = gameData.getSecondGamer();
 
-        Printer.print(winner.getUsername() + " won the whole match with score: " +
+        increaseCreditAndScoreAfterGame(winner, loser, rounds);
+    }
+
+    public static Pane getGameFinishedPane(Gamer winner, GameData gameData) {
+        StackPane pane = new StackPane();
+
+        Label winnerLabel = new Label(winner.getUsername() + " won the whole match with score: " +
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
-        increaseCreditAndScoreAfterGame(winner, loser, rounds);
+
+        winnerLabel.setTextAlignment(TextAlignment.CENTER);
+        winnerLabel.setLayoutY(90);
+        winnerLabel.setTextFill(Color.GREEN);
+
+        Button backButton = new Button();
+        setBackButton(backButton);
+        backButton.setOnMouseClicked(event -> { MainMenu.getInstance(null).run();
+        });
+
+        StackPane.setAlignment(backButton, Pos.TOP_LEFT);
+
+        pane.getChildren().addAll(backButton, winnerLabel);
+
+        return pane;
+
     }
 
     public static boolean isGameIsHappening() {

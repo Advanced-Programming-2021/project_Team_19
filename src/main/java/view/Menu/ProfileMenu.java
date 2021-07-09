@@ -1,32 +1,50 @@
 package view.Menu;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
 import view.Utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static view.Printer.Printer.setFailureResponseToLabel;
 
 public class ProfileMenu extends Menu {
 
-    private static ProfileMenu instance = null;
-    private Pane pane = new Pane();
-    private static TextField nicknameTextField = new TextField();
-    private static TextField currentPasswordTextField = new TextField();
-    private static TextField newPasswordTextField = new TextField();
-    private static Label changeNicknameResponse = new Label();
-    private static Label changePasswordResponse = new Label();
+    @FXML
+    public ImageView profilePicture;
+    @FXML
+    public Label address;
+    @FXML
+    public Label result;
 
-    private String nickname;
+    public static ProfileMenu instance = null;
+    public Pane pane = new Pane();
+    public static TextField nicknameTextField = new TextField();
+    public static TextField currentPasswordTextField = new TextField();
+    public static TextField newPasswordTextField = new TextField();
+    public static Label changeNicknameResponse = new Label();
+    public static Label changePasswordResponse = new Label();
 
-    private ProfileMenu() {
+    public String nickname;
+
+    public ProfileMenu() {
         super("Profile Menu");
     }
 
@@ -50,7 +68,7 @@ public class ProfileMenu extends Menu {
 
     }
 
-    private void setResponseLabels() {
+    public void setResponseLabels() {
         changeNicknameResponse.setLayoutX(200);
         changeNicknameResponse.setLayoutY(300);
         changePasswordResponse.setLayoutX(200);
@@ -58,14 +76,15 @@ public class ProfileMenu extends Menu {
 
     }
 
-    private void clearResponseLabels(){
+    public void clearResponseLabels(){
         changeNicknameResponse.setText("");
         changePasswordResponse.setText("");
     }
 
     public void setButtons() {
 
-        VBox buttonBox = setSeveralChoiceButtons("change nickname", "change password");
+
+        VBox buttonBox = setSeveralChoiceButtons("change nickname", "change password", "change Picture");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> {clearResponseLabels();
             setChangeNicknameMenu();
@@ -75,11 +94,21 @@ public class ProfileMenu extends Menu {
             setChangePasswordMenu();
         });
 
+        buttonBox.getChildren().get(2).setOnMouseClicked(event -> {
+            clearResponseLabels();
+            setChangePictureMenu();
+        });
+
         Button backButton = new Button();
         setBackButton(backButton);
         backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
-        pane.getChildren().addAll(buttonBox, backButton);
+
+        Image image = new Image("UserProfilePicture/" + username + ".jpg");;
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(300);
+        imageView.setFitWidth(200);
+        pane.getChildren().addAll(buttonBox, imageView, backButton);
         showUsernameAndNickName(pane);
     }
 
@@ -136,7 +165,7 @@ public class ProfileMenu extends Menu {
 
     }
 
-    private void setChangePasswordMenu() {
+    public void setChangePasswordMenu() {
 
         HBox changePasswordGrid = textFieldGridToEnterInfo("enter your current password here:",
                 "enter your new password here:");
@@ -166,6 +195,20 @@ public class ProfileMenu extends Menu {
 
         stage.getScene().setRoot(pane);
 
+    }
+
+    public void setChangePictureMenu() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangePicture.fxml"));
+        try {
+            AnchorPane anchorPane = fxmlLoader.load();
+            Button backButton = new Button();
+            setBackButton(backButton);
+            backButton.setOnMouseClicked(event -> run(username, nickname));
+            anchorPane.getChildren().add(backButton);
+            stage.getScene().setRoot(anchorPane);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changePassword() {
@@ -199,7 +242,7 @@ public class ProfileMenu extends Menu {
         Printer.setAppropriateResponseToLabelFromData(data, changePasswordResponse);
     }
 
-    private void showUsernameAndNickName(Pane pane){
+    public void showUsernameAndNickName(Pane pane){
         HBox nameBox = new HBox(20);
 
         Label usernameLabel = new Label("username: " + username);
@@ -215,4 +258,32 @@ public class ProfileMenu extends Menu {
     }
 
 
+    public void choosePicture(MouseEvent mouseEvent) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("jpg files (*.jpg)","*.jpg");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            Image image = new Image("file:///" + file.getPath());
+            address.setText(file.getPath());
+            profilePicture.setImage(image);
+        }
+    }
+
+    public void submit(MouseEvent mouseEvent) {
+        String url = profilePicture.getImage().getUrl();
+        if (profilePicture.getImage() != null) {
+            try {
+                File dir = new File("src/main/resources/UserProfilePicture");
+                for (File file : dir.listFiles()) {
+                    if (file.getName().equals(username + ".jpg")) {
+                        file.delete();
+                    }
+                }
+                Files.copy(new File(url.substring(6)).toPath(), new File("src/main/resources/UserProfilePicture/" + username + ".jpg").toPath());
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

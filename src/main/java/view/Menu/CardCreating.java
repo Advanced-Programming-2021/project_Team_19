@@ -167,7 +167,7 @@ public class CardCreating extends Menu{
     }
 
     private void sendPictureToServer(String name, boolean isMonster) {
-        String url = choosenPicture.getImage().getUrl();;
+        String url = choosenPicture.getImage().getUrl();
         try {
             if (isMonster) {
                 Files.copy(new File(url.substring(6)).toPath(), new File("src/main/resources/Assets/Cards/Monsters/" + Utils.getPascalCase(name) + ".jpg").toPath());
