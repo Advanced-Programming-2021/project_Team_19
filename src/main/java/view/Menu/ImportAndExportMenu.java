@@ -1,6 +1,9 @@
 package view.Menu;
 
+import controller.DataBaseControllers.CSVDataBaseController;
+import controller.DataBaseControllers.DataBaseController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -14,25 +17,29 @@ import javafx.stage.FileChooser;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
+import model.User;
 import view.Printer.Printer;
+import view.graphic.CardView;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ImportAndExportMenu extends Menu {
 
     @FXML
-    private ScrollPane allCards;
+    public ScrollPane allCards;
     @FXML
-    private HBox importedCard;
+    public HBox importedCard;
     @FXML
-    private TextField cardToExport;
+    public TextField cardToExport;
 
-    private static ImportAndExportMenu instance = null;
-    private Pane pane = new Pane();
-    private Label responseLabel = new Label();
-    private static TextField cardNameTextField;
+    public static ImportAndExportMenu instance = null;
+    public Pane pane = new Pane();
+    public Label responseLabel = new Label();
+    public static TextField cardNameTextField;
+    static User user;
 
-    private ImportAndExportMenu() {
+    public ImportAndExportMenu() {
         super("Import/Export Menu");
     }
 
@@ -44,16 +51,44 @@ public class ImportAndExportMenu extends Menu {
     }
 
 
-    public void run() {
-
-        setImportMenu();
-        stage.setTitle("Import/Export Menu");
-        pane.getStylesheets().add("CSS/Css.css");
-        pane.setId("shopBackGround");
+    public void run(User user) {
+        ImportAndExportMenu.user = user;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/importAndExportMenu.fxml"));
+        try {
+            pane = fxmlLoader.load();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
         stage.getScene().setRoot(pane);
     }
 
-    private void setImportMenu() {
+    public void initialize() {
+        updateCards();
+    }
+
+    public void updateCards() {
+        VBox vBox = new VBox();
+        DataForClientFromServer data =
+                sendDataToServer(new DataForServerFromClient("shop show --all", user.getUsername(), "Shop Menu"));
+        System.out.println(data.getMessage());
+        String[] cards = data.getMessage().split("\n");
+        for(String card : cards) {
+            String tempCardName = card.split(":")[0].trim();
+            Card cardToAddToScroll = controller.Utils.getCardByName(tempCardName);
+            try {
+                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
+                vBox.getChildren().add(cardViewToAddToScroll);
+                cardViewToAddToScroll.setOnMouseClicked(e -> {
+                    cardToExport.setText(tempCardName);
+                });
+            } catch (Exception e) {
+                System.out.println(tempCardName + "-----------------------------------------------");
+            }
+        }
+        allCards.setContent(vBox);
+    }
+
+    public void setImportMenu() {
         HBox cardName = textFieldGridToEnterInfo("enter the name of the card you want to import/export:");
         cardName.setLayoutX(150);
         cardName.setLayoutY(100);
@@ -95,11 +130,14 @@ public class ImportAndExportMenu extends Menu {
         fileChooser.getExtensionFilters().add(extensionFilter);
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-//            Card card =
+            Card card = (Card) DataBaseController.getObjectByGson(DataBaseController.readDataFromFile(file.getPath()),
+                    Card.class);
+            CardView cardView = new CardView(card, 2.5, false, true);
+            importedCard.getChildren().add(cardView);
         }
     }
 
-    private void importCard() {
+    public void importCard() {
 
 //        String cardName = cardNameTextField.getText();
 //
@@ -116,24 +154,33 @@ public class ImportAndExportMenu extends Menu {
 //        Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
     }
 
-    private void exportCard() {
+    public void exportCard() {
 
-        String cardName = cardNameTextField.getText();
+        String cardName = cardToExport.getText();
 
-        if (cardName.equals("")){
-            Printer.setFailureResponseToLabel(responseLabel, "enter a card name");
-            return;
+        Card card = CSVDataBaseController.getCardByCardName(cardName);
+
+        if (card == null) {
+            System.out.println("no such card");
+        } else {
+            String result = DataBaseController.makeObjectJson(card);
+            System.out.println(result);
         }
 
-        clearTextField();
-
-        DataForClientFromServer data = sendDataToServer
-                (new DataForServerFromClient("export card " + cardName, menuName));
-
-        Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
+//        if (cardName.equals("")){
+//            Printer.setFailureResponseToLabel(responseLabel, "enter a card name");
+//            return;
+//        }
+//
+//        clearTextField();
+//
+//        DataForClientFromServer data = sendDataToServer
+//                (new DataForServerFromClient("export card " + cardName, menuName));
+//
+//        Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
     }
 
-    private void clearTextField(){
+    public void clearTextField(){
         cardNameTextField.clear();
     }
 }
