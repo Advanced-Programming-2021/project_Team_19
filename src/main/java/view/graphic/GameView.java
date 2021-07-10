@@ -181,6 +181,11 @@ public class GameView {
                 Stage cheatSheet = new Stage();
                 cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
                 cheatSheet.show();
+            } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()){
+                if (game.gameData.getCurrentGamer().equals(self)) {
+                    ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
+                    gameController.graphicsForEvents(events, null, 0);
+                }
             }
         });
     }

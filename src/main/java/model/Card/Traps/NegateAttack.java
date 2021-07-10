@@ -34,7 +34,7 @@ public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
     public boolean shouldEffectRun(EffectLabel label) {
 
         if (label.gameData.getCurrentPhase().equals(Phase.BATTLE)) {
-            return label.gameData.getCurrentActions().size() == 1;
+            return true;
         }
         return false;
     }
