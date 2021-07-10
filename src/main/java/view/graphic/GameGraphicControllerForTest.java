@@ -442,21 +442,23 @@ public class GameGraphicControllerForTest extends Menu {
                     stage2.close();
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
-                    hasFirstChoosed = false;
-                    hasSecondChoosed = false;
-                    new Thread(() -> {
-                        new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
-                        new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
-                    }).start();
-                    while (!hasFirstChoosed && !hasSecondChoosed) {
-                        try {
-                            Thread.sleep(100);
-                        } catch(InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
-                            isInverted, gameStarterWins, invitedGamerWins).run();
+                    new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
+                    new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
+//                    hasFirstChoosed = false;
+//                    hasSecondChoosed = false;
+//                    new Thread(() -> {
+//                        new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
+//                        new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
+//                    }).start();
+//                    while (!hasFirstChoosed && !hasSecondChoosed) {
+//                        try {
+//                            Thread.sleep(100);
+//                        } catch(InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+//                            isInverted, gameStarterWins, invitedGamerWins).run();
                 }
             }
         } else {

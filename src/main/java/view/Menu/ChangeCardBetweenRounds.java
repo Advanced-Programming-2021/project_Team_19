@@ -47,6 +47,10 @@ public class ChangeCardBetweenRounds extends Menu {
         this.order = order;
     }
 
+    public ChangeCardBetweenRounds() {
+        super("ChangeCardBetweenRounds Menu");
+    }
+
     public void run(GameGraphicControllerForTest gameGraphicControllerForTest, User user, Stage stage) {
         ChangeCardBetweenRounds.gameGraphicControllerForTest = gameGraphicControllerForTest;
         ChangeCardBetweenRounds.user = user;
