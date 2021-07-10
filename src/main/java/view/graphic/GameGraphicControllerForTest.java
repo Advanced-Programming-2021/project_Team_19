@@ -80,7 +80,7 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted,
-                                        int gameStarterWins, int invitedGamerWins){
+                                        int gameStarterWins, int invitedGamerWins) {
         super("game test");
         System.err.println(123);
         this.isInverted = isInverted;
@@ -340,6 +340,8 @@ public class GameGraphicControllerForTest extends Menu {
 
         } else if (response.matches("rival loses \\d+")) {
             time = handleIncreaseLP(gameView, response);
+        } else if (response.matches("increase lp \\d+")) {
+            time = handleIncreaseLPByCheatCode(gameView, response);
         } else if (response.matches("set monster \\d")) {
             int cardIndex = Integer.parseInt(response.substring(12));
 
@@ -487,6 +489,22 @@ public class GameGraphicControllerForTest extends Menu {
         return time;
     }
 
+    private double handleIncreaseLPByCheatCode(GameView gameView, String response){
+        double time = 500;
+        int lp = Integer.parseInt(response.substring(12));
+        try {
+            time = getTheOtherGameView(gameView).handleIncreaseLpGraphic(lp, false);
+        } catch (NullPointerException ignored) {
+
+        }
+        try {
+            time = gameView.handleIncreaseLpGraphic(lp, true);
+        } catch (NullPointerException ignored) {
+
+        }
+        return time;
+    }
+
     private void handleAI() {
         if (AIMod()) {
 
@@ -575,7 +593,7 @@ public class GameGraphicControllerForTest extends Menu {
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
             changeStages(gameView, cardView.card, matcher.group(1));
-        } else if (spellCommand.matches("destroy spell and rival loses \\d+")){
+        } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
             handleIncreaseLP(gameView, spellCommand.substring(18));
             handleDestroySpell(gameView, cardView, index);
         }
