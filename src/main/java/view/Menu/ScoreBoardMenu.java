@@ -49,7 +49,7 @@ public class ScoreBoardMenu extends Menu {
 
         box.getChildren().addAll(title, tableView, backButton);
         mainPane.getStylesheets().add("CSS/Css.css");
-        mainPane.setId("shopBackGround");
+        mainPane.setId("background1");
         mainPane.setCenter(box);
 
         stage.getScene().setRoot(mainPane);

@@ -1,4 +1,10 @@
 
+#background1 {
+    -fx-background-image: url("../Pictures/background1.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
 
 #gameBackground{
     -fx-background-image: url("Assets/Field/fie_normal.bmp");
