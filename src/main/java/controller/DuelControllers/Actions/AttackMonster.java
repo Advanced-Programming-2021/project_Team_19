@@ -21,7 +21,12 @@ public class AttackMonster extends Attack {
     }
 
     public String run(boolean checkTriggerOrRun) {
-        return attackMonster();
+        if(checkTriggerOrRun){
+            checkTrigger();
+            return "";
+        } else{
+            return attackMonster();
+        }
     }
 
     @Override
@@ -49,11 +54,11 @@ public class AttackMonster extends Attack {
         ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
                 .getCardById(enemyId)).attackIsNormal(gameData);
 
-        TriggerActivationData activationData = handleTriggerEffects();
+//        TriggerActivationData activationData = handleTriggerEffects();
 
-        if (activationData.hasActionStopped) {
-            return "action stopped";
-        }
+//        if (activationData.hasActionStopped) {
+//            return "action stopped";
+//        }
 
         return ((Monster) gameData.getSelectedCard()).handleAttack(gameData, enemyId);
 

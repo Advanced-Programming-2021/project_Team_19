@@ -117,9 +117,9 @@ public class Game {
             new DataFromGameRun(summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
-            String attackResponse = new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            new DataFromGameRun(attackResponse);
+            /*String attackResponse =*/ new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
+//            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+//            new DataFromGameRun(attackResponse);
         } else if (command.matches("set position (attack|defence)")) {
             String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
             new DataFromGameRun(setPositionResponse);

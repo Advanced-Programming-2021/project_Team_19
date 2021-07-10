@@ -5,6 +5,7 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
+import model.TriggerLabel;
 
 public abstract class Attack extends Action {
 
@@ -39,4 +40,9 @@ public abstract class Attack extends Action {
         return "";
     }
 
+    protected void checkTrigger(){
+        TriggerLabel label = new TriggerLabel(this);
+        label.shouldRunAgain = true;
+        gameData.triggerLabel = label;
+    }
 }

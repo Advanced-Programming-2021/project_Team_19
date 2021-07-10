@@ -26,6 +26,8 @@ public class MagicCylinder extends TrapsActivateBecauseOfActionAttack {
 
         int attackOfMonster = ((Monster) attack.getAttackingMonster()).getAttack(gameData);
 
+        ((Monster) attack.getAttackingMonster()).setLastTurnAttacked(gameData);
+
         gameData.getCardController(attack.getAttackingMonster()).decreaseLifePoint(attackOfMonster);
 
         handleDestroy(gameData);
