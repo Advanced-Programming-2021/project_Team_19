@@ -59,6 +59,7 @@ public class ImportAndExportMenu extends Menu {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/importAndExportMenu.fxml"));
         try {
             pane = fxmlLoader.load();
+            readyFxmlButtonsForCursor(pane);
         } catch(IOException e) {
             e.printStackTrace();
         }

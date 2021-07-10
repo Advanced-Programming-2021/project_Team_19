@@ -213,6 +213,7 @@ public class ProfileMenu extends Menu {
             setBackButton(backButton);
             backButton.setOnMouseClicked(event -> run(username, nickname));
             anchorPane.getChildren().add(backButton);
+            readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
         } catch(IOException e) {
             e.printStackTrace();
