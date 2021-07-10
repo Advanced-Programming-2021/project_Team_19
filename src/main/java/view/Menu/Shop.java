@@ -23,6 +23,8 @@ import view.graphic.CardView;
 
 import javax.print.DocFlavor;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Shop extends Menu {
 
@@ -153,6 +155,12 @@ public class Shop extends Menu {
             messageBox.setFont(new Font(16));
         }
         else{
+            if (invalidCardName(currentCard.getName())) {
+                messageBox.setText("you cannot buy this card!");
+                messageBox.setTextFill(Color.RED);
+                messageBox.setFont(new Font(16));
+                return;
+            }
             DataForClientFromServer data =
                     ShopMenuController.getInstance().run(user, "shop buy " + currentCard.getName() );
             messageBox.setText(data.getMessage());
@@ -181,4 +189,44 @@ public class Shop extends Menu {
             }
         }
     }
+
+    public static boolean invalidCardName(String cardName) {
+        String[] invalidCards = new String[]{"Advanced Ritual Art",
+                "Beast King Barbaros",
+                "Black Pendant",
+                "Call of The Haunted",
+                "Change of Heart",
+                "Crab Turtle",
+                "Exploder Dragon",
+                "Gate Guardian",
+                "Herald of Creation",
+                "Magic Jamamer",
+                "Magnum Shield",
+                "Man-Eater Bug",
+                "Marshmallon",
+                "Messenger of peace",
+                "Mind Crush",
+                "Monster Reborn",
+                "Mystical space typhoon",
+                "Pot of Greed",
+                "Ring of defense",
+                "Scanner",
+                "Skull Guardian",
+                "Solemn Warning",
+                "Spell Absorption",
+                "Suijin",
+                "Supply Squad",
+                "Sword of dark destruction",
+                "Swords of Revealing Light",
+                "Terraforming",
+                "Terratiger, the Empowered Warrior",
+                "Texchanger",
+                "The Tricky",
+                "Time Seal",
+                "Twin Twisters",
+                "United We Stand"};
+
+        return new ArrayList<>(Arrays.asList(invalidCards)).contains(cardName);
+    }
+
 }
