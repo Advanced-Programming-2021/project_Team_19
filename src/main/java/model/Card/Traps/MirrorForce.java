@@ -22,7 +22,9 @@ public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
     @Override
     public ActivationData activate(GameData gameData) {
 
-        handleEffect(gameData);
+        int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
+
+        String ids = handleEffect(gameData);
 
         handleDestroy(gameData);
 
@@ -30,12 +32,17 @@ public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
 
         return new TriggerActivationData(
                 true,
-                "all rival monsters that are in attack position destroyed",
+                "activate trap " +
+                        trapIndex
+                        + ":change turn:trap hole:" +
+                        "activate spell " +
+                        "-1 destroy rival monsters" + ids,
                 this);
     }
 
-    private void handleEffect(GameData gameData) {
+    private String handleEffect(GameData gameData) {
 
+        StringBuilder ids = new StringBuilder();
         Attack attack = (Attack) Utils.getLastActionOfSpecifiedAction
                 (gameData.getCurrentActions(), Attack.class);
 
@@ -44,9 +51,14 @@ public class MirrorForce extends TrapsActivateBecauseOfActionAttack {
 
         for (Monster monster : monsters) {
             if (monster != null && monster.getCardMod().equals(CardMod.OFFENSIVE_OCCUPIED)) {
+                ids.append(" ").append(gameData.getCardController(attack.getAttackingMonster())//gamer
+                        .getGameBoard().getMonsterCardZone().getId(monster));
+
                 monster.handleDestroy(gameData);
             }
         }
+
+        return ids.toString();
     }
 
 }

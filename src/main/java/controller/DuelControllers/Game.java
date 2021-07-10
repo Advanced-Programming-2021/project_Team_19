@@ -409,7 +409,10 @@ public class Game {
 
     private boolean checkLabelsOfGamer(Gamer gamer) {
 
+
         ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>) gamer.getEffectLabels().clone();
+
+        System.out.println(tempArray.size());
 
         for (EffectLabel label : tempArray) {
             if (label.checkLabel()) {
@@ -420,7 +423,8 @@ public class Game {
                 }
 
                 if (label.label == 1) {
-                    goToNextPhase(label.gameData);
+                    String nextPhaseName = goToNextPhase(gameData);
+                    new DataFromGameRun(nextPhaseName);
                 }
 
                 return true;
