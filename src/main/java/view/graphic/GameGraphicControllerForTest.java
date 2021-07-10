@@ -74,6 +74,34 @@ public class GameGraphicControllerForTest extends Menu {
         gameView1.setRivalGameView(gameView2);
     }
 
+    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted,
+                                        int gameStarterWins, int invitedGamerWins){
+        super("game test");
+        System.err.println(123);
+        this.isInverted = isInverted;
+        stage = first;
+        stage2 = second;
+        this.rounds = rounds;
+        Scene scene = new Scene(new Pane(), menuGraphic.sceneX, menuGraphic.sceneY);
+        scene.getStylesheets().add("CSS/Css.css");
+        second.setScene(scene);
+        GameData gameData = new GameData(firstGamer, secondGamer);
+        game = new Game(gameData, rounds);
+        if (!isInverted) {
+            gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
+            gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
+        } else {
+            gameView1 = new GameView(second, this, firstGamer, secondGamer, game);
+            gameView2 = new GameView(first, this, secondGamer, firstGamer, game);
+        }
+
+        gameView2.setRivalGameView(gameView1);
+        gameView1.setRivalGameView(gameView2);
+        this.invitedGamerWins = invitedGamerWins;
+        this.gameStarterWins = gameStarterWins;
+
+    }
+
     public void testRun() {
         Pane pane = new Pane();
         stage.getScene().setRoot(pane);
@@ -401,15 +429,15 @@ public class GameGraphicControllerForTest extends Menu {
                 }
 
                 if (gameStarterWins == 2) {
+                    stage2.close();
                     DuelMenuController.finishDuel(gameView1.self, GameData.getGameData(), rounds);
                 } else if (invitedGamerWins == 2) {
+                    stage2.close();
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
                     //todo put deck modifier between rounds here
-                    GameData gameData = new GameData(gameView1.self, gameView1.rival);
-                    game = new Game(gameData, --rounds);
-                    gameView1 = new GameView(gameView1.stage, this, gameView1.self, gameView1.rival, game);
-                    gameView2 = new GameView(gameView2.stage, this, gameView2.self, gameView2.rival, game);
+                    new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+                            isInverted, gameStarterWins, invitedGamerWins).run();
                 }
             }
         } else {
