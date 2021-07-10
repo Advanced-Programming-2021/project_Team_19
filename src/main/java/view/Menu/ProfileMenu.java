@@ -108,7 +108,7 @@ public class ProfileMenu extends Menu {
         backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
 
-        Image image = new Image("UserProfilePicture/" + username + ".jpg");;
+        Image image = new Image("UserProfilePicture/" + username + ".jpg");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(300);
         imageView.setFitWidth(200);
@@ -271,7 +271,7 @@ public class ProfileMenu extends Menu {
     }
 
 
-    public void choosePicture(MouseEvent mouseEvent) {
+    public void choosePicture() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("jpg files (*.jpg)","*.jpg");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -283,7 +283,7 @@ public class ProfileMenu extends Menu {
         }
     }
 
-    public void submit(MouseEvent mouseEvent) {
+    public void submit() {
         String url = profilePicture.getImage().getUrl();
         if (profilePicture.getImage() != null) {
             try {

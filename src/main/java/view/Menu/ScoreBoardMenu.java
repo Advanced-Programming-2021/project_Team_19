@@ -26,7 +26,6 @@ public class ScoreBoardMenu extends Menu {
 
     private BorderPane mainPane = new BorderPane();
     private TableView tableView = new TableView();
-    private HBox buttonBox = new HBox(5);
 
     public ScoreBoardMenu() {
         super("Scoreboard Menu");
@@ -40,7 +39,6 @@ public class ScoreBoardMenu extends Menu {
 
         Label title = new Label("Score Board");
         title.setFont(new Font("Arial", 20));
-        setButtons();
         setTableView(user);
 
         Button backButton = new Button();
@@ -69,9 +67,7 @@ public class ScoreBoardMenu extends Menu {
         column2.setCellValueFactory(new PropertyValueFactory<>("score"));
         column2.setMinWidth(100);
 
-        tableView.getColumns().add(column0);
-        tableView.getColumns().add(column1);
-        tableView.getColumns().add(column2);
+        tableView.getColumns().addAll(column0, column1, column2);
 
         tableView.setMaxWidth(301);
 
@@ -107,29 +103,6 @@ public class ScoreBoardMenu extends Menu {
 
         }
     }
-    private void setButtons() {
-
-//        Button backButton = new Button();
-//        setBackButton(backButton);
-//        User tempUser = currentUser;
-//
-//        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                if(tempUser == null){
-//                    new FirstPage().testRun();
-//                }else{
-//                    new MainMenu().testRun(currentUser);
-//                }
-//
-//            }
-//        });
-//
-//        buttonBox.getChildren().add(backButton);
-//        buttonBox.getChildren().add(Audio.getAudioButton());
-//        mainPane.setTop(buttonBox);
-    }
-
 
     public ArrayList<Person> getPersons() {
 

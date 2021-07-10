@@ -35,8 +35,6 @@ public class OneDeck extends Menu {
 
     static OneDeck instance = null;
 
-    private Pane pane = new Pane();
-
     static User user;
 
     static model.Deck deck;
@@ -57,7 +55,7 @@ public class OneDeck extends Menu {
     }
 
     public void run(model.Deck deck, User user) {
-        pane = new Pane();
+        Pane pane;
         OneDeck.user = user;
         OneDeck.deck = deck;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/OneDeck.fxml"));
@@ -70,13 +68,13 @@ public class OneDeck extends Menu {
         }
     }
 
-    public void addToMainDeck(MouseEvent mouseEvent) {
-        DataForClientFromServer data = DeckMenuController.getInstance().run(user,
+    public void addToMainDeck() {
+        DeckMenuController.getInstance().run(user,
                 "deck add-card --card " + cardName.getText() + " --deck " + deck.getName());
         updateCards();
     }
 
-    public void addToSideDeck(MouseEvent mouseEvent) {
+    public void addToSideDeck() {
         DataForClientFromServer data = DeckMenuController.getInstance().run(user,
                 "deck add-card --card " + cardName.getText() + " --deck " + deck.getName() + " --side");
         updateCards();
@@ -90,7 +88,7 @@ public class OneDeck extends Menu {
         }
     }
 
-    public void removeFromMainDeck(MouseEvent mouseEvent) {
+    public void removeFromMainDeck() {
         DataForClientFromServer data = DeckMenuController.getInstance().run(user,
                 "deck rm-card --card " + cardName.getText() + " --deck " + deck.getName());
         updateCards();
@@ -104,7 +102,7 @@ public class OneDeck extends Menu {
         }
     }
 
-    public void removeFromSideDeck(MouseEvent mouseEvent) {
+    public void removeFromSideDeck() {
         DataForClientFromServer data = DeckMenuController.getInstance().run(user,
                 "deck rm-card --card " + cardName.getText() + " --deck " + deck.getName() + " --side");
         updateCards();
@@ -125,9 +123,7 @@ public class OneDeck extends Menu {
             try {
                 CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                 hBox.getChildren().add(cardViewToAddToScroll);
-                cardViewToAddToScroll.setOnMouseClicked(e -> {
-                    cardName.setText(card.getName());
-                });
+                cardViewToAddToScroll.setOnMouseClicked(e -> cardName.setText(card.getName()));
             } catch (Exception e) {
                 System.out.println(card.getName()+ "-----------------------------------------------");
             }
@@ -137,24 +133,20 @@ public class OneDeck extends Menu {
         HBox mainMenuCards = new HBox();
         for (Card card : deck.getAllMainCardsSorted()) {
             CardView cardView = new CardView(card, 2, false, true);
-            cardView.setOnMouseClicked(e -> {
-                this.cardName.setText(card.getName());
-            });
+            cardView.setOnMouseClicked(e -> this.cardName.setText(card.getName()));
             mainMenuCards.getChildren().add(cardView);
         }
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
         for (Card card : deck.getAllSideCardsSorted()) {
             CardView cardView = new CardView(card, 2, false, true);
-            cardView.setOnMouseClicked(e -> {
-                this.cardName.setText(card.getName());
-            });
+            cardView.setOnMouseClicked(e -> this.cardName.setText(card.getName()));
             sideMenuCards.getChildren().add(cardView);
         }
         cardsInSideDeck.setContent(sideMenuCards);
     }
 
-    public void getBack(MouseEvent mouseEvent) {
+    public void getBack() {
         new Deck().run(user);
     }
 }

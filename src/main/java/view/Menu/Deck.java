@@ -4,12 +4,10 @@ import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -29,10 +27,6 @@ public class Deck extends Menu {
 
     @FXML
     private ScrollPane deckBar;
-    @FXML
-    private Button deckCreateButton;
-    @FXML
-    private Button deckRemoveButton;
     @FXML
     private TextField deckNameTextField;
     @FXML
@@ -116,9 +110,7 @@ public class Deck extends Menu {
             deckFullDescription.setTop(currentDeckName);
             hBox.setMinWidth(150);
             hBox.setMinHeight(150);
-            hBox.setOnMouseClicked(e -> {
-                OneDeck.getInstance().run(deck, user);
-            });
+            hBox.setOnMouseClicked(e -> OneDeck.getInstance().run(deck, user));
             allDecks.getChildren().add(deckFullDescription);
         }
         allDecks.setSpacing(10);
@@ -140,7 +132,7 @@ public class Deck extends Menu {
         }
     }
 
-    public void getBack(MouseEvent mouseEvent) {
+    public void getBack() {
         backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
     }
 }

@@ -2,7 +2,6 @@ package view.Menu;
 
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -105,19 +104,19 @@ public class RockPaper extends Menu {
         });
     }
 
-    public void writePaper(MouseEvent mouseEvent) {
+    public void writePaper() {
         choiceText.setText("Paper");
     }
 
-    public void writeScissor(MouseEvent mouseEvent) {
+    public void writeScissor() {
         choiceText.setText("Scissor");
     }
 
-    public void writeRock(MouseEvent mouseEvent) {
+    public void writeRock() {
         choiceText.setText("Rock");
     }
 
-    public void choosePaper(MouseEvent mouseEvent) {
+    public void choosePaper() {
         if (playerNumber.getText().equals(main.getUsername()) && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.PAPER;
             choice.setText("You choosed Paper Please wait for the other" +
@@ -135,7 +134,7 @@ public class RockPaper extends Menu {
         }
     }
 
-    public void chooseScissor(MouseEvent mouseEvent) {
+    public void chooseScissor() {
         if (playerNumber.getText().equals(main.getUsername()) && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.SCISSOR;
             choice.setText("You choosed Scissor Please wait for the other" +
@@ -153,7 +152,7 @@ public class RockPaper extends Menu {
         }
     }
 
-    public void chooseRock(MouseEvent mouseEvent) {
+    public void chooseRock() {
         if (playerNumber.getText().equals(main.getUsername()) && firstPlayerChoice == null) {
             firstPlayerChoice = RockPaperScissorResult.ROCK;
             choice.setText("You choosed Rock Please wait for the other" +
@@ -184,31 +183,13 @@ public class RockPaper extends Menu {
             try {
                 if (firstPlayerChoice.equals(RockPaperScissorResult.PAPER) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.ROCK)) {
-                    result.setText(main.getUsername() + " is the winner");
-                    prevResult.setText(main.getUsername() + "is the winner");
-                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
-                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
-                    Thread.sleep(1000);
-                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
-                            firstPlayerStage, secondPlayerStage, false);
+                    showWinResult();
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.ROCK) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.SCISSOR)) {
-                    result.setText(main.getUsername() + " is the winner");
-                    prevResult.setText(main.getUsername() + "is the winner");
-                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
-                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
-                    Thread.sleep(1000);
-                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
-                            firstPlayerStage, secondPlayerStage, false);
+                    showWinResult();
                 } else if (firstPlayerChoice.equals(RockPaperScissorResult.SCISSOR) &&
                         secondPlayerChoice.equals(RockPaperScissorResult.PAPER)) {
-                    result.setText(main.getUsername() + " is the winner");
-                    prevResult.setText(main.getUsername() + "is the winner");
-                    DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
-                    DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
-                    Thread.sleep(1000);
-                    duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
-                            firstPlayerStage, secondPlayerStage, false);
+                    showWinResult();
                 } else {
                     result.setText(invited.getUsername() + " is the winner");
                     prevResult.setText(invited.getUsername() + "is the winner");
@@ -222,6 +203,16 @@ public class RockPaper extends Menu {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void showWinResult() throws InterruptedException {
+        result.setText(main.getUsername() + " is the winner");
+        prevResult.setText(main.getUsername() + "is the winner");
+        DuelMenuController.gameStarter = new Gamer(DuelMenuController.user);
+        DuelMenuController.rivalGamer = new Gamer(UserDataBaseController.getUserByUsername(duelMenuController.rivalUserNameTextField.getText()));
+        Thread.sleep(1000);
+        duelMenuController.handleDuel(Integer.parseInt(((String) duelMenuController.numberOfRounds.getSelectionModel().getSelectedItem()).substring(0, 1)),
+                firstPlayerStage, secondPlayerStage, false);
     }
 
     public Pair<Pair<Stage, Stage>, Boolean> getResult2() {

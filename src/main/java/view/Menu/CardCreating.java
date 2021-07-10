@@ -2,28 +2,15 @@ package view.Menu;
 
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.Utils;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-
-import javafx.scene.Scene;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Data.DataForClientFromServer;
@@ -31,7 +18,9 @@ import model.Data.DataForServerFromClient;
 import model.User;
 import view.graphic.CardView;
 
-import static view.Menu.Menu.sendDataToServer;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class CardCreating extends Menu{
 
@@ -110,9 +99,7 @@ public class CardCreating extends Menu{
             try {
                 CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
                 vBox.getChildren().add(cardViewToAddToScroll);
-                cardViewToAddToScroll.setOnMouseClicked(e -> {
-                    cloneBox.setText(tempCardName);
-                });
+                cardViewToAddToScroll.setOnMouseClicked(e -> cloneBox.setText(tempCardName));
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
             }
@@ -120,7 +107,7 @@ public class CardCreating extends Menu{
         allCards.setContent(vBox);
     }
 
-    public void choosePicture(MouseEvent mouseEvent) {
+    public void choosePicture() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("jpg files (*.jpg)","*.jpg");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -132,7 +119,7 @@ public class CardCreating extends Menu{
         }
     }
 
-    public void submit(MouseEvent mouseEvent) {
+    public void submit() {
         try {
             String cardName = nameBox.getText();
             String cloneCardName = cloneBox.getText();

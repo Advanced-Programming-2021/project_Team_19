@@ -25,7 +25,7 @@ public class DeckMenu extends Menu {
     }
 
     public void run(String username) {
-        this.username = username;
+        Menu.username = username;
 
         String command = GetInput.getString();
 
@@ -124,7 +124,7 @@ public class DeckMenu extends Menu {
         if (matcher.matches()) {
 
 
-            commandIsDone = true;
+            commandIsDone = true;//
 
             sendCommandToServer2(matcher);
 

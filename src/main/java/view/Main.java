@@ -18,8 +18,6 @@ public class Main {
 
     public static void main(String[] arg) {
 
-//        new Game(GameData.getTestGameData()).DeprecatedRun();
-
         CSVDataBaseController.load();
 
         DataBaseController.makeResourceDirectory();

@@ -5,25 +5,20 @@ import controller.DataBaseControllers.DataBaseController;
 import controller.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import model.Card.Card;
-import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.User;
-import view.Printer.Printer;
 import view.graphic.CardView;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 
@@ -82,9 +77,7 @@ public class ImportAndExportMenu extends Menu {
             try {
                 CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
                 vBox.getChildren().add(cardViewToAddToScroll);
-                cardViewToAddToScroll.setOnMouseClicked(e -> {
-                    cardToExport.setText(tempCardName);
-                });
+                cardViewToAddToScroll.setOnMouseClicked(e -> cardToExport.setText(tempCardName));
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
             }
@@ -92,7 +85,7 @@ public class ImportAndExportMenu extends Menu {
         allCards.setContent(vBox);
     }
 
-    public void chooseCardJson(MouseEvent mouseEvent) {
+    public void chooseCardJson() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("json files (*.json)","*.json");
         fileChooser.getExtensionFilters().add(extensionFilter);
@@ -127,7 +120,7 @@ public class ImportAndExportMenu extends Menu {
         }
     }
 
-    public void getBack(MouseEvent mouseEvent) {
+    public void getBack() {
         MainMenu.getInstance(null).run();
     }
 }

@@ -1,11 +1,9 @@
 package view.Menu;
 
 import controller.ClientDataController;
-import controller.DuelControllers.DuelMenuController;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import view.Printer.Printer;
-import view.Utils;
 import view.graphic.menuGraphic;
 
 import java.util.HashMap;
