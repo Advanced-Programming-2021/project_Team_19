@@ -17,6 +17,7 @@ import model.Card.Card;
 import model.Deck;
 import model.User;
 import view.graphic.CardView;
+import view.graphic.GameGraphicControllerForTest;
 
 import java.io.IOException;
 
@@ -35,12 +36,19 @@ public class ChangeCardBetweenRounds extends Menu {
     @FXML
     private Label result;
 
+    public static GameGraphicControllerForTest gameGraphicControllerForTest;
 
-    public ChangeCardBetweenRounds() {
+    private int order;
+
+
+
+    public ChangeCardBetweenRounds(int order) {
         super("ChangeCardBetweenRounds Menu");
+        this.order = order;
     }
 
-    public void run(User user) {
+    public void run(GameGraphicControllerForTest gameGraphicControllerForTest, User user, Stage stage) {
+        ChangeCardBetweenRounds.gameGraphicControllerForTest = gameGraphicControllerForTest;
         ChangeCardBetweenRounds.user = user;
         deckModifierBetweenGames = new DeckModifierBetweenGames(user);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangeCardBetweenRounds.fxml"));
@@ -133,6 +141,13 @@ public class ChangeCardBetweenRounds extends Menu {
     public void finishChange(MouseEvent mouseEvent) {
         String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
         result.setText(resultFromLogic);
+        if (result == null ) {
+            if (order == 1) {
+                gameGraphicControllerForTest.setHasFirstChoosed();
+            } else {
+                gameGraphicControllerForTest.setHasSecondChoosed();
+            }
+        }
     }
 
     public void handleDraggingCardToMainDeck(DragEvent dragEvent) {

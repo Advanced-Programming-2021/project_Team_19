@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
@@ -22,8 +23,10 @@ import model.Gamer;
 import model.User;
 import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.GetInput;
+import view.Menu.ChangeCardBetweenRounds;
 import view.Menu.Menu;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -41,6 +44,8 @@ public class GameGraphicControllerForTest extends Menu {
     int gameStarterWins = 0;
     int invitedGamerWins = 0;
     boolean isInverted;
+    private boolean hasFirstChoosed;
+    private boolean hasSecondChoosed;
 
 
     public GameGraphicControllerForTest(boolean ai) {
@@ -435,7 +440,19 @@ public class GameGraphicControllerForTest extends Menu {
                     stage2.close();
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
-                    //todo put deck modifier between rounds here
+                    hasFirstChoosed = false;
+                    hasSecondChoosed = false;
+                    new Thread(() -> {
+                        new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
+                        new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
+                    }).start();
+                    while (!hasFirstChoosed && !hasSecondChoosed) {
+                        try {
+                            Thread.sleep(100);
+                        } catch(InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
                             isInverted, gameStarterWins, invitedGamerWins).run();
                 }
@@ -618,6 +635,14 @@ public class GameGraphicControllerForTest extends Menu {
         })).play();
 
         return time;
+    }
+
+    public void setHasFirstChoosed() {
+        hasFirstChoosed = true;
+    }
+
+    public void setHasSecondChoosed() {
+        hasSecondChoosed = true;
     }
 
 }
