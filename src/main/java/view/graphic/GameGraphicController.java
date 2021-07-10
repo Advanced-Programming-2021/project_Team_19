@@ -42,6 +42,9 @@ public class GameGraphicController extends Menu {
     boolean isInverted;
     private static int cnt;
 
+    public static ArrayList<User> allUser = new ArrayList<>();
+    public static ArrayList<DeckModifierBetweenGames> allDeckModifiers = new ArrayList<>();
+
 
     public GameGraphicController(boolean ai) {
         super("test game");
@@ -434,8 +437,13 @@ public class GameGraphicController extends Menu {
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
                     cnt = 0;
-                    new ChangeCardBetweenRounds().run(this, gameView1.self.getUser(), stage, 1);
-                    new ChangeCardBetweenRounds().run(this, gameView1.rival.getUser(), stage2, 2);
+                    ChangeCardBetweenRounds.setToZero();
+                    allDeckModifiers.add(new DeckModifierBetweenGames(gameView1.self.getUser()));
+                    allDeckModifiers.add(new DeckModifierBetweenGames(gameView1.rival.getUser()));
+                    allUser.add(gameView1.self.getUser());
+                    allUser.add(gameView1.rival.getUser());
+                    new ChangeCardBetweenRounds().run(this, stage);
+                    new ChangeCardBetweenRounds().run(this, stage2);
                 }
             }
         } else {
