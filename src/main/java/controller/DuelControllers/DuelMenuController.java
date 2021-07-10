@@ -117,7 +117,7 @@ public class DuelMenuController extends Menu {
 
     private void startDuel() {
         if (rivalChoiceBox.getSelectionModel().getSelectedItem().equals("duel with AI")) {
-            startDuelWithAi();
+            showPopupMessage("sorry! you cannot duel with AI :)");
         } else {
             startDuelWithAnotherPlayer();
         }
