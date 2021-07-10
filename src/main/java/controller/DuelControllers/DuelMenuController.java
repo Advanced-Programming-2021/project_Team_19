@@ -201,29 +201,6 @@ public class DuelMenuController extends Menu {
     public void handleDuel(int rounds, Stage firstStage, Stage secondStage, boolean isInverted) {
         gameIsHappening = true;
         new GameGraphicController(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
-
-//        if (rounds == 1) {
-//            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
-//        } else {
-//            int userWins = 0;
-//            int rivalWins = 0;
-//            GameData gameData = new GameData(gameStarter, rivalGamer);
-//            while (true) {
-//                if ((new Game(gameData, rounds).DeprecatedRun()).equals(gameStarter))
-//                    userWins++;
-//                else
-//                    rivalWins++;
-//                if (userWins == 2 || rivalWins == 2)
-//                    break;
-//                changeDecks();
-//                gameData = new GameData(gameStarter, rivalGamer);
-//            }
-//            if (userWins == 2) {
-//                finishDuel(gameStarter, gameData, 3);
-//            } else {
-//                finishDuel(rivalGamer, gameData, 3);
-//            }
-//        }
     }
 
     private void changeDecks() {
@@ -274,8 +251,7 @@ public class DuelMenuController extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> { MainMenu.getInstance(null).run();
-        });
+        backButton.setOnMouseClicked(event -> MainMenu.getInstance(null).run());
 
         StackPane.setAlignment(backButton, Pos.TOP_LEFT);
         pane.getChildren().addAll(backButton, winnerLabel);

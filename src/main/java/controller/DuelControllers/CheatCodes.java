@@ -8,13 +8,6 @@ import model.User;
 
 public class CheatCodes {
 
-/*
-    all cheat codes
-    increase --money <amount>
-    increase --LP <amount>
-    duel set-winner <nickname>
-    multiply --attack <number>
-*/
 
     public static void increaseLifePoint(GameData gameData, String number) {
         gameData.getCurrentGamer().increaseLifePoint(Integer.parseInt(number));

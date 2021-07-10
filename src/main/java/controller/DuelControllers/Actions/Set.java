@@ -63,13 +63,6 @@ public class Set extends SummonAndSet {
 
         Card selectedCard = gameData.getSelectedCard();
 
-//        String error = actionIsValid();
-//
-//        if(!error.equals("set")){
-//            print(error);
-//            return;
-//        }
-
         if (selectedCard.getCardFamily().equals(CardFamily.MONSTER)) {
             return setMonster(selectedCard, ids);
         } else {

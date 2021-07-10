@@ -86,10 +86,10 @@ public class CardActionManager {
                     validActions.add("attack");
                 }
             }
-            case HEHE ->{
+            case ACTION_NOT_ALLOWED_MODE ->{
 
             }
-            case HOHO -> {
+            case TRIGGER_TRAP_MODE -> {
                 if(new ActivateTriggerTrapEffect
                         (GameData.getGameData().triggerLabel.action).canDoThisActionBecauseOfAnAction()){
                     validActions.add("activate trap");

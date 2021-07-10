@@ -95,20 +95,6 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
     private String activateFromHand(SpellAndTraps card) {
 
-//        if (card instanceof Trap) {
-//            print("you should set trap card first");
-//            return;
-//        }
-//
-//        if (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().isZoneFull()) {
-//            print("spell card zone is full");
-//            return;
-//        }
-//        if (!card.canActivate(gameData)) {
-//            print("preparations of this spell are not done yet");
-//            return;
-//        }
-
         activateOrSetCheckFieldSpell(card, gameData);
 
         card.setSpellCardMod(SpellCardMods.OFFENSIVE);

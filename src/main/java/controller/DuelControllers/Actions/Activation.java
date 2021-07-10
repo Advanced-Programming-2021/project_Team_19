@@ -74,16 +74,6 @@ public class Activation extends Action {
 
     public ActivationData handleChain() {
 
-//        if (canThisCardsChainOnActivatedCard
-//                (gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())) {
-//            if (!handleChainForOtherPlayer()) {
-//                if (canThisCardsChainOnActivatedCard
-//                        (gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards())) {
-//                    handleChainForTurnPlayer();
-//                }
-//            }
-//        }
-
         return runActivation();
     }
 

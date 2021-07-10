@@ -256,7 +256,7 @@ public class GameGraphicController extends Menu {
             }
             )).play();
         } else if (response.startsWith("ask gamer for trap:")) {
-            CardActionManager.setMode(actionManagerMode.HEHE);
+            CardActionManager.setMode(actionManagerMode.ACTION_NOT_ALLOWED_MODE);
             try {
                 if (gameView == null) {
                     handleAI();

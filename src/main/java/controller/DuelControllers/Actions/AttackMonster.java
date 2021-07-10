@@ -2,10 +2,6 @@ package controller.DuelControllers.Actions;
 
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
-import model.Data.TriggerActivationData;
-import controller.DuelControllers.CardActionManager;
-
-import java.util.regex.Matcher;
 
 public class AttackMonster extends Attack {
 
@@ -53,12 +49,6 @@ public class AttackMonster extends Attack {
 
         ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
                 .getCardById(enemyId)).attackIsNormal(gameData);
-
-//        TriggerActivationData activationData = handleTriggerEffects();
-
-//        if (activationData.hasActionStopped) {
-//            return "action stopped";
-//        }
 
         return ((Monster) gameData.getSelectedCard()).handleAttack(gameData, enemyId);
 

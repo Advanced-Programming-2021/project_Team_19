@@ -5,6 +5,6 @@ public enum actionManagerMode {
     SUMMON_MODE,
     ATTACK_MONSTER_MODE,
     SET_MODE,
-    HEHE,
-    HOHO
+    ACTION_NOT_ALLOWED_MODE,
+    TRIGGER_TRAP_MODE
 }

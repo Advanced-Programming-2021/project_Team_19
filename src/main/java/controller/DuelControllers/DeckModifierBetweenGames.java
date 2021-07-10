@@ -8,9 +8,7 @@ import model.User;
 import view.GetInput;
 import view.Printer.Printer;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 

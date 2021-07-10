@@ -1338,7 +1338,7 @@ public class GameView {
 
         yesButton.setOnMouseClicked(mouseEvent -> {
             mainPane.getChildren().remove(mainBox);
-            CardActionManager.setMode(actionManagerMode.HOHO);
+            CardActionManager.setMode(actionManagerMode.TRIGGER_TRAP_MODE);
         });
     }
 }

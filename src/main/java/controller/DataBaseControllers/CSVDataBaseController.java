@@ -1,10 +1,6 @@
 package controller.DataBaseControllers;
 
-import com.google.gson.Gson;
 import model.Card.*;
-import model.Card.Monsters.*;
-import model.Card.Spells.*;
-import model.Card.Traps.*;
 import model.Enums.MonsterEnums.Attribute;
 import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
@@ -19,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class CSVDataBaseController {

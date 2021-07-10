@@ -10,7 +10,6 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
-import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.GameEvent;
@@ -22,8 +21,6 @@ import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static controller.DuelControllers.actionManagerMode.HEHE;
 
 
 public class Game {
@@ -117,9 +114,7 @@ public class Game {
             new DataFromGameRun(summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
-            /*String attackResponse =*/ new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
-//            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-//            new DataFromGameRun(attackResponse);
+            new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
         } else if (command.matches("set position (attack|defence)")) {
             String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
             new DataFromGameRun(setPositionResponse);
@@ -253,10 +248,6 @@ public class Game {
 
         while (true) {
 
-//            if (checkLabels(gameData)) {
-//                continue;
-//            }
-
             if (!gameData.hasAskedForSpellsThisPhase) {
 
                 if (canRivalActivateSpell(gameData)) {
@@ -296,7 +287,7 @@ public class Game {
             gameData.setEvent(GameEvent.NORMAL);
 
 
-            command = GetInput.getString();///////////////////////////////////////////////////////
+            command = GetInput.getString();
             gameData.setEvent(null);
 
             if (gameData.isRitualSummoning() &&

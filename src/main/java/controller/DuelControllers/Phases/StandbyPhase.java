@@ -4,10 +4,6 @@ import controller.DuelControllers.GameData;
 import controller.Utils;
 import model.Card.Monster;
 import model.Card.Monsters.ScannerMonster;
-import model.Gamer;
-import model.Phase;
-import view.GetInput;
-import view.Printer.Printer;
 
 public class StandbyPhase {
 

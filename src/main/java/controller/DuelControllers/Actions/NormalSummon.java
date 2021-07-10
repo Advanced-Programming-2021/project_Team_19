@@ -62,20 +62,6 @@ public class NormalSummon extends Summon {
 
     private String summonMonster(String ids) {
 
-//        if (summoningMonster.getName().equals("Gate Guardian")) {
-//            if (sacrificeMonstersForSummonOrSet(gameData, 3)) {
-//                new SpecialSummon(gameData).testRun(gameData.getSelectedCard());
-//                Printer.print("summoned successfully");
-//            }
-//            return "summoned successfully";
-//        }
-
-//        if (((Monster) summoningMonster).getEffectType().equals(MonsterTypesForEffects.RITUAL)) {
-//            ((RitualSummon) gameData.getRitualSummoning()).testRun((Monster) summoningMonster);
-//            handleTriggerEffects();
-//            return "summoned successfully";
-//        }
-
         if (ids == null) {
             gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, 0);
@@ -89,17 +75,6 @@ public class NormalSummon extends Summon {
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster) +
                     " sacrifice " + ids;
         }
-
-
-//        if (sacrificeMonstersForSummonOrSet(gameData, (ids.length() + 1) / 2)) {
-//            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
-//
-//            ((Monster) summoningMonster).handleSummon(gameData, numberOfSacrifices);
-//
-//            handleTriggerEffects();
-//            return "summoned successfully";
-//        }
-
     }
 
     public static boolean canSacrifice() {
