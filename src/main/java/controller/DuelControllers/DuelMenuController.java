@@ -244,7 +244,6 @@ public class DuelMenuController extends Menu {
                 gameData.getGameStarter().getCurrentScoreInDuel() + " - " +
                 gameData.getInvitedGamer().getCurrentScoreInDuel());
 
-        pane.getStylesheets().add("CSS/Css.css");
         winnerLabel.setTextAlignment(TextAlignment.CENTER);
         winnerLabel.setLayoutY(90);
         winnerLabel.getStylesheets().add("gameFinishLabel");
