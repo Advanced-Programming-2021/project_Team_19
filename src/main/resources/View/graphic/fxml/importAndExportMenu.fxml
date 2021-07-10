@@ -4,8 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Menu.ImportAndExportMenu">
    <children>
+      <Button id="myButton" fx:id="backButton" mnemonicParsing="false" onMouseClicked="#getBack" stylesheets="@../../../CSS/Css.css">
+         <graphic>
+            <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Pictures/backArrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
       <Button layoutX="174.0" layoutY="288.0" mnemonicParsing="false" onMouseClicked="#chooseCardJson" prefHeight="25.0" prefWidth="265.0" text="import" />
       <HBox fx:id="importedCard" layoutX="207.0" layoutY="27.0" prefHeight="225.0" prefWidth="200.0" />
       <TextField fx:id="cardToExport" layoutX="290.0" layoutY="355.0" />
@@ -20,5 +31,10 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
         </content>
       </ScrollPane>
+      <Label fx:id="result" layoutX="276.0" layoutY="503.0" prefHeight="56.0" prefWidth="249.0" textFill="#e5ff00">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
