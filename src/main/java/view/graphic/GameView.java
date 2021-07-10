@@ -542,6 +542,16 @@ public class GameView {
         for (CardView cardView : cardViews) {
             cardView.setCanShowValidActions(bool);
         }
+        if(bool){
+            if(mouseEnteredCardView != null){
+                try {
+                    showValidActionForCard
+                            (mouseEnteredCardView.getFirstValidAction(game, self), mouseEnteredCardView);
+                } catch (Exception e){
+
+                }
+            }
+        }
     }
 
     double getCardinHandY() {
@@ -569,10 +579,13 @@ public class GameView {
         return ans + x;
     }
 
+    CardView mouseEnteredCardView = null;
+
     CardView getCardForHand(Card card) {
         CardView cardView = new CardView(card, 5, false, true);
 
         cardView.setOnMouseEntered(mouseEvent -> {
+            mouseEnteredCardView = cardView;
             cardView.hasBeenClicked = false;
             showCard(cardView);
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
@@ -586,6 +599,7 @@ public class GameView {
         });
 
         cardView.setOnMouseExited(mouseEvent -> {
+            mouseEnteredCardView = null;
             new Translation(cardView, cardView.getLayoutY(), 150).getAnimation().play();
             Popup popup = cardView.tempPopup;
             if (popup != null) {

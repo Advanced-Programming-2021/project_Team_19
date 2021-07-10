@@ -46,8 +46,8 @@ public class menuGraphic extends Application {
         CSVDataBaseController.load();
 //        new Shop().run(UserDataBaseController.getUserByUsername("mohammad"));
 //        new RockPaper().run();
-        WelcomeMenu.getInstance().run();
-//        new GameGraphicControllerForTest(false).testRun();
+//        WelcomeMenu.getInstance().run();
+        new GameGraphicControllerForTest(false).testRun();
         //testRun function of your menu for test here
         stage.show();
     }

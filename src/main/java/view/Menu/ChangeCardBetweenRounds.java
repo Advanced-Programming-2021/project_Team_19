@@ -42,12 +42,13 @@ public class ChangeCardBetweenRounds extends Menu {
 
 
 
-    public ChangeCardBetweenRounds(int order) {
+
+    public ChangeCardBetweenRounds() {
         super("ChangeCardBetweenRounds Menu");
-        this.order = order;
     }
 
-    public void run(GameGraphicControllerForTest gameGraphicControllerForTest, User user, Stage stage) {
+    public void run(GameGraphicControllerForTest gameGraphicControllerForTest, User user, Stage stage, int order) {
+        this.order = order;
         ChangeCardBetweenRounds.gameGraphicControllerForTest = gameGraphicControllerForTest;
         ChangeCardBetweenRounds.user = user;
         deckModifierBetweenGames = new DeckModifierBetweenGames(user);
@@ -74,9 +75,9 @@ public class ChangeCardBetweenRounds extends Menu {
         HBox mainMenuCards = new HBox();
         for (Card card : deck.getAllMainCardsSorted()) {
             CardView cardView = new CardView(card, 3, false, true);
-            cardView.setOnMouseClicked(e -> {
-                this.cardName.setText(card.getName());
-            });
+//            cardView.setOnMouseClicked(e -> {
+//                this.cardName.setText(card.getName());
+//            });
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipBoardContent = new ClipboardContent();
@@ -90,9 +91,9 @@ public class ChangeCardBetweenRounds extends Menu {
         HBox sideMenuCards = new HBox();
         for (Card card : deck.getAllSideCardsSorted()) {
             CardView cardView = new CardView(card, 3, false, true);
-            cardView.setOnMouseClicked(e -> {
-                this.cardName.setText(card.getName());
-            });
+//            cardView.setOnMouseClicked(e -> {
+//                this.cardName.setText(card.getName());
+//            });
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipboardContent = new ClipboardContent();
@@ -141,13 +142,7 @@ public class ChangeCardBetweenRounds extends Menu {
     public void finishChange(MouseEvent mouseEvent) {
         String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
         result.setText(resultFromLogic);
-        if (result == null ) {
-            if (order == 1) {
-                gameGraphicControllerForTest.setHasFirstChoosed();
-            } else {
-                gameGraphicControllerForTest.setHasSecondChoosed();
-            }
-        }
+        gameGraphicControllerForTest.setHasSecondChoosed();
     }
 
     public void handleDraggingCardToMainDeck(DragEvent dragEvent) {
