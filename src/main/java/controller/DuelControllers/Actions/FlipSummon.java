@@ -4,6 +4,7 @@ import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Enums.CardMod;
 import model.Phase;
+import model.TriggerLabel;
 
 public class FlipSummon extends Summon {
 
@@ -44,7 +45,7 @@ public class FlipSummon extends Summon {
             return "";
         }
 
-        handleTriggerEffects();
+        gameData.triggerLabel = new TriggerLabel(this);
 
         return "flip summoned successfully";
 

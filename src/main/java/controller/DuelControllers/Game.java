@@ -10,11 +10,13 @@ import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
+import model.Data.ActivationData;
 import model.Data.TriggerActivationData;
 import model.EffectLabel;
 import model.Enums.GameEvent;
 import model.Gamer;
 import model.Phase;
+import model.TriggerLabel;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -36,21 +38,23 @@ public class Game {
         this.round = round;
     }
 
-
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
         DataFromGameRun.reset();
         String command = dataFromClient.getCommand();
         switch (command) {
 
             case "activate trap" -> {
-                String message = new ActivateTriggerTrapEffect
-                        (gameData.triggerLabel.action).handleActivate().message;
+                TriggerLabel label = gameData.triggerLabel;
+                TriggerActivationData data = (TriggerActivationData) new ActivateTriggerTrapEffect
+                        (label.action).handleActivate();
+                String message = data.message;
                 String[] messages = message.split(":");
                 new DataFromGameRun(message);
                 if (messages[1].equals("change turn")) {
                     gameData.changeTurn();
                 }
-                gameData.triggerLabel.inProgress = false;
+                label.inProgress = false;
+                label.shouldRunAgain = label.shouldRunAgain && !data.hasActionStopped;
             }
             case "cancel activate trap" -> {
                 gameData.triggerLabel.inProgress = false;
@@ -79,7 +83,8 @@ public class Game {
                 new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
             }
             case "attack direct" -> {
-                new DataFromGameRun(new DirectAttack(gameData).run());
+                new DirectAttack(gameData).run(true);
+//                new DataFromGameRun(new DirectAttack(gameData).run());
             }
             case "activate spell" -> {
                 new DataFromGameRun("activate spell " + new ActivateSpellOrTrapNormally(gameData).run());
@@ -87,7 +92,7 @@ public class Game {
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
-                new DataFromGameRun(new AttackMonster(gameData).actionIsValid());
+                new DataFromGameRun(new AttackMonster(gameData, 0).actionIsValid());
             }
             case "flip summon" -> {
                 new DataFromGameRun(new FlipSummon(gameData).run());
@@ -112,9 +117,9 @@ public class Game {
             new DataFromGameRun(summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
-            String attackResponse = new AttackMonster(gameData).run(Integer.parseInt(command.substring(7)));
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            new DataFromGameRun(attackResponse);
+            /*String attackResponse =*/ new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
+//            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+//            new DataFromGameRun(attackResponse);
         } else if (command.matches("set position (attack|defence)")) {
             String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
             new DataFromGameRun(setPositionResponse);
@@ -145,17 +150,6 @@ public class Game {
             return;
         }
 
-        if(!gameData.triggerLabel.shouldAskFromFirstGamer
-                && !gameData.triggerLabel.shouldAskFromSecondGamer
-                && !gameData.triggerLabel.inProgress){
-
-            gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
-            gameData.triggerLabel = null;
-            gameData.setActionIndexForTriggerActivation(-1);
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            return;
-        }
-
         if(gameData.triggerLabel.inProgress){
             return;
         }
@@ -179,6 +173,19 @@ public class Game {
             gameData.triggerLabel.shouldAskFromSecondGamer = false;
         }
         gameData.triggerLabel.shouldAskFromFirstGamer = false;
+
+        if(!gameData.triggerLabel.shouldAskFromFirstGamer
+                && !gameData.triggerLabel.shouldAskFromSecondGamer
+                && !gameData.triggerLabel.inProgress){
+            if(gameData.triggerLabel.shouldRunAgain){
+                String data = ((Attack)gameData.triggerLabel.action).run(false);
+                new DataFromGameRun(data);
+            }
+            gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
+            gameData.triggerLabel = null;
+            gameData.setActionIndexForTriggerActivation(-1);
+            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+        }
     }
 
     public void runServerSideGameEvents() {

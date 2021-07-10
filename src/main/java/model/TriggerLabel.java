@@ -7,6 +7,7 @@ public class TriggerLabel {
     public boolean shouldAskFromFirstGamer = true;
     public boolean shouldAskFromSecondGamer = true;
     public boolean inProgress = false;
+    public boolean shouldRunAgain = false;
     public Action action;
 
     public TriggerLabel(Action action){

@@ -3,6 +3,7 @@ package controller.DuelControllers.Actions;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 import model.Data.TriggerActivationData;
+import model.TriggerLabel;
 
 public class DirectAttack extends Attack {
 
@@ -11,10 +12,13 @@ public class DirectAttack extends Attack {
         attackingMonster = gameData.getSelectedCard();
     }
 
-    public String run() {
-
-        return directAttack();
-
+    public String run(boolean checkTriggerOrRun) {
+        if(checkTriggerOrRun){
+            checkTrigger();
+            return "";
+        } else {
+            return directAttack();
+        }
     }
 
     @Override
@@ -45,11 +49,11 @@ public class DirectAttack extends Attack {
 
     private String directAttack() {
 
-        TriggerActivationData activationData = handleTriggerEffects();
-
-        if (activationData.hasActionStopped) {
-            return "direct attack not successful";
-        }
+//        TriggerActivationData activationData = handleTriggerEffects();
+//
+//        if (activationData.hasActionStopped) {
+//            return "direct attack not successful";
+//        }
 
         String lpLoss = ((Monster) attackingMonster).handleDirectAttack(gameData);
         return "rival loses " + lpLoss;

@@ -301,6 +301,7 @@ public class ActionsAnimationHandler {
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.selfHand.remove(cardView);
         transition.getChildren().add(getHandAnimationForCardsWasInHand(gameView));
+        transition.setOnFinished(EventHandler -> gameView.gamePane.getChildren().remove(cardView));
         transition.play();
         return 500;
     }
@@ -327,6 +328,7 @@ public class ActionsAnimationHandler {
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.rivalHand.remove(cardView);
         transition.getChildren().add(getHandAnimationForCardsWasInRivalHand(gameView));
+        transition.setOnFinished(EventHandler -> gameView.gamePane.getChildren().remove(cardView));
         transition.play();
         return 500;
     }

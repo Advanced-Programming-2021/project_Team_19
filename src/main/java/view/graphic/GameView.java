@@ -1456,7 +1456,7 @@ public class GameView {
         noButton.setOnMouseClicked(mouseEvent -> {
             gameController.graphicsForEvents(
                     game.run(new DataForGameRun("cancel activate trap", self)),
-                    null, -1);
+                    null, 0);
 
             mainPane.getChildren().remove(mainBox);
         });
