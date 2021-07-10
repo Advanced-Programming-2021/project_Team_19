@@ -552,19 +552,26 @@ public class ActionsAnimationHandler {
 
     static SequentialTransition getIncreaseLpTransition(GameView gameView, double lp, boolean isSelf) {
 
+        if(isSelf && gameView.selfLp + lp < 0){
+            lp = -gameView.selfLp;
+        } else if (!isSelf && gameView.rivalLp + lp < 0){
+            lp = -gameView.rivalLp;
+        }
+
         SequentialTransition transition = new SequentialTransition();
 
         double increasingSize = 1 * Math.signum(lp);
 
         for (int i = 0; i < Math.ceil(lp / increasingSize); i++) {
             int finalI = i;
+            double finalLp = lp;
             transition.getChildren().add(new Timeline(new KeyFrame(Duration.millis(1),
                     new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
                             double increasingLp = increasingSize;
-                            if (finalI >= Math.floor(lp / increasingSize)) {
-                                increasingLp = lp % increasingSize;
+                            if (finalI >= Math.floor(finalLp / increasingSize)) {
+                                increasingLp = finalLp % increasingSize;
                             }
                             if (isSelf) {
                                 increaseLpInLabel(gameView, increasingLp);
