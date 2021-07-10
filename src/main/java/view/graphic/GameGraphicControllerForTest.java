@@ -44,8 +44,7 @@ public class GameGraphicControllerForTest extends Menu {
     int gameStarterWins = 0;
     int invitedGamerWins = 0;
     boolean isInverted;
-    private boolean hasFirstChoosed;
-    private boolean hasSecondChoosed;
+    private static int cnt;
 
 
     public GameGraphicControllerForTest(boolean ai) {
@@ -442,23 +441,9 @@ public class GameGraphicControllerForTest extends Menu {
                     stage2.close();
                     DuelMenuController.finishDuel(gameView1.rival, GameData.getGameData(), rounds);
                 } else {
-                    new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
-                    new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
-//                    hasFirstChoosed = false;
-//                    hasSecondChoosed = false;
-//                    new Thread(() -> {
-//                        new ChangeCardBetweenRounds(1).run(this, gameView1.self.getUser(), stage);
-//                        new ChangeCardBetweenRounds(2).run(this, gameView1.rival.getUser(), stage2);
-//                    }).start();
-//                    while (!hasFirstChoosed && !hasSecondChoosed) {
-//                        try {
-//                            Thread.sleep(100);
-//                        } catch(InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
-//                            isInverted, gameStarterWins, invitedGamerWins).run();
+                    cnt = 0;
+                    new ChangeCardBetweenRounds().run(this, gameView1.self.getUser(), stage, 1);
+                    new ChangeCardBetweenRounds().run(this, gameView1.rival.getUser(), stage2, 2);
                 }
             }
         } else {
@@ -658,11 +643,19 @@ public class GameGraphicControllerForTest extends Menu {
     }
 
     public void setHasFirstChoosed() {
-        hasFirstChoosed = true;
+        cnt ++;
+        if (cnt == 2) {
+            new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+                    isInverted, gameStarterWins, invitedGamerWins).run();
+        }
     }
 
     public void setHasSecondChoosed() {
-        hasSecondChoosed = true;
+        cnt ++;
+        if (cnt == 2) {
+            new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+                    isInverted, gameStarterWins, invitedGamerWins).run();
+        }
     }
 
 }
