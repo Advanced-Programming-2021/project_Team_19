@@ -11,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import javafx.scene.input.MouseEvent;
@@ -21,20 +20,17 @@ import javafx.util.Duration;
 import model.Card.Card;
 import model.Gamer;
 import model.User;
-import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.GetInput;
 import view.Menu.ChangeCardBetweenRounds;
 import view.Menu.Menu;
 
-import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import static view.graphic.GameView.getIndexById;
 import static view.graphic.GameView.getIndexByRivalId;
 
-public class GameGraphicControllerForTest extends Menu {
+public class GameGraphicController extends Menu {
 
     public Stage stage2;
     public GameView gameView1;
@@ -47,7 +43,7 @@ public class GameGraphicControllerForTest extends Menu {
     private static int cnt;
 
 
-    public GameGraphicControllerForTest(boolean ai) {
+    public GameGraphicController(boolean ai) {
         super("test game");
         if (ai)
             TestInit2();
@@ -55,7 +51,7 @@ public class GameGraphicControllerForTest extends Menu {
             TestInit();
     }
 
-    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
+    public GameGraphicController(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted) {
         super("game test");
         this.isInverted = isInverted;
         stage = first;
@@ -78,8 +74,8 @@ public class GameGraphicControllerForTest extends Menu {
         gameView1.setRivalGameView(gameView2);
     }
 
-    public GameGraphicControllerForTest(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted,
-                                        int gameStarterWins, int invitedGamerWins) {
+    public GameGraphicController(int rounds, Stage first, Stage second, Gamer firstGamer, Gamer secondGamer, boolean isInverted,
+                                 int gameStarterWins, int invitedGamerWins) {
         super("game test");
         System.err.println(123);
         this.isInverted = isInverted;
@@ -210,8 +206,6 @@ public class GameGraphicControllerForTest extends Menu {
             }
 
 
-        } else if (phaseChangeResponse.matches("game finished \\w+")) {
-//           todo     finish game
         }
         return 1000;
     }
@@ -223,11 +217,9 @@ public class GameGraphicControllerForTest extends Menu {
         if (events.size() == 0) {
             if (AIMod()) {
 
-                new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
-                    graphicsForEvents
-                            (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
-                                    null, 0);
-                })).play();
+                new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> graphicsForEvents
+                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
+                                null, 0))).play();
             }
             return;
         }
@@ -286,7 +278,7 @@ public class GameGraphicControllerForTest extends Menu {
         } else if (response.equals("add card to hand")) {
             try {
                 otherGameView.handleAddRivalCardFromDeckToHandGraphic(events.get(index).cardsForEvent.get(0));
-            } catch (NullPointerException e) {
+            } catch (NullPointerException ignored) {
             }
 
             try {
@@ -450,7 +442,6 @@ public class GameGraphicControllerForTest extends Menu {
             time = responseIsForPhaseChange(gameView, response);
         }
         if (index < events.size() - 1) {
-            GameView finalGameView = gameView;
             new Timeline(new KeyFrame(Duration.millis(time),
                     EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
         }
@@ -645,7 +636,7 @@ public class GameGraphicControllerForTest extends Menu {
     public void setHasFirstChoosed() {
         cnt ++;
         if (cnt == 2) {
-            new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+            new GameGraphicController(rounds, stage, stage2, gameView1.self, gameView1.rival,
                     isInverted, gameStarterWins, invitedGamerWins).run();
         }
     }
@@ -653,7 +644,7 @@ public class GameGraphicControllerForTest extends Menu {
     public void setHasSecondChoosed() {
         cnt ++;
         if (cnt == 2) {
-            new GameGraphicControllerForTest(rounds, stage, stage2, gameView1.self, gameView1.rival,
+            new GameGraphicController(rounds, stage, stage2, gameView1.self, gameView1.rival,
                     isInverted, gameStarterWins, invitedGamerWins).run();
         }
     }

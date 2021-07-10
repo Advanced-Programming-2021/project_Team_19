@@ -1,11 +1,9 @@
 package controller.DuelControllers;
 
-import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -14,18 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.scene.paint.*;
 import model.Enums.GameEvent;
 import model.Gamer;
-import model.Pair;
 import model.User;
 import view.Menu.MainMenu;
 import view.Menu.Menu;
 import view.Menu.RockPaper;
 import view.Printer.Printer;
-import view.graphic.GameGraphicControllerForTest;
-
-import java.io.IOException;
+import view.graphic.GameGraphicController;
 
 public class DuelMenuController extends Menu {
 
@@ -206,7 +200,7 @@ public class DuelMenuController extends Menu {
 
     public void handleDuel(int rounds, Stage firstStage, Stage secondStage, boolean isInverted) {
         gameIsHappening = true;
-        new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
+        new GameGraphicController(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();
 
 //        if (rounds == 1) {
 //            new GameGraphicControllerForTest(rounds, firstStage, secondStage, gameStarter, rivalGamer,isInverted).run();

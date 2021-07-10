@@ -1,8 +1,7 @@
 package view.graphic;
 
 import controller.DataForGameRun;
-import controller.DuelControllers.CardActionManager;
-import controller.Utils;
+import controller.DuelControllers.Game;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
@@ -15,9 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import model.Card.Card;
 import model.Card.Monster;
-import view.graphic.CardViewAnimations.Translation;
-import controller.DuelControllers.*;
-import model.*;
+import model.Gamer;
 
 import java.util.ArrayList;
 

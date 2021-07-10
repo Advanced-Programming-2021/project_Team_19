@@ -1,13 +1,11 @@
 package view.graphic;
 
-import controller.DuelControllers.Game;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 import model.Card.Card;
 import model.Card.Monster;
-import model.Data.graphicDataForServerToNotifyOtherClient;
 import view.graphic.CardViewAnimations.*;
 
 import java.util.ArrayList;
@@ -96,12 +94,6 @@ public class ActionsAnimationHandler {
             gameView.gamePane.getChildren().remove(cardView);
         });
 
-//        KeyFrame notifyRivalAnimation = new KeyFrame(Duration.millis(1), actionEvent ->
-//                gameView.gameController.notifyOtherGameViewToDoSomething(gameView,
-//                        new graphicDataForServerToNotifyOtherClient
-//                                ("add card from deck to hand", cardView.card, -1))
-//        );
-
         Timeline createCardTimeline = new Timeline(createNewCardAnimation);
 
 //        Timeline notifyRivalTimeLine = new Timeline(notifyRivalAnimation);
@@ -149,12 +141,9 @@ public class ActionsAnimationHandler {
             (GameView gameView, CardView cardView, CardView newCardView, int mode, int zone, int index) {
 
         Timeline addNewCardAnimation = new Timeline
-                (new KeyFrame(new Duration(500), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        gameView.gamePane.getChildren().remove(cardView);
-                        newCardView.setVisible(true);
-                    }
+                (new KeyFrame(new Duration(500), actionEvent -> {
+                    gameView.gamePane.getChildren().remove(cardView);
+                    newCardView.setVisible(true);
                 }));
         ParallelTransition transitions;
 
@@ -296,7 +285,7 @@ public class ActionsAnimationHandler {
         return 500;
     }
 
-    static double runRemoveCardFromHand(GameView gameView, CardView cardView){
+    static double runRemoveCardFromHand(GameView gameView, CardView cardView) {
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.selfHand.remove(cardView);
@@ -323,7 +312,7 @@ public class ActionsAnimationHandler {
         return 500;
     }
 
-    static double runRemoveCardFromRivalHand(GameView gameView, CardView cardView){
+    static double runRemoveCardFromRivalHand(GameView gameView, CardView cardView) {
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 1, 0).getAnimation());
         gameView.rivalHand.remove(cardView);
@@ -432,22 +421,14 @@ public class ActionsAnimationHandler {
         gameView.gamePane.getChildren().add(newCardView);
 
         Timeline addNewCardTimeline = new Timeline(new KeyFrame(Duration.millis(400),
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        gameView.gamePane.getChildren().remove(cardView);
-                        newCardView.setVisible(true);
-                    }
+                actionEvent -> {
+                    gameView.gamePane.getChildren().remove(cardView);
+                    newCardView.setVisible(true);
                 }));
 
         ParallelTransition transition = new ParallelTransition(
                 new RotateAnimation(cardView, 400, -90).getAnimation(),
-                new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        cardView.setCardImage();
-                    }
-                })),
+                new Timeline(new KeyFrame(Duration.millis(200), actionEvent -> cardView.setCardImage())),
                 addNewCardTimeline);
 
         transition.play();
@@ -487,21 +468,21 @@ public class ActionsAnimationHandler {
         return 400;
     }
 
-    static int getCardViewMode(CardView cardView){
-        if(cardView.isHidden && cardView.isVertical){
+    static int getCardViewMode(CardView cardView) {
+        if (cardView.isHidden && cardView.isVertical) {
             return 3;
-        } else if (cardView.isHidden && !cardView.isVertical){
+        } else if (cardView.isHidden && !cardView.isVertical) {
             return 1;
-        } else if (!cardView.isHidden && !cardView.isVertical){
+        } else if (!cardView.isHidden && !cardView.isVertical) {
             return 4;
-        } else if (!cardView.isHidden && cardView.isVertical){
+        } else if (!cardView.isHidden && cardView.isVertical) {
             return cardView.getCard() instanceof Monster ? 0 : 2;
         }
         return -1;
     }
 
     static double runFlipCardGraphic(CardView cardView, GameView gameView) {
-        int newMode = 5 -  getCardViewMode(cardView);
+        int newMode = 5 - getCardViewMode(cardView);
         CardView newCardView = gameView.getCardViewForField(cardView.card, newMode);
         newCardView.setX(cardView.getX());
         newCardView.setY(cardView.getY());
@@ -515,13 +496,13 @@ public class ActionsAnimationHandler {
         });
         animation.play();
 
-        if(gameView.monsterZoneCards.contains(cardView)){
+        if (gameView.monsterZoneCards.contains(cardView)) {
             gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
-        } else if (gameView.spellZoneCards.contains(cardView)){
+        } else if (gameView.spellZoneCards.contains(cardView)) {
             gameView.spellZoneCards.set(gameView.spellZoneCards.indexOf(cardView), newCardView);
-        } else if (gameView.rivalSpellZoneCards.contains(cardView)){
+        } else if (gameView.rivalSpellZoneCards.contains(cardView)) {
             gameView.rivalSpellZoneCards.set(gameView.rivalSpellZoneCards.indexOf(cardView), newCardView);
-        } else if (gameView.rivalMonsterZoneCards.contains(cardView)){
+        } else if (gameView.rivalMonsterZoneCards.contains(cardView)) {
             gameView.rivalMonsterZoneCards.set(gameView.rivalMonsterZoneCards.indexOf(cardView), newCardView);
         }
 
@@ -552,9 +533,9 @@ public class ActionsAnimationHandler {
 
     static SequentialTransition getIncreaseLpTransition(GameView gameView, double lp, boolean isSelf) {
 
-        if(isSelf && gameView.selfLp + lp < 0){
+        if (isSelf && gameView.selfLp + lp < 0) {
             lp = -gameView.selfLp;
-        } else if (!isSelf && gameView.rivalLp + lp < 0){
+        } else if (!isSelf && gameView.rivalLp + lp < 0) {
             lp = -gameView.rivalLp;
         }
 

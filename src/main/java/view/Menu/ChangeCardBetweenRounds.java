@@ -2,7 +2,6 @@ package view.Menu;
 
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DuelControllers.DeckModifierBetweenGames;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,13 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Card.Card;
 import model.Deck;
 import model.User;
 import view.graphic.CardView;
-import view.graphic.GameGraphicControllerForTest;
+import view.graphic.GameGraphicController;
 
 import java.io.IOException;
 
@@ -36,7 +34,7 @@ public class ChangeCardBetweenRounds extends Menu {
     @FXML
     private Label result;
 
-    public static GameGraphicControllerForTest gameGraphicControllerForTest;
+    public static GameGraphicController gameGraphicController;
 
     private int order;
 
@@ -47,9 +45,9 @@ public class ChangeCardBetweenRounds extends Menu {
         super("ChangeCardBetweenRounds Menu");
     }
 
-    public void run(GameGraphicControllerForTest gameGraphicControllerForTest, User user, Stage stage, int order) {
+    public void run(GameGraphicController gameGraphicController, User user, Stage stage, int order) {
         this.order = order;
-        ChangeCardBetweenRounds.gameGraphicControllerForTest = gameGraphicControllerForTest;
+        ChangeCardBetweenRounds.gameGraphicController = gameGraphicController;
         ChangeCardBetweenRounds.user = user;
         deckModifierBetweenGames = new DeckModifierBetweenGames(user);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangeCardBetweenRounds.fxml"));
@@ -142,7 +140,7 @@ public class ChangeCardBetweenRounds extends Menu {
     public void finishChange(MouseEvent mouseEvent) {
         String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
         result.setText(resultFromLogic);
-        gameGraphicControllerForTest.setHasSecondChoosed();
+        gameGraphicController.setHasSecondChoosed();
     }
 
     public void handleDraggingCardToMainDeck(DragEvent dragEvent) {

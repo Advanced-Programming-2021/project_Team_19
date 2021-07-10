@@ -16,11 +16,6 @@ public class ScaleAnimation implements CardViewAnimationMaker{
         animation.setDuration(Duration.millis(time));
         animation.setByY(size);
         animation.setByX(size);
-//        transition.setDelay(Duration.millis(1000));
-//        transition.setFromX(1);
-//        transition.setFromY(1);
-//        transition.setToX(0.5);
-//        transition.setToY(0.5);
     }
 
     public void start(){

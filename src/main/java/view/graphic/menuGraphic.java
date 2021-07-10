@@ -2,7 +2,6 @@ package view.graphic;
 
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
-import controller.DataBaseControllers.UserDataBaseController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -26,8 +25,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import controller.DataBaseControllers.CSVDataBaseController;
-import view.Menu.*;
+import view.Menu.WelcomeMenu;
 
 public class menuGraphic extends Application {
 
@@ -44,11 +42,8 @@ public class menuGraphic extends Application {
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
         CSVDataBaseController.load();
-//        new Shop().run(UserDataBaseController.getUserByUsername("mohammad"));
-//        new RockPaper().run();
-//        WelcomeMenu.getInstance().run();
-        new GameGraphicControllerForTest(false).testRun();
-        //testRun function of your menu for test here
+        WelcomeMenu.getInstance().run();
+//        testRun function of your menu for test here
         stage.show();
     }
 
@@ -95,12 +90,7 @@ public class menuGraphic extends Application {
         final Popup popup = createPopup(message);
         popup.show(stage);
 
-        Timeline idlestage = new Timeline(new KeyFrame(Duration.seconds(3), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                popup.hide();
-            }
-        }));
+        Timeline idlestage = new Timeline(new KeyFrame(Duration.seconds(3), event -> popup.hide()));
         idlestage.setCycleCount(1);
         idlestage.play();
     }

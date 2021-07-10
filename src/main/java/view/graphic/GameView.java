@@ -5,7 +5,10 @@ import controller.DataFromGameRun;
 import controller.DuelControllers.CardActionManager;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.actionManagerMode;
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -18,7 +21,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -36,7 +38,9 @@ import model.Card.SpellAndTraps;
 import model.Enums.CardMod;
 import model.Enums.SpellCardMods;
 import model.Gamer;
-import view.graphic.CardViewAnimations.*;
+import view.graphic.CardViewAnimations.FadeAnimation;
+import view.graphic.CardViewAnimations.RotateAnimation;
+import view.graphic.CardViewAnimations.Translation;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ import static view.graphic.ActionsAnimationHandler.*;
 
 public class GameView {
 
-    GameGraphicControllerForTest gameController;
+    GameGraphicController gameController;
     Gamer self;
     Gamer rival;
     Game game;
@@ -120,7 +124,7 @@ public class GameView {
         phases.add("end phase");
     }
 
-    public GameView(Stage stage, GameGraphicControllerForTest controller, Gamer self, Gamer rival, Game game) {
+    public GameView(Stage stage, GameGraphicController controller, Gamer self, Gamer rival, Game game) {
         this.stage = stage;
         this.gameController = controller;
         this.self = self;
@@ -140,7 +144,6 @@ public class GameView {
 
         mainPane.getChildren().add(descriptionScrollPane);
 
-        setTestButton();
         setMouseLocationMonitor();
     }
 
@@ -187,23 +190,17 @@ public class GameView {
         Button phaseButton = new Button("N\nP");
         phaseButton.setLayoutX(0);
         phaseButton.setLayoutY(5);
-        phaseButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (game.gameData.getCurrentGamer().equals(self)) {
-                    nextPhasePopup = menuGraphic.showPopupMessage(stage, "next phase",
-                            stage.getX() + 235,
-                            stage.getY() + 20);
-                }
+        phaseButton.setOnMouseEntered(mouseEvent -> {
+            if (game.gameData.getCurrentGamer().equals(self)) {
+                nextPhasePopup = menuGraphic.showPopupMessage(stage, "next phase",
+                        stage.getX() + 235,
+                        stage.getY() + 20);
             }
         });
 
-        phaseButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (nextPhasePopup != null && nextPhasePopup.isShowing()) {
-                    nextPhasePopup.hide();
-                }
+        phaseButton.setOnMouseExited(mouseEvent -> {
+            if (nextPhasePopup != null && nextPhasePopup.isShowing()) {
+                nextPhasePopup.hide();
             }
         });
         phaseButton.setOnMouseClicked(event -> {
@@ -248,31 +245,19 @@ public class GameView {
 
 
     void handleChangePhase() {
-
-        runChangePhase();
-//        gameController.notifyOtherGameViewToDoSomething(this,
-//                new graphicDataForServerToNotifyOtherClient("change phase", null, -1));
-
-    }
-
-    void handleChangePhaseBecauseOfOtherClientNotification() {
         runChangePhase();
     }
 
     private void runChangePhase() {
-        String currentPhase = "";
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
 
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
-                currentPhase = phases.get(i % 6);
                 break;
             }
         }
-//        Popup popup = menuGraphic.showPopupMessage(stage, currentPhase, stage.getX() + 400, stage.getY() + 250);
-//        new Timeline(new KeyFrame(Duration.millis(500), Event -> popup.hide())).play();
     }
 
     private Pane getCheatPane(Stage stage) {
@@ -405,14 +390,6 @@ public class GameView {
         rivalGraveYard.setLayoutY(177);
     }
 
-//    void handleAddCardToGraveYardGraphic(Card card, boolean addToSelfGraveYard) {
-//        runAddCardToGraveYard(card, addToSelfGraveYard);
-//        gameController.notifyOtherGameViewToDoSomething(this,
-//                new graphicDataForServerToNotifyOtherClient
-//                        ("add card to " + (addToSelfGraveYard ? "rival" : "self") + " graveyard",
-//                                card, -1));
-//    }
-
     void handleAddCardToGraveYardGraphicBOOTN(Card card, boolean addToSelfGraveYard) {
         runAddCardToGraveYard(card, addToSelfGraveYard);
     }
@@ -510,7 +487,6 @@ public class GameView {
             }
         })).play();
 
-//        addCardToSelfGraveYard(controller.Utils.getCardByName("trap hole"));
     }
 
     public void initHand() {
@@ -542,12 +518,12 @@ public class GameView {
         for (CardView cardView : cardViews) {
             cardView.setCanShowValidActions(bool);
         }
-        if(bool){
-            if(mouseEnteredCardView != null){
+        if (bool) {
+            if (mouseEnteredCardView != null) {
                 try {
                     showValidActionForCard
                             (mouseEnteredCardView.getFirstValidAction(game, self), mouseEnteredCardView);
-                } catch (Exception e){
+                } catch (Exception ignored) {
 
                 }
             }
@@ -760,21 +736,15 @@ public class GameView {
     }
 
     double getCardInFieldX(CardView cardView, int mode) {
-        if (mode == 0) {
-            int i = monsterZoneCards.indexOf(cardView);
-            return 122 + i * 82;
-        } else if (mode == 1 || mode == 4) {
-            int i = monsterZoneCards.indexOf(cardView);
-            return 122 + i * 82 - 10;
-        } else if (mode == 2 || mode == 3) {
-            int i = spellZoneCards.indexOf(cardView);
-            return 122 + i * 82;
-        }
-        return 0;
+        return getCardXAndYFromMode(cardView, mode, monsterZoneCards, spellZoneCards);
     }
 
     double getCardInRivalFieldX(CardView cardView, int mode) {
 
+        return getCardXAndYFromMode(cardView, mode, rivalMonsterZoneCards, rivalSpellZoneCards);
+    }
+
+    private double getCardXAndYFromMode(CardView cardView, int mode, ArrayList<CardView> rivalMonsterZoneCards, ArrayList<CardView> rivalSpellZoneCards) {
         if (mode == 0) {
             int i = rivalMonsterZoneCards.indexOf(cardView);
             return 122 + i * 82;
@@ -858,23 +828,16 @@ public class GameView {
     }
 
     double handleSummonGraphic(Card card, int index) {
-
-//        gameController.notifyOtherGameViewToDoSomething(this,
-//                new graphicDataForServerToNotifyOtherClient("summon", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, card, 0, 0, index);
     }
 
     double handleSetMonsterGraphic(Card card, int index) {
-//        gameController.notifyOtherGameViewToDoSomething(this,
-//                new graphicDataForServerToNotifyOtherClient("set monster", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, card, 1, 0, index);
     }
 
     double handleSetSpellGraphic(Card card, int index) {
-//        gameController.notifyOtherGameViewToDoSomething(this,
-//                new graphicDataForServerToNotifyOtherClient("set spell", cardView.getCard(), 4 - index));
         return runMoveCardFromHandToFieldGraphic
                 (this, card, 3, 1, index);
     }
@@ -963,25 +926,19 @@ public class GameView {
             time = handleFlipCardGraphic(monsterZoneCards.get(attackedID));
         }
 
-        new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        new Timeline(new KeyFrame(Duration.millis(time), actionEvent -> {
 
-                double time = handleIncreaseLpGraphic(lp, isLpLoserSelf) + 10;
+            double time1 = handleIncreaseLpGraphic(lp, isLpLoserSelf) + 10;
 
-                new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        if (destroyAttacker) {
-                            handleDestroyCardFromField(attackerID, 0, false);
-                        }
+            new Timeline(new KeyFrame(Duration.millis(time1), actionEvent1 -> {
+                if (destroyAttacker) {
+                    handleDestroyCardFromField(attackerID, 0, false);
+                }
 
-                        if (destroyAttacked) {
-                            handleDestroyCardFromField(attackedID, 0, true);
-                        }
-                    }
-                })).play();
-            }
+                if (destroyAttacked) {
+                    handleDestroyCardFromField(attackedID, 0, true);
+                }
+            })).play();
         })).play();
 
         return time + lp + 500;
@@ -1005,26 +962,20 @@ public class GameView {
             time = handleFlipCardGraphic(rivalMonsterZoneCards.get(attackedID));
         }
 
-        new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        new Timeline(new KeyFrame(Duration.millis(time), actionEvent -> {
 
-                double time = handleIncreaseLpGraphic(lp, isLpLoserSelf) + 10;
+            double time1 = handleIncreaseLpGraphic(lp, isLpLoserSelf) + 10;
 
-                new Timeline(new KeyFrame(Duration.millis(time), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        if (destroyAttacker) {
-                            handleDestroyCardFromField(attackerID, 0, true);
-                        }
+            new Timeline(new KeyFrame(Duration.millis(time1), actionEvent1 -> {
+                if (destroyAttacker) {
+                    handleDestroyCardFromField(attackerID, 0, true);
+                }
 
-                        if (destroyAttacked) {
+                if (destroyAttacked) {
 
-                            handleDestroyCardFromField(attackedID, 0, false);
-                        }
-                    }
-                })).play();
-            }
+                    handleDestroyCardFromField(attackedID, 0, false);
+                }
+            })).play();
         })).play();
 
         return time + lp + 500;
@@ -1184,7 +1135,7 @@ public class GameView {
         CardView cardView;
         double time;
 
-        if(isSelf){
+        if (isSelf) {
             cardView = searchCardInSelfHand(card);
             time = runRemoveCardFromHand(this, cardView);
         } else {
@@ -1192,26 +1143,26 @@ public class GameView {
             time = runRemoveCardFromRivalHand(this, cardView);
         }
 
-        if(selfFieldSpell != null){
+        if (selfFieldSpell != null) {
             gamePane.getChildren().remove(selfFieldSpell);
         }
-        if(rivalFieldSpell != null){
+        if (rivalFieldSpell != null) {
             gamePane.getChildren().remove(rivalFieldSpell);
         }
 
-        if(isSelf){
+        if (isSelf) {
             selfFieldSpell = new CardView(card, 9, false, true);
         } else {
             rivalFieldSpell = new CardView(card, 9, false, true);
         }
 
-        if(isSelf){
+        if (isSelf) {
             selfFieldSpell.setX(535);
             selfFieldSpell.setY(200);
             selfFieldSpell.setOpacity(0);
             gamePane.getChildren().add(selfFieldSpell);
             new FadeAnimation(selfFieldSpell, 500, 0, 1).getAnimation().play();
-        }else{
+        } else {
             rivalFieldSpell.setX(40);
             rivalFieldSpell.setY(320);
             rivalFieldSpell.setOpacity(0);
@@ -1319,93 +1270,6 @@ public class GameView {
         runRivalFlipSummonGraphic(this, card);
     }
 
-    // MindCrush data collector
-
-    private void getCardNameForMindCrush() {
-        VBox vBox = new VBox(10);
-        vBox.setMinWidth(200);
-        vBox.setMaxWidth(200);
-        vBox.setLayoutX(200);
-        vBox.setLayoutY(270);
-        vBox.setCenterShape(true);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setBackground(new Background(
-                new BackgroundFill(Color.rgb(243, 89, 17), new CornerRadii(0), new Insets(-12, 0, 0, 0))));
-
-        Label messageLabel = new Label("sadfds saldfjl lsadjf ljsdf aslkdjf lasdkjfl jasdf ljsdf lksjdflja l jlsdf");
-        messageLabel.setWrapText(true);
-        messageLabel.setMaxWidth(150);
-        messageLabel.setAlignment(Pos.CENTER);
-
-        TextField textField = new TextField();
-        textField.setMaxWidth(150);
-        vBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().getName().equals("Enter")) {
-                    String data = textField.getText();
-                    String result = sendMindCrushDataToServer(data);
-                    if (result.equals("invalid card name")) {
-                        showPopupForMindCrush("invalid card name");
-                    } else {
-                        gamePane.getChildren().remove(vBox);
-                        showPopupForMindCrush("hehe");
-                        //TODO : do what should to do
-                    }
-                    System.out.println(textField.getText());
-                }
-            }
-        });
-
-        vBox.getChildren().addAll(messageLabel, textField);
-        gamePane.getChildren().add(vBox);
-    }
-
-    private void showPopupForMindCrush(String message) {
-        Popup popup = menuGraphic.showPopupMessage
-                (stage, message, stage.getX() + 200 + 220,
-                        stage.getY() + 400);
-        popup.setAutoHide(true);
-    }
-
-    private String sendMindCrushDataToServer(String data) {
-        String ans = " name";
-        //TODO
-        return ans;
-    }
-
-    //end Mind Crush
-    static int counter = 0;
-    public Button testButton = new Button("test");
-
-    private void f() {
-
-        activateFieldSpell(rivalHand.get(0).card, false);
-//        justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, true);
-//        rivalGameView.justDestroyActivatedSpellOrTrap(0, selfHand.get(0).card, false);
-//        Card card = selfHand.get(0).card;
-//        activateSpell3(0, card, true, "");
-//        rivalGameView.activateSpell3(0, card, false, "");
-        counter++;
-//        handleAddCardToGraveYardGraphic(controller.Utils.getCardByName("Battle ox"), true);
-//        if(counter == 1)
-//            handleChangePositionGraphic(monsterZoneCards.get(2), "defence");
-//        else
-//            handleFlipCardGraphic(monsterZoneCards.get(2));
-    }
-
-    private void setTestButton() {
-        testButton.setLayoutX(100);
-        testButton.setLayoutY(100);
-        mainPane.getChildren().add(testButton);
-        testButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                f();
-            }
-        });
-    }
-
     private void setMouseLocationMonitor() {
         final Label reporter = new Label(OUTSIDE_TEXT);
         Label monitored = createMonitoredLabel(reporter);
@@ -1429,16 +1293,13 @@ public class GameView {
 
         monitored.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white; -fx-font-size: 20px;");
 
-        stage.getScene().setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                String msg =
-                        "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
-                                "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
-                                "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+        stage.getScene().setOnMouseMoved(event -> {
+            String msg =
+                    "(x: " + event.getX() + ", y: " + event.getY() + ") -- " +
+                            "(sceneX: " + event.getSceneX() + ", sceneY: " + event.getSceneY() + ") -- " +
+                            "(screenX: " + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
 
-                reporter.setText(msg);
-            }
+            reporter.setText(msg);
         });
 
 
