@@ -14,7 +14,7 @@ public class Raigeki extends Spell {
 
         handleCommonsForActivate(gameData);
         handleDestroy(gameData);
-        if (ids.equals("")){
+        if (ids.equals("")) {
             return new ActivationData(this, "destroy this spell");
         }
         return new ActivationData(this, "destroy rival monsters " + ids);

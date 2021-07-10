@@ -13,7 +13,6 @@ import model.Enums.MonsterEnums.MonsterType;
 import model.Enums.MonsterEnums.MonsterTypesForEffects;
 import model.Enums.SpellCardMods;
 import model.Gamer;
-import view.Printer.Printer;
 
 import java.util.ArrayList;
 

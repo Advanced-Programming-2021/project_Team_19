@@ -1,7 +1,5 @@
 package model;
 
-import model.User;
-
 public class Person extends User {
 
     private int rank;

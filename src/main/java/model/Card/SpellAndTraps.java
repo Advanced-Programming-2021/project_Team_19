@@ -13,8 +13,6 @@ import model.Enums.Type;
 
 public abstract class SpellAndTraps extends Card {
 
-//    @SerializedName("Status")
-//    public Status status;
     @SerializedName("Type")
     public Type type;
 
