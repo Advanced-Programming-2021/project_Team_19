@@ -30,6 +30,6 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <Button layoutX="681.0" layoutY="555.0" mnemonicParsing="false" onMouseClicked="#finishChange" prefHeight="25.0" prefWidth="105.0" text="finish" />
+      <Button fx:id="finishButton" layoutX="681.0" layoutY="555.0" mnemonicParsing="false" onMouseClicked="#finishChange" prefHeight="25.0" prefWidth="105.0" text="finish" />
     </children>
 </AnchorPane>

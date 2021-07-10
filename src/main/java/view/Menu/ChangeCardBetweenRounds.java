@@ -2,14 +2,17 @@ package view.Menu;
 
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.DuelControllers.DeckModifierBetweenGames;
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Card.Card;
 import model.Deck;
@@ -18,12 +21,13 @@ import view.graphic.CardView;
 import view.graphic.GameGraphicController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChangeCardBetweenRounds extends Menu {
 
-    private static  User user;
 
-    private static DeckModifierBetweenGames deckModifierBetweenGames;
+    private  DeckModifierBetweenGames deckModifierBetweenGames;
 
     @FXML
     private TextField cardName;
@@ -33,10 +37,15 @@ public class ChangeCardBetweenRounds extends Menu {
     private ScrollPane cardsInSideDeck;
     @FXML
     private Label result;
+    @FXML
+    private Button finishButton;
+
+
+    private static int cnt;
 
     public static GameGraphicController gameGraphicController;
 
-    private int order;
+    private User user;
 
 
 
@@ -45,22 +54,22 @@ public class ChangeCardBetweenRounds extends Menu {
         super("ChangeCardBetweenRounds Menu");
     }
 
-    public void run(GameGraphicController gameGraphicController, User user, Stage stage, int order) {
-        this.order = order;
-        ChangeCardBetweenRounds.gameGraphicController = gameGraphicController;
-        ChangeCardBetweenRounds.user = user;
-        deckModifierBetweenGames = new DeckModifierBetweenGames(user);
+    public void run(GameGraphicController gameGraphicControllerForTest, Stage stage) {
+        ChangeCardBetweenRounds.gameGraphicController = gameGraphicControllerForTest;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/ChangeCardBetweenRounds.fxml"));
         try {
             AnchorPane anchorPane = fxmlLoader.load();
             readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void initialize() {
+        user = GameGraphicController.allUser.get(cnt);
+        deckModifierBetweenGames = GameGraphicController.allDeckModifiers.get(cnt);
+        cnt ++;
         updateCard();
     }
 
@@ -115,6 +124,7 @@ public class ChangeCardBetweenRounds extends Menu {
                 updateCard();
                 return;
             }
+            cnt ++;
         }
         result.setText("Sorry there is no such card in side Deck!");
         updateCard();
@@ -125,7 +135,7 @@ public class ChangeCardBetweenRounds extends Menu {
         String cardNameToMove = cardName.getText();
         int cnt = 1;
         for (Card card : deck.getAllMainCardsSorted()) {
-            if (card.getName().equals(cardNameToMove)) {
+            if (card.getName().equalsIgnoreCase(cardNameToMove)) {
                 deckModifierBetweenGames.runForGraphic("--main " + cnt);
                 result.setText("Successful");
                 updateCard();
@@ -141,6 +151,9 @@ public class ChangeCardBetweenRounds extends Menu {
         String resultFromLogic = deckModifierBetweenGames.runForGraphic("finish");
         result.setText(resultFromLogic);
         gameGraphicController.setHasSecondChoosed();
+        if (result == null) {
+            finishButton.setDisable(true);
+        }
     }
 
     public void handleDraggingCardToMainDeck(DragEvent dragEvent) {
@@ -151,7 +164,7 @@ public class ChangeCardBetweenRounds extends Menu {
             String cardNameToMove = commandDetails[0];
             int cnt = 1;
             for (Card card : deck.getAllSideCardsSorted()) {
-                if (card.getName().equals(cardNameToMove)) {
+                if (card.getName().equalsIgnoreCase(cardNameToMove)) {
                     String res = deckModifierBetweenGames.runForGraphic("--main " + cnt);
                     result.setText(res);
                     updateCard();
@@ -183,5 +196,9 @@ public class ChangeCardBetweenRounds extends Menu {
             result.setText("Sorry there is no such card in side Deck!");
             updateCard();
         }
+    }
+
+    public static  void setToZero() {
+        cnt = 0;
     }
 }
