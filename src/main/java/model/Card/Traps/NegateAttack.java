@@ -13,24 +13,28 @@ public class NegateAttack extends TrapsActivateBecauseOfActionAttack {
 
     public ActivationData activate(GameData gameData) {
 
+        int trapIndex = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(this);
+
         handleDestroy(gameData);
 
         turnActivated = gameData.getTurn();
 
-        gameData.getCurrentGamer().addEffectLabel
-                (new EffectLabel(gameData, gameData.getCurrentGamer(), this));
+        EffectLabel label = new EffectLabel(gameData, gameData.getCurrentGamer(), this);
+        label.label = 1;
+        gameData.getCurrentGamer().addEffectLabel(label);
 
         return new TriggerActivationData
-                (true,
-                        "trap activated successfully\nattack has stopped and battle phase has finished",
-                        this);
+                (true, "activate trap " +
+                        trapIndex
+                        + ":change turn:negate attack:" +
+                        "activate spell -1 " + "destroy this spell", this);
 
     }
 
     public boolean shouldEffectRun(EffectLabel label) {
 
         if (label.gameData.getCurrentPhase().equals(Phase.BATTLE)) {
-            return label.gameData.getCurrentActions().size() == 0;
+            return label.gameData.getCurrentActions().size() == 1;
         }
         return false;
     }
