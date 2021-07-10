@@ -125,4 +125,8 @@ public class ImportAndExportMenu extends Menu {
             result.setText("successful");
         }
     }
+
+    public void getBack(MouseEvent mouseEvent) {
+        MainMenu.getInstance(null).run();
+    }
 }

@@ -166,6 +166,15 @@ public class CardCreating extends Menu{
         }
     }
 
+    private int calculatePrice(Card clone, int attack, int defense) {
+        if (clone instanceof Monster) {
+            Monster mclone = (Monster) clone;
+            return clone.getPrice() + attack - mclone.getAttack(null) + defense - mclone.getDefence(null);
+        } else {
+            return clone.getPrice();
+        }
+    }
+
     private void sendPictureToServer(String name, boolean isMonster) {
         String url = choosenPicture.getImage().getUrl();
         try {
