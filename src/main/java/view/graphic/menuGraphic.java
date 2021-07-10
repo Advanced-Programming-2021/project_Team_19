@@ -43,6 +43,7 @@ public class menuGraphic extends Application {
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
+        CSVDataBaseController.load();
 //        new Shop().run(UserDataBaseController.getUserByUsername("mohammad"));
 //        new RockPaper().run();
         WelcomeMenu.getInstance().run();

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CSVDataBaseController {
-    static TreeMap<String, Class> getClassByName = new TreeMap<>();
+    public static TreeMap<String, Class> getClassByName = new TreeMap<>();
 
     public static String addCard(Card card, String cardName, int attack, int defense, int level,  String description) {
         if (getClassByName.containsKey(cardName)) {
