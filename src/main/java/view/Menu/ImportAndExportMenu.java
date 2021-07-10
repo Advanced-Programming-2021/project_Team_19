@@ -164,6 +164,7 @@ public class ImportAndExportMenu extends Menu {
             System.out.println("no such card");
         } else {
             String result = DataBaseController.makeObjectJson(card);
+            DataBaseController.createFileByPathAndData("Resource/Cards/" + cardName + ".json", result);
             System.out.println(result);
         }
 
