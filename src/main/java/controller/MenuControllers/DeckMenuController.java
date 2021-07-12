@@ -50,6 +50,8 @@ public class DeckMenuController {
                     Utils.getMatcher(command, "deck show --deck-name (\\S+)( --side|)"));
         } else if (command.equals("deck show --cards")) {
             return showAllCards(user);
+        } else if (command.equals("deck show --active")) {
+            return new DataForClientFromServer(user.getActiveDeckName(), MessageType.DECK);
         }
 
 
