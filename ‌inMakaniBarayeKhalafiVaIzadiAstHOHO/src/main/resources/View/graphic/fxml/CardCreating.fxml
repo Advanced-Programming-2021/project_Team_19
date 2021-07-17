@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Menu.CardCreating">
+   <children>
+      <TextField fx:id="nameBox" layoutX="326.0" layoutY="325.0" />
+      <Label layoutX="326.0" layoutY="300.0" prefHeight="25.0" prefWidth="74.0" text="Name:" textFill="#ff3f48">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="325.0" layoutY="356.0" text="Attack:" textFill="#ff4242">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="attackBox" layoutX="325.0" layoutY="381.0" />
+      <Label layoutX="331.0" layoutY="414.0" text="Defense:" textFill="#ff4343">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="defenseBox" layoutX="325.0" layoutY="439.0" />
+      <Label layoutX="326.0" layoutY="471.0" prefHeight="33.0" prefWidth="164.0" text="Clone effect from:" textFill="#ff2f2f">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="cloneBox" layoutX="327.0" layoutY="504.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="291.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="imageURL" layoutX="326.0" layoutY="268.0" />
+      <Button layoutX="325.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#choosePicture" prefHeight="25.0" prefWidth="149.0" text="Choose picture" />
+      <ImageView fx:id="choosenPicture" fitHeight="190.0" fitWidth="200.0" layoutX="301.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="326.0" layoutY="547.0" mnemonicParsing="false" onMouseClicked="#submit" prefHeight="25.0" prefWidth="149.0" text="submit" />
+      <TextArea fx:id="descriptionBox" layoutX="522.0" layoutY="371.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="522.0" layoutY="329.0" prefHeight="41.0" prefWidth="173.0" text="description:" textFill="#ff4444">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="522.0" layoutY="232.0" text="Level:" textFill="#ff2323">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="levelBox" layoutX="522.0" layoutY="268.0" />
+      <Label fx:id="result" layoutX="25.0" layoutY="508.0" prefHeight="54.0" prefWidth="273.0" text="Label">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="allCards" layoutX="37.0" layoutY="143.0" prefHeight="364.0" prefWidth="236.0" />
+   </children>
+</AnchorPane>
