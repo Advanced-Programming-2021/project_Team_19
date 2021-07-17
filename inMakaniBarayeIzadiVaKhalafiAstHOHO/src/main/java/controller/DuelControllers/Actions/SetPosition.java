@@ -10,10 +10,8 @@ import model.Phase;
 
 import java.util.regex.Matcher;
 
-import static view.Printer.Printer.print;
-
 public class SetPosition extends Action {
-
+    int currentId;
 
     public SetPosition(GameData gameData) {
         super(gameData, "set position");
@@ -64,8 +62,8 @@ public class SetPosition extends Action {
         return "set position " + mode;
     }
 
-    public String run(Matcher matcher) {
-        return setPosition(matcher);
+    public String[] run(Matcher matcher) {
+        return new String[]{String.valueOf(currentId), setPosition(matcher)};
     }
 
     private String setPosition(Matcher matcher) {
@@ -78,6 +76,8 @@ public class SetPosition extends Action {
         CardMod newCardMode = toDefensiveMode ? CardMod.DEFENSIVE_OCCUPIED : CardMod.OFFENSIVE_OCCUPIED;
 
         ((Monster)selectedCard).handleChangePosition(gameData, newCardMode);
+
+        currentId = gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(selectedCard);
 
         return "position changed to " + newModeStr;
     }

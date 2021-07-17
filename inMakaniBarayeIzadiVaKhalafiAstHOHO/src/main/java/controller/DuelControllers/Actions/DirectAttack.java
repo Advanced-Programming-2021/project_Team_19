@@ -10,12 +10,13 @@ public class DirectAttack extends Attack {
         attackingMonster = gameData.getSelectedCard();
     }
 
-    public String run(boolean checkTriggerOrRun) {
-        if(checkTriggerOrRun){
+    public String[] run(boolean checkTriggerOrRun) {
+        if (checkTriggerOrRun) {
             checkTrigger();
-            return "";
+            return new String[]{"", ""};
         } else {
-            return directAttack();
+            return new String[]{String.valueOf(currentId)
+                    , directAttack()};
         }
     }
 
@@ -24,7 +25,7 @@ public class DirectAttack extends Attack {
 
         String attackErrors = checkMutualAttackErrors();
 
-        if (!canActionBeDone()){
+        if (!canActionBeDone()) {
             return "action cannot be done";
         }
 
@@ -37,7 +38,7 @@ public class DirectAttack extends Attack {
         }
 
 
-        if (gameData.getTurn() == 1){
+        if (gameData.getTurn() == 1) {
             return "cannot direct attack on first turn";
         }
 
@@ -46,7 +47,7 @@ public class DirectAttack extends Attack {
 
 
     private String directAttack() {
-
+        currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(attackingMonster);
         String lpLoss = ((Monster) attackingMonster).handleDirectAttack(gameData);
         return "rival loses " + lpLoss;
     }

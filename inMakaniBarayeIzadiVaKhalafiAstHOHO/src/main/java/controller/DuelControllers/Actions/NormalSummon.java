@@ -14,9 +14,11 @@ public class NormalSummon extends Summon {
         super(gameData, "normal summon");
     }
 
-    public String run(String ids) {
+    public String[] run(String ids) {
 
-        return summonMonster(ids);
+        return new String[]{String.valueOf(currentId)
+                , summonMonster(ids)
+        };
 
     }
 
@@ -62,14 +64,15 @@ public class NormalSummon extends Summon {
 
     private String summonMonster(String ids) {
 
+        gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+        currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(summoningMonster);
+
         if (ids == null) {
-            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, 0);
             gameData.triggerLabel = new TriggerLabel(this);
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster);
         } else {
             sacrificeByIds(ids);
-            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             ((Monster) summoningMonster).handleSummon(gameData, (ids.length() + 1) / 2);
             gameData.triggerLabel = new TriggerLabel(this);
             return "summon " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster) +

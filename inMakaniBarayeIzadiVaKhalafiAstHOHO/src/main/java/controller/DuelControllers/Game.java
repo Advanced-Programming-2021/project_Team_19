@@ -20,6 +20,7 @@ import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 
@@ -55,7 +56,7 @@ public class Game {
             }
             case "cancel activate trap" -> {
                 gameData.triggerLabel.inProgress = false;
-                if(!gameData.getCurrentGamer().equals(gameData.getTurnOwner())){
+                if (!gameData.getCurrentGamer().equals(gameData.getTurnOwner())) {
                     gameData.changeTurn();
                 }
             }
@@ -71,8 +72,7 @@ public class Game {
                 new DataFromGameRun(new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
-                String summonResponse = new NormalSummon(gameData).run(null);
-                new DataFromGameRun(summonResponse);
+                new DataFromGameRun(new NormalSummon(gameData).run(null));
             }
             case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
@@ -81,10 +81,9 @@ public class Game {
             }
             case "attack direct" -> {
                 new DirectAttack(gameData).run(true);
-//                new DataFromGameRun(new DirectAttack(gameData).run());
             }
             case "activate spell" -> {
-                new DataFromGameRun("activate spell " + new ActivateSpellOrTrapNormally(gameData).run());
+                new DataFromGameRun(new ActivateSpellOrTrapNormally(gameData).run());
             }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
@@ -104,7 +103,7 @@ public class Game {
         }
         if (command.matches("sacrifice \\d( \\d)*")) {
             gameData.setSelectedCard(multiActionCard);
-            String summonOrSetResponse = "";
+            String[] summonOrSetResponse = new String[2];
             if (CardActionManager.mode.equals(actionManagerMode.SUMMON_MODE)) {
                 summonOrSetResponse = new NormalSummon(gameData).run(command.substring(10));
             } else if (CardActionManager.mode.equals(actionManagerMode.SET_MODE)) {
@@ -116,8 +115,7 @@ public class Game {
             gameData.setSelectedCard(multiActionCard);
             new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
         } else if (command.matches("set position (attack|defence)")) {
-            String setPositionResponse = new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)"));
-            new DataFromGameRun(setPositionResponse);
+            new DataFromGameRun(new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)")));
         } else if (command.matches("game button @\\d+@")) {
             String lpIncrease = command.split(" ")[2].replace("@", "");
             CheatCodes.increaseLifePoint(gameData, lpIncrease);
@@ -145,7 +143,7 @@ public class Game {
             return;
         }
 
-        if(gameData.triggerLabel.inProgress){
+        if (gameData.triggerLabel.inProgress) {
             return;
         }
 
@@ -155,7 +153,7 @@ public class Game {
         gameData.setActionIndexForTriggerActivation(gameData.getCurrentActions().indexOf(action));
 
         if (action.canTurnOwnerActivateTrapBecauseOfAnAction() &&
-                gameData.triggerLabel.shouldAskFromFirstGamer){
+                gameData.triggerLabel.shouldAskFromFirstGamer) {
             gameData.triggerLabel.inProgress = true;
             new DataFromGameRun("ask gamer for trap:" + action.getActionName());
         } else {
@@ -169,11 +167,11 @@ public class Game {
         }
         gameData.triggerLabel.shouldAskFromFirstGamer = false;
 
-        if(!gameData.triggerLabel.shouldAskFromFirstGamer
+        if (!gameData.triggerLabel.shouldAskFromFirstGamer
                 && !gameData.triggerLabel.shouldAskFromSecondGamer
-                && !gameData.triggerLabel.inProgress){
-            if(gameData.triggerLabel.shouldRunAgain){
-                String data = ((Attack)gameData.triggerLabel.action).run(false);
+                && !gameData.triggerLabel.inProgress) {
+            if (gameData.triggerLabel.shouldRunAgain) {
+                String[] data = ((Attack) gameData.triggerLabel.action).run(false);
                 new DataFromGameRun(data);
             }
             gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);

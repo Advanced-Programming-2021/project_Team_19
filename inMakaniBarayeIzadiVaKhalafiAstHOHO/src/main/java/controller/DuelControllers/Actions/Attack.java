@@ -8,7 +8,7 @@ import model.Phase;
 import model.TriggerLabel;
 
 public abstract class Attack extends Action {
-
+    protected int currentId;
     protected Card attackingMonster;
 
     public Attack(GameData gameData, String actionName) {
@@ -16,7 +16,7 @@ public abstract class Attack extends Action {
         attackingMonster = gameData.getSelectedCard();
     }
 
-    public abstract String run(boolean checkTriggerOrRun);
+    public abstract String[] run(boolean checkTriggerOrRun);
 
     public Card getAttackingMonster() {
         return attackingMonster;

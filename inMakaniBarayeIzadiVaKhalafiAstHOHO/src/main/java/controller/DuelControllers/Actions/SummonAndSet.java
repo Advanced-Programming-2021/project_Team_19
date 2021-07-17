@@ -6,6 +6,7 @@ import model.Card.Monster;
 import model.Gamer;
 
 public class SummonAndSet extends Action {
+    protected int currentId;
 
     protected SummonAndSet(GameData gameData, String actionName) {
         super(gameData, actionName);

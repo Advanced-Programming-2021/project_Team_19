@@ -16,12 +16,12 @@ public class AttackMonster extends Attack {
         return enemyId;
     }
 
-    public String run(boolean checkTriggerOrRun) {
+    public String[] run(boolean checkTriggerOrRun) {
         if(checkTriggerOrRun){
             checkTrigger();
-            return "";
+            return new String[]{"", ""};
         } else{
-            return attackMonster();
+            return new String[]{String.valueOf(currentId), attackMonster()};
         }
     }
 
@@ -46,6 +46,8 @@ public class AttackMonster extends Attack {
     }
 
     public String attackMonster() {
+
+        currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(attackingMonster);
 
         ((Monster) gameData.getSecondGamer().getGameBoard().getMonsterCardZone()
                 .getCardById(enemyId)).attackIsNormal(gameData);

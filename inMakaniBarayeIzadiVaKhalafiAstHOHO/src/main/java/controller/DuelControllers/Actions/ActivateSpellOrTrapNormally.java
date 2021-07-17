@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static view.Printer.Printer.print;
 
 public class ActivateSpellOrTrapNormally extends Activation {
-
+    int currentId;
 
     public ActivateSpellOrTrapNormally(GameData gameData) {
         super(gameData);
@@ -64,7 +64,7 @@ public class ActivateSpellOrTrapNormally extends Activation {
         return "activate spell normally";
     }
 
-    public String run() {
+    public String[] run() {
 
         String result = actionIsValid();
 
@@ -75,9 +75,11 @@ public class ActivateSpellOrTrapNormally extends Activation {
         SpellAndTraps card = (SpellAndTraps) activatedCard;
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
-             return "activate spell " + activateFromHand(card);
+            currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(card);
+             return new String[]{String.valueOf(currentId), "activate spell " + activateFromHand(card)};
         } else {
-            return "activate spell -1 " + activateSpellOrTrap();
+            currentId = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(card);
+            return new String[]{String.valueOf(currentId), "activate spell -1 " + activateSpellOrTrap()};
         }
     }
 

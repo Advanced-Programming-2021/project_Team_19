@@ -15,8 +15,10 @@ public class Set extends SummonAndSet {
         super(gameData, "set");
     }
 
-    public String run(String ids) {
-        return manageSetCard(ids);
+    public String[] run(String ids) {
+        return new String[]{String.valueOf(currentId)
+                , manageSetCard(ids)
+        };
     }
 
     @Override
@@ -74,6 +76,8 @@ public class Set extends SummonAndSet {
 
         if (((SpellAndTraps) card).handleSet(gameData)) {
 
+            currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(card);
+
             activateOrSetCheckFieldSpell(card, gameData);
 
             return "set spell " + gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(card);
@@ -88,14 +92,15 @@ public class Set extends SummonAndSet {
 
         Monster monster = (Monster) card;
 
+        gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
+        currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(card);
+
         if (ids == null) {
-            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             monster.handleSet(gameData);
             handleTriggerEffects();
             return "set monster " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(card);
         } else {
             sacrificeByIds(ids);
-            gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
             monster.handleSet(gameData);
             handleTriggerEffects();
             return "set monster " + gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(monster) +

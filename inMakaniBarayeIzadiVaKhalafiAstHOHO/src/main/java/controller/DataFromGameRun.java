@@ -10,10 +10,18 @@ public class DataFromGameRun {
     public ArrayList<Card> cardsForEvent = new ArrayList<>();
     public String event;
     public Gamer gamerOfAction;
+    public int cardId;
 
 
     public DataFromGameRun(String event){
         this.event = event;
+        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        eventDataFromServer.add(this);
+    }
+
+    public DataFromGameRun(String[] eventAndId){
+        this.cardId = Integer.parseInt(eventAndId[0]);
+        this.event = eventAndId[1];
         gamerOfAction = GameData.getGameData().getCurrentGamer();
         eventDataFromServer.add(this);
     }
@@ -29,5 +37,7 @@ public class DataFromGameRun {
         eventDataFromServer = new ArrayList<>();
     }
 
-
+    public int getCardId() {
+        return cardId;
+    }
 }
