@@ -619,9 +619,10 @@ public class GameView {
         ArrayList<DataFromGameRun> dataFromGameRun;
         if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null) {
             if (cardView.getCurrentAction().equals("sacrifice")) {
-                idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
+                idsForMultiCardAction.add
+                        (getIdByIndex(monsterZoneCards.indexOf(cardView)));
             } else if (cardView.getCurrentAction().equals("attack")) {
-                idsForMultiCardAction.add(game.gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
+                idsForMultiCardAction.add(getRivalIdByIndex(rivalMonsterZoneCards.indexOf(cardView)));
             }
 
             if (idsForMultiCardAction.size() == numberOfNeededCards) {
@@ -654,6 +655,16 @@ public class GameView {
         numberOfNeededCards = 1;
         idsForMultiCardAction = new ArrayList<>();
         mainCardForMultiCardAction = mainCard;
+    }
+
+    public static int getIdByIndex(int index) {
+        String data = "53124";
+        return data.charAt(index) - '0';
+    }
+
+    public static int getRivalIdByIndex(int index){
+        String data = "42135";
+        return data.charAt(index) - '0';
     }
 
     public static int getIndexById(int id) {
