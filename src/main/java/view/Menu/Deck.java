@@ -105,7 +105,7 @@ public class Deck extends Menu {
                 BorderPane deckFullDescription = new BorderPane();
                 HBox hBox = new HBox();
                 int cnt = 0;
-                DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient(""))
+                DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("",""));
                 for (Card card : deck.getAllCardsSorted()) {
                     if (cnt < 5) {
                         hBox.getChildren().add(new CardView(card, 4, false, true));

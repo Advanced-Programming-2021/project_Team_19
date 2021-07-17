@@ -495,6 +495,8 @@ public class GameView {
     }
 
     public void initHand() {
+//        DataFromGameRun data = game.run(new DataForGameRun("get init hand data", self)).get(0);
+
         ArrayList<Card> cards = new ArrayList<>();
         ArrayList<Card> rivalCards = new ArrayList<>();
 
@@ -688,7 +690,7 @@ public class GameView {
                 }
             }
         }
-        cardForShow.setFill(new ImagePattern(CardView.getImageByCard(card)));
+        cardForShow.setFill(new ImagePattern(cardView.getImage()));
         cardDescription.setText(card.getDescription());
     }
 

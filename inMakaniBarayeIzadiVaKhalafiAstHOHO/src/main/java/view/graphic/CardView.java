@@ -13,7 +13,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import model.Card.Card;
-import model.Card.Monster;
+import model.Enums.CardFamily;
 import model.Gamer;
 
 import java.util.ArrayList;
@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class CardView extends Rectangle {
 
     Card card;
+    String cardName;
+    boolean isMonster;
     public boolean isHidden = false;
     public boolean isVertical = true;
     public static double height = 614;
@@ -49,6 +51,8 @@ public class CardView extends Rectangle {
         this.card = card;
         this.isHidden = isHidden;
         this.isVertical = isVertical;
+        cardName = card.getName();
+        isMonster = card.getCardFamily().equals(CardFamily.MONSTER);
 
         if (isHidden) {
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
@@ -57,12 +61,12 @@ public class CardView extends Rectangle {
         }
     }
 
-    public static Image getImageByCard(Card card) {
+    public Image getImage() {
 
-        if (card != null) {
-            String model = card instanceof Monster ? "Monsters/" : "SpellTrap/";
+        if (cardName != null) {
+            String model = isMonster ? "Monsters/" : "SpellTrap/";
             return new Image("/Assets/Cards/" + model +
-                    controller.Utils.getPascalCase(card.getName()) + ".jpg");
+                    controller.Utils.getPascalCase(cardName) + ".jpg");
 
         }
         return new Image("/Assets/Cards/Monsters/Unknown.jpg");
@@ -79,7 +83,7 @@ public class CardView extends Rectangle {
 
     public void setCardImage() {
         if (isVertical) {
-            ImagePattern imagePattern = new ImagePattern(getImageByCard(card));
+            ImagePattern imagePattern = new ImagePattern(getImage());
             setFill(imagePattern);
         } else {
             setCardImage2();
@@ -88,7 +92,7 @@ public class CardView extends Rectangle {
     }
 
     private void setCardImage2() {
-        ImageView imageView = new ImageView(getImageByCard(card));
+        ImageView imageView = new ImageView(getImage());
         imageView.setRotate(90);
 
         SnapshotParameters params = new SnapshotParameters();
@@ -156,7 +160,7 @@ public class CardView extends Rectangle {
                 (++validActionIndex % validActionNamesForShow.size());
     }
 
-//hoho
+
     public String getCurrentAction() {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
