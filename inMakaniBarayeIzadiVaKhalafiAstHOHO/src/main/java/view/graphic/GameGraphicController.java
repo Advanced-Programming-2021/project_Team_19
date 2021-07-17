@@ -64,7 +64,7 @@ public class GameGraphicController extends Menu {
         scene.getStylesheets().add("CSS/Css.css");
         second.setScene(scene);
         GameData gameData = new GameData(firstGamer, secondGamer);
-        game = new Game(gameData, rounds);
+        game = new Game(gameData, rounds, this);
         if (!isInverted) {
             gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
             gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
@@ -89,7 +89,7 @@ public class GameGraphicController extends Menu {
         scene.getStylesheets().add("CSS/Css.css");
         second.setScene(scene);
         GameData gameData = new GameData(firstGamer, secondGamer);
-        game = new Game(gameData, rounds);
+        game = new Game(gameData, rounds, this);
         if (!isInverted) {
             gameView1 = new GameView(first, this, firstGamer, secondGamer, game);
             gameView2 = new GameView(second, this, secondGamer, firstGamer, game);
@@ -134,7 +134,7 @@ public class GameGraphicController extends Menu {
         Gamer gamer2 = new Gamer(user2);
 
         GameData gameData = new GameData(gamer1, gamer2);
-        game = new Game(gameData, rounds);
+        game = new Game(gameData, rounds, this);
 
         gameView1 = new GameView(stage, this, gamer1, gamer2, game);
         gameView2 = new GameView(stage2, this, gamer2, gamer1, game);
@@ -149,7 +149,7 @@ public class GameGraphicController extends Menu {
         Gamer gamer1 = new Gamer(user1);
         Gamer gamer2 = AI.getGamer(0);
         GameData gameData = new GameData(gamer1, gamer2);
-        game = new Game(gameData, 1);
+        game = new Game(gameData, 1, this);
         gameView1 = new GameView(stage, this, gamer1, gamer2, game);
     }
 

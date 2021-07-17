@@ -18,6 +18,8 @@ import model.Phase;
 import model.TriggerLabel;
 import view.GetInput;
 import view.Printer.Printer;
+import view.graphic.CardView;
+import view.graphic.GameGraphicController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,12 +30,23 @@ public class Game {
 
     public GameData gameData;
     public Card multiActionCard;
+    public GameGraphicController gameController;
     public int round;
 
 
-    public Game(GameData gameData, int round) {
+//    public Game(GameData gameData, int round) {
+//        this.gameData = gameData;
+//        this.round = round;
+//    }
+
+    public Game(GameData gameData, int round, GameGraphicController gameController) {
         this.gameData = gameData;
         this.round = round;
+        this.gameController = gameController;
+    }
+
+    public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
+        gameController.graphicsForEvents(run(dataFromClient), cardView, index);
     }
 
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
@@ -138,8 +151,8 @@ public class Game {
         throw new Exception("not your turn");
     }
 
-    public Card getCardByZoneAndId(String zoneName, int Id){
-        return switch (zoneName){
+    public Card getCardByZoneAndId(String zoneName, int Id) {
+        return switch (zoneName) {
             case ("Hand") -> gameData.getCurrentGamer().getGameBoard().getHand().getCard(Id);
             case ("Monster Card Zone") -> gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(Id);
             case ("Spell And Trap Zone") -> gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getCard(Id);
