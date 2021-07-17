@@ -33,12 +33,6 @@ public class Game {
     public GameGraphicController gameController;
     public int round;
 
-
-//    public Game(GameData gameData, int round) {
-//        this.gameData = gameData;
-//        this.round = round;
-//    }
-
     public Game(GameData gameData, int round, GameGraphicController gameController) {
         this.gameData = gameData;
         this.round = round;

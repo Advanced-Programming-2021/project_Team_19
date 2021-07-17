@@ -183,8 +183,6 @@ public class GameView {
                 cheatSheet.show();
             } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()){
                 if (game.gameData.getCurrentGamer().equals(self)) {
-//                    ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
-//                    gameController.graphicsForEvents(events, null, 0);
                     game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
                 }
             }
@@ -211,8 +209,6 @@ public class GameView {
         });
         phaseButton.setOnMouseClicked(event -> {
             if (game.gameData.getCurrentGamer().equals(self)) {
-//                ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
-//                gameController.graphicsForEvents(events, null, 0);
                 game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
             }
         });
@@ -275,8 +271,6 @@ public class GameView {
 
         Button submit = new Button("submit");
         submit.setOnMouseClicked(event -> {
-//            ArrayList<DataFromGameRun> data = game.run(new DataForGameRun("game button " + cheatTextField.getText(), self));
-//            gameController.graphicsForEvents(data, null, 0);
             game.runWithGraphics(new DataForGameRun("game button " + cheatTextField.getText(), self), null, 0);
             stage.close();
         });
@@ -1352,10 +1346,6 @@ public class GameView {
         mainPane.getChildren().add(mainBox);
 
         noButton.setOnMouseClicked(mouseEvent -> {
-//            gameController.graphicsForEvents(
-//                    game.run(new DataForGameRun("cancel activate trap", self)),
-//                    null, 0);
-
             game.runWithGraphics(new DataForGameRun("cancel activate trap", self), null, 0);
 
             mainPane.getChildren().remove(mainBox);
