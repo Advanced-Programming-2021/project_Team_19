@@ -132,9 +132,22 @@ public class Game {
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
         if (gameData.getCurrentGamer().equals(data.getGamer())) {
             gameData.setSelectedCard(data.getCard());
-            return (new CardActionManager(data.getCard())).getValidActions();
+//            gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName, data.getId));
+            return (new CardActionManager(data.getCard(), gameData).getValidActions());
         }
         throw new Exception("not your turn");
+    }
+
+    public Card getCardByZoneAndId(String zoneName, int Id){
+        return switch (zoneName){
+            case ("Hand") -> gameData.getCurrentGamer().getGameBoard().getHand().getCard(Id);
+            case ("Monster Card Zone") -> gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(Id);
+            case ("Spell And Trap Zone") -> gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getCard(Id);
+            case ("Deck") -> gameData.getCurrentGamer().getGameBoard().getDeckZone().getCard(Id);
+            case ("Graveyard") -> gameData.getCurrentGamer().getGameBoard().getGraveYard().getCard(Id);
+            case ("Field Zone") -> gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard();
+            default -> throw new IllegalStateException("Unexpected value: " + zoneName);
+        };
     }
 
     public void checkTriggerData() {
