@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 public class justForIzad extends menuGraphic {
 
-    public void run(){
+    public void run(){//اhoho
         Pane pane = new Pane();
 
         ImageView imageView = new ImageView(new Image("/Pictures/atk_icon.png"));
