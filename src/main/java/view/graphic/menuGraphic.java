@@ -1,5 +1,6 @@
 package view.graphic;
 
+import AnythingIWant.Network;
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
 import controller.DataBaseControllers.UserDataBaseController;
@@ -46,8 +47,8 @@ public class menuGraphic extends Application {
         CSVDataBaseController.load();
 //        new Shop().run(UserDataBaseController.getUserByUsername("mohammad"));
 //        new RockPaper().run();
-//        WelcomeMenu.getInstance().run();
-        new GameGraphicController(false).testRun();
+        WelcomeMenu.getInstance().run();
+//        new GameGraphicController(false).testRun();
         //testRun function of your menu for test here
         stage.show();
     }

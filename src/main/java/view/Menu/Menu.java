@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import controller.ClientDataController;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -43,8 +44,7 @@ public class Menu extends menuGraphic {
 
     protected static DataForClientFromServer sendDataToServer(DataForServerFromClient data) {
 
-        //function of server
-        return ClientDataController.handleMessageOfClientAndGetFeedback(data);
+        return ClientNetwork.getInstance().sendMessageAndGetFeedBack(data);
     }
 
     protected void sendCommandToServer1(Matcher matcher) {
