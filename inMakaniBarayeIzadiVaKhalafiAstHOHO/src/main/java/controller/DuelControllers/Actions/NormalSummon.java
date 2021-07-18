@@ -66,6 +66,7 @@ public class NormalSummon extends Summon {
 
         gameData.getCurrentGamer().setLastTurnHasSummoned(gameData.getTurn());
         currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(summoningMonster);
+        System.out.println("@@@@" + currentId);
 
         if (ids == null) {
             ((Monster) summoningMonster).handleSummon(gameData, 0);
