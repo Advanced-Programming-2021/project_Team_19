@@ -79,7 +79,7 @@ public class Game {
                 new DataFromGameRun(new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
-                new DataFromGameRun(new NormalSummon(gameData).run(null));
+                System.out.println(new DataFromGameRun(new NormalSummon(gameData).run(null)).cardId);
             }
             case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
