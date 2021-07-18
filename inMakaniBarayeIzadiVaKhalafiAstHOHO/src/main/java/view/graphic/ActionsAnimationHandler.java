@@ -118,12 +118,12 @@ public class ActionsAnimationHandler {
     //mode -> 0 for summon monster and 1 for set monster and 2 for activate spell and 3 for set spell
 
     static double runMoveCardFromHandToFieldGraphic(GameView gameView,
-                                                    Card card, int mode, int zone, int index) {
+                                                    int handIndex , int mode, int zone, int zoneIndex) {
 
-        CardView cardView = gameView.searchCardInSelfHand(card);
+        CardView cardView = gameView.selfHand.get(handIndex);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
 
-        addCardToCorrectCardListZone(gameView, newCardView, zone, index);
+        addCardToCorrectCardListZone(gameView, newCardView, zone, zoneIndex);
 
         newCardView.setVisible(false);
         gameView.gamePane.getChildren().add(newCardView);
@@ -132,7 +132,7 @@ public class ActionsAnimationHandler {
         gameView.selfHand.remove(cardView);
 
         ParallelTransition transition =
-                getTransitionForMovingCardFromHandToField(gameView, cardView, newCardView, mode, zone, index);
+                getTransitionForMovingCardFromHandToField(gameView, cardView, newCardView, mode, zone, zoneIndex);
         transition.play();
         return 500;
     }

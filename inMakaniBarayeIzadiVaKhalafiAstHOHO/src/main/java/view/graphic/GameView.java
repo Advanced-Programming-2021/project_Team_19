@@ -844,19 +844,19 @@ public class GameView {
         return null;
     }
 
-    double handleSummonGraphic(Card card, int index) {
+    double handleSummonGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 0, 0, index);
+                (this, handIndex, 0, 0, zoneIndex);
     }
 
-    double handleSetMonsterGraphic(Card card, int index) {
+    double handleSetMonsterGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 1, 0, index);
+                (this, handIndex, 1, 0, zoneIndex);
     }
 
-    double handleSetSpellGraphic(Card card, int index) {
+    double handleSetSpellGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 3, 1, index);
+                (this, handIndex, 3, 1, zoneIndex);
     }
 
     double handleFlipSummonGraphic(Card card) {
@@ -897,10 +897,10 @@ public class GameView {
         for (int i : sacrificesIndex) {
             time = handleDestroyCardFromField(i, 0, true);
         }
-        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(card, index)
-                : EventHandler -> handleSummonGraphic(card, index);
-
-        new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
+//        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(card, index)
+//                : EventHandler -> handleSummonGraphic(card, index);
+//
+//        new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
 
         return time + 800;
     }
@@ -1020,7 +1020,7 @@ public class GameView {
 
         if (index != -1) {
             if (isSelf) {
-                time += runMoveCardFromHandToFieldGraphic(this, cardView.card, 2, 1, index);
+//                time += runMoveCardFromHandToFieldGraphic(this, cardView.card, 2, 1, index);
             } else {
                 time += runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, 4 - index);
             }

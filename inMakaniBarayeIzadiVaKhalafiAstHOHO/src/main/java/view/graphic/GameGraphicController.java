@@ -244,6 +244,7 @@ public class GameGraphicController extends Menu {
 
         GameView otherGameView = getTheOtherGameView(gameView);
 
+        int cardId = events.get(index).cardId;
         String response = events.get(index).event;
 
         System.err.println(response);
@@ -275,7 +276,7 @@ public class GameGraphicController extends Menu {
             } catch (NullPointerException ignored) {
             }
             try {
-                time = gameView.handleSummonGraphic(cardView.card, getIndexById(cardIndex));
+                time = gameView.handleSummonGraphic(cardId, getIndexById(cardIndex));
             } catch (NullPointerException ignored) {
             }
         } else if (response.equals("add card to hand")) {
@@ -297,7 +298,7 @@ public class GameGraphicController extends Menu {
             } catch (NullPointerException ignored) {
             }
             try {
-                time = gameView.handleSetSpellGraphic(cardView.card, getIndexById(cardIndex));
+                time = gameView.handleSetSpellGraphic(cardId, getIndexById(cardIndex));
             } catch (NullPointerException ignored) {
             }
 
@@ -346,7 +347,7 @@ public class GameGraphicController extends Menu {
 
             try {
                 time = gameView.handleSetMonsterGraphic
-                        (cardView.card, getIndexById(cardIndex));
+                        (cardId, getIndexById(cardIndex));
             } catch (NullPointerException ignored) {
             }
 
