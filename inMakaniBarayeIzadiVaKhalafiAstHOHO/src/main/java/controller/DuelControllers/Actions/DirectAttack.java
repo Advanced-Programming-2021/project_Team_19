@@ -15,8 +15,7 @@ public class DirectAttack extends Attack {
             checkTrigger();
             return new String[]{"", ""};
         } else {
-            return new String[]{String.valueOf(currentId)
-                    , directAttack()};
+            return new String[]{directAttack(), String.valueOf(currentId)};
         }
     }
 

@@ -21,6 +21,7 @@ import view.Printer.Printer;
 import view.graphic.CardView;
 import view.graphic.GameGraphicController;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -40,7 +41,8 @@ public class Game {
     }
 
     public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
-        gameController.graphicsForEvents(run(dataFromClient), cardView, index);
+        ArrayList<DataFromGameRun> tempData = run(dataFromClient);
+        gameController.graphicsForEvents(tempData, cardView, index);
     }
 
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {

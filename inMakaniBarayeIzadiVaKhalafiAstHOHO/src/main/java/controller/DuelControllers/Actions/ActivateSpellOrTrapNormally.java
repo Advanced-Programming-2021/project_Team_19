@@ -76,10 +76,10 @@ public class ActivateSpellOrTrapNormally extends Activation {
 
         if (gameData.getCurrentGamer().getGameBoard().getZone(card) instanceof Hand) {
             currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(card);
-             return new String[]{String.valueOf(currentId), "activate spell " + activateFromHand(card)};
+             return new String[]{"activate spell " + activateFromHand(card), String.valueOf(currentId)};
         } else {
             currentId = gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getId(card);
-            return new String[]{String.valueOf(currentId), "activate spell -1 " + activateSpellOrTrap()};
+            return new String[]{"activate spell -1 " + activateSpellOrTrap(), String.valueOf(currentId)};
         }
     }
 

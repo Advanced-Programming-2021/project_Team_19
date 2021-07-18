@@ -14,7 +14,7 @@ public class FlipSummon extends Summon {
     }
 
     public String[] run() {
-            return new String[]{String.valueOf(currentId), flip()};
+            return new String[]{flip(), String.valueOf(currentId)};
     }
 
     @Override

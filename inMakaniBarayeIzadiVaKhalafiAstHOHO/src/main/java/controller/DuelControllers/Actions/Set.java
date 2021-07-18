@@ -16,9 +16,7 @@ public class Set extends SummonAndSet {
     }
 
     public String[] run(String ids) {
-        return new String[]{String.valueOf(currentId)
-                , manageSetCard(ids)
-        };
+        return new String[]{manageSetCard(ids), String.valueOf(currentId)};
     }
 
     @Override

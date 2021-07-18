@@ -511,7 +511,7 @@ public class GameView {
         for (int i = 0; i < cards.size(); i++) {
             int finalI = i;
             KeyFrame frame = new KeyFrame(Duration.millis(i * 500 + 1),
-                    Event -> handleAddRivalCardFromDeckToHandGraphic(cards.get(finalI).getName()));
+                    Event -> handleAddRivalCardFromDeckToHandGraphic(cards.get(finalI)));
             timeline.getKeyFrames().add(frame);
         }
 
@@ -871,8 +871,8 @@ public class GameView {
         return runIncreaseLpGraphic(this, lp, isSelf);
     }
 
-    double handleAddCardFromDeckToHandGraphic(String cardName) {
-        CardView cardView = new CardView(controller.Utils.getCardByName(cardName)
+    double handleAddCardFromDeckToHandGraphic(Card card) {
+        CardView cardView = new CardView(card
                 , 8, true, true);
         setBooleanForShowActions(selfHand, false);
         ParallelTransition transition = getTransitionForAddCardFromDeckToHand(this, cardView);
@@ -891,31 +891,32 @@ public class GameView {
     }
 
     double handleSummonSetWithSacrificeGraphics
-            (Card card, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
+            (int handIndex, int zoneIndex, boolean isSet, ArrayList<Integer> sacrificesIndex) {
 
         double time = 0;
 
         for (int i : sacrificesIndex) {
             time = handleDestroyCardFromField(i, 0, true);
         }
-//        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(card, index)
-//                : EventHandler -> handleSummonGraphic(card, index);
-//
-//        new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
+        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(handIndex, zoneIndex)
+                : EventHandler -> handleSummonGraphic(handIndex, zoneIndex);
+
+        new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
 
         return time + 800;
     }
 
     double handleRivalSummonSetWithSacrificeGraphic
-            (Card card, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
+            (int handIndex, int zoneIndex, boolean isSet, ArrayList<Integer> sacrificesIndex) {
 
         double time = 0;
 
         for (int i : sacrificesIndex) {
             time = handleDestroyCardFromField(i, 0, false);
         }
-        EventHandler eventHandler = isSet ? EventHandler -> handleSetRivalMonsterGraphicBOOCN(card, index)
-                : EventHandler -> handleSummonRivalMonsterGraphic(card, index);
+        EventHandler eventHandler = isSet ? EventHandler -> handleSetRivalMonsterGraphicBOOCN
+                (handIndex, zoneIndex)
+                : EventHandler -> handleSummonRivalMonsterGraphic(handIndex, zoneIndex);
 
         new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
 
@@ -1008,22 +1009,24 @@ public class GameView {
         return ans;
     }
 
-    double justDestroyActivatedSpellOrTrap(int index, Card card, boolean isSelf) {
+    double justDestroyActivatedSpellOrTrap(int newIndex, int oldIndex, boolean isSelf) {
         CardView cardView;
 
-        if (index != -1) {
-            cardView = isSelf ? searchCardInSelfHand(card) : searchCardInRivalHand(card);
+        if (newIndex != -1) {
+            cardView = isSelf ? selfHand.get(oldIndex) : rivalHand.get(oldIndex);
         } else {
-            cardView = isSelf ? searchCardInSelfField(card) : searchCardInRivalField(card);
+            cardView = isSelf ? spellZoneCards.get(oldIndex) : rivalSpellZoneCards.get(oldIndex);
         }
 
         double time = 500;
 
-        if (index != -1) {
+        if (newIndex != -1) {
             if (isSelf) {
-//                time += runMoveCardFromHandToFieldGraphic(this, cardView.card, 2, 1, index);
+                time += runMoveCardFromHandToFieldGraphic
+                        (this, oldIndex, 2, 1, newIndex);
             } else {
-                time += runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, 4 - index);
+                time += runMoveRivalCardFromHandToFiledGraphic
+                        (this, oldIndex, 2, 1, 4 - newIndex);
             }
         } else {
             time += handleFlipCardGraphic(cardView);
@@ -1032,20 +1035,19 @@ public class GameView {
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             if (isSelf) {
                 handleDestroyCardFromField(
-                        spellZoneCards.indexOf(searchCardInSelfField(cardView.getCard())), 1, true);
+                        oldIndex, 1, true);
             } else {
                 handleDestroyCardFromField
-                        (rivalSpellZoneCards.indexOf(searchCardInRivalField(cardView.getCard())), 1, false);
+                        (oldIndex, 1, false);
             }
         })).play();
 
         return time + 500;
     }
 
-    double activateSpell1(int index, Card card, boolean isSelf, String ids) {
+    double activateSpell1(int newIndex, int oldIndex, boolean isSelf, String ids) {
 
-        System.out.println(card + " " + index);
-        double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
+        double time = justDestroyActivatedSpellOrTrap(newIndex, oldIndex, isSelf) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : ids.split(" ")) {
@@ -1053,9 +1055,11 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
                 } else {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 0, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 0, true);
                 }
             }
         })).play();
@@ -1063,9 +1067,9 @@ public class GameView {
         return time + 500;
     }
 
-    double activateSpell2(int index, Card card, boolean isSelf, String rivalIds, String activatorIDs) {
+    double activateSpell2(int newIndex, int oldIndex, boolean isSelf, String rivalIds, String activatorIDs) {
 
-        double time = activateSpell1(index, card, isSelf, rivalIds) - 500;
+        double time = activateSpell1(newIndex, oldIndex, isSelf, rivalIds) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : activatorIDs.split(" ")) {
@@ -1073,9 +1077,11 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 0, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 0, true);
                 } else {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
                 }
             }
         })).play();
@@ -1083,9 +1089,9 @@ public class GameView {
         return time + 500;
     }
 
-    double activateSpell3(int index, Card card, boolean isSelf, String ids) {
+    double activateSpell3(int newIndex, int oldIndex, boolean isSelf, String ids) {
 
-        double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
+        double time = justDestroyActivatedSpellOrTrap(newIndex, oldIndex, isSelf) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : ids.split(" ")) {
@@ -1093,13 +1099,14 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 1, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 1, false);
                 } else {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 1, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 1, true);
                 }
             }
         })).play();
-
 
         return time + 500;
     }
@@ -1149,15 +1156,15 @@ public class GameView {
     CardView selfFieldSpell;
     CardView rivalFieldSpell;
 
-    public double activateFieldSpell(Card card, boolean isSelf) {
+    public double activateFieldSpell(int handIndex, boolean isSelf) {
         CardView cardView;
         double time;
 
         if (isSelf) {
-            cardView = searchCardInSelfHand(card);
+            cardView = selfHand.get(handIndex);
             time = runRemoveCardFromHand(this, cardView);
         } else {
-            cardView = searchCardInRivalHand(card);
+            cardView = rivalHand.get(handIndex);
             time = runRemoveCardFromRivalHand(this, cardView);
         }
 
@@ -1169,9 +1176,9 @@ public class GameView {
         }
 
         if (isSelf) {
-            selfFieldSpell = new CardView(card, 9, false, true);
+            selfFieldSpell = new CardView(cardView.card, 9, false, true);
         } else {
-            rivalFieldSpell = new CardView(card, 9, false, true);
+            rivalFieldSpell = new CardView(cardView.card, 9, false, true);
         }
 
         if (isSelf) {
@@ -1264,24 +1271,24 @@ public class GameView {
         }
     }
 
-    void handleSummonRivalMonsterGraphic(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
+    void handleSummonRivalMonsterGraphic(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 0, 0, zoneIndex);
     }
 
-    void handleSetRivalMonsterGraphicBOOCN(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 1, 0, index);
+    void handleSetRivalMonsterGraphicBOOCN(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 1, 0, zoneIndex);
     }
 
-    void handleActivateRivalSpellGraphicBOOCN(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, index);
+    void handleActivateRivalSpellGraphicBOOCN(Card card, int zoneIndex) {
+//        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, zoneIndex);
     }
 
-    void handleSetRivalSpellGraphic(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
+    void handleSetRivalSpellGraphic(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 3, 1, zoneIndex);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphic(String cardName) {
-        addCardToRivalHandFromDeck(this, cardName);
+    void handleAddRivalCardFromDeckToHandGraphic(Card card) {
+        addCardToRivalHandFromDeck(this, card);
     }
 
     void handleRivalFlipSummonGraphicBOOCN(Card card) {

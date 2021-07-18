@@ -39,9 +39,9 @@ public class ActionsAnimationHandler {
     }
 
 
-    static void addCardToRivalHandFromDeck(GameView gameView, String cardName) {
+    static void addCardToRivalHandFromDeck(GameView gameView, Card card) {
         getTransitionForAddCardFromRivalDeckToRivalHand(gameView,
-                new CardView(controller.Utils.getCardByName(cardName), 8, true, true)).play();
+                new CardView(card, 8, true, true)).play();
     }
 
     static ParallelTransition getTransitionForAddCardFromRivalDeckToRivalHand(GameView gameView, CardView cardView) {
@@ -197,9 +197,9 @@ public class ActionsAnimationHandler {
 
     //rival
     static double runMoveRivalCardFromHandToFiledGraphic
-    (GameView gameView, Card card, int mode, int zone, int index) {
+    (GameView gameView, int handIndex, int mode, int zone, int index) {
 
-        CardView cardView = gameView.searchCardInRivalHand(card);
+        CardView cardView = gameView.rivalHand.get(handIndex);
 
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
 

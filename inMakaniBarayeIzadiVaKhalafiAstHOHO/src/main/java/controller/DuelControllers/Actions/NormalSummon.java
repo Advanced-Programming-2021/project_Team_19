@@ -15,11 +15,7 @@ public class NormalSummon extends Summon {
     }
 
     public String[] run(String ids) {
-
-        return new String[]{String.valueOf(currentId)
-                , summonMonster(ids)
-        };
-
+        return new String[]{summonMonster(ids), String.valueOf(currentId)};
     }
 
     @Override

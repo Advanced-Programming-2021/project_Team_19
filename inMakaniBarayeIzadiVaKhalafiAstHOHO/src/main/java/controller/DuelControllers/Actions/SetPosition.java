@@ -63,7 +63,7 @@ public class SetPosition extends Action {
     }
 
     public String[] run(Matcher matcher) {
-        return new String[]{String.valueOf(currentId), setPosition(matcher)};
+        return new String[]{setPosition(matcher), String.valueOf(currentId)};
     }
 
     private String setPosition(Matcher matcher) {

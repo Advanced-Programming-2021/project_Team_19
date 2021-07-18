@@ -21,7 +21,7 @@ public class AttackMonster extends Attack {
             checkTrigger();
             return new String[]{"", ""};
         } else{
-            return new String[]{String.valueOf(currentId), attackMonster()};
+            return new String[]{attackMonster(), String.valueOf(currentId)};
         }
     }
 

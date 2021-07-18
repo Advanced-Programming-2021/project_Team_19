@@ -20,8 +20,8 @@ public class DataFromGameRun {
     }
 
     public DataFromGameRun(String[] eventAndId){
-        this.cardId = Integer.parseInt(eventAndId[0]);
-        this.event = eventAndId[1];
+        this.cardId = Integer.parseInt(eventAndId[1]);
+        this.event = eventAndId[0];
         gamerOfAction = GameData.getGameData().getCurrentGamer();
         eventDataFromServer.add(this);
     }
