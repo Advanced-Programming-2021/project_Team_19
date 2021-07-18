@@ -173,7 +173,7 @@ public class GameGraphicController extends Menu {
 
         new Timeline(new KeyFrame(Duration.millis(3500), event -> {
             graphicsForEvents(game.run(new DataForGameRun
-                    ("start game", gameView1.self)), null, 0);
+                    ("start game", gameView1.self)), 0);
         })).play();
     }
 
@@ -212,7 +212,7 @@ public class GameGraphicController extends Menu {
         return 1000;
     }
 
-    public void graphicsForEvents(ArrayList<DataFromGameRun> events, CardView cardView, int index) {
+    public void graphicsForEvents(ArrayList<DataFromGameRun> events, int index) {
 
         double time = 500;
 
@@ -220,8 +220,7 @@ public class GameGraphicController extends Menu {
             if (AIMod()) {
 
                 new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> graphicsForEvents
-                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
-                                null, 0))).play();
+                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))), 0))).play();
             }
             return;
         }
@@ -250,9 +249,8 @@ public class GameGraphicController extends Menu {
 
         if (response.startsWith("activate trap")) {
             time = graphicsHandlingForSpells
-                    (gameView, /*gameView.spellZoneCards.get(
-                            getIndexById(Integer.parseInt(response.split(":")[0].substring(14)))
-                    )*/0, response.split(":")[3].replace("activate spell ", ""));
+                    (gameView, Integer.parseInt(response.split(":")[0].substring(14))
+                   , response.split(":")[3].replace("activate spell ", ""));
 
             new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
                 CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
@@ -271,7 +269,8 @@ public class GameGraphicController extends Menu {
         } else if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
             try {
-                otherGameView.handleSummonRivalMonsterGraphic(cardId - 1, getIndexByRivalId(cardIndex));
+                otherGameView.handleSummonRivalMonsterGraphic
+                        (cardId - 1, getIndexByRivalId(cardIndex));
             } catch (NullPointerException ignored) {
             }
             try {
@@ -309,26 +308,26 @@ public class GameGraphicController extends Menu {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
             try {
-                otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(cardView.card, position);
+                otherGameView.handleChangePositionOfRivalMonsterGraphicBOOCN(getIndexByRivalId(cardId), position);
             } catch (NullPointerException ignored) {
 
             }
             try {
-                time = gameView.handleChangePositionGraphicForSelfMonsters(cardView.card, position);
+                time = gameView.handleChangePositionGraphicForSelfMonsters(getIndexById(cardId), position);
             } catch (NullPointerException ignored) {
 
             }
 
         } else if (response.matches("get \\d monsters")) {
             try {
-                gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), cardView);
+                gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), getIndexById(cardId));
             } catch (NullPointerException ignored) {
 
             }
 
         } else if (response.equals("attack monster")) {
             try {
-                gameView.initForAttackMonster(cardView);
+                gameView.initForAttackMonster(getIndexById(cardId));
             } catch (NullPointerException ignored) {
 
             }
@@ -369,12 +368,12 @@ public class GameGraphicController extends Menu {
 
         } else if (response.equals("flip summoned successfully")) {
             try {
-                otherGameView.handleRivalFlipSummonGraphicBOOCN(cardView.getCard());
+                otherGameView.handleRivalFlipSummonGraphicBOOCN(getIndexByRivalId(cardId));
             } catch (NullPointerException ignored) {
 
             }
             try {
-                time = gameView.handleFlipSummonGraphic(cardView.card);
+                time = gameView.handleFlipSummonGraphic(getIndexById(cardId));
             } catch (NullPointerException ignored) {
 
             }
@@ -453,7 +452,7 @@ public class GameGraphicController extends Menu {
         }
         if (index < events.size() - 1) {
             new Timeline(new KeyFrame(Duration.millis(time),
-                    EventHandler -> graphicsForEvents(events, cardView, index + 1))).play();
+                    EventHandler -> graphicsForEvents(events, index + 1))).play();
         }
 
         if (index == events.size() - 1) {
@@ -498,8 +497,7 @@ public class GameGraphicController extends Menu {
 
             new Timeline(new KeyFrame(Duration.millis(1000), EventHandler -> {
                 graphicsForEvents
-                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))),
-                                null, 0);
+                        (game.run(new DataForGameRun(GetInput.getAICommand(), AI.getGamer(0))), 0);
             })).play();
         }
     }
@@ -544,13 +542,11 @@ public class GameGraphicController extends Menu {
             } catch (NullPointerException ignored) {
 
             }
-
             try {
                 otherGameView.activateSpell1(newIndex, rivalOldCardIndex, false, ids);
             } catch (NullPointerException ignored) {
 
             }
-
 
         } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
 
@@ -579,14 +575,13 @@ public class GameGraphicController extends Menu {
             } catch (NullPointerException ignored) {
             }
 
-
         } else if (spellCommand.startsWith("field spell ")) {
             Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
             matcher.find();
-            handleFieldSpell(gameView, OldCardIndex, rivalOldCardIndex, matcher.group(1));
+            handleFieldSpell(gameView, cardId - 1, cardId - 1, matcher.group(1));
         } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
             handleIncreaseLP(gameView, spellCommand.substring(18));
-            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
+            handleDestroySpell(gameView, cardId - 1, cardId - 1, newIndex);
         }
         return time;
     }
@@ -608,12 +603,12 @@ public class GameGraphicController extends Menu {
         double time = 1000;
 
         try {
-            getTheOtherGameView(gameView).activateFieldSpell(cardIndex, false);
+            getTheOtherGameView(gameView).activateFieldSpell(rivalCardIndex, false);
         } catch (NullPointerException ignored) {
 
         }
         try {
-            time = gameView.activateFieldSpell(rivalCardIndex, true);
+            time = gameView.activateFieldSpell(cardIndex, true);
         } catch (NullPointerException ignored) {
 
         }

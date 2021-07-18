@@ -644,16 +644,16 @@ public class GameView {
         cardView.tempPopup.hide();
     }
 
-    void initForSummonOrSetBySacrifice(int numberOfSacrifices, CardView mainCard) {
+    void initForSummonOrSetBySacrifice(int numberOfSacrifices, int cardIndex) {
         numberOfNeededCards = numberOfSacrifices;
         idsForMultiCardAction = new ArrayList<>();
-        mainCardForMultiCardAction = mainCard;
+        mainCardForMultiCardAction = monsterZoneCards.get(cardIndex);
     }
 
-    void initForAttackMonster(CardView mainCard) {
+    void initForAttackMonster(int cardIndex) {
         numberOfNeededCards = 1;
         idsForMultiCardAction = new ArrayList<>();
-        mainCardForMultiCardAction = mainCard;
+        mainCardForMultiCardAction = monsterZoneCards.get(cardIndex);
     }
 
     public static int getIdByIndex(int index) {
@@ -859,8 +859,8 @@ public class GameView {
                 (this, handIndex, 3, 1, zoneIndex);
     }
 
-    double handleFlipSummonGraphic(Card card) {
-        return runFlipSummonGraphic(this, card);
+    double handleFlipSummonGraphic(int cardIndex) {
+        return runFlipSummonGraphic(this, cardIndex);
     }
 
     double handleFlipCardGraphic(CardView cardView) {
@@ -1035,10 +1035,10 @@ public class GameView {
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             if (isSelf) {
                 handleDestroyCardFromField(
-                        oldIndex, 1, true);
+                        newIndex != -1 ? newIndex : oldIndex, 1, true);
             } else {
                 handleDestroyCardFromField
-                        (oldIndex, 1, false);
+                        (newIndex != -1 ? 4 - newIndex : 4 - oldIndex, 1, false);
             }
         })).play();
 
@@ -1112,8 +1112,8 @@ public class GameView {
     }
 
 
-    double handleChangePositionGraphicForSelfMonsters(Card card, String position) {
-        CardView cardView = searchCardInSelfField(card);
+    double handleChangePositionGraphicForSelfMonsters(int cardIndex, String position) {
+        CardView cardView = monsterZoneCards.get(cardIndex);
         int mode = position.equals("attack") ? 0 : 4;
         CardView newCardView = getCardViewForField(cardView.card, mode);
         monsterZoneCards.set(monsterZoneCards.indexOf(cardView), newCardView);
@@ -1124,8 +1124,8 @@ public class GameView {
         return runSetPosition(cardView, newCardView, position);
     }
 
-    double handleChangePositionOfRivalMonsterGraphicBOOCN(Card card, String position) {
-        CardView cardView = searchCardInRivalField(card);
+    double handleChangePositionOfRivalMonsterGraphicBOOCN(int cardIndex, String position) {
+        CardView cardView = rivalMonsterZoneCards.get(cardIndex);
         int mode = position.equals("attack") ? 0 : 4;
         CardView newCardView = getCardViewForField(cardView.card, mode);
         rivalMonsterZoneCards.set(rivalMonsterZoneCards.indexOf(cardView), newCardView);
@@ -1291,8 +1291,8 @@ public class GameView {
         addCardToRivalHandFromDeck(this, card);
     }
 
-    void handleRivalFlipSummonGraphicBOOCN(Card card) {
-        runRivalFlipSummonGraphic(this, card);
+    void handleRivalFlipSummonGraphicBOOCN(int cardIndex) {
+        runRivalFlipSummonGraphic(this, cardIndex);
     }
 
     private void setMouseLocationMonitor() {

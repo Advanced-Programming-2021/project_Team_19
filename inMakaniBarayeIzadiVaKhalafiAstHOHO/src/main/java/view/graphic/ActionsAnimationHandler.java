@@ -410,9 +410,9 @@ public class ActionsAnimationHandler {
 
     //flip animations
 
-    static double runFlipSummonGraphic(GameView gameView, Card card) {
+    static double runFlipSummonGraphic(GameView gameView, int cardIndex) {
 
-        CardView cardView = gameView.searchCardInSelfField(card);
+        CardView cardView = gameView.monsterZoneCards.get(cardIndex);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
         gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInFieldX(newCardView, 0));
@@ -435,9 +435,9 @@ public class ActionsAnimationHandler {
         return 400;
     }
 
-    static double runRivalFlipSummonGraphic(GameView gameView, Card card) {
+    static double runRivalFlipSummonGraphic(GameView gameView, int cardIndex) {
 
-        CardView cardView = gameView.searchCardInRivalField(card);
+        CardView cardView = gameView.rivalMonsterZoneCards.get(cardIndex);
         CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
         gameView.rivalMonsterZoneCards.set(gameView.rivalMonsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInRivalFieldX(newCardView, 0));

@@ -42,7 +42,7 @@ public class Game {
 
     public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
         ArrayList<DataFromGameRun> tempData = run(dataFromClient);
-        gameController.graphicsForEvents(tempData, cardView, index);
+        gameController.graphicsForEvents(tempData, index);
     }
 
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
