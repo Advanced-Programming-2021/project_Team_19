@@ -511,7 +511,7 @@ public class GameView {
         for (int i = 0; i < cards.size(); i++) {
             int finalI = i;
             KeyFrame frame = new KeyFrame(Duration.millis(i * 500 + 1),
-                    Event -> handleAddRivalCardFromDeckToHandGraphic(cards.get(finalI)));
+                    Event -> handleAddRivalCardFromDeckToHandGraphic(cards.get(finalI).getName()));
             timeline.getKeyFrames().add(frame);
         }
 
@@ -871,8 +871,9 @@ public class GameView {
         return runIncreaseLpGraphic(this, lp, isSelf);
     }
 
-    double handleAddCardFromDeckToHandGraphic(Card card) {
-        CardView cardView = new CardView(card, 8, true, true);
+    double handleAddCardFromDeckToHandGraphic(String cardName) {
+        CardView cardView = new CardView(controller.Utils.getCardByName(cardName)
+                , 8, true, true);
         setBooleanForShowActions(selfHand, false);
         ParallelTransition transition = getTransitionForAddCardFromDeckToHand(this, cardView);
         transition.setOnFinished(EventHandler -> setBooleanForShowActions(selfHand, true));
@@ -1279,8 +1280,8 @@ public class GameView {
         runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphic(Card card) {
-        addCardToRivalHandFromDeck(this, card);
+    void handleAddRivalCardFromDeckToHandGraphic(String cardName) {
+        addCardToRivalHandFromDeck(this, cardName);
     }
 
     void handleRivalFlipSummonGraphicBOOCN(Card card) {

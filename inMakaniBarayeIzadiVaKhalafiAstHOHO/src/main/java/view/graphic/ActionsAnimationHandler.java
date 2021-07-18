@@ -39,9 +39,9 @@ public class ActionsAnimationHandler {
     }
 
 
-    static void addCardToRivalHandFromDeck(GameView gameView, Card card) {
+    static void addCardToRivalHandFromDeck(GameView gameView, String cardName) {
         getTransitionForAddCardFromRivalDeckToRivalHand(gameView,
-                new CardView(card, 8, true, true)).play();
+                new CardView(controller.Utils.getCardByName(cardName), 8, true, true)).play();
     }
 
     static ParallelTransition getTransitionForAddCardFromRivalDeckToRivalHand(GameView gameView, CardView cardView) {
