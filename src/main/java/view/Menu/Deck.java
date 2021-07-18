@@ -1,5 +1,6 @@
 package view.Menu;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
@@ -22,6 +23,8 @@ import model.User;
 import view.graphic.CardView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Deck extends Menu {
 
@@ -59,7 +62,6 @@ public class Deck extends Menu {
 
     public void initialize() {
         updateDeckScroll();
-
         DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --active", username, "Deck Menu"));
         activeDeckName.setText(data.getMessage());
     }
@@ -98,30 +100,30 @@ public class Deck extends Menu {
         String[] deckNames = Menu.sendDataToServer(new DataForServerFromClient("deck show --all",
                 username, "Deck Menu")).getMessage().split("\n");
         for (String deckName : deckNames) {
-            if (!deckName.startsWith("Decks:") &&
-                    !deckName.startsWith("Active deck:") && !deckName.startsWith("Other decks:")) {
-                deckName = deckName.split(":")[0];
-                model.Deck deck = DeckDataBaseController.getDeckByName(username + "_" + deckName.split(":")[0]);
-                BorderPane deckFullDescription = new BorderPane();
-                HBox hBox = new HBox();
-                int cnt = 0;
-                DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("",""));
-                for (Card card : deck.getAllCardsSorted()) {
-                    if (cnt < 5) {
-                        hBox.getChildren().add(new CardView(card, 4, false, true));
-                        cnt++;
-                    }
+            ArrayList<String> allCards = new ArrayList<>();
+            allCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
+                    username, "Deck Menu")).getMessage().split("\n")));
+            allCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
+                    username, "Deck Menu")).getMessage().split("\n")));
+            BorderPane deckFullDescription = new BorderPane();
+            HBox hBox = new HBox();
+            int cnt = 0;
+            for (String cardName : allCards) {
+                Card card = CSVDataBaseController.getCardByCardName(cardName);
+                if (cnt < 5 && card != null) {
+                    hBox.getChildren().add(new CardView(card, 4, false, true));
+                    cnt++;
                 }
-                hBox.setSpacing(-60);
-                deckFullDescription.setCenter(hBox);
-                Label currentDeckName = new Label(deck.getName() + " :");
-                currentDeckName.setFont(new Font(16));
-                deckFullDescription.setTop(currentDeckName);
-                hBox.setMinWidth(150);
-                hBox.setMinHeight(150);
-                hBox.setOnMouseClicked(e -> OneDeck.getInstance().run(deck, username));
-                allDecks.getChildren().add(deckFullDescription);
             }
+            hBox.setSpacing(-60);
+            deckFullDescription.setCenter(hBox);
+            Label currentDeckName = new Label(deckName + " :");
+            currentDeckName.setFont(new Font(16));
+            deckFullDescription.setTop(currentDeckName);
+            hBox.setMinWidth(150);
+            hBox.setMinHeight(150);
+            hBox.setOnMouseClicked(e -> OneDeck.getInstance().run(deckName, username));
+            allDecks.getChildren().add(deckFullDescription);
         }
         allDecks.setSpacing(10);
         deckBar.setContent(allDecks);

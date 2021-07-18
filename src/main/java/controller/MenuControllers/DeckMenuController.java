@@ -230,22 +230,17 @@ public class DeckMenuController {
 
         StringBuilder returnedData = new StringBuilder();
 
-        returnedData.append("Decks:\n");
-        returnedData.append("Active deck:\n");
-
         String activeDeckName = user.getActiveDeckName();
 
         if (DeckDataBaseController.getDeckByName(getDeckPath(user, activeDeckName)) != null) {
             returnedData.append(DeckDataBaseController.getDeckByName
-                    (getDeckPath(user, activeDeckName)).toString());
+                    (getDeckPath(user, activeDeckName)).getName()).append("\n");
         }
-
-        returnedData.append("Other decks:");
 
         for (String deckName : user.getDeckNames()) {
             if (!deckName.equals(activeDeckName)) {
                 returnedData.append(DeckDataBaseController.getDeckByName(
-                        getDeckPath(user, deckName)).toString());
+                        getDeckPath(user, deckName)).getName()).append("\n");
             }
         }
 
@@ -267,11 +262,19 @@ public class DeckMenuController {
                     MessageType.ERROR);
         } else {
             Deck deck = DeckDataBaseController.getDeckByName(getDeckPath(user, name));
+            StringBuilder stringBuilder = new StringBuilder();
             if (isSideDeck) {
-                return new DataForClientFromServer(deck.detailedToStringSide(), MessageType.DECK);
+//                return new DataForClientFromServer(deck.detailedToStringSide(), MessageType.DECK);
+                for (Card card : deck.getAllSideCardsSorted()) {
+                    stringBuilder.append(card.getName()).append("\n");
+                }
             } else {
-                return new DataForClientFromServer(deck.detailedToStringMain(), MessageType.DECK);
+//                return new DataForClientFromServer(deck.detailedToStringMain(), MessageType.DECK);
+                for (Card card : deck.getAllMainCardsSorted()) {
+                    stringBuilder.append(card.getName()).append("\n");
+                }
             }
+            return new DataForClientFromServer(stringBuilder.toString(), MessageType.SUCCESSFUL);
         }
 
     }
@@ -279,7 +282,7 @@ public class DeckMenuController {
     private DataForClientFromServer showAllCards(User user) {
         StringBuilder temp = new StringBuilder();
         for (Card card : user.getCardsSorted()) {
-            temp.append(card.toString()).append("\n");
+            temp.append(card.getName()).append("\n");
         }
         return new DataForClientFromServer(temp.toString(), MessageType.DECK);
     }
