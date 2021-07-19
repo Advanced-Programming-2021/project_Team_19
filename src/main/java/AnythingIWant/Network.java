@@ -6,13 +6,16 @@ import controller.DataBaseControllers.CSVDataBaseController;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
+import model.Pair;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Network {
+
     private static void initializeNetwork() {
         try {
             ServerSocket serverSocket = new ServerSocket(7777);
@@ -55,23 +58,9 @@ public class Network {
 
     public static void main(String[] args) {
         CSVDataBaseController.load();
-        setNumberOfCard();
+        CSVDataBaseController.setNumberOfCard();
         initializeNetwork();
     }
 
-    private static void setNumberOfCard() {
-        File file = new File("Resource/Cards/getCardCountsAndRules.txt");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                FileWriter fileWriter = new FileWriter(file, false);
-                for (String cardName : CSVDataBaseController.getClassByName.keySet()) {
-                    fileWriter.append(cardName).append(",").append(Integer.toString(100))
-                            .append(",").append("false").append("\n");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+
 }

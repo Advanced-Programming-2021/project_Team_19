@@ -8,17 +8,19 @@ import model.Enums.SpellsAndTraps.SpellTypes;
 import model.Enums.SpellsAndTraps.TrapTypes;
 import model.Enums.Status;
 import model.Enums.Type;
+import model.Pair;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class CSVDataBaseController {
     public static TreeMap<String, Class> getClassByName = new TreeMap<>();
+
+    private static final HashMap<String, Pair<Integer, Boolean>> cardState = new HashMap<>();
 
     public static String addCard(Card card, String cardName, int attack, int defense, int level,  String description) {
         if (getClassByName.containsKey(cardName)) {
@@ -254,10 +256,78 @@ public class CSVDataBaseController {
         }
     }
 
+    public static void setNumberOfCard() {
+        File file = new File("Resource/Cards/getCardCountsAndRules.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                FileWriter fileWriter = new FileWriter(file, false);
+                for (String cardName : CSVDataBaseController.getClassByName.keySet()) {
+                    fileWriter.append(cardName).append(",").append(Integer.toString(100))
+                            .append(",").append("false").append("\n");
+                }
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String row;
+            while ((row = bufferedReader.readLine()) != null) {
+                String[] content = row.split(",");
+                cardState.put(content[0], new Pair<>(Integer.parseInt(content[1]), Boolean.parseBoolean(content[2])));
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void updateCardData() {
+        File file = new File("Resource/Cards/getCardCountsAndRules.txt");
+        try {
+            cardState.clear();
+            FileWriter fileWriter = new FileWriter(file, false);
+            for (Map.Entry<String, Pair<Integer, Boolean>> entry : cardState.entrySet()) {
+                fileWriter.append(entry.getKey()).append(",").append(Integer.toString(entry.getValue().getFirst()))
+                        .append(",").append(entry.getValue().getSecond().toString()).append("\n");
+            }
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static boolean setCardState(String cardName) {
+        return cardState.get(cardName).getSecond();
+    }
+
+    public static int getCardNumber(String cardName) {
+        return cardState.get(cardName).getFirst();
+    }
+
+    public static void setCardState(String cardName, boolean state) {
+        Pair<Integer, Boolean> status = cardState.get(cardName);
+        status.setSecond(state);
+        //just for safety
+        cardState.put(cardName, status);
+    }
+
+    public static void increaseCardCount(String cardName, int add) {
+        Pair<Integer, Boolean> status = cardState.get(cardName);
+        status.setFirst(status.getFirst() + add);
+        //just for safety
+        cardState.put(cardName, status);
+        updateCardData();
+    }
+
     public static void main(String[] arg) {
         load();
-
-
     }
 
 }
