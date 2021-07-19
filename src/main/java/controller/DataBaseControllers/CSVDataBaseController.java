@@ -303,7 +303,7 @@ public class CSVDataBaseController {
     }
 
 
-    public static boolean setCardState(String cardName) {
+    public static boolean getCardState(String cardName) {
         return cardState.get(cardName).getSecond();
     }
 
@@ -318,7 +318,7 @@ public class CSVDataBaseController {
         cardState.put(cardName, status);
     }
 
-    public static void increaseCardCount(String cardName, int add) {
+    public static synchronized void increaseCardCount(String cardName, int add) {
         Pair<Integer, Boolean> status = cardState.get(cardName);
         status.setFirst(status.getFirst() + add);
         //just for safety

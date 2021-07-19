@@ -55,6 +55,14 @@ public class  ShopMenuController {
                     MessageType.ERROR);
         }
 
+        if (!CSVDataBaseController.getCardState(card.getName())) {
+            return new DataForClientFromServer("This card is forbidden by the admin", MessageType.ERROR);
+        }
+
+        if (CSVDataBaseController.getCardNumber(card.getName()) == 0) {
+            return new DataForClientFromServer("There is not enough card available", MessageType.ERROR);
+        }
+
         if (user.getCredit() < card.getPrice()) {
             return new DataForClientFromServer("not enough money", MessageType.ERROR);
         }
@@ -63,6 +71,8 @@ public class  ShopMenuController {
         user.decreaseCredit(card.getPrice());
         DataBaseController.rewriteFileOfObjectGson(UserDataBaseController.
                 getUserFilePathByUsername(user.getUsername()), user);
+        CSVDataBaseController.increaseCardCount(cardName, -1);
+        //Remeber to add something to CSV
         return new DataForClientFromServer("you successfully bought the card",
                 MessageType.SUCCESSFUL);
 
