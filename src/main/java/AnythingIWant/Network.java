@@ -2,30 +2,18 @@ package AnythingIWant;
 
 import com.google.gson.Gson;
 import controller.ClientDataController;
+import controller.DataBaseControllers.CSVDataBaseController;
+import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Network {
-    private static Network network;
-
-    public static Network getInstance() {
-        if (network == null) {
-            network = new Network();
-        }
-        return network;
-    }
-
-    private Network() {
-        initializeNetwork();
-    }
-
-    public void initializeNetwork() {
+    private static void initializeNetwork() {
         try {
             ServerSocket serverSocket = new ServerSocket(7777);
             while (true) {
@@ -37,7 +25,7 @@ public class Network {
         }
     }
 
-    private void startNewConnection(Socket socket) {
+    private static void startNewConnection(Socket socket) {
         new Thread(() -> {
             try {
                 DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
@@ -52,7 +40,7 @@ public class Network {
         }).start();
     }
 
-    private void processCommandAndGiveOutput(String command, DataOutputStream dataOutputStream) {
+    private static void processCommandAndGiveOutput(String command, DataOutputStream dataOutputStream) {
         Gson gson = new Gson();
         DataForServerFromClient data = gson.fromJson(command, DataForServerFromClient.class);
         System.out.println(data.getMessage());
@@ -66,6 +54,24 @@ public class Network {
     }
 
     public static void main(String[] args) {
-        Network.getInstance();
+        CSVDataBaseController.load();
+        setNumberOfCard();
+        initializeNetwork();
+    }
+
+    private static void setNumberOfCard() {
+        File file = new File("Resource/Cards/getCardCountsAndRules.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                FileWriter fileWriter = new FileWriter(file, false);
+                for (String cardName : CSVDataBaseController.getClassByName.keySet()) {
+                    fileWriter.append(cardName).append(",").append(Integer.toString(100))
+                            .append(",").append("false").append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

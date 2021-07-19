@@ -162,7 +162,7 @@ public class Shop extends Menu {
                 return;
             }
             DataForClientFromServer data =
-                    ShopMenuController.getInstance().run(user, "shop buy " + currentCard.getName() );
+                    Menu.sendDataToServer(new DataForServerFromClient("shop buy " + currentCard.getName() , username, "Shop Menu" ));
             messageBox.setText(data.getMessage());
             if (data.getMessageType().equals(MessageType.ERROR)){
                 messageBox.setTextFill(Color.RED);
