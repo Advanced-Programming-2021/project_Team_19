@@ -10,7 +10,7 @@ public class RotateAnimation implements CardViewAnimationMaker{
 
     public RotateAnimation(CardView cardView, double time, double angle){
 
-        javafx.animation.RotateTransition rotate1 = new javafx.animation.RotateTransition();
+        RotateTransition rotate1 = new RotateTransition();
         rotate1.setByAngle(angle);
         rotate1.setNode(cardView);
         rotate1.setDuration(Duration.millis(time));

@@ -1,5 +1,6 @@
 package controller.DuelControllers;
 
+import controller.DataFromGameRun;
 import controller.DuelControllers.Actions.Action;
 import controller.Utils;
 import model.Board.GraveYard;
@@ -32,6 +33,7 @@ public class GameData {
     private GameEvent event = null;
     private int actionIndexForTriggerActivation = -1;
     public TriggerLabel triggerLabel = null;
+    public ArrayList<DataFromGameRun> dataFromGameRuns = new ArrayList<>();
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
@@ -270,5 +272,13 @@ public class GameData {
         else
             return getSecondGamer();
 
+    }
+
+    public void resetDataFromGameRuns(){
+        dataFromGameRuns.clear();
+    }
+
+    public void addData(DataFromGameRun data){
+        dataFromGameRuns.add(data);
     }
 }

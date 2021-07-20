@@ -14,29 +14,29 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import model.Card.Card;
-import model.Card.Monster;
 import model.Enums.CardFamily;
 import model.Gamer;
 
 import java.util.ArrayList;
 
 public class CardView extends Rectangle {
-        Card card;
-        String cardName;
-        String description;
-        boolean isMonster;
-        public boolean isHidden = false;
-        public boolean isVertical = true;
-        public static double height = 614;
-        public static double width = 423;
-        public double sizeInverse;
-        private ArrayList<String> validActionNamesForShow;
-        private ArrayList<String> validActionNames;
-        private int validActionIndex = 0;
-        public boolean canShowValidActions = true;
-        public Popup tempPopup;
-        public EventHandler filter;
-        public boolean hasBeenClicked;
+
+    Card card;
+    String cardName;
+    String description;
+    boolean isMonster;
+    public boolean isHidden = false;
+    public boolean isVertical = true;
+    public static double height = 614;
+    public static double width = 423;
+    public double sizeInverse;
+    private ArrayList<String> validActionNamesForShow;
+    private ArrayList<String> validActionNames;
+    private int validActionIndex = 0;
+    public boolean canShowValidActions = true;
+    public Popup tempPopup;
+    public EventHandler filter;
+    public boolean hasBeenClicked;
 
     public CardView(double sizeInverse) {
         super(width / sizeInverse, height / sizeInverse);
@@ -89,7 +89,7 @@ public class CardView extends Rectangle {
         }
     }
 
-        public Image getImage() {
+    public Image getImage() {
 
         if (cardName != null) {
             String model = isMonster ? "Monsters/" : "SpellTrap/";
@@ -100,16 +100,16 @@ public class CardView extends Rectangle {
         return new Image("/Assets/Cards/Monsters/Unknown.jpg");
     }
 
-        public void setCanShowValidActions(boolean canShowValidActions) {
+    public void setCanShowValidActions(boolean canShowValidActions) {
         this.canShowValidActions = canShowValidActions;
     }
 
-        public void hideCard() {
+    public void hideCard() {
         setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         isHidden = true;
     }
 
-        public void setCardImage() {
+    public void setCardImage() {
         if (isVertical) {
             ImagePattern imagePattern = new ImagePattern(getImage());
             setFill(imagePattern);
@@ -119,7 +119,7 @@ public class CardView extends Rectangle {
         isHidden = false;
     }
 
-        private void setCardImage2() {
+    private void setCardImage2() {
         ImageView imageView = new ImageView(getImage());
         imageView.setRotate(90);
 
@@ -130,16 +130,16 @@ public class CardView extends Rectangle {
         setFill(new ImagePattern(rotatedImage));
     }
 
-        public String getFirstValidAction(GameView gameView) throws Exception {
+    public String getFirstValidAction(GameView gameView) throws Exception {
         Game game = gameView.game;
         Gamer gamer = gameView.self;
 
         validActionNamesForShow = new ArrayList<>();
         DataForGameRun dataToSend = new DataForGameRun("get valid actions", gamer);
-//        dataToSend.findIdAndZoneName(gameView, this);
-//        System.out.println(dataToSend.getZoneName());
-//        System.out.println(dataToSend.getId());
-//        validActionNames = game.getValidCommandsForCard(dataToSend);
+        dataToSend.findIdAndZoneName(gameView, this);
+        System.out.println(dataToSend.getZoneName());
+        System.out.println(dataToSend.getId());
+        validActionNames = game.getValidCommandsForCard(dataToSend);
 
         for (String validAction : validActionNames) {
             if (validAction.equals("summon with sacrifice")) {
@@ -183,7 +183,7 @@ public class CardView extends Rectangle {
         return validActionNamesForShow.get(0);
     }
 
-        public String getNextValidAction() throws Exception {
+    public String getNextValidAction() throws Exception {
         throwExceptionIfHasNoValidAction();
 
         return validActionNamesForShow.get
@@ -191,17 +191,17 @@ public class CardView extends Rectangle {
     }
 
 
-        public String getCurrentAction() {
+    public String getCurrentAction() {
         return validActionNamesForShow.get(validActionIndex % validActionNamesForShow.size());
     }
 
-        public void throwExceptionIfHasNoValidAction() throws Exception {
+    public void throwExceptionIfHasNoValidAction() throws Exception {
         if (validActionNamesForShow.size() == 0) {
             throw new Exception("no valid actions");
         }
     }
 
-        public void setShowCardAndShowValidActions(GameView gameView) {
+    public void setShowCardAndShowValidActions(GameView gameView) {
 
         setOnMouseEntered(mouseEvent -> {
             hasBeenClicked = false;
@@ -246,17 +246,12 @@ public class CardView extends Rectangle {
         });
     }
 
-    public Card getCard() {
-        return card;
-    }
-
     public String getCardName() {
         return cardName;
     }
 
-        public String getDescription() {
+    public String getDescription() {
         return description;
     }
-
 }
 

@@ -2,9 +2,7 @@ package view.graphic;
 
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
-import controller.DuelControllers.CardActionManager;
 import controller.DuelControllers.Game;
-import controller.DuelControllers.actionManagerMode;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -33,10 +31,6 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Card.Card;
-import model.Card.Monster;
-import model.Card.SpellAndTraps;
-import model.Enums.CardMod;
-import model.Enums.SpellCardMods;
 import model.Gamer;
 import view.graphic.CardViewAnimations.FadeAnimation;
 import view.graphic.CardViewAnimations.RotateAnimation;
@@ -183,8 +177,7 @@ public class GameView {
                 cheatSheet.show();
             } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()){
                 if (game.gameData.getCurrentGamer().equals(self)) {
-                    ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
-                    gameController.graphicsForEvents(events, null, 0);
+                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
                 }
             }
         });
@@ -209,15 +202,18 @@ public class GameView {
             }
         });
         phaseButton.setOnMouseClicked(event -> {
-            if (game.gameData.getCurrentGamer().equals(self)) {
-                ArrayList<DataFromGameRun> events = new ArrayList<>(game.run(new DataForGameRun("next phase", self)));
-                gameController.graphicsForEvents(events, null, 0);
+            if(canRunNextPhase){
+                canRunNextPhase = false;
+                if (game.gameData.getCurrentGamer().equals(self)) {
+                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+                }
             }
+
         });
 
         gamePane.getChildren().add(phaseButton);
     }
-
+    boolean canRunNextPhase = true;
 
     private void addPhaseBox() {
 
@@ -256,7 +252,12 @@ public class GameView {
     private void runChangePhase() {
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
-
+                if(i == 4 || i == 0){
+                    canRunNextPhase = false;
+                }
+                if(i == 1 || i == 2 || i == 3){
+                    canRunNextPhase = true;
+                }
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
@@ -273,8 +274,7 @@ public class GameView {
 
         Button submit = new Button("submit");
         submit.setOnMouseClicked(event -> {
-            ArrayList<DataFromGameRun> data = game.run(new DataForGameRun("game button " + cheatTextField.getText(), self));
-            gameController.graphicsForEvents(data, null, 0);
+            game.runWithGraphics(new DataForGameRun("game button " + cheatTextField.getText(), self), null, 0);
             stage.close();
         });
 
@@ -395,36 +395,36 @@ public class GameView {
         rivalGraveYard.setLayoutY(177);
     }
 
-    void handleAddCardToGraveYardGraphicBOOTN(Card card, boolean addToSelfGraveYard) {
-        runAddCardToGraveYard(card, addToSelfGraveYard);
+    void handleAddCardToGraveYardGraphicBOOTN(String cardName, boolean addToSelfGraveYard) {
+        runAddCardToGraveYard(cardName, addToSelfGraveYard);
     }
 
-    private void runAddCardToGraveYard(Card card, boolean addToSelfGraveYard) {
+    private void runAddCardToGraveYard(String cardName, boolean addToSelfGraveYard) {
         if (addToSelfGraveYard) {
-            runAddCardToSelfGraveYard(card);
+            runAddCardToSelfGraveYard(cardName);
         } else {
-            runAddCardToRivalGraveYard(card);
+            runAddCardToRivalGraveYard(cardName);
         }
     }
 
-    private void runAddCardToSelfGraveYard(Card card) {
-        CardView cardView = getCardForGraveyard(card, true);
+    private void runAddCardToSelfGraveYard(String cardName) {
+        CardView cardView = getCardForGraveyard(cardName, true);
         cardView.opacityProperty().set(0);
         selfGraveyardCards.add(cardView);
         selfGraveYard.getChildren().add(cardView);
         new FadeAnimation(cardView, 500, 0, 1).getAnimation().play();
     }
 
-    public void runAddCardToRivalGraveYard(Card card) {
-        CardView cardView = getCardForGraveyard(card, false);
+    public void runAddCardToRivalGraveYard(String cardName) {
+        CardView cardView = getCardForGraveyard(cardName, false);
         cardView.opacityProperty().set(0);
         rivalGraveyardCards.add(cardView);
         rivalGraveYard.getChildren().add(cardView);
         new FadeAnimation(cardView, 500, 0, 1).getAnimation().play();
     }
 
-    private CardView getCardForGraveyard(Card card, boolean isSelf) {
-        CardView cardView = new CardView(card, 9, false, true);
+    private CardView getCardForGraveyard(String cardName, boolean isSelf) {
+        CardView cardView = new CardView(cardName, 9, false, true);
 
         cardView.setOnMouseClicked(mouseEvent -> {
             if (!mainPane.getChildren().contains(cardViewsScrollPane)) {
@@ -436,9 +436,9 @@ public class GameView {
         return cardView;
     }
 
-    private ArrayList<CardView> showCardsInScrollPane(ArrayList<Card> cards, boolean canCloseByRightClick) {
+    private ArrayList<CardView> showCardsInScrollPane(ArrayList<CardView> cardViews, boolean canCloseByRightClick) {
 
-        ArrayList<CardView> cardViews = new ArrayList<>();
+        ArrayList<CardView> newCardViews = new ArrayList<>();
 
         if (canCloseByRightClick) {
             cardViewsScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -456,11 +456,11 @@ public class GameView {
 
         HBox box = new HBox(5);
 
-        for (Card card : cards) {
-            CardView temp = new CardView(card, 4, false, true);
+        for (CardView cardView : cardViews) {
+            CardView temp = new CardView(cardView.getCardName(), 4, false, true);
             setShowCardOnMouseEntered(temp);
             box.getChildren().add(temp);
-            cardViews.add(temp);
+            newCardViews.add(temp);
         }
 
         cardViewsScrollPane.setContent(box);
@@ -468,17 +468,14 @@ public class GameView {
         cardViewsScrollPane.setMinWidth(450);
         cardViewsScrollPane.setMinHeight(170);
 
-        return cardViews;
+        return newCardViews;
     }
 
     private void showGraveYard(boolean isSelf) {
 
-        ArrayList<Card> cards = new ArrayList<>();
         ArrayList<CardView> cardViews = isSelf ? selfGraveyardCards : rivalGraveyardCards;
-        for (CardView cardView : cardViews) {
-            cards.add(cardView.getCard());
-        }
-        showCardsInScrollPane(cards, true);
+
+        showCardsInScrollPane(cardViews, true);
     }
 
     public void run() {
@@ -495,18 +492,13 @@ public class GameView {
     }
 
     public void initHand() {
-        ArrayList<Card> cards = new ArrayList<>();
-        ArrayList<Card> rivalCards = new ArrayList<>();
+        DataFromGameRun data = game.run(new DataForGameRun("get init hand data", self)).get(0);
 
-        for (int i = 0; i < 5; i++) {
-            cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
-            rivalCards.add(rival.getGameBoard().getHand().getCardsInHand().get(i));
-        }
-        handleAddCardsFromDeckToSelfHandGraphic(cards);
-        handleAddCardsFromDeckToRivalHandGraphic(rivalCards);
+        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
+        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
     }
 
-    public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<Card> cards) {
+    public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<String> cards) {
         Timeline timeline = new Timeline();
 
         for (int i = 0; i < cards.size(); i++) {
@@ -526,8 +518,8 @@ public class GameView {
         if (bool) {
             if (mouseEnteredCardView != null) {
                 try {
-//                    showValidActionForCard
-//                            (mouseEnteredCardView.getFirstValidAction(game, self), mouseEnteredCardView);
+                    showValidActionForCard
+                            (mouseEnteredCardView.getFirstValidAction(this), mouseEnteredCardView);
                 } catch (Exception ignored) {
 
                 }
@@ -562,8 +554,8 @@ public class GameView {
 
     CardView mouseEnteredCardView = null;
 
-    CardView getCardForHand(Card card) {
-        CardView cardView = new CardView(card, 5, false, true);
+    CardView getCardForHand(String cardName) {
+        CardView cardView = new CardView(cardName, 5, false, true);
 
         cardView.setOnMouseEntered(mouseEvent -> {
             mouseEnteredCardView = cardView;
@@ -572,7 +564,7 @@ public class GameView {
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
             if (cardView.canShowValidActions) {
                 try {
-//                    showValidActionForCard(cardView.getFirstValidAction(game, self), cardView);
+                    showValidActionForCard(cardView.getFirstValidAction(this), cardView);
                 } catch (Exception ignored) {
                 }
             }
@@ -617,9 +609,10 @@ public class GameView {
         ArrayList<DataFromGameRun> dataFromGameRun;
         if (numberOfNeededCards != 0 && cardView.getCurrentAction() != null) {
             if (cardView.getCurrentAction().equals("sacrifice")) {
-                idsForMultiCardAction.add(game.gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
+                idsForMultiCardAction.add
+                        (getIdByIndex(monsterZoneCards.indexOf(cardView)));
             } else if (cardView.getCurrentAction().equals("attack")) {
-                idsForMultiCardAction.add(game.gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getId(cardView.card));
+                idsForMultiCardAction.add(getRivalIdByIndex(rivalMonsterZoneCards.indexOf(cardView)));
             }
 
             if (idsForMultiCardAction.size() == numberOfNeededCards) {
@@ -628,30 +621,42 @@ public class GameView {
                 for (Integer integer : idsForMultiCardAction) {
                     command.append(" ").append(integer);
                 }
-                dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self));
                 cardView = mainCardForMultiCardAction;
+//                dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self));
+                game.runWithGraphics(new DataForGameRun(String.valueOf(command), self), cardView, 0);
             } else {
                 return;
             }
         } else {
-            dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
+//            dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
+            game.runWithGraphics(new DataForGameRun(cardView.getCurrentAction(), self), cardView, 0);
         }
 
-        gameController.graphicsForEvents(dataFromGameRun, cardView, 0);
+//        gameController.graphicsForEvents(dataFromGameRun, cardView, 0);
 
         cardView.tempPopup.hide();
     }
 
-    void initForSummonOrSetBySacrifice(int numberOfSacrifices, CardView mainCard) {
+    void initForSummonOrSetBySacrifice(int numberOfSacrifices, int cardIndex) {
         numberOfNeededCards = numberOfSacrifices;
         idsForMultiCardAction = new ArrayList<>();
-        mainCardForMultiCardAction = mainCard;
+        mainCardForMultiCardAction = monsterZoneCards.get(cardIndex);
     }
 
-    void initForAttackMonster(CardView mainCard) {
+    void initForAttackMonster(int cardIndex) {
         numberOfNeededCards = 1;
         idsForMultiCardAction = new ArrayList<>();
-        mainCardForMultiCardAction = mainCard;
+        mainCardForMultiCardAction = monsterZoneCards.get(cardIndex);
+    }
+
+    public static int getIdByIndex(int index) {
+        String data = "53124";
+        return data.charAt(index) - '0';
+    }
+
+    public static int getRivalIdByIndex(int index){
+        String data = "42135";
+        return data.charAt(index) - '0';
     }
 
     public static int getIndexById(int id) {
@@ -665,31 +670,22 @@ public class GameView {
     }
 
 
-    CardView getCardForRivalHand(Card card) {
-        return new CardView(card, 5, true, true);
+    CardView getCardForRivalHand(String cardName) {
+        return new CardView(cardName, 5, true, true);
     }
 
     public void showCard(CardView cardView) {
 
-        Card card = cardView.getCard();
-
-        if (card == null) {
+        if (cardView.getCardName() == null) {
             return;
         }
         if (rivalMonsterZoneCards.contains(cardView) || rivalSpellZoneCards.contains(cardView)) {
-            if (card instanceof Monster) {
-                if (CardMod.DEFENSIVE_HIDDEN.equals(((Monster) card).getCardMod())) {
-                    return;
-                }
-            } else if (card instanceof SpellAndTraps) {
-                SpellAndTraps spell = (SpellAndTraps) card;
-                if (SpellCardMods.HIDDEN.equals(spell.getSpellCardMod())) {
-                    return;
-                }
+            if (cardView.isHidden) {
+                return;
             }
         }
-//        cardForShow.setFill(new ImagePattern(CardView.getImageByCard(card)));
-        cardDescription.setText(card.getDescription());
+        cardForShow.setFill(new ImagePattern(cardView.getImage()));
+        cardDescription.setText(cardView.getDescription());
     }
 
     void setShowCardOnMouseEntered(CardView cardView) {
@@ -725,16 +721,16 @@ public class GameView {
     }
 
 
-    CardView getCardViewForField(Card card, int mode) {
+    CardView getCardViewForField(String cardName, int mode) {
         CardView cardView = new CardView(9);
         if (mode == 0 || mode == 2) {
-            cardView = new CardView(card, 9, false, true);
+            cardView = new CardView(cardName, 9, false, true);
         } else if (mode == 1) {
-            cardView = new CardView(card, 9, true, false);
+            cardView = new CardView(cardName, 9, true, false);
         } else if (mode == 3) {
-            cardView = new CardView(card, 9, true, true);
+            cardView = new CardView(cardName, 9, true, true);
         } else if (mode == 4) {
-            cardView = new CardView(card, 9, false, false);
+            cardView = new CardView(cardName, 9, false, false);
         }
         cardView.setShowCardAndShowValidActions(this);
         return cardView;
@@ -786,69 +782,23 @@ public class GameView {
         return 0;
     }
 
-    CardView searchCardInRivalHand(Card card) {
-        for (CardView cardView : rivalHand) {
-            if (cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        return null;
-    }
-
-    CardView searchCardInSelfHand(Card card) {
-        for (CardView cardView : selfHand) {
-            if (cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        return null;
-    }
-
-    CardView searchCardInRivalField(Card card) {
-        for (CardView cardView : rivalMonsterZoneCards) {
-            if (cardView != null && cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        for (CardView cardView : rivalSpellZoneCards) {
-            if (cardView != null && cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        return null;
-    }
-
-    CardView searchCardInSelfField(Card card) {
-        for (CardView cardView : monsterZoneCards) {
-            if (cardView != null && cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        for (CardView cardView : spellZoneCards) {
-            if (cardView != null && cardView.getCard().equals(card)) {
-                return cardView;
-            }
-        }
-        return null;
-    }
-
-    double handleSummonGraphic(Card card, int index) {
+    double handleSummonGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 0, 0, index);
+                (this, handIndex, 0, 0, zoneIndex);
     }
 
-    double handleSetMonsterGraphic(Card card, int index) {
+    double handleSetMonsterGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 1, 0, index);
+                (this, handIndex, 1, 0, zoneIndex);
     }
 
-    double handleSetSpellGraphic(Card card, int index) {
+    double handleSetSpellGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
-                (this, card, 3, 1, index);
+                (this, handIndex, 3, 1, zoneIndex);
     }
 
-    double handleFlipSummonGraphic(Card card) {
-        return runFlipSummonGraphic(this, card);
+    double handleFlipSummonGraphic(int cardIndex) {
+        return runFlipSummonGraphic(this, cardIndex);
     }
 
     double handleFlipCardGraphic(CardView cardView) {
@@ -859,8 +809,9 @@ public class GameView {
         return runIncreaseLpGraphic(this, lp, isSelf);
     }
 
-    double handleAddCardFromDeckToHandGraphic(Card card) {
-        CardView cardView = new CardView(card, 8, true, true);
+    double handleAddCardFromDeckToHandGraphic(String cardName) {
+        CardView cardView = new CardView(cardName
+                , 8, true, true);
         setBooleanForShowActions(selfHand, false);
         ParallelTransition transition = getTransitionForAddCardFromDeckToHand(this, cardView);
         transition.setOnFinished(EventHandler -> setBooleanForShowActions(selfHand, true));
@@ -868,25 +819,25 @@ public class GameView {
         return 500;
     }
 
-    double handleAddCardsFromDeckToSelfHandGraphic(ArrayList<Card> cards) {
+    double handleAddCardsFromDeckToSelfHandGraphic(ArrayList<String> cards) {
         ArrayList<CardView> cardViews = new ArrayList<>();
-        for (Card card : cards) {
+        for (String cardName : cards) {
             cardViews.add(new CardView(
-                    card, 8, true, true));
+                    cardName, 8, true, true));
         }
         return runAddCardsToSelfHandFromDeckAnimation(this, cardViews);
     }
 
     double handleSummonSetWithSacrificeGraphics
-            (Card card, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
+            (int handIndex, int zoneIndex, boolean isSet, ArrayList<Integer> sacrificesIndex) {
 
         double time = 0;
 
         for (int i : sacrificesIndex) {
             time = handleDestroyCardFromField(i, 0, true);
         }
-        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(card, index)
-                : EventHandler -> handleSummonGraphic(card, index);
+        EventHandler eventHandler = isSet ? EventHandler -> handleSetMonsterGraphic(handIndex, zoneIndex)
+                : EventHandler -> handleSummonGraphic(handIndex, zoneIndex);
 
         new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
 
@@ -894,15 +845,16 @@ public class GameView {
     }
 
     double handleRivalSummonSetWithSacrificeGraphic
-            (Card card, int index, boolean isSet, ArrayList<Integer> sacrificesIndex) {
+            (int handIndex, int zoneIndex, boolean isSet, ArrayList<Integer> sacrificesIndex) {
 
         double time = 0;
 
         for (int i : sacrificesIndex) {
             time = handleDestroyCardFromField(i, 0, false);
         }
-        EventHandler eventHandler = isSet ? EventHandler -> handleSetRivalMonsterGraphicBOOCN(card, index)
-                : EventHandler -> handleSummonRivalMonsterGraphic(card, index);
+        EventHandler eventHandler = isSet ? EventHandler -> handleSetRivalMonsterGraphicBOOCN
+                (handIndex, zoneIndex)
+                : EventHandler -> handleSummonRivalMonsterGraphic(handIndex, zoneIndex);
 
         new Timeline(new KeyFrame(Duration.millis(time), eventHandler)).play();
 
@@ -995,22 +947,24 @@ public class GameView {
         return ans;
     }
 
-    double justDestroyActivatedSpellOrTrap(int index, Card card, boolean isSelf) {
+    double justDestroyActivatedSpellOrTrap(int newIndex, int oldIndex, boolean isSelf) {
         CardView cardView;
 
-        if (index != -1) {
-            cardView = isSelf ? searchCardInSelfHand(card) : searchCardInRivalHand(card);
+        if (newIndex != -1) {
+            cardView = isSelf ? selfHand.get(oldIndex) : rivalHand.get(oldIndex);
         } else {
-            cardView = isSelf ? searchCardInSelfField(card) : searchCardInRivalField(card);
+            cardView = isSelf ? spellZoneCards.get(oldIndex) : rivalSpellZoneCards.get(oldIndex);
         }
 
         double time = 500;
 
-        if (index != -1) {
+        if (newIndex != -1) {
             if (isSelf) {
-                time += runMoveCardFromHandToFieldGraphic(this, cardView.card, 2, 1, index);
+                time += runMoveCardFromHandToFieldGraphic
+                        (this, oldIndex, 2, 1, newIndex);
             } else {
-                time += runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, 4 - index);
+                time += runMoveRivalCardFromHandToFiledGraphic
+                        (this, oldIndex, 2, 1, 4 - newIndex);
             }
         } else {
             time += handleFlipCardGraphic(cardView);
@@ -1019,20 +973,19 @@ public class GameView {
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             if (isSelf) {
                 handleDestroyCardFromField(
-                        spellZoneCards.indexOf(searchCardInSelfField(cardView.getCard())), 1, true);
+                        newIndex != -1 ? newIndex : oldIndex, 1, true);
             } else {
                 handleDestroyCardFromField
-                        (rivalSpellZoneCards.indexOf(searchCardInRivalField(cardView.getCard())), 1, false);
+                        (newIndex != -1 ? 4 - newIndex : oldIndex, 1, false);
             }
         })).play();
 
         return time + 500;
     }
 
-    double activateSpell1(int index, Card card, boolean isSelf, String ids) {
+    double activateSpell1(int newIndex, int oldIndex, boolean isSelf, String ids) {
 
-        System.out.println(card + " " + index);
-        double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
+        double time = justDestroyActivatedSpellOrTrap(newIndex, oldIndex, isSelf) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : ids.split(" ")) {
@@ -1040,9 +993,11 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
                 } else {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 0, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 0, true);
                 }
             }
         })).play();
@@ -1050,9 +1005,9 @@ public class GameView {
         return time + 500;
     }
 
-    double activateSpell2(int index, Card card, boolean isSelf, String rivalIds, String activatorIDs) {
+    double activateSpell2(int newIndex, int oldIndex, boolean isSelf, String rivalIds, String activatorIDs) {
 
-        double time = activateSpell1(index, card, isSelf, rivalIds) - 500;
+        double time = activateSpell1(newIndex, oldIndex, isSelf, rivalIds) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : activatorIDs.split(" ")) {
@@ -1060,9 +1015,11 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 0, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 0, true);
                 } else {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 0, false);
                 }
             }
         })).play();
@@ -1070,9 +1027,9 @@ public class GameView {
         return time + 500;
     }
 
-    double activateSpell3(int index, Card card, boolean isSelf, String ids) {
+    double activateSpell3(int newIndex, int oldIndex, boolean isSelf, String ids) {
 
-        double time = justDestroyActivatedSpellOrTrap(index, card, isSelf) - 500;
+        double time = justDestroyActivatedSpellOrTrap(newIndex, oldIndex, isSelf) - 500;
 
         new Timeline(new KeyFrame(Duration.millis(time), Event -> {
             for (String indexStr : ids.split(" ")) {
@@ -1080,22 +1037,23 @@ public class GameView {
                     continue;
                 }
                 if (isSelf) {
-                    handleDestroyCardFromField(getIndexByRivalId(Integer.parseInt(indexStr)), 1, false);
+                    handleDestroyCardFromField
+                            (getIndexByRivalId(Integer.parseInt(indexStr)), 1, false);
                 } else {
-                    handleDestroyCardFromField(getIndexById(Integer.parseInt(indexStr)), 1, true);
+                    handleDestroyCardFromField
+                            (getIndexById(Integer.parseInt(indexStr)), 1, true);
                 }
             }
         })).play();
-
 
         return time + 500;
     }
 
 
-    double handleChangePositionGraphicForSelfMonsters(Card card, String position) {
-        CardView cardView = searchCardInSelfField(card);
+    double handleChangePositionGraphicForSelfMonsters(int cardIndex, String position) {
+        CardView cardView = monsterZoneCards.get(cardIndex);
         int mode = position.equals("attack") ? 0 : 4;
-        CardView newCardView = getCardViewForField(cardView.card, mode);
+        CardView newCardView = getCardViewForField(cardView.getCardName(), mode);
         monsterZoneCards.set(monsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(getCardInFieldX(newCardView, mode));
         newCardView.setY(getCardInFieldY(mode));
@@ -1104,10 +1062,10 @@ public class GameView {
         return runSetPosition(cardView, newCardView, position);
     }
 
-    double handleChangePositionOfRivalMonsterGraphicBOOCN(Card card, String position) {
-        CardView cardView = searchCardInRivalField(card);
+    double handleChangePositionOfRivalMonsterGraphicBOOCN(int cardIndex, String position) {
+        CardView cardView = rivalMonsterZoneCards.get(cardIndex);
         int mode = position.equals("attack") ? 0 : 4;
-        CardView newCardView = getCardViewForField(cardView.card, mode);
+        CardView newCardView = getCardViewForField(cardView.getCardName(), mode);
         rivalMonsterZoneCards.set(rivalMonsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(getCardInRivalFieldX(newCardView, mode));
         newCardView.setY(getCardInRivalFieldY(mode));
@@ -1136,15 +1094,15 @@ public class GameView {
     CardView selfFieldSpell;
     CardView rivalFieldSpell;
 
-    public double activateFieldSpell(Card card, boolean isSelf) {
+    public double activateFieldSpell(int handIndex, boolean isSelf) {
         CardView cardView;
         double time;
 
         if (isSelf) {
-            cardView = searchCardInSelfHand(card);
+            cardView = selfHand.get(handIndex);
             time = runRemoveCardFromHand(this, cardView);
         } else {
-            cardView = searchCardInRivalHand(card);
+            cardView = rivalHand.get(handIndex);
             time = runRemoveCardFromRivalHand(this, cardView);
         }
 
@@ -1156,9 +1114,9 @@ public class GameView {
         }
 
         if (isSelf) {
-            selfFieldSpell = new CardView(card, 9, false, true);
+            selfFieldSpell = new CardView(cardView.getCardName(), 9, false, true);
         } else {
-            rivalFieldSpell = new CardView(card, 9, false, true);
+            rivalFieldSpell = new CardView(cardView.getCardName(), 9, false, true);
         }
 
         if (isSelf) {
@@ -1189,7 +1147,7 @@ public class GameView {
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
                     gamePane.getChildren().remove(cardView);
-                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), true);
                 });
                 animation.play();
             } else if (zone == 1) {
@@ -1198,7 +1156,7 @@ public class GameView {
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
                     gamePane.getChildren().remove(cardView);
-                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), true);
                 });
                 animation.play();
             } else {
@@ -1211,7 +1169,7 @@ public class GameView {
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
                     gamePane.getChildren().remove(cardView);
-                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), false);
                 });
                 animation.play();
             } else if (zone == 1) {
@@ -1220,7 +1178,7 @@ public class GameView {
                         new FadeAnimation(cardView, 500, 1, 0).getAnimation();
                 animation.setOnFinished(EventHandler -> {
                     gamePane.getChildren().remove(cardView);
-                    handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
+                    handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), false);
                 });
                 animation.play();
             } else {
@@ -1251,28 +1209,28 @@ public class GameView {
         }
     }
 
-    void handleSummonRivalMonsterGraphic(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 0, 0, index);
+    void handleSummonRivalMonsterGraphic(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 0, 0, zoneIndex);
     }
 
-    void handleSetRivalMonsterGraphicBOOCN(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 1, 0, index);
+    void handleSetRivalMonsterGraphicBOOCN(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 1, 0, zoneIndex);
     }
 
-    void handleActivateRivalSpellGraphicBOOCN(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, index);
+    void handleActivateRivalSpellGraphicBOOCN(Card card, int zoneIndex) {
+//        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, zoneIndex);
     }
 
-    void handleSetRivalSpellGraphic(Card card, int index) {
-        runMoveRivalCardFromHandToFiledGraphic(this, card, 3, 1, index);
+    void handleSetRivalSpellGraphic(int handIndex, int zoneIndex) {
+        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 3, 1, zoneIndex);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphic(Card card) {
-        addCardToRivalHandFromDeck(this, card);
+    void handleAddRivalCardFromDeckToHandGraphic(String cardName) {
+        addCardToRivalHandFromDeck(this, cardName);
     }
 
-    void handleRivalFlipSummonGraphicBOOCN(Card card) {
-        runRivalFlipSummonGraphic(this, card);
+    void handleRivalFlipSummonGraphicBOOCN(int cardIndex) {
+        runRivalFlipSummonGraphic(this, cardIndex);
     }
 
     private void setMouseLocationMonitor() {
@@ -1334,16 +1292,36 @@ public class GameView {
         mainPane.getChildren().add(mainBox);
 
         noButton.setOnMouseClicked(mouseEvent -> {
-            gameController.graphicsForEvents(
-                    game.run(new DataForGameRun("cancel activate trap", self)),
-                    null, 0);
+            game.runWithGraphics(new DataForGameRun("cancel activate trap", self), null, 0);
 
             mainPane.getChildren().remove(mainBox);
         });
 
         yesButton.setOnMouseClicked(mouseEvent -> {
             mainPane.getChildren().remove(mainBox);
-            CardActionManager.setMode(actionManagerMode.TRIGGER_TRAP_MODE);
+            game.runWithGraphics(new DataForGameRun("set trigger trap mode", self), null, 0);
         });
+    }
+
+    public void setIdAndZoneForData(DataForGameRun data, CardView cardView){
+        if (selfHand.contains(cardView)){
+            data.setZoneName("Hand");
+            data.setId(selfHand.indexOf(cardView) + 1);
+        }else if (monsterZoneCards.contains(cardView)){
+            data.setZoneName("Monster Card Zone");
+            data.setId(monsterZoneCards.indexOf(cardView));
+        } else if (spellZoneCards.contains(cardView)){
+            data.setZoneName("Spell And Trap Zone");
+            data.setId(spellZoneCards.indexOf(cardView));
+        }else if (rivalHand.contains(cardView)){
+            data.setZoneName("Hand Opponent");
+            data.setId(rivalHand.indexOf(cardView) + 1);
+        }else if (rivalMonsterZoneCards.contains(cardView)){
+            data.setZoneName("Monster Card Zone Opponent");
+            data.setId(rivalMonsterZoneCards.indexOf(cardView));
+        }else if (rivalSpellZoneCards.contains(cardView)){
+            data.setZoneName("Spell And Trap Zone Opponent");
+            data.setId(rivalSpellZoneCards.indexOf(cardView));
+        }
     }
 }

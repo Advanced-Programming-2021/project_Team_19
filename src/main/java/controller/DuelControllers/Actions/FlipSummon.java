@@ -7,13 +7,14 @@ import model.Phase;
 import model.TriggerLabel;
 
 public class FlipSummon extends Summon {
+    private int currentId;
 
     public FlipSummon(GameData gameData) {
         super(gameData, "flip summon");
     }
 
-    public String run() {
-            return flip();
+    public String[] run() {
+            return new String[]{flip(), String.valueOf(currentId)};
     }
 
     @Override
@@ -44,6 +45,8 @@ public class FlipSummon extends Summon {
         if (!((Monster) summoningMonster).handleFlip(gameData, CardMod.OFFENSIVE_OCCUPIED)) {
             return "";
         }
+
+        currentId = gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getId(summoningMonster);
 
         gameData.triggerLabel = new TriggerLabel(this);
 

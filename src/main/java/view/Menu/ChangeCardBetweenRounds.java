@@ -88,7 +88,7 @@ public class ChangeCardBetweenRounds extends Menu {
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipBoardContent = new ClipboardContent();
-                clipBoardContent.putString(cardView.getCard().getName() + ":Main");
+//                clipBoardContent.putString(cardView.getCard().getName() + ":Main");
                 dragboard.setContent(clipBoardContent);
                 e.consume();
             });
@@ -104,7 +104,7 @@ public class ChangeCardBetweenRounds extends Menu {
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putString(cardView.getCard().getName() + ":Side");
+//                clipboardContent.putString(cardView.getCard().getName() + ":Side");
                 dragboard.setContent(clipboardContent);
                 e.consume();
             });

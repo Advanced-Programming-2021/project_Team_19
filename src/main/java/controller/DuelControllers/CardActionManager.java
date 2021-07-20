@@ -8,11 +8,13 @@ import java.util.ArrayList;
 public class CardActionManager {
 
     public Card card;
+    public GameData gameData;
     public static actionManagerMode mode = actionManagerMode.NORMAL_MODE;
 
 
-    public CardActionManager(Card card) {
+    public CardActionManager(Card card, GameData gameData) {
         this.card = card;
+        this.gameData = gameData;
     }
 
 
@@ -28,15 +30,15 @@ public class CardActionManager {
 
         switch (mode) {
             case NORMAL_MODE -> {
-                result = new AttackMonster(GameData.getGameData(), 0).actionIsValid();
+                result = new AttackMonster(gameData, 0).actionIsValid();
                 if (result.equals("attack monster"))
                     validActions.add(result);
 
-                result = new DirectAttack(GameData.getGameData()).actionIsValid();
+                result = new DirectAttack(gameData).actionIsValid();
                 if (result.equals("attack direct"))
                     validActions.add(result);
 
-                result = new NormalSummon(GameData.getGameData()).actionIsValid();
+                result = new NormalSummon(gameData).actionIsValid();
                 if (result.equals("normal summon"))
                     validActions.add(result);
 
@@ -44,7 +46,7 @@ public class CardActionManager {
                     validActions.add("summon with sacrifice");
 
 
-                result = new Set(GameData.getGameData()).actionIsValid();
+                result = new Set(gameData).actionIsValid();
                 if (result.equals("set"))
                     validActions.add("set");
 
@@ -52,46 +54,46 @@ public class CardActionManager {
                     validActions.add("set with sacrifice");
 
 
-                result = new SetPosition(GameData.getGameData()).actionIsValid(true);
+                result = new SetPosition(gameData).actionIsValid(true);
                 if (result.startsWith("set position")) {
                     validActions.add(result);
                 }
 
-                result = new FlipSummon(GameData.getGameData()).actionIsValid();
+                result = new FlipSummon(gameData).actionIsValid();
                 if (result.equals("flip summon")) {
                     validActions.add(result);
                 }
 
-                result = new SetPosition(GameData.getGameData()).actionIsValid(false);
+                result = new SetPosition(gameData).actionIsValid(false);
                 if (result.startsWith("set position")) {
                     validActions.add(result);
                 }
 
-                result = new ActivateSpellOrTrapNormally(GameData.getGameData()).actionIsValid();
+                result = new ActivateSpellOrTrapNormally(gameData).actionIsValid();
                 if (result.equals("activate spell normally")) {
                     validActions.add(result);
                 }
-                result = new ActivateEffectMonster(GameData.getGameData()).actionIsValid();
+                result = new ActivateEffectMonster(gameData).actionIsValid();
                 if (result.equals("activate effect monster")) {
                     validActions.add(result);
                 }
             }
             case SUMMON_MODE, SET_MODE -> {
-                if (NormalSummon.canSacrifice()){
+                if (NormalSummon.canSacrifice()) {
                     validActions.add("sacrifice");
                 }
             }
             case ATTACK_MONSTER_MODE -> {
-                if (AttackMonster.canAttack()){
+                if (AttackMonster.canAttack()) {
                     validActions.add("attack");
                 }
             }
-            case ACTION_NOT_ALLOWED_MODE ->{
+            case ACTION_NOT_ALLOWED_MODE -> {
 
             }
             case TRIGGER_TRAP_MODE -> {
-                if(new ActivateTriggerTrapEffect
-                        (GameData.getGameData().triggerLabel.action).canDoThisActionBecauseOfAnAction()){
+                if (new ActivateTriggerTrapEffect
+                        (gameData.triggerLabel.action).canDoThisActionBecauseOfAnAction()) {
                     validActions.add("activate trap");
                 }
             }

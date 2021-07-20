@@ -1,33 +1,38 @@
 package controller;
 
-import java.util.*;
-import model.Card.*;
-import model.*;
-import controller.DuelControllers.*;
+import controller.DuelControllers.GameData;
+import model.Gamer;
+
+import java.util.ArrayList;
 
 public class DataFromGameRun {
-    public static ArrayList<DataFromGameRun> eventDataFromServer = new ArrayList<>();
-    public ArrayList<Card> cardsForEvent = new ArrayList<>();
+    public ArrayList<String> cardNames = new ArrayList<>();
     public String event;
     public Gamer gamerOfAction;
+    public int cardId;
 
 
-    public DataFromGameRun(String event){
+    public DataFromGameRun(GameData gameData, String event){
         this.event = event;
         gamerOfAction = GameData.getGameData().getCurrentGamer();
-        eventDataFromServer.add(this);
+        gameData.addData(this);
     }
 
-    public DataFromGameRun(String event, Card card){
+    public DataFromGameRun(GameData gameData, String[] eventAndId){
+        this.cardId = Integer.parseInt(eventAndId[1]);
+        this.event = eventAndId[0];
+        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        gameData.addData(this);
+    }
+
+    public DataFromGameRun(GameData gameData, String event, String cardName){
         this.event = event;
         gamerOfAction = GameData.getGameData().getCurrentGamer();
-        cardsForEvent.add(card);
-        eventDataFromServer.add(this);
+        cardNames.add(cardName);
+        gameData.addData(this);
     }
 
-    public static void reset() {
-        eventDataFromServer = new ArrayList<>();
+    public int getCardId() {
+        return cardId;
     }
-
-
 }

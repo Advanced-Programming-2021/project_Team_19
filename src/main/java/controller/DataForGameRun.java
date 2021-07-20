@@ -1,25 +1,31 @@
 package controller;
-import java.util.*;
-import model.*;
-import model.Card.*;
+
+import model.Gamer;
+import view.graphic.CardView;
+import view.graphic.GameView;
 
 public class DataForGameRun {
     String command;
     Gamer gamer;
-    Card card;
+    int id;
+    String zoneName;
+
 
     public DataForGameRun(String command, Gamer gamer){
         this.command = command;
         this.gamer = gamer;
     }
 
-    public DataForGameRun(Card card, Gamer gamer){
-        this.card = card;
-        this.gamer = gamer;
+    public int getId() {
+        return id;
     }
 
-    public Card getCard() {
-        return card;
+    public String getZoneName() {
+        return zoneName;
+    }
+
+    public void findIdAndZoneName(GameView gameView, CardView cardView){
+        gameView.setIdAndZoneForData(this, cardView);
     }
 
     public String getCommand() {
@@ -29,4 +35,13 @@ public class DataForGameRun {
     public Gamer getGamer() {
         return gamer;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
+    }
+
 }
