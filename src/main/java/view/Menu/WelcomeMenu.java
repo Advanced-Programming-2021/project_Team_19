@@ -146,7 +146,7 @@ public class WelcomeMenu extends Menu {
                     " --nickname " + nickname + " --password " + password;
 
             DataForClientFromServer data = sendDataToServer
-                    (new DataForServerFromClient(commandToSendToServer, username, WelcomeMenu.getInstance().menuName));
+                    (new DataForServerFromClient(commandToSendToServer, null, WelcomeMenu.getInstance().menuName));
 
             Printer.setAppropriateResponseToLabelFromData(data, responseLabel);
             if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
@@ -244,9 +244,10 @@ public class WelcomeMenu extends Menu {
                     " --password " + password;
 
             DataForClientFromServer data = sendDataToServer
-                    (new DataForServerFromClient(commandToSendToServer, username, WelcomeMenu.getInstance().menuName));
+                    (new DataForServerFromClient(commandToSendToServer, null, WelcomeMenu.getInstance().menuName));
 
             if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
+                WelcomeMenu.token = data.getMessage().split(":")[1].trim();
                 goToMainMenu(username);
             } else {
                 Printer.setFailureResponseToLabel(responseLabel, data.getMessage());

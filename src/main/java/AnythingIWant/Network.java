@@ -7,6 +7,7 @@ import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Pair;
+import model.User;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -15,6 +16,16 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Network {
+
+    private static HashMap<String, User> UserByToken = new HashMap<>();
+
+    public static void addToken(String token, User user) {
+        UserByToken.put(token, user);
+    }
+
+    public static User getUserByToken(String token) {
+        return UserByToken.get(token);
+    }
 
     private static void initializeNetwork() {
         try {

@@ -75,7 +75,7 @@ public class Shop extends Menu {
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         DataForClientFromServer data =
-                sendDataToServer(new DataForServerFromClient("shop show --all", username, menuName));
+                sendDataToServer(new DataForServerFromClient("shop show --all", token, menuName));
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
         for(String card : cards) {
@@ -158,7 +158,7 @@ public class Shop extends Menu {
         }
         else{
             DataForClientFromServer data =
-                    Menu.sendDataToServer(new DataForServerFromClient("shop buy " + currentCard.getName() , username, "Shop Menu" ));
+                    Menu.sendDataToServer(new DataForServerFromClient("shop buy " + currentCard.getName() , token, "Shop Menu" ));
             messageBox.setText(data.getMessage());
             if (data.getMessageType().equals(MessageType.ERROR)){
                 messageBox.setTextFill(Color.RED);
@@ -188,12 +188,12 @@ public class Shop extends Menu {
     }
 
     private int getCredit() {
-        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("shop show --money", username, "Shop Menu"));
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("shop show --money", token, "Shop Menu"));
         return Integer.parseInt(data.getMessage());
     }
 
     private String[] getCardsSorted() {
-        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --cards", username, "Deck Menu"));
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --cards", token, "Deck Menu"));
         return data.getMessage().split("\n");
     }
 
