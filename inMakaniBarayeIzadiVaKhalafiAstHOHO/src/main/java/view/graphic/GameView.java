@@ -1013,7 +1013,7 @@ public class GameView {
                         newIndex != -1 ? newIndex : oldIndex, 1, true);
             } else {
                 handleDestroyCardFromField
-                        (newIndex != -1 ? 4 - newIndex : 4 - oldIndex, 1, false);
+                        (newIndex != -1 ? 4 - newIndex : oldIndex, 1, false);
             }
         })).play();
 

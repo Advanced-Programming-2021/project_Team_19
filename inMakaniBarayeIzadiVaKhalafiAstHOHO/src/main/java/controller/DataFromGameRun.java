@@ -7,7 +7,6 @@ import controller.DuelControllers.*;
 import model.Enums.CardFamily;
 
 public class DataFromGameRun {
-    public Card card;
     public ArrayList<String> cardNames = new ArrayList<>();
     public String event;
     public Gamer gamerOfAction;
@@ -30,7 +29,6 @@ public class DataFromGameRun {
     public DataFromGameRun(GameData gameData, String event, Card card){
         this.event = event;
         gamerOfAction = GameData.getGameData().getCurrentGamer();
-        this.card = card;
         cardNames.add(card.getName());
         gameData.addData(this);
     }

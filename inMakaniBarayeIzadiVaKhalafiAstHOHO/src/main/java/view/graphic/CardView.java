@@ -212,7 +212,7 @@ public class CardView extends Rectangle {
                 try {
                     gameView.showValidActionForCard(getFirstValidAction(gameView), this);
                 } catch (Exception e) {
-                    if (!"no valid actions".equals(e.getMessage())){
+                    if (!"no valid actions".equals(e.getMessage()) && !"not your turn".equals(e.getMessage())){
                         e.printStackTrace();
                     }
                 }
