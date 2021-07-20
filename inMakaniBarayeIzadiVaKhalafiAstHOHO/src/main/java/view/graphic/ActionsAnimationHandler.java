@@ -49,7 +49,7 @@ public class ActionsAnimationHandler {
         cardView.setX(40);
         cardView.setY(92);
         gameView.gamePane.getChildren().add(cardView);
-        CardView newCardView = gameView.getCardForRivalHand(cardView.getCard());
+        CardView newCardView = gameView.getCardForRivalHand(cardView.getCardName());
         gameView.rivalHand.add(newCardView);
         newCardView.setX(gameView.getCardInRivalHandX(newCardView));
         newCardView.setY(gameView.getCardinRivalHandY());
@@ -82,7 +82,7 @@ public class ActionsAnimationHandler {
         cardView.setY(425);
         gameView.gamePane.getChildren().add(cardView);
 
-        CardView newCardView = gameView.getCardForHand(cardView.getCard());
+        CardView newCardView = gameView.getCardForHand(cardView.getCardName());
         gameView.selfHand.add(newCardView);
         newCardView.setX(gameView.getCardInHandX(newCardView));
         newCardView.setY(gameView.getCardinHandY());
@@ -121,7 +121,7 @@ public class ActionsAnimationHandler {
                                                     int handIndex , int mode, int zone, int zoneIndex) {
 
         CardView cardView = gameView.selfHand.get(handIndex);
-        CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
+        CardView newCardView = gameView.getCardViewForField(cardView.getCardName(), mode);
 
         addCardToCorrectCardListZone(gameView, newCardView, zone, zoneIndex);
 
@@ -201,7 +201,7 @@ public class ActionsAnimationHandler {
 
         CardView cardView = gameView.rivalHand.get(handIndex);
 
-        CardView newCardView = gameView.getCardViewForField(cardView.getCard(), mode);
+        CardView newCardView = gameView.getCardViewForField(cardView.getCardName(), mode);
 
         addNewCardViewToCorrectRivalZone(gameView, newCardView, zone, index);
 
@@ -278,7 +278,7 @@ public class ActionsAnimationHandler {
             @Override
             public void handle(ActionEvent actionEvent) {
                 gameView.gamePane.getChildren().remove(cardView);
-                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.card, true);
+                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), true);
             }
         });
         transition.play();
@@ -305,7 +305,7 @@ public class ActionsAnimationHandler {
             @Override
             public void handle(ActionEvent actionEvent) {
                 gameView.gamePane.getChildren().remove(cardView);
-                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.card, false);
+                gameView.handleAddCardToGraveYardGraphicBOOTN(cardView.getCardName(), false);
             }
         });
         transition.play();
@@ -322,8 +322,8 @@ public class ActionsAnimationHandler {
         return 500;
     }
 
-    static double runAddCardToHandGraphic(GameView gameView, Card card) {
-        CardView cardView = gameView.getCardForHand(card);
+    static double runAddCardToHandGraphic(GameView gameView, String cardName) {
+        CardView cardView = gameView.getCardForHand(cardName);
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
                 new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
@@ -338,12 +338,12 @@ public class ActionsAnimationHandler {
         cardView.setY(gameView.getCardinHandY());
         transition.getChildren().add(getHandAnimationForCardsWasInHand(gameView));
         transition.play();
-        runAddCardToRivalHandGraphic(gameView.rivalGameView, card);
+        runAddCardToRivalHandGraphic(gameView.rivalGameView, cardName);
         return 500;
     }
 
-    static double runAddCardToRivalHandGraphic(GameView gameView, Card card) {
-        CardView cardView = gameView.getCardForRivalHand(card);
+    static double runAddCardToRivalHandGraphic(GameView gameView, String cardName) {
+        CardView cardView = gameView.getCardForRivalHand(cardName);
         ParallelTransition transition = new ParallelTransition(
                 new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
                 new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
@@ -387,19 +387,19 @@ public class ActionsAnimationHandler {
     //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
     //mode -> 4 for DO monster
 
-    static double putCardIntoFiled(GameView gameView, Card card, int mode, int zone, int index) {
-        CardView cardView = gameView.getCardViewForField(card, mode);
+    static double putCardIntoFiled(GameView gameView, String cardName, int mode, int zone, int index) {
+        CardView cardView = gameView.getCardViewForField(cardName, mode);
         addCardToCorrectCardListZone(gameView, cardView, zone, index);
         cardView.setX(gameView.getCardInFieldX(cardView, mode));
         cardView.setY(gameView.getCardInFieldY(mode));
         new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
         gameView.gamePane.getChildren().add(cardView);
-        putCardIntoRivalFiled(gameView.rivalGameView, card, mode, zone, 4 - index);
+        putCardIntoRivalFiled(gameView.rivalGameView, cardName, mode, zone, 4 - index);
         return 800;
     }
 
-    static double putCardIntoRivalFiled(GameView gameView, Card card, int mode, int zone, int index) {
-        CardView cardView = gameView.getCardViewForField(card, mode);
+    static double putCardIntoRivalFiled(GameView gameView, String cardName, int mode, int zone, int index) {
+        CardView cardView = gameView.getCardViewForField(cardName, mode);
         addNewCardViewToCorrectRivalZone(gameView, cardView, zone, index);
         cardView.setX(gameView.getCardInRivalFieldX(cardView, mode));
         cardView.setY(gameView.getCardInRivalFieldY(mode));
@@ -413,7 +413,7 @@ public class ActionsAnimationHandler {
     static double runFlipSummonGraphic(GameView gameView, int cardIndex) {
 
         CardView cardView = gameView.monsterZoneCards.get(cardIndex);
-        CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
+        CardView newCardView = gameView.getCardViewForField(cardView.getCardName(), 0);
         gameView.monsterZoneCards.set(gameView.monsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInFieldX(newCardView, 0));
         newCardView.setY(gameView.getCardInFieldY(0));
@@ -438,7 +438,7 @@ public class ActionsAnimationHandler {
     static double runRivalFlipSummonGraphic(GameView gameView, int cardIndex) {
 
         CardView cardView = gameView.rivalMonsterZoneCards.get(cardIndex);
-        CardView newCardView = gameView.getCardViewForField(cardView.getCard(), 0);
+        CardView newCardView = gameView.getCardViewForField(cardView.getCardName(), 0);
         gameView.rivalMonsterZoneCards.set(gameView.rivalMonsterZoneCards.indexOf(cardView), newCardView);
         newCardView.setX(gameView.getCardInRivalFieldX(newCardView, 0));
         newCardView.setY(gameView.getCardInRivalFieldY(0));
@@ -476,14 +476,14 @@ public class ActionsAnimationHandler {
         } else if (!cardView.isHidden && !cardView.isVertical) {
             return 4;
         } else if (!cardView.isHidden && cardView.isVertical) {
-            return cardView.getCard() instanceof Monster ? 0 : 2;
+            return cardView.isMonster ? 0 : 2;
         }
         return -1;
     }
 
     static double runFlipCardGraphic(CardView cardView, GameView gameView) {
         int newMode = 5 - getCardViewMode(cardView);
-        CardView newCardView = gameView.getCardViewForField(cardView.card, newMode);
+        CardView newCardView = gameView.getCardViewForField(cardView.getCardName(), newMode);
         newCardView.setX(cardView.getX());
         newCardView.setY(cardView.getY());
         newCardView.setVisible(false);

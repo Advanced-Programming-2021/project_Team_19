@@ -63,6 +63,9 @@ public class Game {
                 label.inProgress = false;
                 label.shouldRunAgain = label.shouldRunAgain && !data.hasActionStopped;
             }
+            case "set trigger trap mode" -> {
+                CardActionManager.setMode(actionManagerMode.TRIGGER_TRAP_MODE);
+            }
             case "cancel activate trap" -> {
                 gameData.triggerLabel.inProgress = false;
                 if (!gameData.getCurrentGamer().equals(gameData.getTurnOwner())) {
@@ -140,9 +143,8 @@ public class Game {
 
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
         if (gameData.getCurrentGamer().equals(data.getGamer())) {
-            gameData.setSelectedCard(data.getCard());
-//            gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName, data.getId));
-            return (new CardActionManager(data.getCard(), gameData).getValidActions());
+            gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName(), data.getId()));
+            return (new CardActionManager(gameData.getSelectedCard(), gameData).getValidActions());
         }
         throw new Exception("not your turn");
     }
@@ -150,11 +152,13 @@ public class Game {
     public Card getCardByZoneAndId(String zoneName, int Id) {
         return switch (zoneName) {
             case ("Hand") -> gameData.getCurrentGamer().getGameBoard().getHand().getCard(Id);
-            case ("Monster Card Zone") -> gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCardById(Id);
-            case ("Spell And Trap Zone") -> gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getCard(Id);
-            case ("Deck") -> gameData.getCurrentGamer().getGameBoard().getDeckZone().getCard(Id);
+            case ("Monster Card Zone") -> gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().getCards().get(Id);
+            case ("Spell And Trap Zone") -> gameData.getCurrentGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards().get(Id);
             case ("Graveyard") -> gameData.getCurrentGamer().getGameBoard().getGraveYard().getCard(Id);
             case ("Field Zone") -> gameData.getCurrentGamer().getGameBoard().getFieldZone().getCard();
+            case ("Hand Opponent") -> gameData.getSecondGamer().getGameBoard().getHand().getCard(Id);
+            case ("Monster Card Zone Opponent") -> gameData.getSecondGamer().getGameBoard().getMonsterCardZone().getCards().get(Id);
+            case ("Spell And Trap Zone Opponent") -> gameData.getSecondGamer().getGameBoard().getSpellAndTrapCardZone().getAllCards().get(Id);
             default -> throw new IllegalStateException("Unexpected value: " + zoneName);
         };
     }

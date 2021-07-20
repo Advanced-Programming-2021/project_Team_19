@@ -1,5 +1,6 @@
 package view.graphic;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataForGameRun;
 import controller.DuelControllers.Game;
 import javafx.event.EventHandler;
@@ -16,12 +17,14 @@ import model.Card.Card;
 import model.Enums.CardFamily;
 import model.Gamer;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CardView extends Rectangle {
 
     Card card;
     String cardName;
+    String description;
     boolean isMonster;
     public boolean isHidden = false;
     public boolean isVertical = true;
@@ -53,6 +56,32 @@ public class CardView extends Rectangle {
         this.isVertical = isVertical;
         cardName = card.getName();
         isMonster = card.getCardFamily().equals(CardFamily.MONSTER);
+
+        if (isHidden) {
+            setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
+        } else {
+            setCardImage();
+        }
+    }
+
+    public CardView(String cardName, double sizeInverse, boolean isHidden, boolean isVertical){
+
+        setWidth(isVertical ? width / sizeInverse : height / sizeInverse);
+        setHeight(isVertical ? height / sizeInverse : width / sizeInverse);
+
+        this.sizeInverse = sizeInverse;
+        this.isHidden = isHidden;
+        this.isVertical = isVertical;
+        this.cardName = cardName;
+        this.description = CSVDataBaseController.getCardByCardName(cardName).getDescription();
+
+        try {
+            new Image("/Assets/Cards/Monsters/" +
+                    controller.Utils.getPascalCase(cardName) + ".jpg");
+            isMonster = true;
+        } catch (Exception e){
+            isMonster = false;
+        }
 
         if (isHidden) {
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
@@ -106,10 +135,16 @@ public class CardView extends Rectangle {
         return card;
     }
 
-    public String getFirstValidAction(Game game, Gamer gamer) throws Exception {
+    public String getFirstValidAction(GameView gameView) throws Exception {
+        Game game = gameView.game;
+        Gamer gamer = gameView.self;
 
         validActionNamesForShow = new ArrayList<>();
-        validActionNames = game.getValidCommandsForCard(new DataForGameRun(card, gamer));
+        DataForGameRun dataToSend = new DataForGameRun("get valid actions", gamer);
+        dataToSend.findIdAndZoneName(gameView, this);
+        System.out.println(dataToSend.getZoneName());
+        System.out.println(dataToSend.getId());
+        validActionNames = game.getValidCommandsForCard(dataToSend);
 
         for (String validAction : validActionNames) {
             if (validAction.equals("summon with sacrifice")) {
@@ -175,12 +210,11 @@ public class CardView extends Rectangle {
 
         setOnMouseEntered(mouseEvent -> {
             hasBeenClicked = false;
-            gameView.game.gameData.setSelectedCard(card);
             gameView.showCard(this);
 
             if (this.canShowValidActions) {
                 try {
-                    gameView.showValidActionForCard(getFirstValidAction(gameView.game, gameView.self), this);
+                    gameView.showValidActionForCard(getFirstValidAction(gameView), this);
                 } catch (Exception ignored) {
                 }
             }
@@ -212,6 +246,14 @@ public class CardView extends Rectangle {
 
             }
         });
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
 

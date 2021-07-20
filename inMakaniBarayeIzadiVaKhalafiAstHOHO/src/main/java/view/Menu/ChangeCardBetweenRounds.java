@@ -81,14 +81,14 @@ public class ChangeCardBetweenRounds extends Menu {
         Deck deck = getDeck();
         HBox mainMenuCards = new HBox();
         for (Card card : deck.getAllMainCardsSorted()) {
-            CardView cardView = new CardView(card, 3, false, true);
+            CardView cardView = new CardView(card.getName(), 3, false, true);
 //            cardView.setOnMouseClicked(e -> {
 //                this.cardName.setText(card.getName());
 //            });
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipBoardContent = new ClipboardContent();
-                clipBoardContent.putString(cardView.getCard().getName() + ":Main");
+                clipBoardContent.putString(cardView.getCardName() + ":Main");
                 dragboard.setContent(clipBoardContent);
                 e.consume();
             });
@@ -97,14 +97,14 @@ public class ChangeCardBetweenRounds extends Menu {
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
         for (Card card : deck.getAllSideCardsSorted()) {
-            CardView cardView = new CardView(card, 3, false, true);
+            CardView cardView = new CardView(card.getName(), 3, false, true);
 //            cardView.setOnMouseClicked(e -> {
 //                this.cardName.setText(card.getName());
 //            });
             cardView.setOnDragDetected(e -> {
                 Dragboard dragboard = cardView.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putString(cardView.getCard().getName() + ":Side");
+                clipboardContent.putString(cardView.getCardName() + ":Side");
                 dragboard.setContent(clipboardContent);
                 e.consume();
             });

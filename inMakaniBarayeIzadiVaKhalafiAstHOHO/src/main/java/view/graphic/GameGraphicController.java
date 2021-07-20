@@ -280,13 +280,13 @@ public class GameGraphicController extends Menu {
         } else if (response.equals("add card to hand")) {
             try {
                 otherGameView.handleAddRivalCardFromDeckToHandGraphic
-                        (events.get(index).cardsForEvent.get(0));
+                        (events.get(index).card);
             } catch (NullPointerException ignored) {
             }
 
             try {
                 time = gameView.handleAddCardFromDeckToHandGraphic
-                        (events.get(index).cardsForEvent.get(0));
+                        (events.get(index).card);
             } catch (NullPointerException ignored) {
 
             }
