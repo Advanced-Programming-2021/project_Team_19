@@ -56,4 +56,8 @@ public class Lobby extends Menu{
         oneRoundButton.setDisable(false);
         threeRoundButton.setDisable(false);
     }
+
+    public void getBack(MouseEvent mouseEvent) {
+        MainMenu.getInstance(username).run();
+    }
 }
