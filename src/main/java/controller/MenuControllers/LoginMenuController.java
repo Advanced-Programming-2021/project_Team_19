@@ -1,11 +1,13 @@
 package controller.MenuControllers;
 
+import AnythingIWant.Network;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.Utils;
 import model.Data.DataForClientFromServer;
 import model.Enums.MessageType;
 import model.User;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 public class LoginMenuController {
@@ -99,8 +101,12 @@ public class LoginMenuController {
 
         DataForClientFromServer dataSendToClient;
 
+        String token = UUID.randomUUID().toString();
+
         dataSendToClient = new DataForClientFromServer
-                ("user logged in successfully!", MessageType.SUCCESSFUL);
+                ("user logged in successfully!, Your token is : " + token, MessageType.SUCCESSFUL);
+
+        Network.addToken(token, user);
 
         return dataSendToClient;
     }

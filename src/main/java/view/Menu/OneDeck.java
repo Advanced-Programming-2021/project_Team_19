@@ -74,7 +74,7 @@ public class OneDeck extends Menu {
 
     public void addToMainDeck() {
         DataForClientFromServer data = MainMenu.sendDataToServer(new DataForServerFromClient("deck add-card --card " + cardName.getText() + " --deck " + deckName,
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         result.setText(data.getMessage());
         result.setFont(new Font(16));
         if (data.getMessageType().equals(MessageType.ERROR)){
@@ -88,7 +88,7 @@ public class OneDeck extends Menu {
 
     public void addToSideDeck() {
         DataForClientFromServer data = MainMenu.sendDataToServer(new DataForServerFromClient("deck add-card --card " + cardName.getText() + " --deck " + deckName + " --side",
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         updateCards();
         result.setText(data.getMessage());
         result.setFont(new Font(16));
@@ -102,7 +102,7 @@ public class OneDeck extends Menu {
 
     public void removeFromMainDeck() {
         DataForClientFromServer data = MainMenu.sendDataToServer(new DataForServerFromClient("deck rm-card --card " + cardName.getText() + " --deck " + deckName,
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         updateCards();
         result.setText(data.getMessage());
         result.setFont(new Font(16));
@@ -116,7 +116,7 @@ public class OneDeck extends Menu {
 
     public void removeFromSideDeck() {
         DataForClientFromServer data = MainMenu.sendDataToServer(new DataForServerFromClient("deck rm-card --card " + cardName.getText() + " --deck " + deckName + " --side",
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         updateCards();
         result.setText(data.getMessage());
         result.setFont(new Font(16));
@@ -131,7 +131,7 @@ public class OneDeck extends Menu {
     private void updateCards() {
         HBox hBox = new HBox();
         String[] cards = MainMenu.sendDataToServer(new DataForServerFromClient("deck show --cards",
-                username, "Deck Menu")).getMessage().split("\n");
+                token, "Deck Menu")).getMessage().split("\n");
         for (String cardDescription : cards) {
             Card card = CSVDataBaseController.getCardByCardName(cardDescription);
             try {
@@ -147,7 +147,7 @@ public class OneDeck extends Menu {
         HBox mainMenuCards = new HBox();
         ArrayList<String> allMainCards = new ArrayList<>();
         allMainCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
-                username, "Deck Menu")).getMessage().split("\n")));
+                token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allMainCards) {
             Card card = CSVDataBaseController.getCardByCardName(cardIdentity);
             CardView cardView = new CardView(card, 2, false, true);
@@ -158,7 +158,7 @@ public class OneDeck extends Menu {
         HBox sideMenuCards = new HBox();
         ArrayList<String> allSideCards = new ArrayList<>();
         allSideCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
-                username, "Deck Menu")).getMessage().split("\n")));
+                token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allSideCards) {
             Card card = CSVDataBaseController.getCardByCardName(cardIdentity);
             CardView cardView = new CardView(card, 2, false, true);

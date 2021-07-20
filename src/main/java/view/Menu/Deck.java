@@ -62,14 +62,14 @@ public class Deck extends Menu {
 
     public void initialize() {
         updateDeckScroll();
-        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --active", username, "Deck Menu"));
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --active", token, "Deck Menu"));
         activeDeckName.setText(data.getMessage());
     }
 
     public void createDeck() {
         String deckName = deckNameTextField.getText();
         DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck create " + deckName,
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         result.setText(data.getMessage());
         result.setFont(new Font(16));
         if (data.getMessageType().equals(MessageType.ERROR)) {
@@ -83,7 +83,7 @@ public class Deck extends Menu {
 
     public void removeDeck() {
         String deckName = deckNameTextField.getText();
-        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck delete " + deckName, username, "Deck Menu"));
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck delete " + deckName, token, "Deck Menu"));
         result.setText(data.getMessage());
         result.setFont(new Font(16));
         if (data.getMessageType().equals(MessageType.ERROR)) {
@@ -98,13 +98,13 @@ public class Deck extends Menu {
     private void updateDeckScroll() {
         VBox allDecks = new VBox();
         String[] deckNames = Menu.sendDataToServer(new DataForServerFromClient("deck show --all",
-                username, "Deck Menu")).getMessage().split("\n");
+                token, "Deck Menu")).getMessage().split("\n");
         for (String deckName : deckNames) {
             ArrayList<String> allCards = new ArrayList<>();
             allCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
-                    username, "Deck Menu")).getMessage().split("\n")));
+                    token, "Deck Menu")).getMessage().split("\n")));
             allCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
-                    username, "Deck Menu")).getMessage().split("\n")));
+                    token, "Deck Menu")).getMessage().split("\n")));
             BorderPane deckFullDescription = new BorderPane();
             HBox hBox = new HBox();
             int cnt = 0;
@@ -132,7 +132,7 @@ public class Deck extends Menu {
     public void setAsActiveDeck() {
         String activeDeckText = deckNameTextField.getText();
         DataForClientFromServer data = MainMenu.sendDataToServer(new DataForServerFromClient("deck set-active " + activeDeckText,
-                username, "Deck Menu"));
+                token, "Deck Menu"));
         result.setText(data.getMessage());
         result.setFont(new Font(16));
         if (data.getMessageType().equals(MessageType.ERROR)) {
@@ -140,7 +140,7 @@ public class Deck extends Menu {
         }
         else{
             result.setTextFill(Color.GREEN);
-            DataForClientFromServer data1 = Menu.sendDataToServer(new DataForServerFromClient("deck show --active", username, "Deck Menu"));
+            DataForClientFromServer data1 = Menu.sendDataToServer(new DataForServerFromClient("deck show --active", token, "Deck Menu"));
             activeDeckName.setText(data1.getMessage());
             updateDeckScroll();
         }

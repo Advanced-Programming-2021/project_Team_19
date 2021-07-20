@@ -246,7 +246,7 @@ public class ProfileMenu extends Menu {
         DataForClientFromServer data = sendDataToServer(
                 new DataForServerFromClient("profile change --password" +
                         "--current " + currentPassword + " --new " + newPassword
-                        , username, menuName));
+                        , token, menuName));
 
         Printer.setAppropriateResponseToLabelFromData(data, changePasswordResponse);
     }

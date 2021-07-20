@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="shopBackGround" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../../CSS/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Menu.Lobby">
+   <children>
+      <Button fx:id="threeRoundButton" layoutX="417.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#sendDataForThreeRounds" prefHeight="57.0" prefWidth="188.0" text="Three rounds">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="oneRoundButton" layoutX="196.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#sendDataForOneRound" prefHeight="57.0" prefWidth="188.0" text="One rounds">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="306.0" layoutY="408.0" mnemonicParsing="false" onMouseClicked="#cancelRequest" prefHeight="57.0" prefWidth="188.0" text="cancel" textFill="RED">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

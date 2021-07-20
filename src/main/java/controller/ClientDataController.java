@@ -1,6 +1,7 @@
 package controller;
 
 
+import AnythingIWant.Network;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.MenuControllers.*;
 import model.Data.DataForClientFromServer;
@@ -25,7 +26,7 @@ public class ClientDataController {
 
         String menuName = data.getMenuName();
 
-        User user = UserDataBaseController.getUserByUsername(data.getUsername());
+        User user = Network.getUserByToken(data.getToken());
 
         if (user == null) {
             if (menusNeedUserForRequest.contains(data.getMenuName())) {

@@ -3,18 +3,18 @@ package model.Data;
 public class DataForServerFromClient {
 
     public String message;
-    public String username;
+    public String token;
     public String menuName;
 
-    public DataForServerFromClient(String message, String username, String menuName) {
+    public DataForServerFromClient(String message, String token, String menuName) {
         this.message = message;
-        this.username = username;
+        this.token = token;
         this.menuName = menuName;
     }
 
     public DataForServerFromClient(String message, String menuName) {
         this.message = message;
-        this.username = null;
+        this.token = null;
         this.menuName = menuName;
     }
 
@@ -26,12 +26,12 @@ public class DataForServerFromClient {
         this.message = message;
     }
 
-    public String getUsername() {
-        return username;
+    public String getToken() {
+        return token;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getMenuName() {
