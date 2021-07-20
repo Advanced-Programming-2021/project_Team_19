@@ -38,6 +38,8 @@ public class  ShopMenuController {
             return showAllCards();
         } else if (command.equals("increase --money \\d+")) {
             CheatCodes.increaseMoney(user, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --money (\\d+)")));
+        } else if (command.equals("shop show --money")) {
+            return showMoney(user);
         }
         return Utils.getDataSendToClientForInvalidInput();
 
@@ -55,7 +57,7 @@ public class  ShopMenuController {
                     MessageType.ERROR);
         }
 
-        if (!CSVDataBaseController.getCardState(card.getName())) {
+        if (CSVDataBaseController.getCardState(card.getName())) {
             return new DataForClientFromServer("This card is forbidden by the admin", MessageType.ERROR);
         }
 
@@ -72,7 +74,7 @@ public class  ShopMenuController {
         DataBaseController.rewriteFileOfObjectGson(UserDataBaseController.
                 getUserFilePathByUsername(user.getUsername()), user);
         CSVDataBaseController.increaseCardCount(cardName, -1);
-        //Remeber to add something to CSV
+        //Remeber to add cardCreating to CSV
         return new DataForClientFromServer("you successfully bought the card",
                 MessageType.SUCCESSFUL);
 
@@ -82,5 +84,9 @@ public class  ShopMenuController {
 
         return new DataForClientFromServer(CSVDataBaseController.getAllCardPrices(),
                 MessageType.Card);
+    }
+
+    private DataForClientFromServer showMoney(User user) {
+        return new DataForClientFromServer(Integer.toString(user.getCredit()), MessageType.SUCCESSFUL);
     }
 }

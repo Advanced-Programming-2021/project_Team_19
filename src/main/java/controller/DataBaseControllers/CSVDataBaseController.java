@@ -263,8 +263,8 @@ public class CSVDataBaseController {
                 file.createNewFile();
                 FileWriter fileWriter = new FileWriter(file, false);
                 for (String cardName : CSVDataBaseController.getClassByName.keySet()) {
-                    fileWriter.append(cardName).append(",").append(Integer.toString(100))
-                            .append(",").append("false").append("\n");
+                    fileWriter.append(cardName).append(";").append(Integer.toString(100))
+                            .append(";").append("false").append("\n");
                 }
                 fileWriter.flush();
                 fileWriter.close();
@@ -273,10 +273,11 @@ public class CSVDataBaseController {
             }
         }
         try {
+            cardState.clear();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String row;
             while ((row = bufferedReader.readLine()) != null) {
-                String[] content = row.split(",");
+                String[] content = row.split(";");
                 cardState.put(content[0], new Pair<>(Integer.parseInt(content[1]), Boolean.parseBoolean(content[2])));
             }
             bufferedReader.close();
@@ -289,11 +290,10 @@ public class CSVDataBaseController {
     public static void updateCardData() {
         File file = new File("Resource/Cards/getCardCountsAndRules.txt");
         try {
-            cardState.clear();
             FileWriter fileWriter = new FileWriter(file, false);
             for (Map.Entry<String, Pair<Integer, Boolean>> entry : cardState.entrySet()) {
-                fileWriter.append(entry.getKey()).append(",").append(Integer.toString(entry.getValue().getFirst()))
-                        .append(",").append(entry.getValue().getSecond().toString()).append("\n");
+                fileWriter.append(entry.getKey()).append(";").append(Integer.toString(entry.getValue().getFirst()))
+                        .append(";").append(entry.getValue().getSecond().toString()).append("\n");
             }
             fileWriter.flush();
             fileWriter.close();
@@ -316,6 +316,7 @@ public class CSVDataBaseController {
         status.setSecond(state);
         //just for safety
         cardState.put(cardName, status);
+        updateCardData();
     }
 
     public static synchronized void increaseCardCount(String cardName, int add) {
@@ -324,6 +325,10 @@ public class CSVDataBaseController {
         //just for safety
         cardState.put(cardName, status);
         updateCardData();
+    }
+
+    public static boolean isCardNameValid(String cardName) {
+        return getClassByName.containsKey(cardName);
     }
 
     public static void main(String[] arg) {

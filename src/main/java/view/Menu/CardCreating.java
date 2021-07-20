@@ -122,10 +122,6 @@ public class CardCreating extends Menu{
         try {
             String cardName = nameBox.getText();
             String cloneCardName = cloneBox.getText();
-            if (Shop.invalidCardName(cloneCardName)){
-                showPopupMessage("you cannot clone this card");
-                return;
-            }
             String description = descriptionBox.getText();
             Card card = CSVDataBaseController.getCardByCardName(cloneCardName);
             System.out.println(card);

@@ -1,5 +1,6 @@
 package view.Menu;
 
+import controller.DataBaseControllers.CSVDataBaseController;
 import controller.MenuControllers.ShopMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,14 +48,14 @@ public class Shop extends Menu {
 
     private Card currentCard;
 
-    private static User user;
+    private static String username;
 
     public Shop() {
         super("Shop Menu");
     }
 
-    public void run (User user){
-        Shop.user = user;
+    public void run (String username){
+        Shop.username = username;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/Shop.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
@@ -74,7 +75,7 @@ public class Shop extends Menu {
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         DataForClientFromServer data =
-                sendDataToServer(new DataForServerFromClient("shop show --all", user.getUsername(), menuName));
+                sendDataToServer(new DataForServerFromClient("shop show --all", username, menuName));
         System.out.println(data.getMessage());
         String[] cards = data.getMessage().split("\n");
         for(String card : cards) {
@@ -87,23 +88,24 @@ public class Shop extends Menu {
                     cardPic.getChildren().clear();
                     cardPic.getChildren().add(new CardView(cardToAddToScroll, 2, false, true));
                     currentCard = cardToAddToScroll;
-                    buyButton.setDisable(user.getCredit() < cardToAddToScroll.getPrice());
+                    buyButton.setDisable(getCredit() < cardToAddToScroll.getPrice());
                 });
             } catch (Exception e) {
                 System.out.println(tempCardName + "-----------------------------------------------");
             }
         }
         cardsScrolling.setContent(vBox);
-        coinShower.setText(String.valueOf(user.getCredit()));
+        coinShower.setText(String.valueOf(getCredit()));
         coinShower.setTextFill(Color.WHITE);
         coinShower.setFont(new Font(16));
         HBox hBox = new HBox();
-        for (Card card : user.getCardsSorted()) {
+        for (String cardName : getCardsSorted()) {
+            Card card = CSVDataBaseController.getCardByCardName(cardName);
             try {
                 CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                 hBox.getChildren().add(cardViewToAddToScroll);
             } catch (Exception e) {
-                System.out.println(card.getName()+ "-----------------------------------------------");
+                System.out.println(cardName+ "-----------------------------------------------");
             }
         }
         hBox.setSpacing(10);
@@ -127,7 +129,7 @@ public class Shop extends Menu {
             currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
-            if (user.getCredit() >= card.getPrice()) {
+            if (getCredit() >= card.getPrice()) {
                 buyButton.setDisable(false);
             }
             cardName.clear();
@@ -155,12 +157,6 @@ public class Shop extends Menu {
             messageBox.setFont(new Font(16));
         }
         else{
-            if (invalidCardName(currentCard.getName())) {
-                messageBox.setText("you cannot buy this card!");
-                messageBox.setTextFill(Color.RED);
-                messageBox.setFont(new Font(16));
-                return;
-            }
             DataForClientFromServer data =
                     Menu.sendDataToServer(new DataForServerFromClient("shop buy " + currentCard.getName() , username, "Shop Menu" ));
             messageBox.setText(data.getMessage());
@@ -170,11 +166,12 @@ public class Shop extends Menu {
             }
             else{
                 messageBox.setTextFill(Color.GREEN);
-                coinShower.setText(String.valueOf(user.getCredit()));
+                coinShower.setText(String.valueOf(getCredit()));
                 coinShower.setTextFill(Color.WHITE);
                 coinShower.setFont(new Font(16));
                 HBox hBox = new HBox();
-                for (Card card : user.getCardsSorted()) {
+                for (String cardName : getCardsSorted()) {
+                    Card card = CSVDataBaseController.getCardByCardName(cardName);
                     try {
                         CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
                         hBox.getChildren().add(cardViewToAddToScroll);
@@ -183,50 +180,22 @@ public class Shop extends Menu {
                     }
                 }
                 userCards.setContent(hBox);
-                if (user.getCredit() < currentCard.getPrice()) {
+                if (getCredit() < currentCard.getPrice()) {
                     buyButton.setDisable(true);
                 }
             }
         }
     }
 
-    public static boolean invalidCardName(String cardName) {
-        String[] invalidCards = new String[]{"Advanced Ritual Art",
-                "Beast King Barbaros",
-                "Black Pendant",
-                "Call of The Haunted",
-                "Change of Heart",
-                "Crab Turtle",
-                "Exploder Dragon",
-                "Gate Guardian",
-                "Herald of Creation",
-                "Magic Jamamer",
-                "Magnum Shield",
-                "Man-Eater Bug",
-                "Marshmallon",
-                "Messenger of peace",
-                "Mind Crush",
-                "Monster Reborn",
-                "Mystical space typhoon",
-                "Pot of Greed",
-                "Ring of defense",
-                "Scanner",
-                "Skull Guardian",
-                "Solemn Warning",
-                "Spell Absorption",
-                "Suijin",
-                "Supply Squad",
-                "Sword of dark destruction",
-                "Swords of Revealing Light",
-                "Terraforming",
-                "Terratiger, the Empowered Warrior",
-                "Texchanger",
-                "The Tricky",
-                "Time Seal",
-                "Twin Twisters",
-                "United We Stand"};
-
-        return new ArrayList<>(Arrays.asList(invalidCards)).contains(cardName);
+    private int getCredit() {
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("shop show --money", username, "Shop Menu"));
+        return Integer.parseInt(data.getMessage());
     }
+
+    private String[] getCardsSorted() {
+        DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("deck show --cards", username, "Deck Menu"));
+        return data.getMessage().split("\n");
+    }
+
 
 }
