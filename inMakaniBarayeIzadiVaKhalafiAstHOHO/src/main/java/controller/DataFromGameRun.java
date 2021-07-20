@@ -4,10 +4,13 @@ import java.util.*;
 import model.Card.*;
 import model.*;
 import controller.DuelControllers.*;
+import model.Enums.CardFamily;
 
 public class DataFromGameRun {
     public static ArrayList<DataFromGameRun> eventDataFromServer = new ArrayList<>();
-    public ArrayList<Card> cardsForEvent = new ArrayList<>();
+    public Card card;
+    ArrayList<String> cardNames = new ArrayList<>();
+    ArrayList<Boolean> areMonsters = new ArrayList<>();
     public String event;
     public Gamer gamerOfAction;
     public int cardId;
@@ -29,7 +32,9 @@ public class DataFromGameRun {
     public DataFromGameRun(String event, Card card){
         this.event = event;
         gamerOfAction = GameData.getGameData().getCurrentGamer();
-        cardsForEvent.add(card);
+        this.card = card;
+        cardNames.add(card.getName());
+        areMonsters.add(card.getCardFamily().equals(CardFamily.MONSTER));
         eventDataFromServer.add(this);
     }
 
