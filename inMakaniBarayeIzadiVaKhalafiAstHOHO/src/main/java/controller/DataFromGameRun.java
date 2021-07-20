@@ -26,10 +26,10 @@ public class DataFromGameRun {
         gameData.addData(this);
     }
 
-    public DataFromGameRun(GameData gameData, String event, Card card){
+    public DataFromGameRun(GameData gameData, String event, String cardName){
         this.event = event;
         gamerOfAction = GameData.getGameData().getCurrentGamer();
-        cardNames.add(card.getName());
+        cardNames.add(cardName);
         gameData.addData(this);
     }
 

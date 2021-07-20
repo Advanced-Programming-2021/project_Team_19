@@ -249,13 +249,12 @@ public class Game {
 
             if (gameData.isGameOver()) {
                 new DataFromGameRun(gameData, "game finished " + finishGame(gameData).getUsername());
-//                return finishGame(gameData);
             }
 
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
                 Card card = new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
-                new DataFromGameRun(gameData, "add card to hand", card);
+                new DataFromGameRun(gameData, "add card to hand", card.getName());
                 new DataFromGameRun(gameData, "draw phase");
                 continue;
             }

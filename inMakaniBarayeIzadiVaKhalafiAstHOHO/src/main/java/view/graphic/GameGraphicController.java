@@ -284,14 +284,12 @@ public class GameGraphicController extends Menu {
                 otherGameView.handleAddRivalCardFromDeckToHandGraphic
                         (events.get(index).cardNames.get(0));
             } catch (NullPointerException ignored) {
-                ignored.printStackTrace();
             }
 
             try {
                 time = gameView.handleAddCardFromDeckToHandGraphic
                         (events.get(index).cardNames.get(0));
             } catch (NullPointerException ignored) {
-                ignored.printStackTrace();
             }
 
         } else if (response.matches("set spell \\d")) {
