@@ -584,7 +584,7 @@ public class GameGraphicController extends Menu {
             handleFieldSpell(gameView, cardId - 1, cardId - 1, matcher.group(1));
         } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
             handleIncreaseLP(gameView, spellCommand.substring(18));
-            handleDestroySpell(gameView, cardId - 1, cardId - 1, newIndex);
+            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
         }
         return time;
     }
