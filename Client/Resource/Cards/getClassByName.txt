@@ -1,0 +1,74 @@
+Advanced Ritual Art:model.Card.Spells.AdvancedRitualArt
+Alexandrite Dragon:model.Card.Monsters.NormalMonster
+Axe Raider:model.Card.Monsters.NormalMonster
+Baby dragon:model.Card.Monsters.NormalMonster
+Battle OX:model.Card.Monsters.NormalMonster
+Battle warrior:model.Card.Monsters.NormalMonster
+Beast King Barbaros:model.Card.Monsters.BeastKingBarbaros
+Bitron:model.Card.Monsters.NormalMonster
+Black Pendant:model.Card.Spells.BlackPendant
+Blue-Eyes white dragon:model.Card.Monsters.NormalMonster
+Call of The Haunted:model.Card.Traps.CallOfTheHaunted
+Change of Heart:model.Card.Spells.ChangeOfHeart
+Closed Forest:model.Card.Spells.ClosedForest
+Command Knight:model.Card.Monsters.NormalMonster
+Crab Turtle:model.Card.Monsters.RitualMonster
+Crawling dragon:model.Card.Monsters.NormalMonster
+Curtain of the dark ones:model.Card.Monsters.NormalMonster
+Dark Blade:model.Card.Monsters.NormalMonster
+Dark Hole:model.Card.Spells.DarkHole
+Dark magician:model.Card.Monsters.NormalMonster
+Exploder Dragon:model.Card.Monsters.ExploderDragon
+Feral Imp:model.Card.Monsters.NormalMonster
+Fireyarou:model.Card.Monsters.NormalMonster
+Flame manipulator:model.Card.Monsters.NormalMonster
+Forest:model.Card.Spells.FieldSpell
+Gate Guardian:model.Card.Monsters.GateGuardian
+Haniwa:model.Card.Monsters.NormalMonster
+Harpie's Feather Duster:model.Card.Spells.HarpiesFeatherDuster
+Herald of Creation:model.Card.Monsters.HeraldOfCreation
+Hero of the east:model.Card.Monsters.NormalMonster
+Horn Imp:model.Card.Monsters.NormalMonster
+Leotron:model.Card.Monsters.NormalMonster
+Magic Cylinder:model.Card.Traps.MagicCylinder
+Magic Jamamer:model.Card.Traps.MagicJammer
+Magnum Shield:model.Card.Spells.MagnumShield
+Man-Eater Bug:model.Card.Monsters.ManEaterBug
+Marshmallon:model.Card.Monsters.Marshmallon
+Messenger of peace:model.Card.Spells.MessangerOfPeace
+Mind Crush:model.Card.Traps.MindCrush
+Mirage Dragon:model.Card.Monsters.NormalMonster
+Mirror Force:model.Card.Traps.MirrorForce
+Monster Reborn:model.Card.Spells.MonsterReborn
+Mystical space typhoon:model.Card.Spells.MysticalSpaceTyphoon
+Negate Attack:model.Card.Traps.NegateAttack
+Pot of Greed:model.Card.Spells.PotOfGreed
+Raigeki:model.Card.Spells.Raigeki
+Ring of defense:model.Card.Spells.RingOfDefence
+Scanner:model.Card.Monsters.ScannerMonster
+Silver Fang:model.Card.Monsters.NormalMonster
+Skull Guardian:model.Card.Monsters.RitualMonster
+Slot Machine:model.Card.Monsters.NormalMonster
+Solemn Warning:model.Card.Traps.SolemnWarning
+Spell Absorption:model.Card.Spells.SpellAbsorption
+Spiral Serpent:model.Card.Monsters.NormalMonster
+Suijin:model.Card.Monsters.Suijin
+Supply Squad:model.Card.Spells.SupplySquad
+Sword of dark destruction:model.Card.Spells.SwordOfDarkDestruction
+Swords of Revealing Light:model.Card.Spells.SwordsOfRevealingLight
+Terraforming:model.Card.Spells.Terraforming
+Terratiger, the Empowered Warrior:model.Card.Monsters.TerratigerTheEmpoweredWarrior
+Texchanger:model.Card.Monsters.Texchanger
+The Calculator:model.Card.Monsters.TheCalculator
+The Tricky:model.Card.Monsters.TheTricky
+Time Seal:model.Card.Traps.TimeSeal
+Torrential Tribute:model.Card.Traps.TorrentialTribute
+Trap Hole:model.Card.Traps.TrapHole
+Twin Twisters:model.Card.Spells.TwinTwisters
+Umiiruka:model.Card.Spells.FieldSpell
+United We Stand:model.Card.Spells.UnitedWeStand
+Warrior Dai Grepher:model.Card.Monsters.NormalMonster
+Wattaildragon:model.Card.Monsters.NormalMonster
+Wattkid:model.Card.Monsters.NormalMonster
+Yami:model.Card.Spells.FieldSpell
+Yomi Ship:model.Card.Monsters.YomiShip

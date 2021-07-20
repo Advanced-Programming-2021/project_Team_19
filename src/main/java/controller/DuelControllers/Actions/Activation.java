@@ -168,7 +168,8 @@ public class Activation extends Action {
         while (true) {
 
             gameData.setEvent(GameEvent.CHAIN);
-            command = GetInput.getString();
+//            command = GetInput.getString();
+            command = "";
             gameData.setEvent(null);
 
             if (checkInvalidMoves(command)) {

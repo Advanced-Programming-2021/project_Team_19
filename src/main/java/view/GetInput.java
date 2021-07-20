@@ -2,7 +2,6 @@ package view;
 
 
 import controller.DuelControllers.AI;
-import controller.DuelControllers.DuelMenuController;
 import controller.DuelControllers.GameData;
 import view.Printer.Printer;
 
@@ -30,26 +29,29 @@ public class GetInput {
     }
 
 
-    public static String getString() {
-        if (DuelMenuController.isGameIsHappening() && AIMod()) {
-            if (scannerCounter > 0) {
-                scannerCounter--;
-                String ans = AIScanner.nextLine();
-                Printer.print(ans);
-                return ans;
-            } else {
-                Printer.print("enter hehe for see AI power");
-                scanner.nextLine();
-                AI.run(GameData.getGameData());
-                return getString();
-            }
-        }
-
-        if (testMod) {
-            return commands.poll();
-        } else {
-            return scanner.nextLine().replaceAll("\\s+", " ").trim();
-        }
+//    public static String getString() {
+//        if (DuelMenuController.isGameIsHappening() && AIMod()) {
+//            if (scannerCounter > 0) {
+//                scannerCounter--;
+//                String ans = AIScanner.nextLine();
+//                Printer.print(ans);
+//                return ans;
+//            } else {
+//                Printer.print("enter hehe for see AI power");
+//                scanner.nextLine();
+//                AI.run(GameData.getGameData());
+//                return getString();
+//            }
+//        }
+//
+//        if (testMod) {
+//            return commands.poll();
+//        } else {
+//            return scanner.nextLine().replaceAll("\\s+", " ").trim();
+//        }
+//    }
+    public static String getString(){
+        return "";
     }
 
     public static String getAICommand(){

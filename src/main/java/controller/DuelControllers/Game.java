@@ -18,8 +18,6 @@ import model.Phase;
 import model.TriggerLabel;
 import view.GetInput;
 import view.Printer.Printer;
-import view.graphic.CardView;
-import view.graphic.GameGraphicController;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -29,19 +27,19 @@ public class Game {
 
     public GameData gameData;
     public Card multiActionCard;
-    public GameGraphicController gameController;
+//    public GameGraphicController gameController;
     public int round;
 
-    public Game(GameData gameData, int round, GameGraphicController gameController) {
+    public Game(GameData gameData, int round) {
         this.gameData = gameData;
         this.round = round;
-        this.gameController = gameController;
+//        this.gameController = gameController;
     }
 
-    public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
-        ArrayList<DataFromGameRun> tempData = run(dataFromClient);
-        gameController.graphicsForEvents(tempData, index);
-    }
+//    public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
+//        ArrayList<DataFromGameRun> tempData = run(dataFromClient);
+//        gameController.graphicsForEvents(tempData, index);
+//    }
 
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
         gameData.resetDataFromGameRuns();
@@ -276,118 +274,6 @@ public class Game {
     }
 
 
-    @Deprecated
-    public Gamer DeprecatedRun() {
-
-        String command;
-
-        while (true) {
-
-            if (!gameData.hasAskedForSpellsThisPhase) {
-
-                if (canRivalActivateSpell(gameData)) {
-                    Utils.changeTurn(gameData);
-                    gameData.showBoard();
-
-                    if (Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")) {
-                        handleActivatingSpellByRival(gameData);
-                    }
-
-                    Utils.changeTurn(gameData);
-                }
-                gameData.hasAskedForSpellsThisPhase = true;
-            }
-
-
-            if (gameData.isGameOver()) {
-                return finishGame(gameData);
-            }
-            if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
-                new DrawPhase().run(gameData);
-                goToNextPhase(gameData);
-                continue;
-            }
-            if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
-                new StandbyPhase().run(gameData);
-                goToNextPhase(gameData);
-                continue;
-            }
-            if (gameData.getCurrentPhase().equals(Phase.END)) {
-                gameData.setSelectedCard(null);
-                gameData.turnFinished();
-                goToNextPhase(gameData);
-                continue;
-            }
-
-            gameData.setEvent(GameEvent.NORMAL);
-
-
-            command = GetInput.getString();
-            gameData.setEvent(null);
-
-            if (gameData.isRitualSummoning() &&
-                    command.matches("cancel")) {
-                Printer.print("you successfully cancelled your ritual summon");
-                gameData.removeRitualSummoning();
-                continue;
-            }
-
-            if (gameData.isRitualSummoning() &&
-                    (!command.matches("summon") && !command.startsWith("select"))) {
-                Printer.print("you should ritual summon right now");
-                continue;
-            }
-
-            if (gameData.getTurn() == 1) {
-                if (command.equals("next phase")) {
-                    gameData.goToEndPhase();
-                    Printer.print(gameData.getCurrentPhase().getPhaseName());
-                    continue;
-                }
-            }
-
-            if (command.matches("surrender")) {
-                if (askForSurrender())
-                    return handleSurrender(gameData);
-            } else if (command.matches("increase --LP \\d+")) {
-                CheatCodes.increaseLifePoint(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "increase --LP (\\d+)")));
-            } else if (command.matches("duel set-winner \\w+")) {
-                if (CheatCodes.winGame(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "duel set-winner (\\w+)")))) {
-                    return handleSurrender(gameData);
-                }
-            } else if (command.matches("set --position (attack|defence)")) {
-                new SetPosition(gameData).run(Utils.getMatcher(command, "set --position (.*)"));
-            } else if (command.matches("multiply --attack \\d+")) {
-                CheatCodes.multiplyAttack(gameData, Utils.getFirstGroupInMatcher(Utils.getMatcher(command, "multiply --attack (\\d+)")));
-            } else if (command.matches("activate")) {
-                new ActivateSpellOrTrapNormally(gameData).run();
-            } else if (command.equals("activate effect")) {
-                new ActivateEffectMonster(gameData).run();
-            } else {
-                Printer.printInvalidCommand();
-            }
-
-        }
-    }
-
-
-    private boolean askForSurrender() {
-        while (true) {
-            Printer.print("do you want to surrender?");
-            String command = GetInput.getString().toLowerCase(Locale.ROOT);
-            if (command.matches("yes"))
-                return true;
-            else if (command.matches("no"))
-                return false;
-            else
-                Printer.printInvalidCommand();
-        }
-    }
-
-    private Gamer handleSurrender(GameData gameData) {
-        gameData.surrender();
-        return finishGame(gameData);
-    }
 
     private Gamer finishGame(GameData gameData) {
         Gamer winner = determineWinner(gameData);

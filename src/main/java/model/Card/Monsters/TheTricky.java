@@ -32,7 +32,7 @@ public class TheTricky extends EffectMonster {
 
         String command;
         while (true) {
-            command = GetInput.getString();
+            command = "GetInput.getString()";
             if (command.matches("1")) {
                 return 1;
             } else if (command.matches("cancel")) {

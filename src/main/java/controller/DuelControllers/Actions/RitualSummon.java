@@ -39,7 +39,7 @@ public class RitualSummon extends Summon {
         while (true) {
             String command;
             Utils.printArrayListOfCards(monstersToTribute);
-            command = GetInput.getString();
+            command = "GetInput.getString()";
             if (command.matches("cancel")) {
                 Printer.print("you cancelled the ritual summon");
                 break;
@@ -69,7 +69,7 @@ public class RitualSummon extends Summon {
         Printer.print("do you want to summon defencive or offensive?");
         while (true) {
             String command;
-            command = GetInput.getString();
+            command = "GetInput.getString()";
             if (command.matches("cancel")) {
                 Printer.print("you cancelled the ritual summon");
 

@@ -22,7 +22,8 @@ public abstract class ActivateTrapWithNotification extends Activation {
         while (true) {
 
             gameData.setEvent(GameEvent.ACTIVATE_TRAP);
-            command = GetInput.getString();
+//            command = GetInput.getString();
+            command = "GetInput.getString()";
             gameData.setEvent(null);
 
             if (checkInvalidMoves(command)) {

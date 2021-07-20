@@ -1,0 +1,74 @@
+Advanced Ritual Art;100;false
+Alexandrite Dragon;100;false
+Axe Raider;100;false
+Baby dragon;100;false
+Battle OX;100;false
+Battle warrior;100;false
+Beast King Barbaros;100;false
+Bitron;100;false
+Black Pendant;100;false
+Blue-Eyes white dragon;100;false
+Call of The Haunted;100;false
+Change of Heart;100;false
+Closed Forest;100;false
+Command Knight;100;false
+Crab Turtle;100;false
+Crawling dragon;100;false
+Curtain of the dark ones;100;false
+Dark Blade;100;false
+Dark Hole;100;false
+Dark magician;100;false
+Exploder Dragon;100;false
+Feral Imp;100;false
+Fireyarou;100;false
+Flame manipulator;100;false
+Forest;100;false
+Gate Guardian;100;false
+Haniwa;100;false
+Harpie's Feather Duster;100;false
+Herald of Creation;100;false
+Hero of the east;100;false
+Horn Imp;100;false
+Leotron;100;false
+Magic Cylinder;100;false
+Magic Jamamer;100;false
+Magnum Shield;100;false
+Man-Eater Bug;100;false
+Marshmallon;100;false
+Messenger of peace;100;false
+Mind Crush;100;false
+Mirage Dragon;100;false
+Mirror Force;100;false
+Monster Reborn;100;false
+Mystical space typhoon;100;false
+Negate Attack;100;false
+Pot of Greed;100;false
+Raigeki;100;false
+Ring of defense;100;false
+Scanner;100;false
+Silver Fang;100;false
+Skull Guardian;100;false
+Slot Machine;100;false
+Solemn Warning;100;false
+Spell Absorption;100;false
+Spiral Serpent;100;false
+Suijin;100;false
+Supply Squad;100;false
+Sword of dark destruction;100;false
+Swords of Revealing Light;100;false
+Terraforming;100;false
+Terratiger, the Empowered Warrior;100;false
+Texchanger;100;false
+The Calculator;100;false
+The Tricky;100;false
+Time Seal;100;false
+Torrential Tribute;100;false
+Trap Hole;100;false
+Twin Twisters;100;false
+Umiiruka;100;false
+United We Stand;100;false
+Warrior Dai Grepher;100;false
+Wattaildragon;100;false
+Wattkid;100;false
+Yami;100;false
+Yomi Ship;100;false

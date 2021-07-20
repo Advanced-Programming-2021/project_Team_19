@@ -38,7 +38,7 @@ public class BeastKingBarbaros extends EffectMonster {
                 2- with 3000 ATK with 2 sacrifices
                 3- with 3000 ATK with 3 sacrifices and destroying all enemy monsters""");
         while (true) {
-            String command = GetInput.getString();
+            String command = "GetInput.getString()";
             switch (command) {
                 case "1":
                     setAttack(1900);
@@ -74,7 +74,7 @@ public class BeastKingBarbaros extends EffectMonster {
                 1- with 1900 ATK without sacrificing
                 2- with 3000 ATK with 2 sacrifices""");
         while (true) {
-            String command = GetInput.getString();
+            String command = "GetInput.getString()";
             switch (command) {
                 case "1":
                     setAttack(1900);

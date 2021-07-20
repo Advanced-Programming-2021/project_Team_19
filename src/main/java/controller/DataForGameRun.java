@@ -1,8 +1,6 @@
 package controller;
 
 import model.Gamer;
-import view.graphic.CardView;
-import view.graphic.GameView;
 
 public class DataForGameRun {
     String command;
@@ -24,9 +22,9 @@ public class DataForGameRun {
         return zoneName;
     }
 
-    public void findIdAndZoneName(GameView gameView, CardView cardView){
-        gameView.setIdAndZoneForData(this, cardView);
-    }
+//    public void findIdAndZoneName(GameView gameView, CardView cardView){
+//        gameView.setIdAndZoneForData(this, cardView);
+//    }
 
     public String getCommand() {
         return command;
