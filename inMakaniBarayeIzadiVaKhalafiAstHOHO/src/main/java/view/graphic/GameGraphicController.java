@@ -172,8 +172,10 @@ public class GameGraphicController extends Menu {
         }
 
         new Timeline(new KeyFrame(Duration.millis(3500), event -> {
-            graphicsForEvents(game.run(new DataForGameRun
-                    ("start game", gameView1.self)), 0);
+            ArrayList<DataFromGameRun> datas = game.run(new DataForGameRun
+                    ("start game", gameView1.self));
+
+            graphicsForEvents(datas, 0);
         })).play();
     }
 
@@ -280,15 +282,14 @@ public class GameGraphicController extends Menu {
         } else if (response.equals("add card to hand")) {
             try {
                 otherGameView.handleAddRivalCardFromDeckToHandGraphic
-                        (events.get(index).card);
+                        (events.get(index).cardNames.get(0));
             } catch (NullPointerException ignored) {
             }
 
             try {
                 time = gameView.handleAddCardFromDeckToHandGraphic
-                        (events.get(index).card);
+                        (events.get(index).cardNames.get(0));
             } catch (NullPointerException ignored) {
-
             }
 
         } else if (response.matches("set spell \\d")) {
@@ -581,7 +582,7 @@ public class GameGraphicController extends Menu {
             handleFieldSpell(gameView, cardId - 1, cardId - 1, matcher.group(1));
         } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
             handleIncreaseLP(gameView, spellCommand.substring(18));
-            handleDestroySpell(gameView, cardId - 1, cardId - 1, newIndex);
+            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
         }
         return time;
     }

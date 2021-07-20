@@ -46,7 +46,7 @@ public class Game {
     }
 
     public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
-        DataFromGameRun.reset();
+        gameData.resetDataFromGameRuns();
         String command = dataFromClient.getCommand();
         switch (command) {
 
@@ -56,7 +56,7 @@ public class Game {
                         (label.action).handleActivate();
                 String message = data.message;
                 String[] messages = message.split(":");
-                new DataFromGameRun(message);
+                new DataFromGameRun(gameData, message);
                 if (messages[1].equals("change turn")) {
                     gameData.changeTurn();
                 }
@@ -76,41 +76,55 @@ public class Game {
                 runServerSideGameEvents();
             }
             case "set" -> {
-                new DataFromGameRun(new Set(gameData).run(null));
+                new DataFromGameRun(gameData, new Set(gameData).run(null));
+            }
+            case "get init hand data" -> {
+                ArrayList<String> cards = new ArrayList<>();
+                ArrayList<String> rivalCards = new ArrayList<>();
+
+                for (int i = 0; i < 5; i++) {
+                    cards.add(dataFromClient.getGamer().getGameBoard().getHand().getCardsInHand().get(i).getName());
+                    rivalCards.add(gameData.getOtherGamer
+                            (dataFromClient.getGamer()).getGameBoard().getHand().getCardsInHand().get(i).getName());
+                }
+                DataFromGameRun data = new DataFromGameRun(gameData, "init hand");
+                data.cardNames.addAll(cards);
+                data.cardNames.addAll(rivalCards);
+                return gameData.dataFromGameRuns;
             }
             case "set with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.SET_MODE);
-                new DataFromGameRun(new Set(gameData).actionIsValid());
+                new DataFromGameRun(gameData, new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
-                System.out.println(new DataFromGameRun(new NormalSummon(gameData).run(null)).cardId);
+                new DataFromGameRun(gameData, new NormalSummon(gameData).run(null));
             }
             case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
-                new DataFromGameRun(new NormalSummon(gameData).actionIsValid());
+                new DataFromGameRun(gameData, new NormalSummon(gameData).actionIsValid());
             }
             case "attack direct" -> {
                 new DirectAttack(gameData).run(true);
             }
             case "activate spell" -> {
-                new DataFromGameRun(new ActivateSpellOrTrapNormally(gameData).run());
+                new DataFromGameRun(gameData, new ActivateSpellOrTrapNormally(gameData).run());
             }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
                 CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
-                new DataFromGameRun(new AttackMonster(gameData, 0).actionIsValid());
+                new DataFromGameRun(gameData, new AttackMonster(gameData, 0).actionIsValid());
             }
             case "flip summon" -> {
-                new DataFromGameRun(new FlipSummon(gameData).run());
+                new DataFromGameRun(gameData, new FlipSummon(gameData).run());
             }
             case "get Atk|Def" -> {
-                new DataFromGameRun(getAtkDef(gameData));
+                new DataFromGameRun(gameData, getAtkDef(gameData));
             }
             case "next phase" -> {
                 String nextPhaseName = goToNextPhase(gameData);
-                new DataFromGameRun(nextPhaseName);
+                new DataFromGameRun(gameData, nextPhaseName);
             }
         }
         if (command.matches("sacrifice \\d( \\d)*")) {
@@ -122,22 +136,22 @@ public class Game {
                 summonOrSetResponse = new Set(gameData).run(command.substring(10));
             }
             CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-            new DataFromGameRun(summonOrSetResponse);
+            new DataFromGameRun(gameData, summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
             new AttackMonster(gameData, Integer.parseInt(command.substring(7))).run(true);
         } else if (command.matches("set position (attack|defence)")) {
-            new DataFromGameRun(new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)")));
+            new DataFromGameRun(gameData, new SetPosition(gameData).run(Utils.getMatcher(command, "set position (.*)")));
         } else if (command.matches("game button @\\d+@")) {
             String lpIncrease = command.split(" ")[2].replace("@", "");
             CheatCodes.increaseLifePoint(gameData, lpIncrease);
-            new DataFromGameRun("increase lp " + lpIncrease);
+            new DataFromGameRun(gameData, "increase lp " + lpIncrease);
         }
 
 
         runServerSideGameEvents();
 
-        return DataFromGameRun.eventDataFromServer;
+        return gameData.dataFromGameRuns;
     }
 
 
@@ -181,13 +195,13 @@ public class Game {
         if (action.canTurnOwnerActivateTrapBecauseOfAnAction() &&
                 gameData.triggerLabel.shouldAskFromFirstGamer) {
             gameData.triggerLabel.inProgress = true;
-            new DataFromGameRun("ask gamer for trap:" + action.getActionName());
+            new DataFromGameRun(gameData, "ask gamer for trap:" + action.getActionName());
         } else {
             if (action.canOtherPlayerActivateAnyTrapOrSpeedSpellBecauseOfAnAction() &&
                     gameData.triggerLabel.shouldAskFromSecondGamer) {
                 gameData.triggerLabel.inProgress = true;
                 gameData.changeTurn();
-                new DataFromGameRun("ask gamer for trap:" + action.getActionName());
+                new DataFromGameRun(gameData, "ask gamer for trap:" + action.getActionName());
             }
             gameData.triggerLabel.shouldAskFromSecondGamer = false;
         }
@@ -198,7 +212,7 @@ public class Game {
                 && !gameData.triggerLabel.inProgress) {
             if (gameData.triggerLabel.shouldRunAgain) {
                 String[] data = ((Attack) gameData.triggerLabel.action).run(false);
-                new DataFromGameRun(data);
+                new DataFromGameRun(gameData, data);
             }
             gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
             gameData.triggerLabel = null;
@@ -234,28 +248,27 @@ public class Game {
 
 
             if (gameData.isGameOver()) {
-                new DataFromGameRun("game finished " + finishGame(gameData).getUsername());
-//                return finishGame(gameData);
+                new DataFromGameRun(gameData, "game finished " + finishGame(gameData).getUsername());
             }
 
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
                 Card card = new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
-                new DataFromGameRun("add card to hand", card);
-                new DataFromGameRun("draw phase");
+                new DataFromGameRun(gameData, "add card to hand", card.getName());
+                new DataFromGameRun(gameData, "draw phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.STANDBY)) {
                 new StandbyPhase().run(gameData);
                 goToNextPhase(gameData);
-                new DataFromGameRun("stand by phase");
+                new DataFromGameRun(gameData, "stand by phase");
                 continue;
             }
             if (gameData.getCurrentPhase().equals(Phase.END)) {
                 gameData.setSelectedCard(null);
                 gameData.turnFinished();
                 goToNextPhase(gameData);
-                new DataFromGameRun("end phase");
+                new DataFromGameRun(gameData, "end phase");
                 continue;
             }
 
@@ -427,7 +440,6 @@ public class Game {
 
         ArrayList<EffectLabel> tempArray = (ArrayList<EffectLabel>) gamer.getEffectLabels().clone();
 
-        System.out.println(tempArray.size());
 
         for (EffectLabel label : tempArray) {
             if (label.checkLabel()) {
@@ -439,7 +451,7 @@ public class Game {
 
                 if (label.label == 1) {
                     String nextPhaseName = goToNextPhase(gameData);
-                    new DataFromGameRun(nextPhaseName);
+                    new DataFromGameRun(gameData, nextPhaseName);
                 }
 
                 return true;

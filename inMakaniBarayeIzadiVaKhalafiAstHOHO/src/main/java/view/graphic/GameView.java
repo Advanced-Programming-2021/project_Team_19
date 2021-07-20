@@ -31,10 +31,6 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Card.Card;
-import model.Card.Monster;
-import model.Card.SpellAndTraps;
-import model.Enums.CardMod;
-import model.Enums.SpellCardMods;
 import model.Gamer;
 import view.graphic.CardViewAnimations.FadeAnimation;
 import view.graphic.CardViewAnimations.RotateAnimation;
@@ -206,14 +202,18 @@ public class GameView {
             }
         });
         phaseButton.setOnMouseClicked(event -> {
-            if (game.gameData.getCurrentGamer().equals(self)) {
-                game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+            if(canRunNextPhase){
+                canRunNextPhase = false;
+                if (game.gameData.getCurrentGamer().equals(self)) {
+                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+                }
             }
+
         });
 
         gamePane.getChildren().add(phaseButton);
     }
-
+    boolean canRunNextPhase = true;
 
     private void addPhaseBox() {
 
@@ -252,7 +252,12 @@ public class GameView {
     private void runChangePhase() {
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
-
+                if(i == 4 || i == 0){
+                    canRunNextPhase = false;
+                }
+                if(i == 1 || i == 2 || i == 3){
+                    canRunNextPhase = true;
+                }
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
@@ -431,9 +436,9 @@ public class GameView {
         return cardView;
     }
 
-    private ArrayList<CardView> showCardsInScrollPane(ArrayList<Card> cards, boolean canCloseByRightClick) {
+    private ArrayList<CardView> showCardsInScrollPane(ArrayList<CardView> cardViews, boolean canCloseByRightClick) {
 
-        ArrayList<CardView> cardViews = new ArrayList<>();
+        ArrayList<CardView> newCardViews = new ArrayList<>();
 
         if (canCloseByRightClick) {
             cardViewsScrollPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -451,11 +456,11 @@ public class GameView {
 
         HBox box = new HBox(5);
 
-        for (Card card : cards) {
-            CardView temp = new CardView(card, 4, false, true);
+        for (CardView cardView : cardViews) {
+            CardView temp = new CardView(cardView.getCardName(), 4, false, true);
             setShowCardOnMouseEntered(temp);
             box.getChildren().add(temp);
-            cardViews.add(temp);
+            newCardViews.add(temp);
         }
 
         cardViewsScrollPane.setContent(box);
@@ -463,17 +468,14 @@ public class GameView {
         cardViewsScrollPane.setMinWidth(450);
         cardViewsScrollPane.setMinHeight(170);
 
-        return cardViews;
+        return newCardViews;
     }
 
     private void showGraveYard(boolean isSelf) {
 
-        ArrayList<Card> cards = new ArrayList<>();
         ArrayList<CardView> cardViews = isSelf ? selfGraveyardCards : rivalGraveyardCards;
-        for (CardView cardView : cardViews) {
-            cards.add(cardView.getCard());
-        }
-        showCardsInScrollPane(cards, true);
+
+        showCardsInScrollPane(cardViews, true);
     }
 
     public void run() {
@@ -490,20 +492,13 @@ public class GameView {
     }
 
     public void initHand() {
-//        DataFromGameRun data = game.run(new DataForGameRun("get init hand data", self)).get(0);
+        DataFromGameRun data = game.run(new DataForGameRun("get init hand data", self)).get(0);
 
-        ArrayList<Card> cards = new ArrayList<>();
-        ArrayList<Card> rivalCards = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            cards.add(self.getGameBoard().getHand().getCardsInHand().get(i));
-            rivalCards.add(rival.getGameBoard().getHand().getCardsInHand().get(i));
-        }
-        handleAddCardsFromDeckToSelfHandGraphic(cards);
-        handleAddCardsFromDeckToRivalHandGraphic(rivalCards);
+        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
+        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
     }
 
-    public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<Card> cards) {
+    public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<String> cards) {
         Timeline timeline = new Timeline();
 
         for (int i = 0; i < cards.size(); i++) {
@@ -787,52 +782,6 @@ public class GameView {
         return 0;
     }
 
-//    CardView searchCardInRivalHand(Card card) {
-//        for (CardView cardView : rivalHand) {
-//            if (cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    CardView searchCardInSelfHand(Card card) {
-//        for (CardView cardView : selfHand) {
-//            if (cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-
-//    CardView searchCardInRivalField(Card card) {
-//        for (CardView cardView : rivalMonsterZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        for (CardView cardView : rivalSpellZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    CardView searchCardInSelfField(Card card) {
-//        for (CardView cardView : monsterZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        for (CardView cardView : spellZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-
     double handleSummonGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
                 (this, handIndex, 0, 0, zoneIndex);
@@ -860,8 +809,8 @@ public class GameView {
         return runIncreaseLpGraphic(this, lp, isSelf);
     }
 
-    double handleAddCardFromDeckToHandGraphic(Card card) {
-        CardView cardView = new CardView(card
+    double handleAddCardFromDeckToHandGraphic(String cardName) {
+        CardView cardView = new CardView(cardName
                 , 8, true, true);
         setBooleanForShowActions(selfHand, false);
         ParallelTransition transition = getTransitionForAddCardFromDeckToHand(this, cardView);
@@ -870,11 +819,11 @@ public class GameView {
         return 500;
     }
 
-    double handleAddCardsFromDeckToSelfHandGraphic(ArrayList<Card> cards) {
+    double handleAddCardsFromDeckToSelfHandGraphic(ArrayList<String> cards) {
         ArrayList<CardView> cardViews = new ArrayList<>();
-        for (Card card : cards) {
+        for (String cardName : cards) {
             cardViews.add(new CardView(
-                    card, 8, true, true));
+                    cardName, 8, true, true));
         }
         return runAddCardsToSelfHandFromDeckAnimation(this, cardViews);
     }
@@ -1027,7 +976,7 @@ public class GameView {
                         newIndex != -1 ? newIndex : oldIndex, 1, true);
             } else {
                 handleDestroyCardFromField
-                        (newIndex != -1 ? 4 - newIndex : 4 - oldIndex, 1, false);
+                        (newIndex != -1 ? 4 - newIndex : oldIndex, 1, false);
             }
         })).play();
 
@@ -1276,8 +1225,8 @@ public class GameView {
         runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 3, 1, zoneIndex);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphic(Card card) {
-        addCardToRivalHandFromDeck(this, card);
+    void handleAddRivalCardFromDeckToHandGraphic(String cardName) {
+        addCardToRivalHandFromDeck(this, cardName);
     }
 
     void handleRivalFlipSummonGraphicBOOCN(int cardIndex) {
@@ -1364,9 +1313,6 @@ public class GameView {
         } else if (spellZoneCards.contains(cardView)){
             data.setZoneName("Spell And Trap Zone");
             data.setId(spellZoneCards.indexOf(cardView));
-        }else if (selfFieldSpell.equals(cardView)){
-            data.setZoneName("Field Zone");
-            data.setId(0);
         }else if (rivalHand.contains(cardView)){
             data.setZoneName("Hand Opponent");
             data.setId(rivalHand.indexOf(cardView) + 1);

@@ -131,10 +131,6 @@ public class CardView extends Rectangle {
         setFill(new ImagePattern(rotatedImage));
     }
 
-    public Card getCard() {
-        return card;
-    }
-
     public String getFirstValidAction(GameView gameView) throws Exception {
         Game game = gameView.game;
         Gamer gamer = gameView.self;
@@ -215,7 +211,10 @@ public class CardView extends Rectangle {
             if (this.canShowValidActions) {
                 try {
                     gameView.showValidActionForCard(getFirstValidAction(gameView), this);
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    if (!"no valid actions".equals(e.getMessage()) && !"not your turn".equals(e.getMessage())){
+                        e.printStackTrace();
+                    }
                 }
             }
         });
