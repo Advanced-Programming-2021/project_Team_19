@@ -202,14 +202,18 @@ public class GameView {
             }
         });
         phaseButton.setOnMouseClicked(event -> {
-            if (game.gameData.getCurrentGamer().equals(self)) {
-                game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+            if(canRunNextPhase){
+                canRunNextPhase = false;
+                if (game.gameData.getCurrentGamer().equals(self)) {
+                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+                }
             }
+
         });
 
         gamePane.getChildren().add(phaseButton);
     }
-
+    boolean canRunNextPhase = true;
 
     private void addPhaseBox() {
 
@@ -248,7 +252,12 @@ public class GameView {
     private void runChangePhase() {
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
-
+                if(i == 4 || i == 0){
+                    canRunNextPhase = false;
+                }
+                if(i == 1 || i == 2 || i == 3){
+                    canRunNextPhase = true;
+                }
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
                 phaseBox.getChildren().get(i).getStyleClass().add("inactivePhase");
                 phaseBox.getChildren().get((i + 1) % 6).getStyleClass().add("activePhase");
@@ -772,52 +781,6 @@ public class GameView {
         }
         return 0;
     }
-
-//    CardView searchCardInRivalHand(Card card) {
-//        for (CardView cardView : rivalHand) {
-//            if (cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    CardView searchCardInSelfHand(Card card) {
-//        for (CardView cardView : selfHand) {
-//            if (cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-
-//    CardView searchCardInRivalField(Card card) {
-//        for (CardView cardView : rivalMonsterZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        for (CardView cardView : rivalSpellZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    CardView searchCardInSelfField(Card card) {
-//        for (CardView cardView : monsterZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        for (CardView cardView : spellZoneCards) {
-//            if (cardView != null && cardView.getCard().equals(card)) {
-//                return cardView;
-//            }
-//        }
-//        return null;
-//    }
 
     double handleSummonGraphic(int handIndex, int zoneIndex) {
         return runMoveCardFromHandToFieldGraphic
