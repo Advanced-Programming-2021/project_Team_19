@@ -20,15 +20,17 @@ public class LobbyHandler {
         if (command.matches("lobby --play --rounds \\d")) {
             return waitingForRound(user, Utils.getMatcher(command, "lobby --play --rounds (\\d)"));
         } else if (command.equals("lobby exit")) {
-            return cancelRequest(user);
+//            return cancelRequest(user);
         } else if (command.equals("lobby --getStatus")) {
 
         }
+        return null;
     }
 
     private DataForClientFromServer waitingForRound(User user, Matcher matcher) {
         int round = Integer.parseInt(matcher.group(1));
         waitOrTake(user, round);
+        return null;
     }
 
     private synchronized void waitOrTake(User user, int round) {
@@ -40,11 +42,4 @@ public class LobbyHandler {
 
         }
     }
-
-    public static void main(String[] args) {
-        String[] hello = {"hello", "hi", "why"};
-        Arrays.stream()
-    }
-
-    private DataForClientFromServer
 }
