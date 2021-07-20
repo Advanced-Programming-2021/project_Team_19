@@ -133,13 +133,12 @@ public class OneDeck extends Menu {
         String[] cards = MainMenu.sendDataToServer(new DataForServerFromClient("deck show --cards",
                 token, "Deck Menu")).getMessage().split("\n");
         for (String cardDescription : cards) {
-            Card card = CSVDataBaseController.getCardByCardName(cardDescription);
             try {
-                CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
+                CardView cardViewToAddToScroll = new CardView(cardDescription, 2.5, false, true);
                 hBox.getChildren().add(cardViewToAddToScroll);
-                cardViewToAddToScroll.setOnMouseClicked(e -> cardName.setText(card.getName()));
+                cardViewToAddToScroll.setOnMouseClicked(e -> cardName.setText(cardDescription));
             } catch (Exception e) {
-                System.out.println(card.getName()+ "-----------------------------------------------");
+                System.out.println(cardDescription+ "-----------------------------------------------");
             }
         }
         hBox.setSpacing(10);
@@ -149,8 +148,7 @@ public class OneDeck extends Menu {
         allMainCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allMainCards) {
-            Card card = CSVDataBaseController.getCardByCardName(cardIdentity);
-            CardView cardView = new CardView(card, 2, false, true);
+            CardView cardView = new CardView(cardIdentity, 2, false, true);
             cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
             mainMenuCards.getChildren().add(cardView);
         }
@@ -160,8 +158,7 @@ public class OneDeck extends Menu {
         allSideCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allSideCards) {
-            Card card = CSVDataBaseController.getCardByCardName(cardIdentity);
-            CardView cardView = new CardView(card, 2, false, true);
+            CardView cardView = new CardView(cardIdentity, 2, false, true);
             cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
             sideMenuCards.getChildren().add(cardView);
         }

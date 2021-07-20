@@ -1,10 +1,8 @@
 package view.Menu;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.MenuControllers.ShopMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,13 +17,9 @@ import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
-import model.User;
 import view.graphic.CardView;
 
-import javax.print.DocFlavor;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Shop extends Menu {
 
@@ -114,8 +108,8 @@ public class Shop extends Menu {
     }
 
     public void getCardName(MouseEvent mouseEvent) {
-        String text = cardName.getText();
-        Card card = controller.Utils.getCardByName(text);
+        String cardName = this.cardName.getText();
+        Card card = controller.Utils.getCardByName(cardName);
         if(card == null){
             messageBox.setText("This card does not exist");
             messageBox.setTextFill(Color.RED);
@@ -125,14 +119,14 @@ public class Shop extends Menu {
         }
         else{
             messageBox.setText(null);
-            CardView cardView = new CardView(card,2, false, true);
+            CardView cardView = new CardView(cardName,2, false, true);
             currentCard = card;
             cardPic.getChildren().clear();
             cardPic.getChildren().add(cardView);
             if (getCredit() >= card.getPrice()) {
                 buyButton.setDisable(false);
             }
-            cardName.clear();
+            this.cardName.clear();
         }
     }
 
@@ -142,8 +136,7 @@ public class Shop extends Menu {
 
     public void clearChoice(MouseEvent mouseEvent) {
         cardPic.getChildren().clear();
-        cardPic.getChildren().add(new CardView(controller.Utils.getCardByName
-                ("Battle OX"), 2, true, true));
+        cardPic.getChildren().add(new CardView(2));
         currentCard = null;
         buyButton.setDisable(true);
         cardName.clear();
@@ -171,12 +164,11 @@ public class Shop extends Menu {
                 coinShower.setFont(new Font(16));
                 HBox hBox = new HBox();
                 for (String cardName : getCardsSorted()) {
-                    Card card = CSVDataBaseController.getCardByCardName(cardName);
                     try {
-                        CardView cardViewToAddToScroll = new CardView(card, 2.5, false, true);
+                        CardView cardViewToAddToScroll = new CardView(cardName, 2.5, false, true);
                         hBox.getChildren().add(cardViewToAddToScroll);
                     } catch (Exception e) {
-                        System.out.println(card.getName()+ "-----------------------------------------------");
+                        System.out.println(cardName+ "-----------------------------------------------");
                     }
                 }
                 userCards.setContent(hBox);

@@ -526,8 +526,8 @@ public class GameView {
         if (bool) {
             if (mouseEnteredCardView != null) {
                 try {
-                    showValidActionForCard
-                            (mouseEnteredCardView.getFirstValidAction(game, self), mouseEnteredCardView);
+//                    showValidActionForCard
+//                            (mouseEnteredCardView.getFirstValidAction(game, self), mouseEnteredCardView);
                 } catch (Exception ignored) {
 
                 }
@@ -572,7 +572,7 @@ public class GameView {
             new Translation(cardView, cardView.getLayoutY() - 15, 150).getAnimation().play();
             if (cardView.canShowValidActions) {
                 try {
-                    showValidActionForCard(cardView.getFirstValidAction(game, self), cardView);
+//                    showValidActionForCard(cardView.getFirstValidAction(game, self), cardView);
                 } catch (Exception ignored) {
                 }
             }
@@ -688,7 +688,7 @@ public class GameView {
                 }
             }
         }
-        cardForShow.setFill(new ImagePattern(CardView.getImageByCard(card)));
+//        cardForShow.setFill(new ImagePattern(CardView.getImageByCard(card)));
         cardDescription.setText(card.getDescription());
     }
 

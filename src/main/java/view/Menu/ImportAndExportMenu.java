@@ -73,9 +73,8 @@ public class ImportAndExportMenu extends Menu {
         String[] cards = data.getMessage().split("\n");
         for(String card : cards) {
             String tempCardName = card.split(":")[0].trim();
-            Card cardToAddToScroll = CSVDataBaseController.getCardByCardName(tempCardName);
             try {
-                CardView cardViewToAddToScroll = new CardView(cardToAddToScroll, 2.5, false, true);
+                CardView cardViewToAddToScroll = new CardView(tempCardName, 2.5, false, true);
                 vBox.getChildren().add(cardViewToAddToScroll);
                 cardViewToAddToScroll.setOnMouseClicked(e -> cardToExport.setText(tempCardName));
             } catch (Exception e) {
