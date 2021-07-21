@@ -7,19 +7,17 @@ import java.util.ArrayList;
 
 public class CardActionManager {
 
-    public Card card;
     public GameData gameData;
-    public static actionManagerMode mode = actionManagerMode.NORMAL_MODE;
+    public actionManagerMode mode = actionManagerMode.NORMAL_MODE;
 
 
-    public CardActionManager(Card card, GameData gameData) {
-        this.card = card;
+    public CardActionManager(GameData gameData) {
         this.gameData = gameData;
     }
 
 
-    public static void setMode(actionManagerMode mode) {
-        CardActionManager.mode = mode;
+    public void setMode(actionManagerMode mode) {
+        this.mode = mode;
     }
 
     public ArrayList<String> getValidActions() {

@@ -27,6 +27,7 @@ public class Game {
 
     public GameData gameData;
     public Card multiActionCard;
+    public CardActionManager manager;
     public GameGraphicController gameController;
     public int round;
 
@@ -34,6 +35,7 @@ public class Game {
         this.gameData = gameData;
         this.round = round;
         this.gameController = gameGraphicController;
+        this.manager = new CardActionManager(gameData);
     }
 
     private Gamer getGamerByUser(User user){
@@ -41,7 +43,7 @@ public class Game {
                 gameData.getInvitedGamer() : gameData.getGameStarter();
     }
 
-    public synchronized DataForClientFromServer run(String command, User user) {
+    public synchronized DataForClientFromServer run(String command, User user, DataForGameRun dataForGameRun) {
         gameData.resetDataFromGameRuns();
         Gamer gamer = getGamerByUser(user);
         switch (command) {
@@ -59,7 +61,7 @@ public class Game {
                 label.shouldRunAgain = label.shouldRunAgain && !data.hasActionStopped;
             }
             case "set trigger trap mode" -> {
-                CardActionManager.setMode(actionManagerMode.TRIGGER_TRAP_MODE);
+                manager.setMode(actionManagerMode.TRIGGER_TRAP_MODE);
             }
             case "cancel activate trap" -> {
                 gameData.triggerLabel.inProgress = false;
@@ -89,7 +91,7 @@ public class Game {
             }
             case "set with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
-                CardActionManager.setMode(actionManagerMode.SET_MODE);
+                manager.setMode(actionManagerMode.SET_MODE);
                 new DataFromGameRun(gameData, new Set(gameData).actionIsValid());
             }
             case "normal summon" -> {
@@ -97,7 +99,7 @@ public class Game {
             }
             case "summon with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
-                CardActionManager.setMode(actionManagerMode.SUMMON_MODE);
+                manager.setMode(actionManagerMode.SUMMON_MODE);
                 new DataFromGameRun(gameData, new NormalSummon(gameData).actionIsValid());
             }
             case "attack direct" -> {
@@ -108,7 +110,7 @@ public class Game {
             }
             case "attack monster" -> {
                 multiActionCard = gameData.getSelectedCard();
-                CardActionManager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
+                manager.setMode(actionManagerMode.ATTACK_MONSTER_MODE);
                 new DataFromGameRun(gameData, new AttackMonster(gameData, 0).actionIsValid());
             }
             case "flip summon" -> {
@@ -116,6 +118,9 @@ public class Game {
             }
             case "get Atk|Def" -> {
                 new DataFromGameRun(gameData, getAtkDef(gameData));
+            }
+            case "get valid actions" -> {
+                new DataFromGameRun(gameData, getValidCommandsForCard(dataForGameRun).stream().toArray(String[]::new));
             }
             case "next phase" -> {
                 if (user.getUsername().equals(gameData.getCurrentGamer().getUsername())){
@@ -127,12 +132,12 @@ public class Game {
         if (command.matches("sacrifice \\d( \\d)*")) {
             gameData.setSelectedCard(multiActionCard);
             String[] summonOrSetResponse = new String[2];
-            if (CardActionManager.mode.equals(actionManagerMode.SUMMON_MODE)) {
+            if (manager.mode.equals(actionManagerMode.SUMMON_MODE)) {
                 summonOrSetResponse = new NormalSummon(gameData).run(command.substring(10));
-            } else if (CardActionManager.mode.equals(actionManagerMode.SET_MODE)) {
+            } else if (manager.mode.equals(actionManagerMode.SET_MODE)) {
                 summonOrSetResponse = new Set(gameData).run(command.substring(10));
             }
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            manager.setMode(actionManagerMode.NORMAL_MODE);
             new DataFromGameRun(gameData, summonOrSetResponse);
         } else if (command.matches("attack \\d")) {
             gameData.setSelectedCard(multiActionCard);
@@ -152,12 +157,12 @@ public class Game {
     }
 
 
-    public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
+    public ArrayList<String> getValidCommandsForCard(DataForGameRun data) {
         if (gameData.getCurrentGamer().getUsername().equals(Network.getUserByToken(data.token).getUsername())) {
             gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName(), data.getId()));
-            return (new CardActionManager(gameData.getSelectedCard(), gameData).getValidActions());
+            return (manager.getValidActions());
         }
-        throw new Exception("not your turn");
+        return new ArrayList<>();
     }
 
     public Card getCardByZoneAndId(String zoneName, int Id) {
@@ -214,7 +219,7 @@ public class Game {
             gameData.removeActionFromCurrentActions(gameData.triggerLabel.action);
             gameData.triggerLabel = null;
             gameData.setActionIndexForTriggerActivation(-1);
-            CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+            manager.setMode(actionManagerMode.NORMAL_MODE);
         }
     }
 

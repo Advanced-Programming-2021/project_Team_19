@@ -1,5 +1,6 @@
 package AnythingIWant;
 
+import controller.DataForGameRun;
 import controller.DuelControllers.Game;
 import controller.DuelControllers.GameData;
 import model.Data.DataForClientFromServer;
@@ -31,8 +32,9 @@ public class GameGraphicController {
                 game.gameData.getInvitedGamer().getUsername();
     }
 
-    public static DataForClientFromServer run(User user, String command){
+    public static DataForClientFromServer run(User user, DataForGameRun data){
+        String command = data.getMessage();
         GameGraphicController controller = gameGraphicControllers.get(command.split("&")[0]);
-        return controller.game.run(command.split("&")[1], user);
+        return controller.game.run(command.split("&")[1], user, data);
     }
 }
