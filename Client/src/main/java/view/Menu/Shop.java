@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import controller.DataBaseControllers.CSVDataBaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,6 +56,7 @@ public class Shop extends Menu {
             AnchorPane anchorPane = fxmlLoader.load();
             readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
+            stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

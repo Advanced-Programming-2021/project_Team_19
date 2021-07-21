@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -42,6 +43,7 @@ public class WelcomeMenu extends Menu {
         pane.getStylesheets().add("CSS/Css.css");
         pane.setId("shopBackGround");
         stage.setTitle("Welcome Menu");
+        stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
         stage.getScene().setRoot(pane);
     }
 
@@ -55,7 +57,10 @@ public class WelcomeMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> System.exit(0));
+        backButton.setOnMouseClicked(event -> {
+            ClientNetwork.getInstance().disconnect();
+            System.exit(0);
+        });
 
         pane.getChildren().addAll(buttonBox, backButton);
     }
@@ -200,7 +205,9 @@ public class WelcomeMenu extends Menu {
 
             Button backButton = new Button();
             setBackButton(backButton);
-            backButton.setOnMouseClicked(event -> WelcomeMenu.getInstance().run());
+            backButton.setOnMouseClicked(event -> {
+                WelcomeMenu.getInstance().run();
+            });
 
             responseLabel.setLayoutX(200);
             responseLabel.setLayoutY(200);

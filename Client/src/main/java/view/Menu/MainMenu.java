@@ -1,11 +1,13 @@
 package view.Menu;
 
 
+import AnythingIWant.ClientNetwork;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.Data.DataForServerFromClient;
 
 public class MainMenu extends Menu {
 
@@ -34,6 +36,7 @@ public class MainMenu extends Menu {
         stage.setTitle("Main Menu");
         pane.getStylesheets().add("CSS/Css.css");
         pane.setId("shopBackGround");
+        stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
         stage.getScene().setRoot(pane);
 
     }
@@ -66,7 +69,11 @@ public class MainMenu extends Menu {
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> WelcomeMenu.getInstance().run());
+        backButton.setOnMouseClicked(event -> {
+            Menu.sendDataToServer(new DataForServerFromClient("user logout", token, "Login Menu"));
+            token = null;
+            WelcomeMenu.getInstance().run();
+        });
 
         pane.getChildren().addAll(buttonBox, backButton);
     }

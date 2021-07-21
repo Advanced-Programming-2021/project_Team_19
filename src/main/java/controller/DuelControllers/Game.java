@@ -1,5 +1,6 @@
 package controller.DuelControllers;
 
+import AnythingIWant.GameGraphicController;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
 import controller.DuelControllers.Actions.*;
@@ -27,13 +28,13 @@ public class Game {
 
     public GameData gameData;
     public Card multiActionCard;
-//    public GameGraphicController gameController;
+    public GameGraphicController gameController;
     public int round;
 
-    public Game(GameData gameData, int round) {
+    public Game(GameData gameData, int round, GameGraphicController gameGraphicController) {
         this.gameData = gameData;
         this.round = round;
-//        this.gameController = gameController;
+        this.gameController = gameGraphicController;
     }
 
 //    public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
