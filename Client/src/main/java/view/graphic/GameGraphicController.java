@@ -58,6 +58,10 @@ public class GameGraphicController extends Menu {
     }
 
     private void run(ArrayList<DataFromGameRun> datas, int index){
+        if(datas.size() == 0){
+            return;
+        }
+
         DataFromGameRun data = datas.get(index);
         double time;
 
