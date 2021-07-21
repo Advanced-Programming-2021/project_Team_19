@@ -5,6 +5,7 @@ import controller.DataFromGameRun;
 import controller.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -60,8 +61,12 @@ public class GameGraphicController extends Menu {
         return Menu.sendDataToServer(data).gameGraphicData;
     }
 
-    public void sendDataAndRun(String command){
+    public synchronized void sendDataAndRun(String command){
         ArrayList<DataFromGameRun> datas = sendDataToServer(command);
+        System.err.println("graphic tasks:");
+        for(DataFromGameRun data : datas){
+            System.out.println(data.event);
+        }
         run(datas, 0);
     }
 
@@ -88,9 +93,10 @@ public class GameGraphicController extends Menu {
 
     public void startGame() {
         gameView.run();
-        new Timeline(new KeyFrame(Duration.millis(7000), event -> {
+        new Timeline(new KeyFrame(Duration.millis(5000), event -> {
             sendDataAndRun("start game");
         })).play();
+        checkerThread.start();
     }
 
     public void sendGameRunDataToServer(DataForGameRun data){
@@ -423,9 +429,17 @@ class MyThread extends Thread{
     public void run() {
 
         while(true){
-            controller.sendDataAndRun("whats up");
+            System.out.println("هی هی و هوهو");
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.sendDataAndRun("whats up");
+                }
+            });
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

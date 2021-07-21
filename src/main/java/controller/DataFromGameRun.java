@@ -15,6 +15,7 @@ public class DataFromGameRun {
         this.event = event;
         gamerOfActionName = gameData.getCurrentGamer().getUsername();
         gameData.addData(this);
+        gameData.getSecondGamer().dataForSend.add(this);
     }
 
     public DataFromGameRun(GameData gameData, String[] eventAndId){
@@ -30,6 +31,7 @@ public class DataFromGameRun {
         gamerOfActionName = gameData.getCurrentGamer().getUsername();
         cardNames.add(cardName);
         gameData.addData(this);
+        gameData.getSecondGamer().dataForSend.add(this);
     }
 
     public DataFromGameRun(GameData gameData, String event, ArrayList<String> validActions){
@@ -37,6 +39,7 @@ public class DataFromGameRun {
         gamerOfActionName = gameData.getCurrentGamer().getUsername();
         cardNames = validActions;
         gameData.addData(this);
+        gameData.getSecondGamer().dataForSend.add(this);
     }
 
     public int getCardId() {
