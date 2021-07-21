@@ -9,7 +9,7 @@ public class DataForClientFromServer {
 
     private String message;
     private MessageType messageType;
-    private ArrayList<String> messages;
+    private ArrayList<String> messages = new ArrayList<>();
     public ArrayList<DataFromGameRun> gameGraphicData = null;
 
     public DataForClientFromServer(ArrayList<DataFromGameRun> gameGraphicData){

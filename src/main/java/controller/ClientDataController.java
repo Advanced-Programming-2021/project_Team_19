@@ -52,6 +52,8 @@ public class ClientDataController {
             return LobbyHandler.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("duel")){
             return GameGraphicController.run(user, data.getMessage());
+        } else if (menuName.matches("Chat Menu")){
+            return ChatRoomController.run(user, data.getMessage());
         }
 
         return Utils.getDataSendToClientForInvalidInput();
