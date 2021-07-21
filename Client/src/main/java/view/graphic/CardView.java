@@ -140,7 +140,8 @@ public class CardView extends Rectangle {
         dataToSend.findIdAndZoneName(gameView, this);
         System.out.println(dataToSend.getZoneName());
         System.out.println(dataToSend.getId());
-//        validActionNames = game.getValidCommandsForCard(dataToSend);
+
+        validActionNames = gameView.gameController.sendDataToServer("get valid actions").get(0).cardNames;
 
         for (String validAction : validActionNames) {
             if (validAction.equals("summon with sacrifice")) {

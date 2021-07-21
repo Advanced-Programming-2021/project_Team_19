@@ -4,6 +4,7 @@ package controller;
 import AnythingIWant.GameGraphicController;
 import AnythingIWant.LobbyHandler;
 import AnythingIWant.Network;
+import com.google.gson.Gson;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.MenuControllers.*;
 import model.Data.DataForClientFromServer;
@@ -24,7 +25,7 @@ public class ClientDataController {
     }
 
     public static DataForClientFromServer handleMessageOfClientAndGetFeedback
-            (DataForServerFromClient data) {
+            (DataForServerFromClient data, String command) {
 
         String menuName = data.getMenuName();
 
@@ -51,7 +52,9 @@ public class ClientDataController {
         } else if (menuName.matches("Lobby Menu")) {
             return LobbyHandler.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("duel")){
-            return GameGraphicController.run(user, (DataForGameRun) data);
+            Gson gson = new Gson();
+            DataForGameRun tempData = gson.fromJson(command, DataForGameRun.class);
+            return GameGraphicController.run(user, tempData);
         } else if (menuName.matches("Chat Menu")){
             return ChatRoomController.run(user, data.getMessage());
         }

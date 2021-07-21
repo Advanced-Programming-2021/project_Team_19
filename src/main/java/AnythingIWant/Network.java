@@ -69,7 +69,7 @@ public class Network {
         Gson gson = new Gson();
         DataForServerFromClient data = gson.fromJson(command, DataForServerFromClient.class);
         System.out.println(data.getMessage());
-        DataForClientFromServer dataBack = ClientDataController.handleMessageOfClientAndGetFeedback(data);
+        DataForClientFromServer dataBack = ClientDataController.handleMessageOfClientAndGetFeedback(data, command);
         try {
             String result = gson.toJson(dataBack);
             System.out.println("result       " + result);

@@ -31,6 +31,13 @@ public class DataFromGameRun {
         gameData.addData(this);
     }
 
+    public DataFromGameRun(GameData gameData, String event, ArrayList<String> validActions){
+        this.event = event;
+        gamerOfActionName = gameData.getCurrentGamer().getUsername();
+        cardNames = validActions;
+        gameData.addData(this);
+    }
+
     public int getCardId() {
         return cardId;
     }

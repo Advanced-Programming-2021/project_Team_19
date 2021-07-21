@@ -120,7 +120,7 @@ public class Game {
                 new DataFromGameRun(gameData, getAtkDef(gameData));
             }
             case "get valid actions" -> {
-                new DataFromGameRun(gameData, getValidCommandsForCard(dataForGameRun).stream().toArray(String[]::new));
+                new DataFromGameRun(gameData, "valid actions", getValidCommandsForCard(dataForGameRun));
             }
             case "next phase" -> {
                 if (user.getUsername().equals(gameData.getCurrentGamer().getUsername())){
