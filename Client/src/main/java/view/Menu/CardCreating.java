@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import model.Card.Card;
-import model.Card.Monster;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.User;

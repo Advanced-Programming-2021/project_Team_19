@@ -2,7 +2,6 @@ package view.graphic;
 
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataForGameRun;
-import controller.DuelControllers.Game;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
@@ -15,7 +14,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
 import model.Card.Card;
 import model.Enums.CardFamily;
-import model.Gamer;
 
 import java.util.ArrayList;
 
@@ -131,15 +129,12 @@ public class CardView extends Rectangle {
     }
 
     public String getFirstValidAction(GameView gameView) throws Exception {
-        Game game = gameView.game;
-        Gamer gamer = gameView.self;
-
         validActionNamesForShow = new ArrayList<>();
-        DataForGameRun dataToSend = new DataForGameRun("get valid actions", gamer);
+        DataForGameRun dataToSend = new DataForGameRun("get valid actions");
         dataToSend.findIdAndZoneName(gameView, this);
         System.out.println(dataToSend.getZoneName());
         System.out.println(dataToSend.getId());
-        validActionNames = game.getValidCommandsForCard(dataToSend);
+//        validActionNames = game.getValidCommandsForCard(dataToSend);
 
         for (String validAction : validActionNames) {
             if (validAction.equals("summon with sacrifice")) {

@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
+import view.graphic.GameGraphicController;
 
 import java.io.IOException;
 
@@ -50,32 +51,38 @@ public class Lobby extends Menu{
         oneRoundButton.setDisable(true);
         threeRoundButton.setDisable(true);
         new Thread(() -> {
-            DataForClientFromServer data = Menu.sendDataToServer(new DataForServerFromClient("lobby --play --rounds " + 1,
+            DataForClientFromServer data = Menu.sendDataToServer
+                    (new DataForServerFromClient("lobby --play --rounds " + 1,
                     token, "Lobby Menu"));
-            if (data.getMessage().startsWith("match started")) {
-                System.out.println("match started");
-            } else {
+
                 while (!isCancelButtonPressed) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    data = Menu.sendDataToServer(new DataForServerFromClient("lobby --getStatus", token, "Lobby Menu"));
+
                     if (data.getMessage().startsWith("match started")) {
                         System.out.println("match started");
                         break;
                     }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    data = Menu.sendDataToServer(new DataForServerFromClient
+                            ("lobby --getStatus", token, "Lobby Menu"));
                 }
-            }
+
             if (isCancelButtonPressed) {
                 Menu.sendDataToServer(new DataForServerFromClient("lobby exit", token, "Lobby Menu"));
             } else{
+                DataForClientFromServer finalData = data;
                 Platform.runLater(() -> {
                     cancelButton.setDisable(true);
                     oneRoundButton.setDisable(false);
                     threeRoundButton.setDisable(false);
-                    new RockPaper().run();
+                    String gameCode = finalData.getMessage().split(":")[1];
+                    String username1 = finalData.getMessage().split(":")[2];
+                    String username2 = finalData.getMessage().split(":")[3];
+                    new GameGraphicController(gameCode, 1, username1, username2).run();
+//                    new RockPaper().run();
                 });
             }
         }).start();

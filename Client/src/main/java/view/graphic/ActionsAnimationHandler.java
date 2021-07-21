@@ -37,9 +37,11 @@ public class ActionsAnimationHandler {
     }
 
 
-    static void addCardToRivalHandFromDeck(GameView gameView, String cardName) {
+    static double addCardToRivalHandFromDeck(GameView gameView, String cardName) {
         getTransitionForAddCardFromRivalDeckToRivalHand(gameView,
                 new CardView(cardName, 8, true, true)).play();
+
+        return 500;
     }
 
     static ParallelTransition getTransitionForAddCardFromRivalDeckToRivalHand(GameView gameView, CardView cardView) {
@@ -320,46 +322,6 @@ public class ActionsAnimationHandler {
         return 500;
     }
 
-    static double runAddCardToHandGraphic(GameView gameView, String cardName) {
-        CardView cardView = gameView.getCardForHand(cardName);
-        ParallelTransition transition = new ParallelTransition(
-                new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
-                new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        gameView.gamePane.getChildren().add(cardView);
-                    }
-                })));
-
-        gameView.selfHand.add(cardView);
-        cardView.setX(gameView.getCardInHandX(cardView));
-        cardView.setY(gameView.getCardinHandY());
-        transition.getChildren().add(getHandAnimationForCardsWasInHand(gameView));
-        transition.play();
-        runAddCardToRivalHandGraphic(gameView.rivalGameView, cardName);
-        return 500;
-    }
-
-    static double runAddCardToRivalHandGraphic(GameView gameView, String cardName) {
-        CardView cardView = gameView.getCardForRivalHand(cardName);
-        ParallelTransition transition = new ParallelTransition(
-                new FadeAnimation(cardView, 500, 0, 1).getAnimation(),
-                new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        gameView.gamePane.getChildren().add(cardView);
-                    }
-                })));
-
-        gameView.rivalHand.add(cardView);
-        cardView.setX(gameView.getCardInRivalHandX(cardView));
-        cardView.setY(gameView.getCardinRivalHandY());
-
-        transition.getChildren().add(getHandAnimationForCardsWasInRivalHand(gameView));
-        transition.play();
-        return 500;
-    }
-
     static ParallelTransition getHandAnimationForCardsWasInHand(GameView gameView) {
         ParallelTransition transition = new ParallelTransition();
         for (CardView cardView : gameView.selfHand) {
@@ -378,32 +340,6 @@ public class ActionsAnimationHandler {
                     .getAnimation());
         }
         return transition;
-    }
-    //field animations
-
-    //zone -> 0 for monsterZone and 1 for spellZone
-    //mode -> 0 for summon monster and 1 for set monster and 2 for set spell and 3 for activate spell
-    //mode -> 4 for DO monster
-
-    static double putCardIntoFiled(GameView gameView, String cardName, int mode, int zone, int index) {
-        CardView cardView = gameView.getCardViewForField(cardName, mode);
-        addCardToCorrectCardListZone(gameView, cardView, zone, index);
-        cardView.setX(gameView.getCardInFieldX(cardView, mode));
-        cardView.setY(gameView.getCardInFieldY(mode));
-        new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
-        gameView.gamePane.getChildren().add(cardView);
-        putCardIntoRivalFiled(gameView.rivalGameView, cardName, mode, zone, 4 - index);
-        return 800;
-    }
-
-    static double putCardIntoRivalFiled(GameView gameView, String cardName, int mode, int zone, int index) {
-        CardView cardView = gameView.getCardViewForField(cardName, mode);
-        addNewCardViewToCorrectRivalZone(gameView, cardView, zone, index);
-        cardView.setX(gameView.getCardInRivalFieldX(cardView, mode));
-        cardView.setY(gameView.getCardInRivalFieldY(mode));
-        new FadeAnimation(cardView, 800, 0, 1).getAnimation().play();
-        gameView.gamePane.getChildren().add(cardView);
-        return 800;
     }
 
     //flip animations

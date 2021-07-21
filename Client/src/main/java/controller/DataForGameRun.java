@@ -1,19 +1,17 @@
 package controller;
 
-import model.Gamer;
+import model.Data.DataForServerFromClient;
+import view.Menu.Menu;
 import view.graphic.CardView;
 import view.graphic.GameView;
 
-public class DataForGameRun {
-    String command;
-    Gamer gamer;
+public class DataForGameRun extends DataForServerFromClient {
+
     int id;
     String zoneName;
 
-
-    public DataForGameRun(String command, Gamer gamer){
-        this.command = command;
-        this.gamer = gamer;
+    public DataForGameRun(String command){
+        super(command, Menu.token, "duel");
     }
 
     public int getId() {
@@ -26,14 +24,6 @@ public class DataForGameRun {
 
     public void findIdAndZoneName(GameView gameView, CardView cardView){
         gameView.setIdAndZoneForData(this, cardView);
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public Gamer getGamer() {
-        return gamer;
     }
 
     public void setId(int id) {

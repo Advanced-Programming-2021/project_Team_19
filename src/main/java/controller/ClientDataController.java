@@ -1,6 +1,7 @@
 package controller;
 
 
+import AnythingIWant.GameGraphicController;
 import AnythingIWant.LobbyHandler;
 import AnythingIWant.Network;
 import controller.DataBaseControllers.UserDataBaseController;
@@ -36,7 +37,7 @@ public class ClientDataController {
         }
 
         if (menuName.matches("Login Menu")) {
-            return LoginMenuController.getInstance().run(data.getMessage(), data.getToken());
+            return LoginMenuController.getInstance().run(data.getMessage());
         } else if (menuName.matches("Profile Menu")) {
             return ProfileMenuController.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("Deck Menu")) {
@@ -49,8 +50,8 @@ public class ClientDataController {
             return ImportAndExportMenuController.getInstance().run(data.getMessage());
         } else if (menuName.matches("Lobby Menu")) {
             return LobbyHandler.getInstance().run(user, data.getMessage());
-        } else if (menuName.matches("Chat Menu")) {
-            return ChatRoomController.run(user, data.getMessage());
+        } else if (menuName.matches("duel")){
+            return GameGraphicController.run(user, data.getMessage());
         }
 
         return Utils.getDataSendToClientForInvalidInput();

@@ -9,13 +9,11 @@ import model.Data.DataForClientFromServer;
 import model.Enums.CardFamily;
 import model.Enums.GameEvent;
 import model.Enums.MessageType;
-import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

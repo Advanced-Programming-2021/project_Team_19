@@ -31,7 +31,6 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Card.Card;
-import model.Gamer;
 import view.graphic.CardViewAnimations.FadeAnimation;
 import view.graphic.CardViewAnimations.RotateAnimation;
 import view.graphic.CardViewAnimations.Translation;
@@ -45,10 +44,9 @@ import static view.graphic.ActionsAnimationHandler.*;
 public class GameView {
 
     GameGraphicController gameController;
-    Gamer self;
-    Gamer rival;
+    String self;
+    String rival;
     Game game;
-    GameView rivalGameView;
 
     Stage stage;
 
@@ -118,12 +116,11 @@ public class GameView {
         phases.add("end phase");
     }
 
-    public GameView(Stage stage, GameGraphicController controller, Gamer self, Gamer rival, Game game) {
+    public GameView(Stage stage, GameGraphicController controller, String self, String rival) {
         this.stage = stage;
         this.gameController = controller;
         this.self = self;
         this.rival = rival;
-        this.game = game;
 
         setCardShowPane();
         setGamePane();
@@ -158,10 +155,6 @@ public class GameView {
         return label;
     }
 
-    public void setRivalGameView(GameView gameView) {
-        rivalGameView = gameView;
-    }
-
     private void setGamePane() {
         Image image = new Image("Assets/Field/fie_normal.bmp");
         Rectangle field = new Rectangle(600, 600);
@@ -177,7 +170,7 @@ public class GameView {
                 cheatSheet.show();
             } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()){
                 if (game.gameData.getCurrentGamer().equals(self)) {
-                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+                    game.runWithGraphics(new DataForGameRun("next phase"), null, 0);
                 }
             }
         });
@@ -205,7 +198,7 @@ public class GameView {
             if(canRunNextPhase){
                 canRunNextPhase = false;
                 if (game.gameData.getCurrentGamer().equals(self)) {
-                    game.runWithGraphics(new DataForGameRun("next phase", self), null, 0);
+                    game.runWithGraphics(new DataForGameRun("next phase"), null, 0);
                 }
             }
 
@@ -274,7 +267,8 @@ public class GameView {
 
         Button submit = new Button("submit");
         submit.setOnMouseClicked(event -> {
-            game.runWithGraphics(new DataForGameRun("game button " + cheatTextField.getText(), self), null, 0);
+            game.runWithGraphics(new DataForGameRun
+                    ("game button " + cheatTextField.getText()), null, 0);
             stage.close();
         });
 
@@ -301,8 +295,8 @@ public class GameView {
         box.setAlignment(Pos.CENTER);
 
         setLpLabel(lpLabel);
-        Gamer gamer = isRival ? rival : self;
-        setUsernameLabel(usernameLabel, gamer);
+        String username = isRival ? rival : self;
+        setUsernameLabel(usernameLabel, username);
 
         int usernameIndex = 0;
 
@@ -316,12 +310,12 @@ public class GameView {
         return box;
     }
 
-    private void setUsernameLabel(Label label, Gamer gamer) {
+    private void setUsernameLabel(Label label, String username) {
         label.setAlignment(Pos.CENTER);
         label.setMinWidth(50);
         label.setTextAlignment(TextAlignment.CENTER);
         label.getStyleClass().add("username");
-        label.setText(gamer.getUsername());
+        label.setText(username);
     }
 
 
@@ -480,8 +474,6 @@ public class GameView {
 
     public void run() {
         stage.getScene().setRoot(mainPane);
-        stage.show();
-
         new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -492,7 +484,7 @@ public class GameView {
     }
 
     public void initHand() {
-        DataFromGameRun data = game.run(new DataForGameRun("get init hand data", self)).get(0);
+        DataFromGameRun data = game.run(new DataForGameRun("get init hand data")).get(0);
 
         handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
         handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
@@ -623,13 +615,13 @@ public class GameView {
                 }
                 cardView = mainCardForMultiCardAction;
 //                dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self));
-                game.runWithGraphics(new DataForGameRun(String.valueOf(command), self), cardView, 0);
+                game.runWithGraphics(new DataForGameRun(String.valueOf(command)), cardView, 0);
             } else {
                 return;
             }
         } else {
 //            dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
-            game.runWithGraphics(new DataForGameRun(cardView.getCurrentAction(), self), cardView, 0);
+            game.runWithGraphics(new DataForGameRun(cardView.getCurrentAction()), cardView, 0);
         }
 
 //        gameController.graphicsForEvents(dataFromGameRun, cardView, 0);
@@ -1209,28 +1201,28 @@ public class GameView {
         }
     }
 
-    void handleSummonRivalMonsterGraphic(int handIndex, int zoneIndex) {
-        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 0, 0, zoneIndex);
+    double handleSummonRivalMonsterGraphic(int handIndex, int zoneIndex) {
+        return runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 0, 0, zoneIndex);
     }
 
-    void handleSetRivalMonsterGraphicBOOCN(int handIndex, int zoneIndex) {
-        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 1, 0, zoneIndex);
+    double handleSetRivalMonsterGraphicBOOCN(int handIndex, int zoneIndex) {
+        return runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 1, 0, zoneIndex);
     }
 
     void handleActivateRivalSpellGraphicBOOCN(Card card, int zoneIndex) {
 //        runMoveRivalCardFromHandToFiledGraphic(this, card, 2, 1, zoneIndex);
     }
 
-    void handleSetRivalSpellGraphic(int handIndex, int zoneIndex) {
-        runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 3, 1, zoneIndex);
+    double handleSetRivalSpellGraphic(int handIndex, int zoneIndex) {
+        return runMoveRivalCardFromHandToFiledGraphic(this, handIndex, 3, 1, zoneIndex);
     }
 
-    void handleAddRivalCardFromDeckToHandGraphic(String cardName) {
-        addCardToRivalHandFromDeck(this, cardName);
+    double handleAddRivalCardFromDeckToHandGraphic(String cardName) {
+        return addCardToRivalHandFromDeck(this, cardName);
     }
 
-    void handleRivalFlipSummonGraphicBOOCN(int cardIndex) {
-        runRivalFlipSummonGraphic(this, cardIndex);
+    double handleRivalFlipSummonGraphicBOOCN(int cardIndex) {
+        return runRivalFlipSummonGraphic(this, cardIndex);
     }
 
     private void setMouseLocationMonitor() {
@@ -1292,14 +1284,14 @@ public class GameView {
         mainPane.getChildren().add(mainBox);
 
         noButton.setOnMouseClicked(mouseEvent -> {
-            game.runWithGraphics(new DataForGameRun("cancel activate trap", self), null, 0);
+            game.runWithGraphics(new DataForGameRun("cancel activate trap"), null, 0);
 
             mainPane.getChildren().remove(mainBox);
         });
 
         yesButton.setOnMouseClicked(mouseEvent -> {
             mainPane.getChildren().remove(mainBox);
-            game.runWithGraphics(new DataForGameRun("set trigger trap mode", self), null, 0);
+            game.runWithGraphics(new DataForGameRun("set trigger trap mode"), null, 0);
         });
     }
 

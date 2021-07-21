@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.*;
-import view.GetInput;
 import view.Menu.WelcomeMenu;
 import view.Printer.Printer;
 

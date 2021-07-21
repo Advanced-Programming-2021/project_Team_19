@@ -18,7 +18,7 @@ public class Menu extends menuGraphic {
 
     protected static String username;
 
-    protected static String token;
+    public static String token;
 
     static {
 
