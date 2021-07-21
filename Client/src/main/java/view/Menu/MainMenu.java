@@ -41,7 +41,8 @@ public class MainMenu extends Menu {
     private void setMainMenu() {
 
         VBox buttonBox = setSeveralChoiceButtons("Profile Menu", "Deck Menu",
-                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Lobby", "Import/Export Menu", "Card Creating Menu", "TV");
+                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Lobby", "Import/Export Menu",
+                "Card Creating Menu", "Chat Room", "TV");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username, UserDataBaseController.getUserByUsername(username).getNickname()));
 
@@ -59,7 +60,9 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(7).setOnMouseClicked(event -> new CardCreating().run(UserDataBaseController.getUserByUsername(username)));
 
-        buttonBox.getChildren().get(8).setOnMouseClicked(event -> new TVMenu().run());
+        buttonBox.getChildren().get(8).setOnMouseClicked(event -> new ChatMenu().run(username));
+
+        buttonBox.getChildren().get(9).setOnMouseClicked(event -> new TVMenu().run());
 
         Button backButton = new Button();
         setBackButton(backButton);

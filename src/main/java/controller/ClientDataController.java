@@ -49,6 +49,8 @@ public class ClientDataController {
             return ImportAndExportMenuController.getInstance().run(data.getMessage());
         } else if (menuName.matches("Lobby Menu")) {
             return LobbyHandler.getInstance().run(user, data.getMessage());
+        } else if (menuName.matches("Chat Menu")) {
+            return ChatRoomController.run(user, data.getMessage());
         }
 
         return Utils.getDataSendToClientForInvalidInput();
