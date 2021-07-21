@@ -76,8 +76,7 @@ public class NormalSummon extends Summon {
         }
     }
 
-    public static boolean canSacrifice() {
-        GameData gameData = GameData.getGameData();
+    public static boolean canSacrifice(GameData gameData) {
         return gameData.getCurrentGamer().getGameBoard().getMonsterCardZone().containsCard(gameData.getSelectedCard());
     }
 }

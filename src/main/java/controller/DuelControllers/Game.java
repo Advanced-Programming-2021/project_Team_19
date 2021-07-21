@@ -233,7 +233,7 @@ public class Game {
                     Utils.changeTurn(gameData);
                     gameData.showBoard();
 
-                    if (Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase")) {
+                    if (Utils.askForActivate("It's " + gameData.getCurrentPhase() + " phase", gameData)) {
                         handleActivatingSpellByRival(gameData);
                     }
 

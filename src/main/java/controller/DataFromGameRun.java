@@ -14,20 +14,20 @@ public class DataFromGameRun {
 
     public DataFromGameRun(GameData gameData, String event){
         this.event = event;
-        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        gamerOfAction = gameData.getCurrentGamer();
         gameData.addData(this);
     }
 
     public DataFromGameRun(GameData gameData, String[] eventAndId){
         this.cardId = Integer.parseInt(eventAndId[1]);
         this.event = eventAndId[0];
-        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        gamerOfAction = gameData.getCurrentGamer();
         gameData.addData(this);
     }
 
     public DataFromGameRun(GameData gameData, String event, String cardName){
         this.event = event;
-        gamerOfAction = GameData.getGameData().getCurrentGamer();
+        gamerOfAction = gameData.getCurrentGamer();
         cardNames.add(cardName);
         gameData.addData(this);
     }

@@ -79,12 +79,12 @@ public class CardActionManager {
                 }
             }
             case SUMMON_MODE, SET_MODE -> {
-                if (NormalSummon.canSacrifice()) {
+                if (NormalSummon.canSacrifice(gameData)) {
                     validActions.add("sacrifice");
                 }
             }
             case ATTACK_MONSTER_MODE -> {
-                if (AttackMonster.canAttack()) {
+                if (AttackMonster.canAttack(gameData)) {
                     validActions.add("attack");
                 }
             }

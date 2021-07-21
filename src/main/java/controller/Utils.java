@@ -178,16 +178,16 @@ public class Utils {
     }
 
 
-    public static boolean askForActivate(String event) {
+    public static boolean askForActivate(String event, GameData gameData) {
 
-        GameData.getGameData().setEvent(GameEvent.ASK_FOR_ACTIVATE_TRAP);
+        gameData.setEvent(GameEvent.ASK_FOR_ACTIVATE_TRAP);
 
         if (askForConfirmation(event + "\ndo you want to activate your trap and spell?")) {
             Printer.print("So please do that :)");
             return true;
         }
 
-        GameData.getGameData().setEvent(null);
+        gameData.setEvent(null);
         return false;
 
     }
