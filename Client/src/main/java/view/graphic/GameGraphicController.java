@@ -415,7 +415,7 @@ class MyThread extends Thread{
     public void run() {
 
         while(true){
-            controller.sendDataAndRun("چه خبر");
+            controller.sendDataAndRun("whats up");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

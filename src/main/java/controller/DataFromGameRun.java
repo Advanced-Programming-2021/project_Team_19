@@ -22,6 +22,7 @@ public class DataFromGameRun {
         this.event = eventAndId[0];
         gamerOfActionName = gameData.getCurrentGamer().getUsername();
         gameData.addData(this);
+        gameData.getSecondGamer().dataForSend.add(this);
     }
 
     public DataFromGameRun(GameData gameData, String event, String cardName){

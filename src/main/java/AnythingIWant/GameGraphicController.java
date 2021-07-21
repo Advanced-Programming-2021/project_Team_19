@@ -35,6 +35,7 @@ public class GameGraphicController {
     public static DataForClientFromServer run(User user, DataForGameRun data){
         String command = data.getMessage();
         GameGraphicController controller = gameGraphicControllers.get(command.split("&")[0]);
+
         return controller.game.run(command.split("&")[1], user, data);
     }
 }

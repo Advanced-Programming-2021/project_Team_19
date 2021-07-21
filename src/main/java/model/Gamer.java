@@ -1,5 +1,6 @@
 package model;
 
+import controller.DataFromGameRun;
 import controller.DuelControllers.GameData;
 import model.Card.Monster;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 public class Gamer {
 
+    public ArrayList<DataFromGameRun> dataForSend = new ArrayList<>();
     AllBoards gameBoard;
     private int lifePoint = 4000;
 
