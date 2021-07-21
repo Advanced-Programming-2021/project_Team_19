@@ -253,6 +253,7 @@ public class WelcomeMenu extends Menu {
 
             if (data.getMessageType().equals(MessageType.SUCCESSFUL)) {
                 WelcomeMenu.token = data.getMessage().split(":")[1].trim();
+                Menu.username = username;
                 goToMainMenu(username);
             } else {
                 Printer.setFailureResponseToLabel(responseLabel, data.getMessage());

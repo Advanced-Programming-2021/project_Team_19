@@ -78,9 +78,13 @@ public class Lobby extends Menu{
                     cancelButton.setDisable(true);
                     oneRoundButton.setDisable(false);
                     threeRoundButton.setDisable(false);
-                    String gameCode = finalData.getMessage().split(":")[1];
-                    String username1 = finalData.getMessage().split(":")[2];
-                    String username2 = finalData.getMessage().split(":")[3];
+
+                    System.out.println(finalData.getMessage());
+                    String gameCode = finalData.getMessage().split("&")[1];
+                    String username1 = finalData.getMessage().split("&")[2];
+                    String username2 = finalData.getMessage().split("&")[3];
+
+                    System.out.println(username1 + " " + username2 + " " + gameCode);
                     new GameGraphicController(gameCode, 1, username1, username2).run();
 //                    new RockPaper().run();
                 });

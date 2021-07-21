@@ -27,12 +27,12 @@ public class GameGraphicController {
     }
 
     public String getDataForStartGame() {
-        return "match started :" + gameCode + ":" + game.gameData.getGameStarter().getUsername() + ":" +
+        return "match started &" + gameCode + "&" + game.gameData.getGameStarter().getUsername() + "&" +
                 game.gameData.getInvitedGamer().getUsername();
     }
 
     public static DataForClientFromServer run(User user, String command){
-        GameGraphicController controller = gameGraphicControllers.get(command.split(":")[0]);
-        return controller.game.run(command.split(":")[1], user);
+        GameGraphicController controller = gameGraphicControllers.get(command.split("&")[0]);
+        return controller.game.run(command.split("&")[1], user);
     }
 }

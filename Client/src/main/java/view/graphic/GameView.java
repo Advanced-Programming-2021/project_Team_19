@@ -33,6 +33,7 @@ import model.Card.Card;
 import view.graphic.CardViewAnimations.FadeAnimation;
 import view.graphic.CardViewAnimations.RotateAnimation;
 import view.graphic.CardViewAnimations.Translation;
+import view.Menu.Menu;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -477,10 +478,11 @@ public class GameView {
     }
 
     public void initHand() {
-//        DataFromGameRun data = game.run(new DataForGameRun("get init hand data")).get(0);
+        DataFromGameRun data = Menu.sendDataToServer
+                (new DataForGameRun(gameController.gameCode + "&get init hand data")).gameGraphicData.get(0);
 
-//        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
-//        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
+        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
+        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
     }
 
     public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<String> cards) {

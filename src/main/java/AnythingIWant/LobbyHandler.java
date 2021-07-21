@@ -7,7 +7,6 @@ import model.Pair;
 import model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 
 public class LobbyHandler {
@@ -27,7 +26,7 @@ public class LobbyHandler {
 
     private final ArrayList<User> waitersForThreeRounds = new ArrayList<>();
 
-    private final ArrayList<Pair<User, User>> matchPairs = new ArrayList<>();
+    private final ArrayList<Pair<Pair<User, User>, String>> matchPairs = new ArrayList<>();
 
     private final ArrayList<Pair<User, User>> readyPairs = new ArrayList<>();
 
@@ -52,11 +51,10 @@ public class LobbyHandler {
                 return new DataForClientFromServer("wait", MessageType.SUCCESSFUL);
             } else {
                 User second = waitersForOneRound.get(0);
-                matchPairs.add(new Pair<>(user, second));
+                String message =  new GameGraphicController(user, second, 1).getDataForStartGame();
+                matchPairs.add(new Pair<>(new Pair<>(user, second), message));
                 waitersForOneRound.clear();
-                return new DataForClientFromServer(
-                        new GameGraphicController(user, second, 1).getDataForStartGame(),
-                        MessageType.SUCCESSFUL);
+                return new DataForClientFromServer(message, MessageType.SUCCESSFUL);
             }
         } else {
             if (waitersForThreeRounds.isEmpty()) {
@@ -64,20 +62,19 @@ public class LobbyHandler {
                 return new DataForClientFromServer("wait", MessageType.SUCCESSFUL);
             } else {
                 User second = waitersForThreeRounds.get(0);
-                matchPairs.add(new Pair<>(user, second));
+//                matchPairs.add(new Pair<>(user, second));
                 waitersForThreeRounds.clear();
-                new Thread( () -> {
-//                    startDuel(user, second, 3);
-                }).start();
                 return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
             }
         }
     }
 
     private DataForClientFromServer getStatus(User user) {
-        for (Pair<User, User> matched : matchPairs) {
-            if (matched.getSecond().getUsername().equals(user.getUsername())) {
-                return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
+        for (Pair<Pair<User, User>, String> matched :
+                (ArrayList<Pair<Pair<User, User>, String>>)matchPairs.clone()) {
+            if (matched.getFirst().getSecond().getUsername().equals(user.getUsername())) {
+                matchPairs.remove(matched);
+                return new DataForClientFromServer(matched.getSecond(), MessageType.SUCCESSFUL);
             }
         }
         return new DataForClientFromServer("wait", MessageType.SUCCESSFUL);
