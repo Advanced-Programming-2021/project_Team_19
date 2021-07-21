@@ -52,9 +52,7 @@ public class GameGraphicController extends Menu {
 
     public void sendDataAndRun(String command){
         ArrayList<DataFromGameRun> datas = sendDataToServer(command);
-        for(DataFromGameRun data : datas){
-
-        }
+        run(datas, 0);
     }
 
     private void run(ArrayList<DataFromGameRun> datas, int index){
@@ -115,7 +113,7 @@ public class GameGraphicController extends Menu {
                     (cardId - 1, getIndexByRivalId(cardIndex));
         } else if (response.equals("add card to hand")) {
             time = gameView.handleAddRivalCardFromDeckToHandGraphic
-                    (events.get(index).cardNames.get(0));
+                    (event.cardNames.get(0));
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             time = gameView.handleSetRivalSpellGraphic(cardId - 1, getIndexByRivalId(cardIndex));
@@ -123,7 +121,64 @@ public class GameGraphicController extends Menu {
 
         } else if (response.startsWith("activate spell ")) {
 
-            activateSpellForRival(response, cardId);
+            String spellCommand = response.replace("activate spell ", "");
+            time = 500;
+
+            int newIndex = spellCommand.matches("\\d .*") ?
+                    getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
+
+            spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
+
+            int OldCardIndex = newIndex == -1 ? getIndexById(cardId) : cardId - 1;
+            int rivalOldCardIndex = newIndex == -1 ? getIndexByRivalId(cardId) : cardId - 1;
+
+            if (spellCommand.equals("destroy this spell")) {
+                gameView.justDestroyActivatedSpellOrTrap(newIndex, rivalOldCardIndex, false);
+
+            } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
+                String ids = Utils.getFirstGroupInMatcher(
+                        Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
+                gameView.activateSpell1(newIndex, rivalOldCardIndex, false, ids);
+
+            } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
+
+                Matcher idMatcher = Utils.getMatcher(spellCommand,
+                        "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
+                idMatcher.find();
+
+                gameView.activateSpell2
+                        (newIndex, rivalOldCardIndex, false, idMatcher.group(1), idMatcher.group(2));
+
+            } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
+                Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
+                idMatcher.find();
+
+                gameView.activateSpell3(newIndex, rivalOldCardIndex, false, idMatcher.group(1));
+
+            } else if (spellCommand.startsWith("field spell ")) {
+                Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
+                matcher.find();
+                time = 1000;
+                gameView.activateFieldSpell(cardId - 1, false);
+
+                new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
+
+                    String backgroundName = "";
+                    switch (matcher.group(1)) {
+                        case "Yami" -> backgroundName = "yami";
+                        case "Forest" -> backgroundName = "gaia";
+                        case "Umii Ruka" -> backgroundName = "umi";
+                        case "Closed Forest" -> backgroundName = "mori";
+                    }
+                    Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
+                    ((Rectangle) gameView.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+                })).play();
+
+
+            } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
+//                handleIncreaseLP(gameView, spellCommand.substring(18));
+                handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
+            }
 
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
@@ -212,96 +267,62 @@ public class GameGraphicController extends Menu {
             time = gameView.handleSetSpellGraphic(cardId - 1, getIndexById(cardIndex));
         } else if (response.startsWith("activate spell ")) {
 
-        String spellCommand = response.replace("activate spell ", "");
+            String spellCommand = response.replace("activate spell ", "");
 
-        int newIndex = spellCommand.matches("\\d .*") ?
-                getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
+            int newIndex = spellCommand.matches("\\d .*") ?
+                    getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
 
-        spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
+            spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
 
-        int OldCardIndex = newIndex == -1 ? getIndexById(cardId) : cardId - 1;
-        int rivalOldCardIndex = newIndex == -1 ? getIndexByRivalId(cardId) : cardId - 1;
+            int OldCardIndex = newIndex == -1 ? getIndexById(cardId) : cardId - 1;
+            int rivalOldCardIndex = newIndex == -1 ? getIndexByRivalId(cardId) : cardId - 1;
 
-        if (spellCommand.equals("destroy this spell")) {
-            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
+            if (spellCommand.equals("destroy this spell")) {
+                handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
 
-        } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
-            String ids = Utils.getFirstGroupInMatcher(
-                    Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(newIndex, OldCardIndex, true, ids);
-
-
-        } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
-
-            Matcher idMatcher = Utils.getMatcher(spellCommand,
-                    "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
-            idMatcher.find();
-            gameView.activateSpell2(newIndex, OldCardIndex, true, idMatcher.group(1), idMatcher.group(2));
+            } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
+                String ids = Utils.getFirstGroupInMatcher(
+                        Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
+                gameView.activateSpell1(newIndex, OldCardIndex, true, ids);
 
 
-        } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
-            Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
-            idMatcher.find();
-            gameView.activateSpell3(newIndex, OldCardIndex, true, idMatcher.group(1));
+            } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
+
+                Matcher idMatcher = Utils.getMatcher(spellCommand,
+                        "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
+                idMatcher.find();
+                gameView.activateSpell2(newIndex, OldCardIndex, true, idMatcher.group(1), idMatcher.group(2));
 
 
-        } else if (spellCommand.startsWith("field spell ")) {
-
-            Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
-            matcher.find();
-            time = gameView.activateFieldSpell(cardId - 1, true);
-            new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
-
-                String backgroundName = "";
-                switch (matcher.group(1)) {
-                    case "Yami" -> backgroundName = "yami";
-                    case "Forest" -> backgroundName = "gaia";
-                    case "Umii Ruka" -> backgroundName = "umi";
-                    case "Closed Forest" -> backgroundName = "mori";
-                }
-                Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
-                ((Rectangle) gameView.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
-            })).play();
-
-        } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
-            handleIncreaseRivalLp(gameView, spellCommand.substring(18));
-            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
-        }
-
-    }
+            } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
+                Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
+                idMatcher.find();
+                gameView.activateSpell3(newIndex, OldCardIndex, true, idMatcher.group(1));
 
 
-    private void handleSelfActionGraphic(ArrayList<DataFromGameRun> events, int index) {
+            } else if (spellCommand.startsWith("field spell ")) {
 
-        double time = 500;
+                Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
+                matcher.find();
+                time = gameView.activateFieldSpell(cardId - 1, true);
+                new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
 
-        int cardId = events.get(index).cardId;
-        String response = events.get(index).event;
+                    String backgroundName = "";
+                    switch (matcher.group(1)) {
+                        case "Yami" -> backgroundName = "yami";
+                        case "Forest" -> backgroundName = "gaia";
+                        case "Umii Ruka" -> backgroundName = "umi";
+                        case "Closed Forest" -> backgroundName = "mori";
+                    }
+                    Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
+                    ((Rectangle) gameView.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
+                })).play();
 
-        System.err.println(response);
+            } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
+                handleIncreaseRivalLp(gameView, spellCommand.substring(18));
+                handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
+            }
 
-        if (response.startsWith("activate trap")) {
-//            time = graphicsHandlingForSpells
-//                    (gameView, Integer.parseInt(response.split(":")[0].substring(14))
-//                            , response.split(":")[3].replace("activate spell ", ""));
-//
-//            new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
-//                CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
-//            }
-//            )).play();
-        } else if (response.startsWith("ask gamer for trap:")) {
-//            CardActionManager.setMode(actionManagerMode.ACTION_NOT_ALLOWED_MODE);
-            gameView.askForTrap(response.split(":")[1]);
-        } else if (response.matches("summon \\d")) {
-            int cardIndex = Integer.parseInt(response.substring(7));
-            time = gameView.handleSummonGraphic(cardId - 1, getIndexById(cardIndex));
-        } else if (response.equals("add card to hand")) {
-            time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardNames.get(0));
-        } else if (response.matches("set spell \\d")) {
-            int cardIndex = Integer.parseInt(response.substring(10));
-            time = gameView.handleSetSpellGraphic(cardId - 1, getIndexById(cardIndex));
-        } else if (response.startsWith("activate spell ")) {
-            handleActivateSpellForSelf(response, cardId);
         } else if (response.matches("position changed to (attack|defence)")) {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
