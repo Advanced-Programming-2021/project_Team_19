@@ -148,9 +148,11 @@ public class OneDeck extends Menu {
         allMainCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allMainCards) {
-            CardView cardView = new CardView(cardIdentity, 2, false, true);
-            cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
-            mainMenuCards.getChildren().add(cardView);
+            if (!cardIdentity.equals("")) {
+                CardView cardView = new CardView(cardIdentity, 2, false, true);
+                cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
+                mainMenuCards.getChildren().add(cardView);
+            }
         }
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
@@ -158,9 +160,11 @@ public class OneDeck extends Menu {
         allSideCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allSideCards) {
-            CardView cardView = new CardView(cardIdentity, 2, false, true);
-            cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
-            sideMenuCards.getChildren().add(cardView);
+            if (!cardIdentity.equals("")) {
+                CardView cardView = new CardView(cardIdentity, 2, false, true);
+                cardView.setOnMouseClicked(e -> this.cardName.setText(cardIdentity));
+                sideMenuCards.getChildren().add(cardView);
+            }
         }
         cardsInSideDeck.setContent(sideMenuCards);
     }
