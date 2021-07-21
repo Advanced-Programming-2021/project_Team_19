@@ -159,6 +159,7 @@ public class Game {
 
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) {
         if (gameData.getCurrentGamer().getUsername().equals(Network.getUserByToken(data.token).getUsername())) {
+            System.err.println(data.getZoneName());
             gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName(), data.getId()));
             return (manager.getValidActions());
         }
