@@ -22,7 +22,7 @@ public class CardView extends Rectangle {
     Card card;
     String cardName;
     String description;
-    boolean isMonster;
+    public boolean isMonster;
     public boolean isHidden = false;
     public boolean isVertical = true;
     public static double height = 614;
@@ -52,8 +52,14 @@ public class CardView extends Rectangle {
         this.isHidden = isHidden;
         this.isVertical = isVertical;
         cardName = card.getName();
-        isMonster = card.getCardFamily().equals(CardFamily.MONSTER);
 
+        try {
+            new Image("/Assets/Cards/Monsters/" +
+                    controller.Utils.getPascalCase(cardName) + ".jpg");
+            isMonster = true;
+        } catch (Exception e){
+            isMonster = false;
+        }
         if (isHidden) {
             setFill(new ImagePattern(new Image("/Assets/Cards/Monsters/Unknown.jpg")));
         } else {

@@ -2,7 +2,6 @@ package view.Menu;
 
 import AnythingIWant.ClientNetwork;
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;

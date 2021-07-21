@@ -2,7 +2,6 @@ package view.graphic;
 
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
-import controller.DuelControllers.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -46,7 +45,6 @@ public class GameView {
     GameGraphicController gameController;
     String self;
     String rival;
-    Game game;
 
     Stage stage;
 
@@ -168,10 +166,8 @@ public class GameView {
                 Stage cheatSheet = new Stage();
                 cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
                 cheatSheet.show();
-            } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()){
-                if (game.gameData.getCurrentGamer().equals(self)) {
-                    game.runWithGraphics(new DataForGameRun("next phase"), null, 0);
-                }
+            } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()) {
+                gameController.sendGameRunDataToServer(new DataForGameRun("next phase"));
             }
         });
     }
@@ -182,11 +178,9 @@ public class GameView {
         phaseButton.setLayoutX(0);
         phaseButton.setLayoutY(5);
         phaseButton.setOnMouseEntered(mouseEvent -> {
-            if (game.gameData.getCurrentGamer().equals(self)) {
-                nextPhasePopup = menuGraphic.showPopupMessage(stage, "next phase",
-                        stage.getX() + 235,
-                        stage.getY() + 20);
-            }
+            nextPhasePopup = menuGraphic.showPopupMessage(stage, "next phase",
+                    stage.getX() + 235,
+                    stage.getY() + 20);
         });
 
         phaseButton.setOnMouseExited(mouseEvent -> {
@@ -195,17 +189,16 @@ public class GameView {
             }
         });
         phaseButton.setOnMouseClicked(event -> {
-            if(canRunNextPhase){
+            if (canRunNextPhase) {
                 canRunNextPhase = false;
-                if (game.gameData.getCurrentGamer().equals(self)) {
-                    game.runWithGraphics(new DataForGameRun("next phase"), null, 0);
-                }
+                gameController.sendGameRunDataToServer(new DataForGameRun("next phase"));
             }
 
         });
 
         gamePane.getChildren().add(phaseButton);
     }
+
     boolean canRunNextPhase = true;
 
     private void addPhaseBox() {
@@ -245,10 +238,10 @@ public class GameView {
     private void runChangePhase() {
         for (int i = 0; i < 6; i++) {
             if (phaseBox.getChildren().get(i).getStyleClass().contains("activePhase")) {
-                if(i == 4 || i == 0){
+                if (i == 4 || i == 0) {
                     canRunNextPhase = false;
                 }
-                if(i == 1 || i == 2 || i == 3){
+                if (i == 1 || i == 2 || i == 3) {
                     canRunNextPhase = true;
                 }
                 phaseBox.getChildren().get(i).getStyleClass().remove("activePhase");
@@ -267,8 +260,8 @@ public class GameView {
 
         Button submit = new Button("submit");
         submit.setOnMouseClicked(event -> {
-            game.runWithGraphics(new DataForGameRun
-                    ("game button " + cheatTextField.getText()), null, 0);
+            gameController.sendGameRunDataToServer(new DataForGameRun
+                    ("game button " + cheatTextField.getText()));
             stage.close();
         });
 
@@ -484,10 +477,10 @@ public class GameView {
     }
 
     public void initHand() {
-        DataFromGameRun data = game.run(new DataForGameRun("get init hand data")).get(0);
+//        DataFromGameRun data = game.run(new DataForGameRun("get init hand data")).get(0);
 
-        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
-        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
+//        handleAddCardsFromDeckToSelfHandGraphic(new ArrayList<>(data.cardNames.subList(0, 5)));
+//        handleAddCardsFromDeckToRivalHandGraphic(new ArrayList<>(data.cardNames.subList(5, 10)));
     }
 
     public void handleAddCardsFromDeckToRivalHandGraphic(ArrayList<String> cards) {
@@ -614,17 +607,14 @@ public class GameView {
                     command.append(" ").append(integer);
                 }
                 cardView = mainCardForMultiCardAction;
-//                dataFromGameRun = game.run(new DataForGameRun(String.valueOf(command), self));
-                game.runWithGraphics(new DataForGameRun(String.valueOf(command)), cardView, 0);
+
+                gameController.sendGameRunDataToServer(new DataForGameRun(String.valueOf(command)));
             } else {
                 return;
             }
         } else {
-//            dataFromGameRun = game.run(new DataForGameRun(cardView.getCurrentAction(), self));
-            game.runWithGraphics(new DataForGameRun(cardView.getCurrentAction()), cardView, 0);
+            gameController.sendGameRunDataToServer(new DataForGameRun(cardView.getCurrentAction()));
         }
-
-//        gameController.graphicsForEvents(dataFromGameRun, cardView, 0);
 
         cardView.tempPopup.hide();
     }
@@ -646,7 +636,7 @@ public class GameView {
         return data.charAt(index) - '0';
     }
 
-    public static int getRivalIdByIndex(int index){
+    public static int getRivalIdByIndex(int index) {
         String data = "42135";
         return data.charAt(index) - '0';
     }
@@ -1284,34 +1274,34 @@ public class GameView {
         mainPane.getChildren().add(mainBox);
 
         noButton.setOnMouseClicked(mouseEvent -> {
-            game.runWithGraphics(new DataForGameRun("cancel activate trap"), null, 0);
+            gameController.sendGameRunDataToServer(new DataForGameRun("cancel activate trap"));
 
             mainPane.getChildren().remove(mainBox);
         });
 
         yesButton.setOnMouseClicked(mouseEvent -> {
             mainPane.getChildren().remove(mainBox);
-            game.runWithGraphics(new DataForGameRun("set trigger trap mode"), null, 0);
+            gameController.sendGameRunDataToServer(new DataForGameRun("set trigger trap mode"));
         });
     }
 
-    public void setIdAndZoneForData(DataForGameRun data, CardView cardView){
-        if (selfHand.contains(cardView)){
+    public void setIdAndZoneForData(DataForGameRun data, CardView cardView) {
+        if (selfHand.contains(cardView)) {
             data.setZoneName("Hand");
             data.setId(selfHand.indexOf(cardView) + 1);
-        }else if (monsterZoneCards.contains(cardView)){
+        } else if (monsterZoneCards.contains(cardView)) {
             data.setZoneName("Monster Card Zone");
             data.setId(monsterZoneCards.indexOf(cardView));
-        } else if (spellZoneCards.contains(cardView)){
+        } else if (spellZoneCards.contains(cardView)) {
             data.setZoneName("Spell And Trap Zone");
             data.setId(spellZoneCards.indexOf(cardView));
-        }else if (rivalHand.contains(cardView)){
+        } else if (rivalHand.contains(cardView)) {
             data.setZoneName("Hand Opponent");
             data.setId(rivalHand.indexOf(cardView) + 1);
-        }else if (rivalMonsterZoneCards.contains(cardView)){
+        } else if (rivalMonsterZoneCards.contains(cardView)) {
             data.setZoneName("Monster Card Zone Opponent");
             data.setId(rivalMonsterZoneCards.indexOf(cardView));
-        }else if (rivalSpellZoneCards.contains(cardView)){
+        } else if (rivalSpellZoneCards.contains(cardView)) {
             data.setZoneName("Spell And Trap Zone Opponent");
             data.setId(rivalSpellZoneCards.indexOf(cardView));
         }

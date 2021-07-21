@@ -1,24 +1,18 @@
 package view.Menu;
 
 import AnythingIWant.ClientNetwork;
-import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DataBaseControllers.DeckDataBaseController;
-import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
-import model.User;
 import view.graphic.CardView;
 
 import java.io.IOException;
@@ -146,8 +140,7 @@ public class OneDeck extends Menu {
         hBox.setSpacing(10);
         availableCards.setContent(hBox);
         HBox mainMenuCards = new HBox();
-        ArrayList<String> allMainCards = new ArrayList<>();
-        allMainCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
+        ArrayList<String> allMainCards = new ArrayList<>(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName,
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allMainCards) {
             if (!cardIdentity.equals("")) {
@@ -158,8 +151,7 @@ public class OneDeck extends Menu {
         }
         cardsInMainDeck.setContent(mainMenuCards);
         HBox sideMenuCards = new HBox();
-        ArrayList<String> allSideCards = new ArrayList<>();
-        allSideCards.addAll(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
+        ArrayList<String> allSideCards = new ArrayList<>(Arrays.asList(Menu.sendDataToServer(new DataForServerFromClient("deck show --deck-name " + deckName + " --side",
                 token, "Deck Menu")).getMessage().split("\n")));
         for (String cardIdentity : allSideCards) {
             if (!cardIdentity.equals("")) {

@@ -36,12 +36,10 @@ public class menuGraphic extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        CSVDataBaseController.load();
         stage = primaryStage;
         Scene scene = new Scene(new Pane(), sceneX, sceneY);
         stage.setScene(scene);
         scene.getStylesheets().add("CSS/Css.css");
-        CSVDataBaseController.load();
 //        new Shop().run(UserDataBaseController.getUserByUsername("mohammad"));
 //        new RockPaper().run();
         WelcomeMenu.getInstance().run();
@@ -172,7 +170,6 @@ public class menuGraphic extends Application {
     }
 
     public static void main(String[] args) {
-        CSVDataBaseController.load();
         DataBaseController.makeResourceDirectory();
         launch(args);
     }

@@ -9,6 +9,7 @@ public class DataForClientFromServer {
 
     private String message;
     private MessageType messageType;
+    private ArrayList<String> messages;
     public ArrayList<DataFromGameRun> gameGraphicData = null;
 
     public DataForClientFromServer(ArrayList<DataFromGameRun> gameGraphicData){
@@ -20,6 +21,10 @@ public class DataForClientFromServer {
         setMessageType(messageType);
     }
 
+    public DataForClientFromServer(ArrayList<String> messages, MessageType messageType){
+        this.messages = messages;
+        setMessageType(messageType);
+    }
 
     public String getMessage() {
         return message;
@@ -35,5 +40,9 @@ public class DataForClientFromServer {
 
     public void setMessageType(MessageType messageType) {
         this.messageType = messageType;
+    }
+
+    public ArrayList<String> getMessages() {
+        return messages;
     }
 }

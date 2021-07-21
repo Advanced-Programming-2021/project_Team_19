@@ -1,18 +1,16 @@
 package controller;
 
-import model.Gamer;
+import model.Data.DataForServerFromClient;
 
-public class DataForGameRun {
-    String command;
-    Gamer gamer;
+public class DataForGameRun extends DataForServerFromClient {
+
     int id;
     String zoneName;
 
-
-    public DataForGameRun(String command, Gamer gamer){
-        this.command = command;
-        this.gamer = gamer;
+    public DataForGameRun(String message, String token, String menuName) {
+        super(message, token, menuName);
     }
+
 
     public int getId() {
         return id;
@@ -20,18 +18,6 @@ public class DataForGameRun {
 
     public String getZoneName() {
         return zoneName;
-    }
-
-//    public void findIdAndZoneName(GameView gameView, CardView cardView){
-//        gameView.setIdAndZoneForData(this, cardView);
-//    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public Gamer getGamer() {
-        return gamer;
     }
 
     public void setId(int id) {

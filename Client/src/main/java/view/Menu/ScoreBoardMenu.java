@@ -32,7 +32,7 @@ public class ScoreBoardMenu extends Menu {
         super("Scoreboard Menu");
     }
 
-    public void run(User user) {
+    public void run(String username) {
 
         VBox box = new VBox(10);
         box.setAlignment(Pos.CENTER);
@@ -40,7 +40,7 @@ public class ScoreBoardMenu extends Menu {
 
         Label title = new Label("Score Board");
         title.setFont(new Font("Arial", 20));
-        setTableView(user);
+        setTableView(username);
 
         Button backButton = new Button();
         setBackButton(backButton);
@@ -55,7 +55,7 @@ public class ScoreBoardMenu extends Menu {
         stage.getScene().setRoot(mainPane);
     }
 
-    private void setTableView(User user) {
+    private void setTableView(String username) {
 
         TableColumn<Person, String> column0 = new TableColumn<>("rank");
         column0.setCellValueFactory(new PropertyValueFactory<>("rank"));
@@ -78,7 +78,7 @@ public class ScoreBoardMenu extends Menu {
         Person currentPerson = null;
 
         for (Person person : people) {
-            if(person.getUsername().equals(user.getUsername())){
+            if(person.getUsername().equals(username)){
                 currentPerson = person;
             }
             tableView.getItems().add(person);

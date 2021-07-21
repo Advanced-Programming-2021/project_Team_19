@@ -1,6 +1,7 @@
 package controller.DuelControllers;
 
 import AnythingIWant.GameGraphicController;
+import AnythingIWant.Network;
 import controller.DataForGameRun;
 import controller.DataFromGameRun;
 import controller.DuelControllers.Actions.*;
@@ -117,8 +118,10 @@ public class Game {
                 new DataFromGameRun(gameData, getAtkDef(gameData));
             }
             case "next phase" -> {
-                String nextPhaseName = goToNextPhase(gameData);
-                new DataFromGameRun(gameData, nextPhaseName);
+                if (user.getUsername().equals(gameData.getCurrentGamer().getUsername())){
+                    String nextPhaseName = goToNextPhase(gameData);
+                    new DataFromGameRun(gameData, nextPhaseName);
+                }
             }
         }
         if (command.matches("sacrifice \\d( \\d)*")) {
@@ -150,7 +153,7 @@ public class Game {
 
 
     public ArrayList<String> getValidCommandsForCard(DataForGameRun data) throws Exception {
-        if (gameData.getCurrentGamer().equals(data.getGamer())) {
+        if (gameData.getCurrentGamer().getUsername().equals(Network.getUserByToken(data.token).getUsername())) {
             gameData.setSelectedCard(getCardByZoneAndId(data.getZoneName(), data.getId()));
             return (new CardActionManager(gameData.getSelectedCard(), gameData).getValidActions());
         }

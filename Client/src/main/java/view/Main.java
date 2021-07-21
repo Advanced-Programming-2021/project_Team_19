@@ -16,8 +16,6 @@ public class Main {
 
     public static void main(String[] arg) {
 
-        CSVDataBaseController.load();
-
         DataBaseController.makeResourceDirectory();
 
         WelcomeMenu.getInstance().run();

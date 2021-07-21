@@ -1,9 +1,6 @@
 package controller;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DuelControllers.Actions.Action;
-import controller.DuelControllers.Actions.Select;
-import controller.DuelControllers.GameData;
 import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Enums.CardFamily;
@@ -89,26 +86,6 @@ public class Utils {
         return CSVDataBaseController.getCardByCardName(cardName);
     }
 
-    public static boolean isCareOwnerActionDoer(GameData gameData, Action action, Card card) {
-        return gameData.getCardController(card).equals(action.getActionDoer());
-    }
-
-    public static boolean IsSelectedCardNull(GameData gameData) {
-
-        return gameData.getSelectedCard() == null;
-    }
-
-    public static <obj> Action getLastActionOfSpecifiedAction(ArrayList<Action> actions, Class myClass) {
-
-        for (int i = actions.size() - 1; i >= 0; i--) {
-
-            if (isInstance(actions.get(i), myClass)) {
-                return actions.get(i);
-            }
-        }
-
-        return null;
-    }
 
     public static boolean isInstance(Object object, Class<?> type) {
         return type.isInstance(object);
@@ -122,92 +99,6 @@ public class Utils {
             cnt++;
         }
         Printer.print(stringBuilder.toString().trim());
-    }
-
-    public static Card askUserToSelectCard(ArrayList<Card> listOfCards, String message, CardFamily cardFamily) {
-        String command;
-        while (true) {
-            Printer.print(message);
-            printArrayListOfCards(listOfCards);
-            command = GetInput.getString();
-
-            if (command.matches("cancel")) {
-                return null;
-            } else if (command.matches("\\d+")) {
-                int id = Integer.parseInt(command);
-                if (id > listOfCards.size() || id < 1) {
-                    Printer.print("please enter a valid id:");
-                } else {
-                    Card returnedCard = listOfCards.get(id - 1);
-
-                    if (cardFamily == null) {
-                        return returnedCard;
-                    } else {
-                        if (returnedCard.getCardFamily().equals(cardFamily)) {
-                            return returnedCard;
-                        } else {
-                            Printer.print("pleas enter " + cardFamily.toString().toLowerCase() + " id");
-                        }
-                    }
-
-                }
-            } else {
-                Printer.printInvalidCommand();
-            }
-        }
-    }
-
-    public static boolean askForConfirmation(String message) {
-        Printer.print(message);
-        Printer.print("""
-                1- yes
-                2- no""");
-        while (true) {
-            String command = GetInput.getString();
-            switch (command) {
-                case "1":
-                    return true;
-                case "2":
-                    return false;
-                default:
-                    Printer.printInvalidCommand();
-            }
-        }
-    }
-
-
-    public static boolean askForActivate(String event) {
-
-        GameData.getGameData().setEvent(GameEvent.ASK_FOR_ACTIVATE_TRAP);
-
-        if (askForConfirmation(event + "\ndo you want to activate your trap and spell?")) {
-            Printer.print("So please do that :)");
-            return true;
-        }
-
-        GameData.getGameData().setEvent(null);
-        return false;
-
-    }
-
-    public static void changeTurn(GameData gameData) {
-
-        gameData.changeTurn();
-        Printer.print("now it will be " + gameData.getCurrentGamer().getUsername() + "’s turn");
-    }
-
-    public static boolean handleSelect(GameData gameData, String command) {
-
-        if (command.startsWith("select")) {
-            new Select(gameData).select(command);
-        } else if (command.matches("card show --selected")) {
-            new Select(gameData).select(command);
-        } else if (command.equals("show board")) {
-            gameData.showBoard();
-        } else {
-            return false;
-        }
-        return true;
     }
 
     public static ArrayList<String> getCommandsExceptActivation() {

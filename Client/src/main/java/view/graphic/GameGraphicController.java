@@ -56,6 +56,10 @@ public class GameGraphicController extends Menu {
 //        })).play();
     }
 
+    public void sendGameRunDataToServer(DataForGameRun data){
+        sendDataToServer(data);
+    }
+
 
     private double responseIsForPhaseChange(String phaseChangeResponse) {
 
