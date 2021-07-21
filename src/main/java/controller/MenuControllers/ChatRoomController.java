@@ -44,7 +44,7 @@ public class ChatRoomController {
     }
 
     public static DataForClientFromServer deleteMessage(int id, String username){
-        if (messages.get(id).author.equals(username)){
+        if (!messages.get(id).author.equals(username)){
             return new DataForClientFromServer("you cannot delete this message", MessageType.ERROR);
         }
 
