@@ -45,14 +45,41 @@ public class GameGraphicController extends Menu {
         startGame();
     }
 
+    public ArrayList<DataFromGameRun> sendDataToServer(String command){
+        return Menu.sendDataToServer
+                (new DataForGameRun(gameCode + "&" + command)).gameGraphicData;
+    }
+
+    public void sendDataAndRun(String command){
+        ArrayList<DataFromGameRun> datas = sendDataToServer(command);
+        for(DataFromGameRun data : datas){
+
+        }
+    }
+
+    private void run(ArrayList<DataFromGameRun> datas, int index){
+        DataFromGameRun data = datas.get(index);
+        double time;
+
+        if(data.gamerOfActionName.equals(username)){
+            time = handleSelfActionGraphic(data);
+        } else {
+            time = handleRivalActionsGraphic(data);
+        }
+
+        if(index < datas.size() - 1) {
+            new Timeline(new KeyFrame(Duration.millis(time), Event -> {
+                run(datas, index + 1);
+            })).play();
+        }
+    }
+
     public void startGame() {
         gameView.run();
-//        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
-//            ArrayList<DataFromGameRun> datas = game.run(new DataForGameRun
-//                    ("start game"));
-//
-//            graphicsForEvents(datas, 0);
-//        })).play();
+
+        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
+            sendDataAndRun("start game");
+        })).play();
     }
 
     public void sendGameRunDataToServer(DataForGameRun data){
@@ -75,12 +102,12 @@ public class GameGraphicController extends Menu {
         return 1000;
     }
 
-    public void handleRivalActionsGraphic(ArrayList<DataFromGameRun> events, int index) {
+    public double handleRivalActionsGraphic(DataFromGameRun event) {
 
-        double time;
+        double time = 500;
 
-        int cardId = events.get(index).cardId;
-        String response = events.get(index).event;
+        int cardId = event.cardId;
+        String response = event.event;
 
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
@@ -148,84 +175,42 @@ public class GameGraphicController extends Menu {
         } else {
             time = responseIsForPhaseChange(response);
         }
-//        if (index < events.size() - 1) {
-//            new Timeline(new KeyFrame(Duration.millis(time),
-//                    EventHandler -> graphicsForEvents(events, index + 1))).play();
-//        }
-
-    }
-
-
-    private double handleFieldSpellForRival(String spellCommand, int cardId){
-        Matcher matcher = Utils.getMatcher(spellCommand, "field spell (.*)");
-        matcher.find();
-        double time = 1000;
-        gameView.activateFieldSpell(cardId - 1, false);
-
-        new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
-
-            String backgroundName = "";
-            switch (matcher.group(1)) {
-                case "Yami" -> backgroundName = "yami";
-                case "Forest" -> backgroundName = "gaia";
-                case "Umii Ruka" -> backgroundName = "umi";
-                case "Closed Forest" -> backgroundName = "mori";
-            }
-            Image image = new Image("Assets/Field/fie_" + backgroundName + ".bmp");
-            ((Rectangle) gameView.gamePane.getChildren().get(0)).setFill(new ImagePattern(image));
-        })).play();
 
         return time;
+
     }
 
-    private void activateSpellForRival(String response, int cardId){
 
-        String spellCommand = response.replace("activate spell ", "");
+    private double handleSelfActionGraphic(DataFromGameRun event) {
+
         double time = 500;
 
-        int newIndex = spellCommand.matches("\\d .*") ?
-                getIndexById(Integer.parseInt(spellCommand.split(" ")[0])) : -1;
+        int cardId = event.cardId;
+        String response = event.event;
 
-        spellCommand = spellCommand.replaceFirst("(-|)\\d ", "");
+        System.err.println(response);
 
-        int OldCardIndex = newIndex == -1 ? getIndexById(cardId) : cardId - 1;
-        int rivalOldCardIndex = newIndex == -1 ? getIndexByRivalId(cardId) : cardId - 1;
-
-        if (spellCommand.equals("destroy this spell")) {
-            gameView.justDestroyActivatedSpellOrTrap(newIndex, rivalOldCardIndex, false);
-
-        } else if (spellCommand.matches("destroy rival monsters([ \\d]*)")) {
-            String ids = Utils.getFirstGroupInMatcher(
-                    Utils.getMatcher(spellCommand, "destroy rival monsters([ \\d]*)"));
-            gameView.activateSpell1(newIndex, rivalOldCardIndex, false, ids);
-
-        } else if (spellCommand.matches("destroy rival monsters([ \\d]*) self monsters([ \\d]*)")) {
-
-            Matcher idMatcher = Utils.getMatcher(spellCommand,
-                    "destroy rival monsters([ \\d]*) self monsters([ \\d]*)");
-            idMatcher.find();
-
-            gameView.activateSpell2
-                    (newIndex, rivalOldCardIndex, false, idMatcher.group(1), idMatcher.group(2));
-
-        } else if (spellCommand.matches("destroy rival spells([ \\d]*)")) {
-            Matcher idMatcher = Utils.getMatcher(spellCommand, "destroy rival spells([ \\d]*)");
-            idMatcher.find();
-
-            gameView.activateSpell3(newIndex, rivalOldCardIndex, false, idMatcher.group(1));
-
-        } else if (spellCommand.startsWith("field spell ")) {
-            time = handleFieldSpellForRival(spellCommand, cardId);
-        } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
-//                handleIncreaseLP(gameView, spellCommand.substring(18));
-            handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
-        }
-
-    }
-
-    private void handleActivateSpellForSelf(String response, int cardId){
-
-        double time;
+        if (response.startsWith("activate trap")) {
+//            time = graphicsHandlingForSpells
+//                    (gameView, Integer.parseInt(response.split(":")[0].substring(14))
+//                            , response.split(":")[3].replace("activate spell ", ""));
+//
+//            new Timeline(new KeyFrame(Duration.millis(time), EventHandler -> {
+//                CardActionManager.setMode(actionManagerMode.NORMAL_MODE);
+//            }
+//            )).play();
+        } else if (response.startsWith("ask gamer for trap:")) {
+//            CardActionManager.setMode(actionManagerMode.ACTION_NOT_ALLOWED_MODE);
+            gameView.askForTrap(response.split(":")[1]);
+        } else if (response.matches("summon \\d")) {
+            int cardIndex = Integer.parseInt(response.substring(7));
+            time = gameView.handleSummonGraphic(cardId - 1, getIndexById(cardIndex));
+        } else if (response.equals("add card to hand")) {
+            time = gameView.handleAddCardFromDeckToHandGraphic(event.cardNames.get(0));
+        } else if (response.matches("set spell \\d")) {
+            int cardIndex = Integer.parseInt(response.substring(10));
+            time = gameView.handleSetSpellGraphic(cardId - 1, getIndexById(cardIndex));
+        } else if (response.startsWith("activate spell ")) {
 
         String spellCommand = response.replace("activate spell ", "");
 
@@ -358,11 +343,7 @@ public class GameGraphicController extends Menu {
         } else {
             time = responseIsForPhaseChange(response);
         }
-//        if (index < events.size() - 1) {
-//            new Timeline(new KeyFrame(Duration.millis(time),
-//                    EventHandler -> graphicsForEvents(events, index + 1))).play();
-//        }
-
+        return time;
     }
 
     private double handleIncreaseRivalLp(GameView gameView, String response) {
