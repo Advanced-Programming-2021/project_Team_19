@@ -7,6 +7,4 @@ public class DataFromGameRun {
     public String event;
     public String gamerOfActionName;
     public int cardId;
-
-
 }

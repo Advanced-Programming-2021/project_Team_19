@@ -8,7 +8,6 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.User;
 import view.Menu.Menu;
@@ -46,14 +45,41 @@ public class GameGraphicController extends Menu {
         startGame();
     }
 
+    public ArrayList<DataFromGameRun> sendDataToServer(String command){
+        return Menu.sendDataToServer
+                (new DataForGameRun(gameCode + "&" + command)).gameGraphicData;
+    }
+
+    public void sendDataAndRun(String command){
+        ArrayList<DataFromGameRun> datas = sendDataToServer(command);
+        for(DataFromGameRun data : datas){
+
+        }
+    }
+
+    private void run(ArrayList<DataFromGameRun> datas, int index){
+        DataFromGameRun data = datas.get(index);
+        double time;
+
+        if(data.gamerOfActionName.equals(username)){
+            time = handleSelfActionGraphic(data);
+        } else {
+            time = handleRivalActionsGraphic(data);
+        }
+
+        if(index < datas.size() - 1) {
+            new Timeline(new KeyFrame(Duration.millis(time), Event -> {
+                run(datas, index + 1);
+            })).play();
+        }
+    }
+
     public void startGame() {
         gameView.run();
-//        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
-//            ArrayList<DataFromGameRun> datas = game.run(new DataForGameRun
-//                    ("start game"));
-//
-//            graphicsForEvents(datas, 0);
-//        })).play();
+
+        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
+            sendDataAndRun("start game");
+        })).play();
     }
 
     public void sendGameRunDataToServer(DataForGameRun data){
@@ -76,12 +102,12 @@ public class GameGraphicController extends Menu {
         return 1000;
     }
 
-    public void handleRivalActionsGraphic(ArrayList<DataFromGameRun> events, int index) {
+    public double handleRivalActionsGraphic(DataFromGameRun event) {
 
-        double time;
+        double time = 500;
 
-        int cardId = events.get(index).cardId;
-        String response = events.get(index).event;
+        int cardId = event.cardId;
+        String response = event.event;
 
         if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
@@ -89,7 +115,7 @@ public class GameGraphicController extends Menu {
                     (cardId - 1, getIndexByRivalId(cardIndex));
         } else if (response.equals("add card to hand")) {
             time = gameView.handleAddRivalCardFromDeckToHandGraphic
-                    (events.get(index).cardNames.get(0));
+                    (event.cardNames.get(0));
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             time = gameView.handleSetRivalSpellGraphic(cardId - 1, getIndexByRivalId(cardIndex));
@@ -206,20 +232,18 @@ public class GameGraphicController extends Menu {
         } else {
             time = responseIsForPhaseChange(response);
         }
-//        if (index < events.size() - 1) {
-//            new Timeline(new KeyFrame(Duration.millis(time),
-//                    EventHandler -> graphicsForEvents(events, index + 1))).play();
-//        }
+
+        return time;
 
     }
 
 
-    private void handleSelfActionGraphic(ArrayList<DataFromGameRun> events, int index) {
+    private double handleSelfActionGraphic(DataFromGameRun event) {
 
         double time = 500;
 
-        int cardId = events.get(index).cardId;
-        String response = events.get(index).event;
+        int cardId = event.cardId;
+        String response = event.event;
 
         System.err.println(response);
 
@@ -239,7 +263,7 @@ public class GameGraphicController extends Menu {
             int cardIndex = Integer.parseInt(response.substring(7));
             time = gameView.handleSummonGraphic(cardId - 1, getIndexById(cardIndex));
         } else if (response.equals("add card to hand")) {
-            time = gameView.handleAddCardFromDeckToHandGraphic(events.get(index).cardNames.get(0));
+            time = gameView.handleAddCardFromDeckToHandGraphic(event.cardNames.get(0));
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             time = gameView.handleSetSpellGraphic(cardId - 1, getIndexById(cardIndex));
@@ -342,11 +366,7 @@ public class GameGraphicController extends Menu {
         } else {
             time = responseIsForPhaseChange(response);
         }
-//        if (index < events.size() - 1) {
-//            new Timeline(new KeyFrame(Duration.millis(time),
-//                    EventHandler -> graphicsForEvents(events, index + 1))).play();
-//        }
-
+        return time;
     }
 
     private double handleIncreaseRivalLp(GameView gameView, String response) {
