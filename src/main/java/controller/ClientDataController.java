@@ -51,7 +51,7 @@ public class ClientDataController {
         } else if (menuName.matches("Lobby Menu")) {
             return LobbyHandler.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("duel")){
-            return GameGraphicController.run(user, data.getMessage());
+            return GameGraphicController.run(user, (DataForGameRun) data);
         } else if (menuName.matches("Chat Menu")){
             return ChatRoomController.run(user, data.getMessage());
         }
