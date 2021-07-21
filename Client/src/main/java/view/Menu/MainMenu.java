@@ -1,10 +1,13 @@
 package view.Menu;
 
 
+import AnythingIWant.ClientNetwork;
+import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.Data.DataForServerFromClient;
 
 public class MainMenu extends Menu {
 
@@ -33,6 +36,7 @@ public class MainMenu extends Menu {
         stage.setTitle("Main Menu");
         pane.getStylesheets().add("CSS/Css.css");
         pane.setId("shopBackGround");
+        stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
         stage.getScene().setRoot(pane);
 
     }
@@ -40,7 +44,8 @@ public class MainMenu extends Menu {
     private void setMainMenu() {
 
         VBox buttonBox = setSeveralChoiceButtons("Profile Menu", "Deck Menu",
-                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Lobby", "Import/Export Menu", "Card Creating Menu", "TV");
+                "Duel Menu", "Shop Menu", "Scoreboard Menu", "Lobby", "Import/Export Menu",
+                "Card Creating Menu", "Chat Room", "TV");
 
         buttonBox.getChildren().get(0).setOnMouseClicked(event -> ProfileMenu.getInstance().run(username, UserDataBaseController.getUserByUsername(username).getNickname()));
 
@@ -58,11 +63,17 @@ public class MainMenu extends Menu {
 
         buttonBox.getChildren().get(7).setOnMouseClicked(event -> new CardCreating().run(UserDataBaseController.getUserByUsername(username)));
 
-        buttonBox.getChildren().get(8).setOnMouseClicked(event -> new TVMenu().run());
+        buttonBox.getChildren().get(8).setOnMouseClicked(event -> new ChatMenu().run(username));
+
+        buttonBox.getChildren().get(9).setOnMouseClicked(event -> new TVMenu().run());
 
         Button backButton = new Button();
         setBackButton(backButton);
-        backButton.setOnMouseClicked(event -> WelcomeMenu.getInstance().run());
+        backButton.setOnMouseClicked(event -> {
+            Menu.sendDataToServer(new DataForServerFromClient("user logout", token, "Login Menu"));
+            token = null;
+            WelcomeMenu.getInstance().run();
+        });
 
         pane.getChildren().addAll(buttonBox, backButton);
     }

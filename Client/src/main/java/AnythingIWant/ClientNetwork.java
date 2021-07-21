@@ -48,4 +48,15 @@ public class ClientNetwork {
             return null;
         }
     }
+
+    public void disconnect() {
+        try {
+            dataOutputStream.writeUTF("exit");
+            dataInputStream.close();
+            dataOutputStream.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

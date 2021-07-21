@@ -35,7 +35,7 @@ public class ClientDataController {
         }
 
         if (menuName.matches("Login Menu")) {
-            return LoginMenuController.getInstance().run(data.getMessage());
+            return LoginMenuController.getInstance().run(data.getMessage(), data.getToken());
         } else if (menuName.matches("Profile Menu")) {
             return ProfileMenuController.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("Deck Menu")) {

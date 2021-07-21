@@ -1,12 +1,24 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
+import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import model.Enums.RockPaperScissorResult;
+import model.Gamer;
+import model.Pair;
+import model.User;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class RockPaper extends Menu {
 
@@ -35,6 +47,7 @@ public class RockPaper extends Menu {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../graphic/fxml/RockPaper.fxml"));
             AnchorPane anchorPane = fxmlLoader.load();
             stage.getScene().setRoot(anchorPane);
+            stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
         } catch (IOException e) {
             e.printStackTrace();
         }

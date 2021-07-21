@@ -23,6 +23,10 @@ public class Network {
         UserByToken.put(token, user);
     }
 
+    public static void removeToken(String token) {
+        UserByToken.remove(token);
+    }
+
     public static User getUserByToken(String token) {
         return UserByToken.get(token);
     }
@@ -46,7 +50,14 @@ public class Network {
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 while (true) {
                     String command = dataInputStream.readUTF();
-                    processCommandAndGiveOutput(command, dataOutputStream);
+                    if (command.equals("exit")){
+                        dataInputStream.close();
+                        dataOutputStream.close();
+                        socket.close();
+                        break;
+                    } else {
+                        processCommandAndGiveOutput(command, dataOutputStream);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

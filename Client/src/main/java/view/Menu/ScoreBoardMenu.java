@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -49,6 +50,7 @@ public class ScoreBoardMenu extends Menu {
         mainPane.getStylesheets().add("CSS/Css.css");
         mainPane.setId("background1");
         mainPane.setCenter(box);
+        stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
 
         stage.getScene().setRoot(mainPane);
     }
