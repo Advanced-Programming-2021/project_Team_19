@@ -1,6 +1,7 @@
 package controller;
 
 
+import AnythingIWant.LobbyHandler;
 import AnythingIWant.Network;
 import controller.DataBaseControllers.UserDataBaseController;
 import controller.MenuControllers.*;
@@ -46,6 +47,8 @@ public class ClientDataController {
             return ShopMenuController.getInstance().run(user, data.getMessage());
         } else if (menuName.matches("Import/Export Menu")) {
             return ImportAndExportMenuController.getInstance().run(data.getMessage());
+        } else if (menuName.matches("Lobby Menu")) {
+            return LobbyHandler.getInstance().run(user, data.getMessage());
         }
 
         return Utils.getDataSendToClientForInvalidInput();
