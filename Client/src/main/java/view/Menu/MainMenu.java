@@ -1,7 +1,6 @@
 package view.Menu;
 
 
-import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;

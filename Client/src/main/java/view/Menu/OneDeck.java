@@ -1,23 +1,18 @@
 package view.Menu;
 
-import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
-import model.User;
 import view.graphic.CardView;
 
 import java.io.IOException;

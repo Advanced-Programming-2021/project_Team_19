@@ -20,7 +20,6 @@ import java.util.Collections;
 
 public class GameData {
 
-
     private int gameStarterId = 0;
     private final ArrayList<Gamer> gamers = new ArrayList<>();
     private final ArrayList<Action> currentActions = new ArrayList<>();

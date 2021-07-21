@@ -1,7 +1,6 @@
 package controller;
 
 import controller.DuelControllers.GameData;
-import model.Gamer;
 
 import java.util.ArrayList;
 

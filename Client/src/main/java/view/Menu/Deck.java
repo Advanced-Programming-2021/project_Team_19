@@ -1,7 +1,6 @@
 package view.Menu;
 
 import controller.DataBaseControllers.CSVDataBaseController;
-import controller.DataBaseControllers.DeckDataBaseController;
 import controller.MenuControllers.DeckMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +18,6 @@ import model.Card.Card;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
 import model.Enums.MessageType;
-import model.User;
 import view.graphic.CardView;
 
 import java.io.IOException;

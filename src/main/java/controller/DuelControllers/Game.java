@@ -7,16 +7,14 @@ import controller.DuelControllers.Actions.*;
 import controller.DuelControllers.Phases.DrawPhase;
 import controller.DuelControllers.Phases.StandbyPhase;
 import controller.Utils;
+import model.*;
 import model.Card.Card;
 import model.Card.Monster;
 import model.Card.SpellAndTraps;
 import model.Card.Traps.SpeedEffectTrap;
+import model.Data.DataForClientFromServer;
 import model.Data.TriggerActivationData;
-import model.EffectLabel;
 import model.Enums.GameEvent;
-import model.Gamer;
-import model.Phase;
-import model.TriggerLabel;
 import view.GetInput;
 import view.Printer.Printer;
 
@@ -37,16 +35,15 @@ public class Game {
         this.gameController = gameGraphicController;
     }
 
-//    public void runWithGraphics(DataForGameRun dataFromClient, CardView cardView, int index){
-//        ArrayList<DataFromGameRun> tempData = run(dataFromClient);
-//        gameController.graphicsForEvents(tempData, index);
-//    }
+    private Gamer getGamerByUser(User user){
+        return gameData.getInvitedGamer().getUser().getUsername().equals(user.getUsername()) ?
+                gameData.getInvitedGamer() : gameData.getGameStarter();
+    }
 
-    public ArrayList<DataFromGameRun> run(DataForGameRun dataFromClient) {
+    public DataForClientFromServer run(String command, User user) {
         gameData.resetDataFromGameRuns();
-        String command = dataFromClient.getCommand();
+        Gamer gamer = getGamerByUser(user);
         switch (command) {
-
             case "activate trap" -> {
                 TriggerLabel label = gameData.triggerLabel;
                 TriggerActivationData data = (TriggerActivationData) new ActivateTriggerTrapEffect
@@ -80,14 +77,14 @@ public class Game {
                 ArrayList<String> rivalCards = new ArrayList<>();
 
                 for (int i = 0; i < 5; i++) {
-                    cards.add(dataFromClient.getGamer().getGameBoard().getHand().getCardsInHand().get(i).getName());
+                    cards.add(gamer.getGameBoard().getHand().getCardsInHand().get(i).getName());
                     rivalCards.add(gameData.getOtherGamer
-                            (dataFromClient.getGamer()).getGameBoard().getHand().getCardsInHand().get(i).getName());
+                            (gamer).getGameBoard().getHand().getCardsInHand().get(i).getName());
                 }
                 DataFromGameRun data = new DataFromGameRun(gameData, "init hand");
                 data.cardNames.addAll(cards);
                 data.cardNames.addAll(rivalCards);
-                return gameData.dataFromGameRuns;
+                return new DataForClientFromServer(gameData.dataFromGameRuns);
             }
             case "set with sacrifice" -> {
                 multiActionCard = gameData.getSelectedCard();
@@ -148,7 +145,7 @@ public class Game {
 
         runServerSideGameEvents();
 
-        return gameData.dataFromGameRuns;
+        return new DataForClientFromServer(gameData.dataFromGameRuns);
     }
 
 

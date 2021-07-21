@@ -67,7 +67,7 @@ public class LobbyHandler {
                 matchPairs.add(new Pair<>(user, second));
                 waitersForThreeRounds.clear();
                 new Thread( () -> {
-//                    startDuel(user, second, 1);
+//                    startDuel(user, second, 3);
                 }).start();
                 return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
             }

@@ -2,8 +2,6 @@ package view;
 
 import controller.DataBaseControllers.CSVDataBaseController;
 import controller.DataBaseControllers.DataBaseController;
-import controller.DuelControllers.Game;
-import controller.DuelControllers.GameData;
 import view.Menu.WelcomeMenu;
 
 

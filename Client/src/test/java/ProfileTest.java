@@ -1,7 +1,5 @@
-import controller.DataBaseControllers.UserDataBaseController;
 import model.User;
 import org.junit.jupiter.api.*;
-import view.GetInput;
 import view.Menu.ProfileMenu;
 import view.Printer.Printer;
 

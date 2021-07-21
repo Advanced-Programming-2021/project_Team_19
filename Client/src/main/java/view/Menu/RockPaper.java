@@ -1,23 +1,12 @@
 package view.Menu;
 
-import controller.DataBaseControllers.UserDataBaseController;
 import controller.DuelControllers.DuelMenuController;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import model.Enums.RockPaperScissorResult;
-import model.Gamer;
-import model.Pair;
-import model.User;
 
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class RockPaper extends Menu {
 

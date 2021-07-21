@@ -1,6 +1,7 @@
 package controller;
 
 
+import AnythingIWant.GameGraphicController;
 import AnythingIWant.LobbyHandler;
 import AnythingIWant.Network;
 import controller.DataBaseControllers.UserDataBaseController;
@@ -49,6 +50,8 @@ public class ClientDataController {
             return ImportAndExportMenuController.getInstance().run(data.getMessage());
         } else if (menuName.matches("Lobby Menu")) {
             return LobbyHandler.getInstance().run(user, data.getMessage());
+        } else if (menuName.matches("duel")){
+            return GameGraphicController.run(user, data.getMessage());
         }
 
         return Utils.getDataSendToClientForInvalidInput();
