@@ -62,7 +62,7 @@ public class GetInput {
             Printer.print(ans);
             return ans;
         } else {
-            AI.run(GameData.getGameData());
+//            AI.run(GameData.getGameData());
             return getAICommand();
         }
     }
@@ -75,15 +75,15 @@ public class GetInput {
         return scanner.nextInt();
     }
 
-    public static boolean AIMod() {
-        try {
-            if (AI.getGamer(0).equals(GameData.getGameData().getCurrentGamer())) {
-                return true;
-            }
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return false;
-    }
+//    public static boolean AIMod() {
+//        try {
+//            if (AI.getGamer(0).equals(GameData.getGameData().getCurrentGamer())) {
+//                return true;
+//            }
+//        } catch (NullPointerException e) {
+//            return false;
+//        }
+//        return false;
+//    }
 
 }

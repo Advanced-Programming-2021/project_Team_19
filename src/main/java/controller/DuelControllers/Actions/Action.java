@@ -90,7 +90,7 @@ public abstract class Action {
         Utils.changeTurn(gameData);
         gameData.showBoard();
 
-        if (Utils.askForActivate(actionName + " has occurred just now")) {
+        if (Utils.askForActivate(actionName + " has occurred just now", gameData)) {
 
             tempData = new ActivateTriggerEffectOnOtherPlayerTurn(this).run();
 
@@ -113,7 +113,7 @@ public abstract class Action {
     public TriggerActivationData handleActivateTrapOnGamerTurnBecauseOfAnAction() {
 
 
-        if (Utils.askForActivate(actionName + " has occurred just now")) {
+        if (Utils.askForActivate(actionName + " has occurred just now", gameData)) {
 
             ActivationData tempData = new ActivateTriggerEffectOnGamerTurn(this).run();
 

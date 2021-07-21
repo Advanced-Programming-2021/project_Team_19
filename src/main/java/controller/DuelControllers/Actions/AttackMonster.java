@@ -56,8 +56,7 @@ public class AttackMonster extends Attack {
 
     }
 
-    public static boolean canAttack() {
-        GameData gameData = GameData.getGameData();
+    public static boolean canAttack(GameData gameData) {
         return gameData.getSecondGamer().getGameBoard().getMonsterCardZone().containsCard(gameData.getSelectedCard());
     }
 
