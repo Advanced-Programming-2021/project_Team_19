@@ -52,6 +52,14 @@ public class GameGraphicController extends Menu {
                 (new DataForGameRun(gameCode + "&" + command)).gameGraphicData;
     }
 
+    public ArrayList<DataFromGameRun> sendDataObjectToServer(String command, CardView cardView){
+        DataForGameRun data = new DataForGameRun(gameCode + "&" + command);
+        data.findIdAndZoneName(gameView, cardView);
+        System.out.println(data.getId());
+        System.out.println(data.getZoneName());
+        return Menu.sendDataToServer(data).gameGraphicData;
+    }
+
     public void sendDataAndRun(String command){
         ArrayList<DataFromGameRun> datas = sendDataToServer(command);
         run(datas, 0);
@@ -80,7 +88,7 @@ public class GameGraphicController extends Menu {
 
     public void startGame() {
         gameView.run();
-        new Timeline(new KeyFrame(Duration.millis(3500), event -> {
+        new Timeline(new KeyFrame(Duration.millis(7000), event -> {
             sendDataAndRun("start game");
         })).play();
     }

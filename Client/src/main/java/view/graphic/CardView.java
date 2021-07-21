@@ -136,12 +136,8 @@ public class CardView extends Rectangle {
 
     public String getFirstValidAction(GameView gameView) throws Exception {
         validActionNamesForShow = new ArrayList<>();
-        DataForGameRun dataToSend = new DataForGameRun("get valid actions");
-        dataToSend.findIdAndZoneName(gameView, this);
-        System.out.println(dataToSend.getZoneName());
-        System.out.println(dataToSend.getId());
 
-        validActionNames = gameView.gameController.sendDataToServer("get valid actions").get(0).cardNames;
+        validActionNames = gameView.gameController.sendDataObjectToServer("get valid actions", this).get(0).cardNames;
 
         for (String validAction : validActionNames) {
             if (validAction.equals("summon with sacrifice")) {
