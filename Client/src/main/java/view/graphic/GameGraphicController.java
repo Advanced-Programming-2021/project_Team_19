@@ -20,6 +20,7 @@ import static view.graphic.GameView.getIndexByRivalId;
 
 public class GameGraphicController extends Menu {
 
+    public MyThread checkerThread;
     public GameView gameView;
     int rounds;
     int gameStarterWins = 0;
@@ -39,6 +40,7 @@ public class GameGraphicController extends Menu {
         gameView = new GameView(stage, this, username, username.equals(username1) ?
                 username2: username1);
         this.gameCode = gameCode;
+        checkerThread = new MyThread(this);
     }
 
     public void run() {
@@ -56,6 +58,10 @@ public class GameGraphicController extends Menu {
     }
 
     private void run(ArrayList<DataFromGameRun> datas, int index){
+        if(datas.size() == 0){
+            return;
+        }
+
         DataFromGameRun data = datas.get(index);
         double time;
 
@@ -395,4 +401,26 @@ public class GameGraphicController extends Menu {
 
     }
 
+}
+
+
+class MyThread extends Thread{
+
+    GameGraphicController controller;
+    public MyThread(GameGraphicController controller){
+        this.controller = controller;
+    }
+
+    @Override
+    public void run() {
+
+        while(true){
+            controller.sendDataAndRun("چه خبر");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
