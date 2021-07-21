@@ -65,16 +65,17 @@ public class Lobby extends Menu{
                         break;
                     }
                 }
-                if (isCancelButtonPressed) {
-                    isCancelButtonPressed = false;
-                    Menu.sendDataToServer(new DataForServerFromClient("lobby exit", token, "Lobby Menu"));
-                }
             }
-            Platform.runLater(() -> {
-                cancelButton.setDisable(true);
-                oneRoundButton.setDisable(false);
-                threeRoundButton.setDisable(false);
-            });
+            if (isCancelButtonPressed) {
+                Menu.sendDataToServer(new DataForServerFromClient("lobby exit", token, "Lobby Menu"));
+            } else{
+                Platform.runLater(() -> {
+                    cancelButton.setDisable(true);
+                    oneRoundButton.setDisable(false);
+                    threeRoundButton.setDisable(false);
+                    new RockPaper().run();
+                });
+            }
         }).start();
 
     }
@@ -103,15 +104,18 @@ public class Lobby extends Menu{
                         break;
                     }
                 }
-                if (isCancelButtonPressed) {
-                    Menu.sendDataToServer(new DataForServerFromClient("lobby exit", token, "Lobby Menu"));
-                }
+
             }
-            Platform.runLater(() -> {
-                cancelButton.setDisable(true);
-                oneRoundButton.setDisable(false);
-                threeRoundButton.setDisable(false);
-            });
+            if (isCancelButtonPressed) {
+                Menu.sendDataToServer(new DataForServerFromClient("lobby exit", token, "Lobby Menu"));
+            } else{
+                Platform.runLater(() -> {
+                    cancelButton.setDisable(true);
+                    oneRoundButton.setDisable(false);
+                    threeRoundButton.setDisable(false);
+                    new RockPaper().run();
+                });
+            }
         }).start();
     }
 

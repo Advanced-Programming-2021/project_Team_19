@@ -29,6 +29,8 @@ public class LobbyHandler {
 
     private final ArrayList<Pair<User, User>> matchPairs = new ArrayList<>();
 
+    private final ArrayList<Pair<User, User>> readyPairs = new ArrayList<>();
+
 
     public synchronized DataForClientFromServer run(User user, String command) {
         if (command.matches("lobby --play --rounds \\d")) {
@@ -49,8 +51,12 @@ public class LobbyHandler {
                 waitersForOneRound.add(user);
                 return new DataForClientFromServer("wait", MessageType.SUCCESSFUL);
             } else {
-                matchPairs.add(new Pair<>(user, waitersForOneRound.get(0)));
+                User second = waitersForOneRound.get(0);
+                matchPairs.add(new Pair<>(user, second));
                 waitersForOneRound.clear();
+                new Thread(() -> {
+                    startDuel(user, second, 1);
+                }).start();
                 return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
             }
         } else {
@@ -58,8 +64,12 @@ public class LobbyHandler {
                 waitersForThreeRounds.add(user);
                 return new DataForClientFromServer("wait", MessageType.SUCCESSFUL);
             } else {
-                matchPairs.add(new Pair<>(user, waitersForThreeRounds.get(0)));
+                User second = waitersForThreeRounds.get(0);
+                matchPairs.add(new Pair<>(user, second));
                 waitersForThreeRounds.clear();
+                new Thread( () -> {
+                    startDuel(user, second, 1);
+                }).start();
                 return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
             }
         }

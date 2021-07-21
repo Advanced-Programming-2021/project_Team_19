@@ -27,17 +27,12 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Label fx:id="playerNumber" layoutX="587.0" layoutY="26.0" prefHeight="82.0" prefWidth="155.0" text="Player" textFill="#fc4433">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
       <Label fx:id="result" layoutX="197.0" layoutY="257.0" prefHeight="65.0" prefWidth="409.0" textFill="#00da0b">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="choice" layoutX="42.0" layoutY="181.0" prefHeight="58.0" prefWidth="465.0" text="Label" textFill="#00ff33">
+      <Label fx:id="choice" layoutX="42.0" layoutY="181.0" prefHeight="58.0" prefWidth="465.0" textFill="#00ff33">
          <font>
             <Font size="18.0" />
          </font>
