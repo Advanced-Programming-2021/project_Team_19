@@ -54,10 +54,9 @@ public class LobbyHandler {
                 User second = waitersForOneRound.get(0);
                 matchPairs.add(new Pair<>(user, second));
                 waitersForOneRound.clear();
-                new Thread(() -> {
-                    startDuel(user, second, 1);
-                }).start();
-                return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
+                return new DataForClientFromServer(
+                        new GameGraphicController(user, second, 1).getDataForStartGame(),
+                        MessageType.SUCCESSFUL);
             }
         } else {
             if (waitersForThreeRounds.isEmpty()) {
@@ -68,7 +67,7 @@ public class LobbyHandler {
                 matchPairs.add(new Pair<>(user, second));
                 waitersForThreeRounds.clear();
                 new Thread( () -> {
-                    startDuel(user, second, 1);
+//                    startDuel(user, second, 1);
                 }).start();
                 return new DataForClientFromServer("match started", MessageType.SUCCESSFUL);
             }
