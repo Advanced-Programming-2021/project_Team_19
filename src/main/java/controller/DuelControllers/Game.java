@@ -41,7 +41,7 @@ public class Game {
                 gameData.getInvitedGamer() : gameData.getGameStarter();
     }
 
-    public DataForClientFromServer run(String command, User user) {
+    public synchronized DataForClientFromServer run(String command, User user) {
         gameData.resetDataFromGameRuns();
         Gamer gamer = getGamerByUser(user);
         switch (command) {
