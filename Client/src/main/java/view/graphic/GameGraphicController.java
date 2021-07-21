@@ -74,7 +74,6 @@ public class GameGraphicController extends Menu {
 
     public void startGame() {
         gameView.run();
-
         new Timeline(new KeyFrame(Duration.millis(3500), event -> {
             sendDataAndRun("start game");
         })).play();
@@ -234,7 +233,6 @@ public class GameGraphicController extends Menu {
         return time;
 
     }
-
 
     private double handleSelfActionGraphic(DataFromGameRun event) {
 

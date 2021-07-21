@@ -71,7 +71,9 @@ public class Network {
         System.out.println(data.getMessage());
         DataForClientFromServer dataBack = ClientDataController.handleMessageOfClientAndGetFeedback(data);
         try {
-            dataOutputStream.writeUTF(gson.toJson(dataBack));
+            String result = gson.toJson(dataBack);
+            System.out.println("result       " + result);
+            dataOutputStream.writeUTF(result);
             dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
