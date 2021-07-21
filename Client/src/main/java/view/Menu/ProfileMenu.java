@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -68,6 +69,7 @@ public class ProfileMenu extends Menu {
         setButtons();
         setResponseLabels();
         stage.setTitle("Profile Menu");
+        stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
         stage.getScene().setRoot(pane);
 
     }

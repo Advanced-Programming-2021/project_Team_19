@@ -1,5 +1,6 @@
 package view.Menu;
 
+import AnythingIWant.ClientNetwork;
 import AnythingIWant.LobbyHandler;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -33,6 +34,7 @@ public class Lobby extends Menu{
             AnchorPane anchorPane = fxmlLoader.load();
             readyFxmlButtonsForCursor(anchorPane);
             stage.getScene().setRoot(anchorPane);
+            stage.setOnCloseRequest(event -> ClientNetwork.getInstance().disconnect());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

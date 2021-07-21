@@ -23,6 +23,10 @@ public class Network {
         UserByToken.put(token, user);
     }
 
+    public static void removeToken(String token) {
+        UserByToken.remove(token);
+    }
+
     public static User getUserByToken(String token) {
         return UserByToken.get(token);
     }

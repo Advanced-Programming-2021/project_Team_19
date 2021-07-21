@@ -24,7 +24,7 @@ public class LoginMenuController {
         return instance;
     }
 
-    public DataForClientFromServer run(String command) {
+    public DataForClientFromServer run(String command, String token) {
 
         if (command.matches("user create " +
                 "--username \\w+ --nickname \\w+ --password \\w+")) {
@@ -35,6 +35,8 @@ public class LoginMenuController {
                 "--username \\S+ --password \\S+")) {
             return manageLogin(Utils.getMatcher(command, "user login (.+)"));
 
+        } else if (command.matches("user logout")) {
+            return logout(token);
         }
 
         return Utils.getDataSendToClientForInvalidInput();
@@ -113,6 +115,11 @@ public class LoginMenuController {
 
     private boolean isPasswordTrue(String username, String password) {
         return UserDataBaseController.isUserPasswordCorrect(username, password);
+    }
+
+    private DataForClientFromServer logout(String token) {
+        Network.removeToken(token);
+        return new DataForClientFromServer("done", MessageType.SUCCESSFUL);
     }
 
 
