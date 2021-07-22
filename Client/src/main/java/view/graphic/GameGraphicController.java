@@ -211,8 +211,8 @@ public class GameGraphicController extends Menu {
 
         } else if (response.matches("get \\d monsters")) {
         } else if (response.equals("attack monster")) {
-        } else if (response.matches("rival loses \\d+")) {
-            time = handleIncreaseRivalLp(gameView, response);
+        } else if (response.startsWith("lp loses ")) {
+            time = handleIncreaseLp(gameView, response);
         } else if (response.matches("increase lp \\d+")) {
             time = handleIncreaseLPByCheatCode(gameView, response);
         } else if (response.matches("set monster \\d")) {
@@ -225,8 +225,6 @@ public class GameGraphicController extends Menu {
             Matcher matcher = Utils.getMatcher(response,
                     "attack (\\d) (destroy|stay) (\\d) (destroy|stay) (flip |)(self|rival) loses (\\d+) lp");
             time = gameView.handleRivalAttackResultGraphic(matcher);
-
-
         } else if (response.equals("flip summoned successfully")) {
             time = gameView.handleRivalFlipSummonGraphicBOOCN(getIndexByRivalId(cardId));
 
@@ -338,7 +336,7 @@ public class GameGraphicController extends Menu {
                 })).play();
 
             } else if (spellCommand.matches("destroy spell and rival loses \\d+")) {
-                handleIncreaseRivalLp(gameView, spellCommand.substring(18));
+                handleIncreaseLp(gameView, spellCommand.substring(18));
                 handleDestroySpell(gameView, OldCardIndex, rivalOldCardIndex, newIndex);
             }
 
@@ -351,8 +349,8 @@ public class GameGraphicController extends Menu {
                     (Integer.parseInt(response.substring(4, 5)), getIndexById(cardId));
         } else if (response.equals("attack monster")) {
             gameView.initForAttackMonster(getIndexById(cardId));
-        } else if (response.matches("rival loses \\d+")) {
-            time = handleIncreaseRivalLp(gameView, response);
+        } else if (response.startsWith("lp loses ")) {
+            time = handleIncreaseLp(gameView, response);
         } else if (response.matches("increase lp \\d+")) {
             time = handleIncreaseLPByCheatCode(gameView, response);
         } else if (response.matches("set monster \\d")) {
@@ -393,10 +391,10 @@ public class GameGraphicController extends Menu {
         return gameView.handleAddRivalCardFromDeckToHandGraphic(event.cardNames.get(0));
     }
 
-    private double handleIncreaseRivalLp(GameView gameView, String response) {
-        double time = 500;
-        int lp = -Integer.parseInt(response.substring(12));
-        time = gameView.handleIncreaseLpGraphic(lp, false);
+    private double handleIncreaseLp(GameView gameView, String response) {
+        double time;
+        int lp = -Integer.parseInt(response.substring(9).split(",")[0]);
+        time = gameView.handleIncreaseLpGraphic(lp, response.split(",")[1].equals(username));
         return time;
     }
 
@@ -431,6 +429,7 @@ class MyThread extends Thread{
     GameGraphicController controller;
     public MyThread(GameGraphicController controller){
         this.controller = controller;
+        setPriority(8);
     }
 
     @Override
@@ -450,7 +449,7 @@ class MyThread extends Thread{
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

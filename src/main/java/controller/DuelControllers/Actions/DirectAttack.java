@@ -48,7 +48,7 @@ public class DirectAttack extends Attack {
     private String directAttack() {
         currentId = gameData.getCurrentGamer().getGameBoard().getHand().getId(attackingMonster);
         String lpLoss = ((Monster) attackingMonster).handleDirectAttack(gameData);
-        return "rival loses " + lpLoss;
+        return "lp loses " + lpLoss + "," + gameData.getSecondGamer().getUsername();
     }
 
 

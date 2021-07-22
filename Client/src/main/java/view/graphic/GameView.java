@@ -880,7 +880,7 @@ public class GameView {
             })).play();
         })).play();
 
-        return time + lp + 500;
+        return time + Math.abs(lp) + 500;
     }
 
     double handleAttackResultGraphic(Matcher matcher) {
@@ -917,7 +917,7 @@ public class GameView {
             })).play();
         })).play();
 
-        return time + lp + 500;
+        return time + Math.abs(lp) + 500;
     }
 
     //zone 0 for monster zone 1 for spell zone
