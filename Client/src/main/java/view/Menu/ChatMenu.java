@@ -1,5 +1,6 @@
 package view.Menu;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import model.Data.DataForClientFromServer;
 import model.Data.DataForServerFromClient;
@@ -21,14 +23,12 @@ public class ChatMenu extends Menu{
     public TextArea textArea = new TextArea();
     public Label responseLabel = new Label();
     public Pane pane = new Pane();
-
-
+    public ScrollPane scrollPane = new ScrollPane();
 
     public ArrayList<Message> messages = new ArrayList<>();
     public Message selectedMessage;
     private String username;
     private boolean isEditing = false;
-
 
 
     public ChatMenu() {
@@ -43,7 +43,37 @@ public class ChatMenu extends Menu{
 
         initPane(data);
         stage.getScene().setRoot(pane);
-}
+
+        Thread refreshThread = new Thread(){
+            @Override
+            public void run() {
+
+                while (true){
+
+                    if(!stage.getScene().getRoot().equals(pane)){
+                        interrupt();
+                        return;
+                    }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            refresh(sendDataToServer(new DataForServerFromClient
+                                    ("get all messages", token, menuName)), false);
+                        }
+                    });
+                }
+            }
+        };
+
+        refreshThread.start();
+    }
 
     public void initPane(DataForClientFromServer data){
         responseLabel.setText("");
@@ -72,16 +102,15 @@ public class ChatMenu extends Menu{
 
         pane.getStylesheets().add("CSS/Css.css");
         pane.setId("background1");
-
-
-        refresh(data);
+        pane.getChildren().add(scrollPane);
+        refresh(data, true);
 
     }
 
 
     public void addMessage(){
-        String messageText = textArea.getText();
-
+        String messageText = textArea.getText().replace('\n', ' ');
+        System.out.println(messageText);
         if (messageText.equals("")){
             Printer.setSuccessResponseToLabel(responseLabel, "please write something");
             return;
@@ -90,7 +119,7 @@ public class ChatMenu extends Menu{
         DataForClientFromServer data = sendDataToServer(new DataForServerFromClient
                 ("add message " + messageText.replace("/n", "*"), token, menuName));
 
-        refresh(data);
+        refresh(data, true);
     }
 
     public void deleteMessage(){
@@ -100,7 +129,7 @@ public class ChatMenu extends Menu{
         if (data.getMessageType().equals(MessageType.ERROR)){
             Printer.setSuccessResponseToLabel(responseLabel, data.getMessage());
         } else {
-            refresh(data);
+            refresh(data, true);
         }
     }
 
@@ -112,7 +141,7 @@ public class ChatMenu extends Menu{
         if (data.getMessageType().equals(MessageType.ERROR)){
             Printer.setSuccessResponseToLabel(responseLabel, data.getMessage());
         } else {
-            refresh(data);
+            refresh(data, true);
         }
     }
 
@@ -126,7 +155,8 @@ public class ChatMenu extends Menu{
         textArea.setText(selectedMessage.message);
     }
 
-    public void refresh(DataForClientFromServer data){
+
+    public void refresh(DataForClientFromServer data, boolean clearTextArea){
 
         responseLabel.setText("");
 
@@ -137,8 +167,6 @@ public class ChatMenu extends Menu{
                     data.getMessages().get(i).split("~")[1].replace("*", "/n"), i));
         }
 
-        ScrollPane scrollPane = new ScrollPane();
-
         VBox messageBox = new VBox(5);
 
         for (Message message : messages) {
@@ -147,31 +175,19 @@ public class ChatMenu extends Menu{
                 selectedMessage = message;
                 onMessageClicked();
             });
-            box.minWidth(538);
-            box.maxWidth(538);
-
             messageBox.getChildren().add(box);
         }
-
-        messageBox.minWidth(538);
-        messageBox.maxWidth(538);
-
 
         scrollPane.setContent(messageBox);
 
         scrollPane.setLayoutX(131);
         scrollPane.setLayoutY(38);
-        scrollPane.minHeight(339);
-        scrollPane.maxHeight(339);
-        scrollPane.minWidth(538);
-        scrollPane.maxWidth(538);
-
-        pane.getChildren().removeIf(child -> child instanceof ScrollPane);
-
-        pane.getChildren().add(scrollPane);
-
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMaxHeight(200);
+        if(clearTextArea)
         textArea.clear();
-
     }
 
     private void onSubmitClicked(){

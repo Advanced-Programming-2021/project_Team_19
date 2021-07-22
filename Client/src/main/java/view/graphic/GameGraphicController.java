@@ -11,6 +11,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.User;
+import view.Menu.MainMenu;
 import view.Menu.Menu;
 
 import java.util.ArrayList;
@@ -242,9 +243,10 @@ public class GameGraphicController extends Menu {
                     getSacrificesIndex(response.substring(24), false));
 
 
-        } else if (response.startsWith("game finished ")) {
-            String name = response.split(" ")[2];
-            //todo hi hi va ha ha
+        }else if (response.startsWith("game finished ")) {
+            showPopupMessage(Utils.getFirstGroupInMatcher(Utils.getMatcher
+                    (response, "game finished (.*)")) + " can say hoho");
+            MainMenu.getInstance(username).run();
         } else {
             time = responseIsForPhaseChange(response);
         }
@@ -378,6 +380,9 @@ public class GameGraphicController extends Menu {
                     getSacrificesIndex(response.substring(24), true));
 
         } else if (response.startsWith("game finished ")) {
+            showPopupMessage(Utils.getFirstGroupInMatcher(Utils.getMatcher
+                    (response, "game finished (.*)")) + " can say hoho");
+            MainMenu.getInstance(username).run();
         } else {
             time = responseIsForPhaseChange(response);
         }
@@ -436,8 +441,6 @@ class MyThread extends Thread{
     public void run() {
 
         while(true){
-//            System.out.println("هی هی و هوهو");
-
             if(controller.canRunAnimation){
                 Platform.runLater(new Runnable() {
                     @Override

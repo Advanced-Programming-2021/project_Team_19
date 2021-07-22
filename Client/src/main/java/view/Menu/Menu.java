@@ -52,7 +52,6 @@ public class Menu extends menuGraphic {
         matcher.reset();
         matcher.find();
 
-
         DataForClientFromServer data = sendDataToServer
                 (new DataForServerFromClient(matcher.group(0), username, menuName));
 

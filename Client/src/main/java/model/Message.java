@@ -1,8 +1,10 @@
 package model;
 
-import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 
 public class Message {
@@ -18,10 +20,18 @@ public class Message {
 
 
     public VBox getMessageForDisplay(){
-        VBox toReturn = new VBox();
-        Label authorLabel = new Label(author);
-        Label messageLabel = new Label(message);
-        toReturn.getChildren().addAll(authorLabel, messageLabel);
-        return toReturn;
+        VBox vBox = new VBox();
+        Label label1 = new Label(author);
+        label1.setFont(Font.font(15));
+        label1.setTextFill(Color.BLUE);
+        vBox.getChildren().add(label1);
+        Label label2 = new Label(message);
+        label2.setWrapText(true);
+        vBox.getChildren().add(label2);
+        vBox.setMinWidth(300);
+        vBox.setMaxWidth(300);
+        vBox.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, new CornerRadii(0),
+                new Insets(0,0,0,0))));
+        return vBox;
     }
 }
