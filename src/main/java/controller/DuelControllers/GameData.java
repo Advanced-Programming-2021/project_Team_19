@@ -32,11 +32,16 @@ public class GameData {
     private int actionIndexForTriggerActivation = -1;
     public TriggerLabel triggerLabel = null;
     public ArrayList<DataFromGameRun> dataFromGameRuns = new ArrayList<>();
+    public Gamer dataSender;
 
     public GameData(Gamer firstGamer, Gamer secondGamer) {
         gamers.add(firstGamer);
         gamers.add(secondGamer);
         turnOwner = firstGamer;
+    }
+
+    public Gamer getGamerByUsername(String username){
+        return getGameStarter().getUsername().equals(username) ? getGameStarter() : getInvitedGamer();
     }
 
     public boolean isGameOver() {

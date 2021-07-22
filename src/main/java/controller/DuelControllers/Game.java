@@ -16,11 +16,9 @@ import model.Card.Traps.SpeedEffectTrap;
 import model.Data.DataForClientFromServer;
 import model.Data.TriggerActivationData;
 import model.Enums.GameEvent;
-import view.GetInput;
 import view.Printer.Printer;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class Game {
@@ -45,7 +43,9 @@ public class Game {
 
     public synchronized DataForClientFromServer run(String command, User user, DataForGameRun dataForGameRun) {
         gameData.resetDataFromGameRuns();
+        gameData.dataSender = gameData.getGamerByUsername(user.getUsername());
         Gamer gamer = getGamerByUser(user);
+        System.out.println("\n" + command + "\n");
         switch (command) {
             case "activate trap" -> {
                 TriggerLabel label = gameData.triggerLabel;
@@ -124,8 +124,14 @@ public class Game {
             }
             case "next phase" -> {
                 if (user.getUsername().equals(gameData.getCurrentGamer().getUsername())){
-                    String nextPhaseName = goToNextPhase(gameData);
-                    new DataFromGameRun(gameData, nextPhaseName);
+                    if(gameData.getCurrentPhase().equals(Phase.END) ||
+                            gameData.getCurrentPhase().equals(Phase.DRAW) ||
+                            gameData.getCurrentPhase().equals(Phase.STANDBY)){
+
+                    } else {
+                        String nextPhaseName = goToNextPhase(gameData);
+                        new DataFromGameRun(gameData, nextPhaseName);
+                    }
                 }
             }
         }
@@ -257,7 +263,8 @@ public class Game {
             if (gameData.getCurrentPhase().equals(Phase.DRAW)) {
                 Card card = new DrawPhase().run(gameData);
                 goToNextPhase(gameData);
-                new DataFromGameRun(gameData, "add card to hand", card.getName());
+                new DataFromGameRun(gameData, "add card to hand &" +
+                        gameData.getCurrentGamer().getUsername(), card.getName());
                 new DataFromGameRun(gameData, "draw phase");
                 continue;
             }
@@ -269,9 +276,9 @@ public class Game {
             }
             if (gameData.getCurrentPhase().equals(Phase.END)) {
                 gameData.setSelectedCard(null);
+                new DataFromGameRun(gameData, "end phase");
                 gameData.turnFinished();
                 goToNextPhase(gameData);
-                new DataFromGameRun(gameData, "end phase");
                 continue;
             }
 

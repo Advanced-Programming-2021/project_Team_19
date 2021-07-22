@@ -28,27 +28,29 @@ public class GameGraphicController {
         gameGraphicControllers.put(gameCode, this);
     }
 
-    public String getDataForStartGame() {
+    public synchronized String getDataForStartGame() {
         return "match started &" + gameCode + "&" + game.gameData.getGameStarter().getUsername() + "&" +
                 game.gameData.getInvitedGamer().getUsername();
     }
 
-    public static DataForClientFromServer run(User user, DataForGameRun data){
+    public synchronized static DataForClientFromServer run(User user, DataForGameRun data){
         String command = data.getMessage();
         GameGraphicController controller = gameGraphicControllers.get(command.split("&")[0]);
-        if(command.split("&")[1].equals("whats up")){
-            Gamer gamer = controller.game.gameData.getGameStarter().getUsername().equals(user.getUsername()) ?
-                    controller.game.gameData.getGameStarter() : controller.game.gameData.getInvitedGamer();
-
-            System.out.println("hi hi va ho hi : " + gamer.dataForSend);
-            try {
-                return new DataForClientFromServer((ArrayList<DataFromGameRun>) gamer.dataForSend.clone());
-            } finally {
-                gamer.dataForSend.clear();
+        try {
+            if(command.split("&")[1].equals("whats up")){
+                Gamer gamer = controller.game.gameData.getGameStarter().getUsername().equals(user.getUsername()) ?
+                        controller.game.gameData.getGameStarter() : controller.game.gameData.getInvitedGamer();
+                try {
+                    return new DataForClientFromServer((ArrayList<DataFromGameRun>) gamer.dataForSend.clone());
+                } finally {
+                    gamer.dataForSend.clear();
+                }
+            } else{
+                return controller.game.run(command.split("&")[1], user, data);
             }
-        } else{
-            return controller.game.run(command.split("&")[1], user, data);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
-
     }
 }

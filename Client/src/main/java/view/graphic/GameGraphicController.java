@@ -23,6 +23,7 @@ public class GameGraphicController extends Menu {
 
     public MyThread checkerThread;
     public GameView gameView;
+    public boolean canRunAnimation = true;
     int rounds;
     int gameStarterWins = 0;
     int invitedGamerWins = 0;
@@ -65,15 +66,17 @@ public class GameGraphicController extends Menu {
         ArrayList<DataFromGameRun> datas = sendDataToServer(command);
         System.err.println("graphic tasks:");
         for(DataFromGameRun data : datas){
-            System.out.println(data.event);
+            System.err.println(data.event);
         }
         run(datas, 0);
     }
 
     private void run(ArrayList<DataFromGameRun> datas, int index){
-        if(datas.size() == 0){
+        if(index == datas.size()){
+            canRunAnimation = true;
             return;
         }
+        canRunAnimation = false;
 
         DataFromGameRun data = datas.get(index);
         double time;
@@ -84,7 +87,7 @@ public class GameGraphicController extends Menu {
             time = handleRivalActionsGraphic(data);
         }
 
-        if(index < datas.size() - 1) {
+        if(index < datas.size()) {
             new Timeline(new KeyFrame(Duration.millis(time), Event -> {
                 run(datas, index + 1);
             })).play();
@@ -130,9 +133,8 @@ public class GameGraphicController extends Menu {
             int cardIndex = Integer.parseInt(response.substring(7));
             time = gameView.handleSummonRivalMonsterGraphic
                     (cardId - 1, getIndexByRivalId(cardIndex));
-        } else if (response.equals("add card to hand")) {
-            time = gameView.handleAddRivalCardFromDeckToHandGraphic
-                    (event.cardNames.get(0));
+        } else if (response.startsWith("add card to hand")) {
+            time = handleAddCardToHand(event);
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             time = gameView.handleSetRivalSpellGraphic(cardId - 1, getIndexByRivalId(cardIndex));
@@ -203,13 +205,12 @@ public class GameGraphicController extends Menu {
             String position = Utils.getFirstGroupInMatcher(
                     Utils.getMatcher(response, "position changed to (attack|defence)"));
             time =
-                    gameView.handleChangePositionOfRivalMonsterGraphicBOOCN(getIndexByRivalId(cardId), position);
+                    gameView.handleChangePositionOfRivalMonsterGraphicBOOCN
+                            (getIndexByRivalId(cardId), position);
 
 
         } else if (response.matches("get \\d monsters")) {
-            gameView.initForSummonOrSetBySacrifice(Integer.parseInt(response.substring(4, 5)), getIndexById(cardId));
         } else if (response.equals("attack monster")) {
-            gameView.initForAttackMonster(getIndexById(cardId));
         } else if (response.matches("rival loses \\d+")) {
             time = handleIncreaseRivalLp(gameView, response);
         } else if (response.matches("increase lp \\d+")) {
@@ -278,8 +279,8 @@ public class GameGraphicController extends Menu {
         } else if (response.matches("summon \\d")) {
             int cardIndex = Integer.parseInt(response.substring(7));
             time = gameView.handleSummonGraphic(cardId - 1, getIndexById(cardIndex));
-        } else if (response.equals("add card to hand")) {
-            time = gameView.handleAddCardFromDeckToHandGraphic(event.cardNames.get(0));
+        } else if (response.startsWith("add card to hand")) {
+            time = handleAddCardToHand(event);
         } else if (response.matches("set spell \\d")) {
             int cardIndex = Integer.parseInt(response.substring(10));
             time = gameView.handleSetSpellGraphic(cardId - 1, getIndexById(cardIndex));
@@ -385,6 +386,13 @@ public class GameGraphicController extends Menu {
         return time;
     }
 
+    private double handleAddCardToHand(DataFromGameRun event) {
+        if(event.event.split("&")[1].equals(username)){
+            return gameView.handleAddCardFromDeckToHandGraphic(event.cardNames.get(0));
+        }
+        return gameView.handleAddRivalCardFromDeckToHandGraphic(event.cardNames.get(0));
+    }
+
     private double handleIncreaseRivalLp(GameView gameView, String response) {
         double time = 500;
         int lp = -Integer.parseInt(response.substring(12));
@@ -429,17 +437,20 @@ class MyThread extends Thread{
     public void run() {
 
         while(true){
-            System.out.println("هی هی و هوهو");
+//            System.out.println("هی هی و هوهو");
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.sendDataAndRun("whats up");
-                }
-            });
+            if(controller.canRunAnimation){
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.canRunAnimation = false;
+                        controller.sendDataAndRun("whats up");
+                    }
+                });
+            }
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

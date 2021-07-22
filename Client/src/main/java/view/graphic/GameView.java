@@ -168,7 +168,7 @@ public class GameView {
                 cheatSheet.setScene(new Scene(getCheatPane(cheatSheet), 100, 100));
                 cheatSheet.show();
             } else if (event.getCode().equals(KeyCode.A) && event.isAltDown()) {
-                gameController.sendGameRunDataToServer(new DataForGameRun("next phase"));
+                gameController.sendDataAndRun("next phase");
             }
         });
     }
@@ -190,10 +190,9 @@ public class GameView {
             }
         });
         phaseButton.setOnMouseClicked(event -> {
-            if (canRunNextPhase) {
                 canRunNextPhase = false;
-                gameController.sendGameRunDataToServer(new DataForGameRun("next phase"));
-            }
+                gameController.sendDataAndRun("next phase");
+
 
         });
 
@@ -609,13 +608,12 @@ public class GameView {
                     command.append(" ").append(integer);
                 }
                 cardView = mainCardForMultiCardAction;
-
-                gameController.sendGameRunDataToServer(new DataForGameRun(String.valueOf(command)));
+                gameController.sendDataAndRun(String.valueOf(command));
             } else {
                 return;
             }
         } else {
-            gameController.sendGameRunDataToServer(new DataForGameRun(cardView.getCurrentAction()));
+            gameController.sendDataAndRun(cardView.getCurrentAction());
         }
 
         cardView.tempPopup.hide();
@@ -1276,14 +1274,14 @@ public class GameView {
         mainPane.getChildren().add(mainBox);
 
         noButton.setOnMouseClicked(mouseEvent -> {
-            gameController.sendGameRunDataToServer(new DataForGameRun("cancel activate trap"));
+            gameController.sendDataAndRun("cancel activate trap");
 
             mainPane.getChildren().remove(mainBox);
         });
 
         yesButton.setOnMouseClicked(mouseEvent -> {
             mainPane.getChildren().remove(mainBox);
-            gameController.sendGameRunDataToServer(new DataForGameRun("set trigger trap mode"));
+            gameController.sendDataAndRun("set trigger trap mode");
         });
     }
 
